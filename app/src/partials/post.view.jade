@@ -1,0 +1,15 @@
+section.post
+    header.post-header
+        h2.post-title
+          a(href='#/post/{{post._id}}') {{post.title}}
+        .post-meta
+          i.fa.fa-bullseye
+          | Posted on {{post.created | date:'medium'}}
+        .post-meta
+          ul.list-inline
+            i.fa.fa-tags
+            li(ng-repeat='tag in post.tags')
+              a.label.label-success(href='#/tag/{{tag}}') {{tag}}
+      .post-content
+        p(ng-bind-html='post.content')
+
