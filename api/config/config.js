@@ -1,3 +1,3 @@
 //exports.url = 'http://localhost/';
-exports.expireToken = 1; // Time in minutes
+exports.expireToken = 100; // Time in minutes
 

@@ -1,15 +1,28 @@
-section.post
-    header.post-header
-        h2.post-title
-          a(href='#/post/{{post._id}}') {{post.title}}
-        .post-meta
-          i.fa.fa-bullseye
-          | Posted on {{post.created | date:'medium'}}
-        .post-meta
-          ul.list-inline
-            i.fa.fa-tags
-            li(ng-repeat='tag in post.tags')
-              a.label.label-success(href='#/tag/{{tag}}') {{tag}}
-      .post-content
-        p(ng-bind-html='post.content')
+div.row
+ div.col-md-12.secondary-menu
+  a.glyphicon-save.glyphicon(ng-show="saveForm", ng-click='save(post, false)')
+  span.divider
+  a.glyphicon-pencil.glyphicon(ng-show="editForm", ng-click='toggleForm()')
+  a.glyphicon-eye-open.glyphicon(ng-hide="editForm", ng-click='toggleForm()')
+  span.divider
+  a.glyphicon.glyphicon-plus(href='#/admin/post/create')
+div.row(ng-show="editForm")
+ div.col-md-12
+  h2.post-title {{post.title}}
+  .post-content
+    p(btf-markdown='post.content') 
+  .post-meta
+   i.glyphicon.glyphicon-star
+    |  {{post.created | date:'medium'}}
+  .post-meta
+    ul.list-inline.glyphicon.glyphicon-tag
+     li(ng-repeat='tag in post.tags')
+      a.label.label-success(href='#/tag/{{tag}}'){{tag}}
 
+div.row(ng-hide="editForm")
+ div.col-md-12
+  p edit view
+  form(name="EditPostForm")
+   input#inputTitle.form-control(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title")
+   textarea#textareaContent.form-control(rows="19", ng-model="post.content")
+   input#inputTags.form-control(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags")

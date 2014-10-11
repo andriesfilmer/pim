@@ -16,22 +16,23 @@ appControllers.controller('PostListCtrl', ['$scope', '$sce', 'PostService',
   }
 ]);
 
-appControllers.controller('PostViewCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService',
-    function PostViewCtrl($scope, $routeParams, $location, $sce, PostService) {
-
-        $scope.post = {};
-        var id = $routeParams.id;
-
-        PostService.read(id).success(function(data) {
-            data.content = $sce.trustAsHtml(data.content);
-            $scope.post = data;
-        }).error(function(data, status) {
-            console.log(status);
-            console.log(data);
-        });
-
-    }
-]);
+//appControllers.controller('PostViewCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService',
+//    function PostViewCtrl($scope, $routeParams, $location, $sce, PostService) {
+//
+//        $scope.post = {};
+//        var id = $routeParams.id;
+//
+//        PostService.read(id).success(function(data) {
+//            //data.content = $sce.trustAsHtml(data.content);
+//            data.content.htmlSafe = $sce.trustAsHtml(data.content);
+//            $scope.post = data;
+//        }).error(function(data, status) {
+//            console.log(status);
+//            console.log(data);
+//        });
+//
+//    }
+//]);
 
 
 appControllers.controller('AdminPostListCtrl', ['$scope', 'PostService', 
@@ -112,46 +113,64 @@ appControllers.controller('AdminPostCreateCtrl', ['$scope', '$location', 'PostSe
 ]);
 
 appControllers.controller('AdminPostEditCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService',
-    function AdminPostEditCtrl($scope, $routeParams, $location, $sce, PostService) {
-        $scope.post = {};
-        var id = $routeParams.id;
+  function AdminPostEditCtrl($scope, $routeParams, $location, $sce, PostService) {
 
-        PostService.read(id).success(function(data) {
-            $scope.post = data;
-            $('#textareaContent').val($sce.trustAsHtml(data.content));
-        }).error(function(status, data) {
-            $location.path("/admin");
-        });
+    $scope.editForm = true;  // Hide editFrom on toggle first
+    $scope.saveForm = false; // Show save icon
+    $scope.toggleForm = function () {
+      $scope.editForm = !$scope.editForm;
+      if ($scope.dbTitle !== $('#inputTitle').val() ||
+          $scope.dbContent.toString() !== $('#textareaContent').val() ||
+          $scope.dbTags.toString() !== $('#inputTags').val()) {
+        $scope.saveForm = true;
+      }
+    };
 
-        $scope.save = function save(post, shouldPublish) {
-            if (post !== undefined 
-                && post.title !== undefined && post.title != "") {
+    $scope.post = {};
+    var id = $routeParams.id;
 
-                var content = $('#textareaContent').val();
-                if (content !== undefined && content != "") {
-                    post.content = content;
+    PostService.read(id).success(function(data) {
+      $scope.post = data;
 
-                    if (shouldPublish != undefined && shouldPublish == true) {
-                        post.is_published = true;
-                    } else {
-                        post.is_published = false;
-                    }
+      // Set db values so we can check if its changed.
+      //
+      $scope.dbTitle   = data.title;
+      $scope.dbContent = $sce.trustAsHtml(data.content);
+      $scope.dbTags    = data.tags;
 
-                    // string comma separated to array
-                    if (Object.prototype.toString.call(post.tags) !== '[object Array]') {
-                        post.tags = post.tags.split(',');
-                    }
-                    
-                    PostService.update(post).success(function(data) {
-                        $location.path("/admin");
-                    }).error(function(status, data) {
-                        console.log(status);
-                        console.log(data);
-                    });
-                }
-            }
+      $('#inputTitle').val($scope.dbTitle);
+      $('#textareaContent').val($scope.dbContent);
+      $('#inputTags').val($scope.dbTags);
+
+    }).error(function(status, data) {
+      console.log('Post read failure!'); 
+      $location.path("/admin");
+    });
+
+    $scope.save = function save(post, shouldPublish) {
+      if (post !== undefined && post.title !== undefined && post.title != "") {
+
+        var content = $('#textareaContent').val();
+        if (content !== undefined && content != "") {
+          post.content = content;
         }
+
+        // String comma separated to array
+        if (Object.prototype.toString.call(post.tags) !== '[object Array]') {
+          post.tags = post.tags.split(',');
+          //post.tags = $('#inputTags').val().split(',');
+        }
+
+        PostService.update(post).success(function(data) {
+          console.log('Post updated success.'); 
+          $location.path("/admin/post");
+        }).error(function(status, data) {
+           console.log(status);
+           console.log(data);
+        });
+      }
     }
+  }
 ]);
 
 appControllers.controller('AdminUserCtrl', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',  

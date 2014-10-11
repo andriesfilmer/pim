@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('app', ['ngRoute', 'appControllers', 'appServices', 'appDirectives']);
+var app = angular.module('app', ['ngRoute', 'appControllers', 'appServices', 'appDirectives','btford.markdown']);
 
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
@@ -20,7 +20,8 @@ app.config(['$locationProvider', '$routeProvider',
         }).
         when('/post/:id', {
             templateUrl: 'partials/post.view.html',
-            controller: 'PostViewCtrl'
+            controller: 'AdminPostEditCtrl',
+            //controller: 'PostViewCtrl'
         }).
         when('/tag/:tagName', {
             templateUrl: 'partials/post.list.html',

@@ -16,3 +16,17 @@ appDirectives.directive('displayMessage', function() {
     }
   }
 });
+
+// Update the tags model with user input and comma delimited data.
+appDirectives.directive('myTags', function($parse) {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elem, attrs, ngModelCtrl) {
+          ngModelCtrl.$viewChangeListeners.push(function(){
+             $parse(attrs.ngModel).assign(scope, ngModelCtrl.$viewValue.split(','));
+          });
+         }
+    }
+});;
+

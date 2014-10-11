@@ -10,7 +10,6 @@ appServices.factory('AuthenticationService', function() {
 
 
 appServices.factory('TokenInterceptor', function ($q, $window, $location, AuthenticationService) {
-  console.log('##### TokenInterceptor'); 
   return {
     request: function (config) {
       config.headers = config.headers || {};
@@ -26,10 +25,10 @@ appServices.factory('TokenInterceptor', function ($q, $window, $location, Authen
 
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
-      console.log('TokenInterceptor check authenticated'); 
+      //console.log('TokenInterceptor check authenticated'); 
       if (response != null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated) {
         AuthenticationService.isAuthenticated = true;
-        console.log('TokenInterceptor is authenticated'); 
+        //console.log('TokenInterceptor is authenticated'); 
       }
       return response || $q.when(response);
     },

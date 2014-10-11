@@ -7,7 +7,7 @@ Responsive design with bootstrap.
 
 ## Description
 
-A privat PIM with:
+A private PIM with:
 * Blog/KnowlageBase/Notes
 * Kalendar
 * Bookmarks
@@ -16,7 +16,7 @@ A privat PIM with:
 
 You need nodejs and mongodb (default install will do)
 
-Look into the packages.json file`for more dependencies.
+Look into the packages.json file for more dependencies.
 
 ## Installation
 
