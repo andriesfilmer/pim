@@ -3,13 +3,12 @@
 Project is just started.....
 
 PIM is a simple application built with AngularJS, Node.js and MongoDB.
-Responsive design with bootstrap.
 
 ## Description
 
 A private PIM with:
+* Personal calendar
 * Blog/KnowlageBase/Notes
-* Kalendar
 * Bookmarks
 
 ## Dependencies
@@ -42,9 +41,10 @@ Edit api/api.js and replace the value of Access-Control-Allow-Origin to match yo
 ## Resources
 
 Inspired by the code is from the artile:
-Article: http://www.kdelemme.com/2014/03/09/authentication-with-angularjs-and-a-node-js-rest-api/
+* Article: http://www.kdelemme.com/2014/03/09/authentication-with-angularjs-and-a-node-js-rest-api/
+* Demo: http://projects.kdelemme.com/blog/app/#/
+* Article: http://www.webdeveasy.com/interceptors-in-angularjs-and-useful-examples/
 
-Demo: http://projects.kdelemme.com/blog/app/#/
 
 ### Changes from the project of Kevin Delemme:
 
@@ -52,7 +52,7 @@ Demo: http://projects.kdelemme.com/blog/app/#/
 - [x] Sass instead of Less
 - [x] No need of Redis
 - [x] Markdown instead of wysihtml5
-- [x] Responsive design, mobile first
+- [x] Foundation instead of Bootstrap
 - [x] Removed likes, its for my personal use ;)
 - [x] Uptimized by jshint
 

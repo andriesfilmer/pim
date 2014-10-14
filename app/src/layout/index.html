@@ -48,10 +48,10 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-          <li><a href="#/admin/">Admin</a></li>
-          <li><a href="#/admin/logout">Logout</a></li>
-          <li><a href="#/admin/login">Login</a></li>
-          <li><a href="#/admin/register">Register</a></li>
+          <li><a href="#/kb/">Kladblok</a></li>
+          <li><a href="#/user/logout">Logout</a></li>
+          <li><a href="#/user/login">Login</a></li>
+          <li><a href="#/user/register">Register</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -62,14 +62,15 @@
 </div>
 
 <!-- JS production CDN's -->
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script data-require="angular.js@1.2.x" src="https://code.angularjs.org/1.2.21/angular.js" data-semver="1.2.21"></script>
+<script data-require="jquery@*" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
 
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->
 <!-- JS development <!-- @echo pkgname --> -->
 <script src="vendor/js/angular-route.min.js"></script>
 <script src="vendor/js/angular-sanitize.min.js"></script>
-<script src="vendor/js/bootstrap.min.js"></script>
 <script src="vendor/js/showdown.js"></script>
 <script src="vendor/js/markdown.js"></script>
 <script src="js/<!-- @echo pkgname -->.js"></script>

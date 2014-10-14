@@ -30,3 +30,21 @@ appDirectives.directive('myTags', function($parse) {
     }
 });;
 
+// <input type="checkbox" ng-model="foo.bar" bs-switch>
+appDirectives.directive('bsSwitch', function() {
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModelCtrl) {
+      $(element).bootstrapSwitch({
+        onSwitchChange: function(event, state) {
+          scope.$apply(function() {
+            console.log('##### test -> dir..'); 
+            ngModelCtrl.$setViewValue(state);
+          });
+        }
+      });
+    }
+  }
+});
+

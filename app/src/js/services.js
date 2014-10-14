@@ -1,12 +1,7 @@
 appServices.factory('AuthenticationService', function() {
-  var auth = {
-    isAuthenticated: false,
-    isAdmin: false
-  }
-
+  var auth = {isAuthenticated: false }
   return auth;
 });
-
 
 
 appServices.factory('TokenInterceptor', function ($q, $window, $location, AuthenticationService) {
@@ -25,44 +20,40 @@ appServices.factory('TokenInterceptor', function ($q, $window, $location, Authen
 
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
-      //console.log('TokenInterceptor check authenticated'); 
+      console.log('TokenInterceptor check authenticated'); 
       if (response != null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated) {
         AuthenticationService.isAuthenticated = true;
-        //console.log('TokenInterceptor is authenticated'); 
+        console.log('TokenInterceptor is authenticated'); 
       }
       return response || $q.when(response);
     },
 
     /* Revoke client authentication if 401 is received */
     responseError: function(rejection) {
-      if (rejection != null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
+      //if (rejection != null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
+      if (rejection.status === 401) {
         delete $window.sessionStorage.token;
         AuthenticationService.isAuthenticated = false;
-        console.log('TokenInterceptor -> authenticated revoked'); 
-        $location.path("/admin/login");
+        console.log('TokenInterceptor -> rejection -> 401'); 
+        $location.path("/user/login");
       }
-
       return $q.reject(rejection);
     }
   };
 });
 
-appServices.factory('PostService', function($http) {
+appServices.factory('PostService', function($http, $location) {
   return {
-    findAllPublished: function() {
-      return $http.get(options.api.base_url + '/post');
-    },
-
-    findByTag: function(tag) {
-      return $http.get(options.api.base_url + '/tag/' + tag);
-    },
-
     read: function(id) {
       return $http.get(options.api.base_url + '/post/' + id);
     },
-    
+
     findAll: function() {
-      return $http.get(options.api.base_url + '/post/all');
+      return $http.get(options.api.base_url + '/post/all')
+      .error(function(data, status, headers, config) {
+        console.log('Not authorized (findAll)'); 
+        $location.path("/user/login");
+      });
     },
 
     changePublishState: function(id, newPublishState) {

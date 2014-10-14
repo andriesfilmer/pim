@@ -18,11 +18,10 @@
 </div>
 <div ng-hide="editForm" class="row">
   <div class="col-md-12">
-    <p>edit view</p>
-    <form name="EditPostForm">
-      <input id="inputTitle" type="text" placeholder="Title" value="{{post.title}}" ng-model="post.title" class="form-control"/>
-      <textarea id="textareaContent" rows="19" ng-model="post.content" class="form-control"></textarea>
-      <input id="inputTags" type="text" placeholder="Tags #1, Tags #2, ..." my-tags="" ng-model="post.tags" class="form-control"/>
+    <form>
+      <input id="inputTitle" type="text" placeholder="Title" value="{{post.title}}" ng-model="post.title" ng-change="change()" class="form-control"/>
+      <textarea id="textareaContent" rows="19" ng-model="post.content" ng-change="change()" class="form-control"></textarea>
+      <input id="inputTags" type="text" placeholder="Tags #1, Tags #2, ..." my-tags="" ng-model="post.tags" ng-change="change()" class="form-control"/>
     </form>
   </div>
 </div>

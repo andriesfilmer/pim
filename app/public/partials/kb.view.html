@@ -1,0 +1,29 @@
+
+<div class="row">
+  <div class="col-md-12 secondary-menu"><a ng-show="saveForm" ng-click="save(post, false)" class="glyphicon-save glyphicon"></a><span class="divider"></span><a ng-click="deletePost(post)" class="glyphicon-trash glyphicon"></a><span class="divider"></span><a ng-show="editForm" ng-click="toggleForm()" class="glyphicon-pencil glyphicon"></a><a ng-hide="editForm" ng-click="toggleForm()" class="glyphicon-eye-open glyphicon"></a><span class="divider"></span><a href="#/kb/create" class="glyphicon glyphicon-plus"></a></div>
+</div>
+<div ng-show="editForm" class="row">
+  <div class="col-md-12">
+    <h2 class="post-title">{{post.title}} </h2>
+    <div class="post-content">
+      <p btf-markdown="post.content"></p>
+    </div>
+    <div class="post-meta"><i class="glyphicon glyphicon-star"> {{post.created | date:'medium'}}</i></div>
+    <div class="post-meta">
+      <ul class="list-inline glyphicon glyphicon-tag">
+        <li ng-repeat="tag in post.tags"><a href="#/tag/{{tag}}" class="label label-success">{{tag}}</a></li>
+      </ul>
+    </div>
+    <div id="is_published" class="post-meta">published is: {{post.is_published}}</div>
+  </div>
+</div>
+<div ng-hide="editForm" class="row">
+  <div class="col-md-12">
+    <form>
+      <input id="inputTitle" type="text" placeholder="Title" value="{{post.title}}" ng-model="post.title" ng-change="change()" class="form-control"/>
+      <textarea id="textareaContent" rows="19" ng-model="post.content" ng-change="change()" class="form-control"></textarea>
+      <input id="inputTags" type="text" placeholder="Tags #1, Tags #2, ..." my-tags="" ng-model="post.tags" ng-change="change()" class="form-control"/>
+      <input type="checkbox" ng-model="post.is_published" ng-change="change()" class="form-control"/><span>test</span>
+    </form>
+  </div>
+</div>

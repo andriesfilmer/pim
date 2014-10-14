@@ -1,11 +1,12 @@
 var db = require('../config/mongo_database.js');
-var publicFields = '_id title url tags content created likes';
+var publicFields = '_id title url tags content created updated is_published';
 
 // Public function list all published.
 //
 exports.list = function(req, res) {
 
-  var query = db.postModel.find({is_published: true});
+  //var query = db.postModel.find({is_published: true});
+  var query = db.postModel.find();
 
   query.select(publicFields);
   query.sort('-created');
@@ -88,13 +89,13 @@ exports.create = function(req, res) {
   }
 
   var post = req.body.post;
-  if (post == null || post.title == null || post.content == null || post.tags == null) {
+  if (post == null || post.title == null || post.content == null ) {
     return res.send(400); // Bad Request
   }
 
   var postEntry = new db.postModel();
   postEntry.title = post.title;
-  postEntry.tags = post.tags.split(',');
+  //postEntry.tags = post.tags.split(',');
   postEntry.is_published = post.is_published;
   postEntry.content = post.content;
 
@@ -152,6 +153,7 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
+console.log('##### test -> delete'); 
 
   if (!req.user) {
     return res.send(401);
