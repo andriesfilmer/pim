@@ -49,15 +49,15 @@ appServices.factory('PostService', function($http, $location) {
     },
 
     findAll: function() {
-      return $http.get(options.api.base_url + '/post/all')
+      return $http.get(options.api.base_url + '/post/')
       .error(function(data, status, headers, config) {
-        console.log('Not authorized (findAll)'); 
+        console.log('Not authorized (find)'); 
         $location.path("/user/login");
       });
     },
 
-    changePublishState: function(id, newPublishState) {
-      return $http.put(options.api.base_url + '/post', {'post': {_id: id, is_published: newPublishState}});
+    changePublicState: function(id, newPublicState) {
+      return $http.put(options.api.base_url + '/post', {'post': {_id: id, is_published: newPublicState}});
     },
 
     delete: function(id) {

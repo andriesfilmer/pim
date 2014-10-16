@@ -1,0 +1,10 @@
+div.row
+  form
+ div.columns.small-12
+  input(type="text", placeholder="Username", ng-model="register.username")
+ div.columns.small-12
+  input(type="password", placeholder="Password", ng-model="register.password")
+ div.columns.small-12
+  input(type="password", placeholder="Password", ng-model="register.passwordConfirmation")
+ div.columns.small-12
+  button.radius(type="submit", ng-click="register(register.username, register.password, register.passwordConfirmation)") Register

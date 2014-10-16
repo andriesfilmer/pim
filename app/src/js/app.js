@@ -14,35 +14,35 @@ options.api.base_url = "http://test.filmer.net:3001";
 app.config(['$locationProvider', '$routeProvider', 
   function($location, $routeProvider) {
     $routeProvider.
-      when('/kb', {
-        templateUrl: 'partials/kb.list.html',
+      when('/post', {
+        templateUrl: 'partials/post.list.html',
         controller: 'PostListCtrl',
         access: { requiredAuthentication: true }
       }).
-      when('/kb/create', {
-        templateUrl: 'partials/kb.create.html',
+      when('/post/create', {
+        templateUrl: 'partials/post.view.html',
         controller: 'PostCreateCtrl',
         access: { requiredAuthentication: true }
       }).
-      when('/kb/:id', {
-        templateUrl: 'partials/kb.view.html',
+      when('/post/:id', {
+        templateUrl: 'partials/post.view.html',
         controller: 'PostEditCtrl'
       }).
       when('/user/register', {
-        templateUrl: 'partials/admin.register.html',
+        templateUrl: 'partials/user.register.html',
         controller: 'UserCtrl'
       }).
       when('/user/login', {
-        templateUrl: 'partials/admin.signin.html',
+        templateUrl: 'partials/user.signin.html',
         controller: 'UserCtrl'
       }).
       when('/user/logout', {
-        templateUrl: 'partials/admin.logout.html',
+        templateUrl: 'partials/user.logout.html',
         controller: 'UserCtrl',
         access: { requiredAuthentication: true }
       }).
       otherwise({
-        redirectTo: '/'
+        redirectTo: '/post'
       });
   }
 ]);

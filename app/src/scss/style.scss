@@ -1,0 +1,54 @@
+
+.top-bar {
+ margin-bottom: 5px;
+}
+
+.secondary-menu {
+  float: right;
+  padding-right: 1rem;
+  border-bottom: 1px #eee solid;
+  text-align: right;
+  font-size: 2rem;
+  .divider {
+    border-left: 1px #eee solid;
+    margin: 1rem;
+  }
+  a {color: #BBB4B4};
+}
+
+@mixin my-row {
+    border-bottom: 1px #eee solid;
+    padding: 8px;
+}
+.my-row { @include my-row}
+
+$color-note: orange;
+$color-blog: green;
+$color-todo: red;
+$color-kb: blue;
+
+.note { @include my-row; border-left: 8px $color-note solid; }
+.blog { @include my-row; border-left: 8px $color-blog solid; }
+.todo { @include my-row; border-left: 8px $color-todo solid; }
+.kb   { @include my-row; border-left: 8px $color-kb solid; }
+
+.switch.post-public input:checked + label {
+  background: #f04124; // red
+}
+.switch.post-note input:checked + label {
+  background: $color-note;
+}
+.switch.post-blog input:checked + label {
+  background: $color-blog;
+}
+.switch.post-todo input:checked + label {
+  background: $color-todo;
+}
+.switch.post-kb input:checked + label {
+  background: $color-kb;
+}
+
+.post-meta {
+  font-size: 0.8rem;
+}
+

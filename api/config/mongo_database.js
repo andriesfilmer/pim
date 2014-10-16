@@ -26,8 +26,9 @@ var User = new Schema({
 var Post = new Schema({
     title: { type: String, required: true },
     tags: [ {type: String} ],
+    type: {type: String, default: 'note'},
     is_published: { type: Boolean, default: false },
-    content: { type: String, required: true },
+    content: { type: String},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
     read: { type: Number, default: 0 },

@@ -1,0 +1,16 @@
+{
+  "name": "pim",
+  "description": "Personal Information manager",
+  "version": "0.0.1",
+  "homepage": "https://github.com/andries.filmer/pim",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "angular": "1.3.x",
+    "angular-route": "1.3.x",
+    "angular-sanitize": "1.3.x",
+    "angular-markdown-directive" : "0.3.0",
+    "foundation": "5.4.x",
+    "foundation-icon-fonts" : ""
+  }
+}

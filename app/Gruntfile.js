@@ -50,7 +50,7 @@ module.exports = function(grunt) {
           style: 'expanded'
         },
         files: {
-          'public/css/<%= pkg.name %>.css' : 'src/css/*.scss'
+          'public/css/<%= pkg.name %>.css' : 'src/scss/*.scss'
         }
       }
     },
@@ -97,7 +97,7 @@ module.exports = function(grunt) {
     watch: {
       all: {
         options: { livereload: true },
-        files: ['src/layout/*', 'src/js/*', 'src/css/*','src/partials/**/*.jade'],
+        files: ['src/layout/*', 'src/js/*', 'src/scss/*','src/partials/**/*.jade'],
         tasks: ['default']
       },
     },

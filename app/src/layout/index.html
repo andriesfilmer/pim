@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <title><!-- @echo pkgname --></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="KB">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="My personal information manager.">
   <meta name="author" content="Andries Filmer">
   <meta name="fragment" content="!">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
-
-  <title><!-- @echo pkgname --></title>
 
   <!-- Place favicon.ico and apple-touch-icon(s) -->
 
@@ -20,7 +19,9 @@
 
   <!-- @if NODE_ENV == 'DEVELOPMENT' -->
   <!-- CSS development <!-- @echo pkgname --> -->
-  <link href="vendor/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="vendor/css/normalize.css" rel="stylesheet" />
+  <link href="vendor/css/foundation.css" rel="stylesheet" />
+  <link href="vendor/css/foundation-icons.css" rel="stylesheet" />
   <link href="css/<!-- @echo pkgname -->.css" rel="stylesheet" />
   <!-- @endif -->
 
@@ -32,29 +33,30 @@
 
 </head>
 <body ng-app="app">
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#"><!-- @echo pkgname --></a>
-    </div>
+<nav class="top-bar" data-topbar role="navigation">
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="/">PIM</a></h1>
+    </li>
+     <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+    <li class="toggle-topbar menu-icon"><a href="/#/post"><span>Menu</span></a></li>
+  </ul>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-          <li><a href="#/kb/">Kladblok</a></li>
-          <li><a href="#/user/logout">Logout</a></li>
-          <li><a href="#/user/login">Login</a></li>
-          <li><a href="#/user/register">Register</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
+  <section class="top-bar-section">
+    <ul class="left">
+      <li class="divider"></li>
+      <li><a href="#/post/">Posts</a></li>
+      <li class="divider"></li>
+    </ul>
+    <ul class="right">
+      <li class="divider"></li>
+      <li><a href="#/user/register">Register</a></li>
+      <li class="divider"></li>
+      <li><a href="#/user/login">Login</a></li>
+      <li class="divider"></li>
+      <li><a href="#/user/logout">Logout</a></li>
+    </ul>
+  </section>
 </nav>
 
 <div class="container">
@@ -62,25 +64,30 @@
 </div>
 
 <!-- JS production CDN's -->
-<script data-require="angular.js@1.2.x" src="https://code.angularjs.org/1.2.21/angular.js" data-semver="1.2.21"></script>
-<script data-require="jquery@*" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script data-require="bootstrap@*" data-semver="3.1.1" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    
 
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->
 <!-- JS development <!-- @echo pkgname --> -->
+<script src="vendor/js/angular.min.js"></script>
 <script src="vendor/js/angular-route.min.js"></script>
 <script src="vendor/js/angular-sanitize.min.js"></script>
+<script src="vendor/js/jquery.min.js"></script>
+<script src="vendor/js/foundation.js"></script>
 <script src="vendor/js/showdown.js"></script>
+<script src="vendor/js/showdown-table.js"></script>
 <script src="vendor/js/markdown.js"></script>
 <script src="js/<!-- @echo pkgname -->.js"></script>
 <!-- @endif -->
+
 
 <!-- @if NODE_ENV == 'PRODUCTION' -->
 <!-- JS production <!-- @echo pkgname --> -->
 <script src="vendor/<!-- @echo pkgname -->.min.js"></script>
 <script src="js/<!-- @echo pkgname -->.min.js"></script>
 <!-- @endif -->
+
+<script>
+    $(document).foundation();
+</script>
 
 </body>
 </html>

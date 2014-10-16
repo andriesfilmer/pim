@@ -10,14 +10,14 @@ appControllers.controller('PostListCtrl', ['$scope', '$sce', 'PostService',
       console.log('Error PostService.findAll');
     });
 
-    $scope.updatePublishState = function updatePublishState(post, shouldPublish) {
-      if (post != undefined && shouldPublish != undefined) {
+    $scope.updatePublicState = function updatePublicState(post, makePublic) {
+      if (post != undefined && makePublic != undefined) {
 
-        PostService.changePublishState(post._id, shouldPublish).success(function(data) {
+        PostService.changePublicState(post._id, makePublic).success(function(data) {
           var posts = $scope.posts;
           for (var postKey in posts) {
             if (posts[postKey]._id == post._id) {
-              $scope.posts[postKey].is_published = shouldPublish;
+              $scope.posts[postKey].is_published = makePublic;
               break;
             }
           }
@@ -43,7 +43,7 @@ appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService
         $scope.saveForm = true;
     };
 
-    $scope.save = function save(post, shouldPublish) {
+    $scope.save = function save(post) {
       if (post != undefined) {
 
         // String comma separated to array
@@ -64,6 +64,8 @@ appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService
 
 appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService',
   function PostEditCtrl($scope, $routeParams, $location, $sce, PostService) {
+
+    $(document).foundation();
 
     $scope.editForm = true;  // Hide editFrom, toggle first.
     $scope.saveForm = false; // Hide save icon, $scope.change first.
@@ -86,7 +88,6 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
       $location.path("/user/login");
     });
 
-    //$scope.save = function save(post, shouldPublish) {
     $scope.save = function save(post) {
       if (post !== undefined && post.title !== undefined && post.title != "") {
 
@@ -97,6 +98,7 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
 
         PostService.update(post).success(function(data) {
           console.log('Post updated success.'); 
+          $('#postSettings').foundation('reveal', 'close');
           $location.path("/kb/");
         }).error(function(status, data) {
           console.log(status);
@@ -110,6 +112,7 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
       if (id != undefined) {
         PostService.delete(id).success(function(data) {
           console.log('Deleted post:' + post._id); 
+          $('#postSettings').foundation('reveal', 'close');
           $location.path("/kb/");
         }).error(function(status, data) {
           console.log(status);
@@ -122,9 +125,8 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
 
 appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
   function UserCtrl($scope, $location, $window, UserService, AuthenticationService) {
-    console.log('UserCtrl');
+    console.log('UserCtrl 2');
 
-    // User Controller (signIn, logOut)
     $scope.signIn = function signIn(username, password) {
         console.log('UserCtrl: Signin');
         if (username != null && password != null) {

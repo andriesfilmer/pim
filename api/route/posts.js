@@ -1,42 +1,11 @@
 var db = require('../config/mongo_database.js');
-var publicFields = '_id title url tags content created updated is_published';
+var publicFields = '_id title url tags type content created updated is_published';
 
-// Public function list all published.
+// List published posts
 //
-exports.list = function(req, res) {
+exports.listPublic = function(req, res) {
 
-  //var query = db.postModel.find({is_published: true});
-  var query = db.postModel.find();
-
-  query.select(publicFields);
-  query.sort('-created');
-  query.exec(function(err, results) {
-    if (err) {
-        console.log(err);
-        return res.send(400); // Bad Request
-      }
-
-      for (var postKey in results) {
-        // In the list view we show only the first chars from content.
-        results[postKey].content = results[postKey].content.substr(0, 400);
-      }
-
-      return res.status(200).json(results); // OK
-
-  });
-
-};
-
-// Authorized function to list un-published.
-//
-exports.listAll = function(req, res) {
-
-  //if (!req.user) {
-  //  console.log('##### test'); 
-  //  return res.send(401); // Unauthorized
-  //}
-
-  var query = db.postModel.find();
+  var query = db.postModel.find({is_published: true});
   query.sort('-created');
   query.exec(function(err, results) {
     if (err) {
@@ -55,9 +24,38 @@ exports.listAll = function(req, res) {
 
 };
 
-// Show post not authorized (you must know the 'id').
+
+// Public function list all posts
+//
+exports.listAll = function(req, res) {
+
+  if (!req.user) {
+    return res.send(401); // Unauthorized
+  }
+
+  var query = db.postModel.find();
+
+  query.select(publicFields);
+  query.sort('-created');
+  query.exec(function(err, results) {
+    if (err) {
+        console.log(err);
+        return res.send(400); // Bad Request
+      }
+
+      return res.status(200).json(results); // OK
+
+  });
+
+};
+
+// Show post 'id').
 //
 exports.read = function(req, res) {
+
+  if (!req.user) {
+    return res.send(401); // Unauthorized
+  }
 
   var id = req.params.id || '';
   if (id == '') {
@@ -89,7 +87,7 @@ exports.create = function(req, res) {
   }
 
   var post = req.body.post;
-  if (post == null || post.title == null || post.content == null ) {
+  if (post == null || post.title == null ) {
     return res.send(400); // Bad Request
   }
 
@@ -137,6 +135,10 @@ exports.update = function(req, res) {
     }
   }
 
+  if (post.type != null) {
+    updatePost.type = post.type;
+  }
+
   if (post.is_published != null) {
     updatePost.is_published = post.is_published;
   }
@@ -153,7 +155,6 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-console.log('##### test -> delete'); 
 
   if (!req.user) {
     return res.send(401);
@@ -175,7 +176,7 @@ console.log('##### test -> delete');
     if (result != null) {
       result.remove();
       return res.status(200).end();
-
+      console.log('Post -> delete'); 
     }
     else {
       return res.send(400);

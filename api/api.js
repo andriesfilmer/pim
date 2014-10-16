@@ -22,18 +22,6 @@ var routes = {};
 routes.posts = require('./route/posts.js');
 routes.users = require('./route/users.js');
 
-//Get all published post
-app.get('/post', routes.posts.list);
-
-//Get all posts
-app.get('/post/all', expressJwt({secret: secret.secretToken}), routes.posts.listAll);
-
-// Get the post id
-app.get('/post/:id', routes.posts.read); 
-
-// Get posts by tag
-app.get('/tag/:tagName', routes.posts.listByTag); 
-
 // Create a new user
 app.post('/user/register', routes.users.register); 
 
@@ -42,6 +30,18 @@ app.post('/user/signin', routes.users.signin);
 
 // Logout
 app.get('/user/logout', routes.users.logout); 
+
+// Get posts by tag
+app.get('/tag/:tagName', routes.posts.listByTag); 
+
+//Get all posts
+app.get('/post/public', routes.posts.listPublic);
+
+//Get all published post
+app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.listAll);
+
+// Get the post id
+app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 
 
 //Create a new post
 app.post('/post', expressJwt({secret: secret.secretToken}), routes.posts.create); 
