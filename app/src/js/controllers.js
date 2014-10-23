@@ -1,3 +1,10 @@
+appControllers.controller('CalendarListCtrl', ['$scope', function($scope) {
+  $scope.greeting = 'Calendar controller....';
+}]);
+appControllers.controller('BookmarkListCtrl', ['$scope', function($scope) {
+  $scope.greeting = 'Bookmarks controller....';
+}]);
+
 appControllers.controller('PostListCtrl', ['$scope', '$sce', 'PostService',
   function PostListCtrl($scope, $sce, PostService) {
 
@@ -125,14 +132,19 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
 
 appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
   function UserCtrl($scope, $location, $window, UserService, AuthenticationService) {
-    console.log('UserCtrl 2');
+
+    $scope.user = {
+      username: $window.localStorage.username,
+      password: $window.localStorage.password
+    };
 
     $scope.signIn = function signIn(username, password) {
-        console.log('UserCtrl: Signin');
         if (username != null && password != null) {
 
             UserService.signIn(username, password).success(function(data) {
                 AuthenticationService.isAuthenticated = true;
+                $window.localStorage.username = username;
+                $window.localStorage.password = password;
                 $window.sessionStorage.token = data.token;
                 $location.path("/kb/");
             }).error(function(status, data) {
@@ -143,9 +155,10 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
     }
 
     $scope.logOut = function logOut() {
-      console.log('UserCtrl -> logOut -> delete sessionStorage.token.');
       AuthenticationService.isAuthenticated = false;
       delete $window.sessionStorage.token;
+      delete $window.localStorage.username;
+      delete $window.localStorage.password;
       $location.path("/");
     }
 
@@ -163,7 +176,6 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
           console.log(data);
         });
       }
-      console.log('UserCtrl -> redirect user/login');
       $location.path("/user/login");
     } 
   }

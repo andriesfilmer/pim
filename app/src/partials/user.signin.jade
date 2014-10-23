@@ -1,8 +1,8 @@
 div.row
-  form
- div.columns.small-12
-  input(type="text", placeholder="Username", ng-model="user.username", tabindex="1")
- div.columns.small-12
-  input(type="password", placeholder="Password", ng-model="user.password", tabindex="2")
- div.columns.small-12
-  button.radius(type="submit", ng-click="signIn(user.username, user.password)") Sign In
+ form
+  div.columns.small-12
+   input(type="text", placeholder="Username", ng-model="user.username", tabindex="1")
+  div.columns.small-12
+   input(type="password", placeholder="Password", ng-model="user.password", tabindex="2")
+  div.columns.small-12
+   button.radius(type="submit", ng-click="signIn(user.username, user.password)", tabindex="3") Sign In

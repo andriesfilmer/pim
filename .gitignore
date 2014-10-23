@@ -3,3 +3,4 @@ app/bower_components/
 api/node_modules
 app/node_modules
 api/config/snapshots
+public/

@@ -11,15 +11,8 @@ div.row
 
 div.row(ng-show="editForm")
  div.column.small-12
-  h2 {{post.title}} 
+  h1 {{post.title}} 
     p(btf-markdown='post.content') 
-  .post-meta
-   i.fi-star
-    |  {{post.created | date:'medium'}}
-  .post-meta
-    ul.inline-list
-     li(ng-repeat='tag in post.tags')
-      a.label.radius.success(href='#/tag/{{tag}}'){{tag}}
 
 div.row(ng-hide="editForm")
  div.column.small-12
@@ -27,6 +20,13 @@ div.row(ng-hide="editForm")
    input#inputTitle.form-control(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
    textarea#textareaContent.form-control(rows="19", ng-model="post.content", ng-change="change()")
    input#inputTags.form-control(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
+div.row
+ div.column.small-12.post-meta
+  i.fi-star  {{post.created | date:'medium'}}
+ div.column.small-12.post-meta
+   ul.inline-list
+    li(ng-repeat='tag in post.tags')
+     a.label.radius.success(href='#/tag/{{tag}}'){{tag}}
 
 div.row
  div#postSettings.reveal-modal(data-reveal='')
