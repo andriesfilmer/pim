@@ -1,10 +1,6 @@
 var express = require('express');
 var cors = require('cors');
-// Development
-var corsOptions = { origin: 'http://*:3000'};
-// Production
-//var corsOptions = { origin: 'http://pim.filmer.nl'};
-
+var corsOptions = { origin: 'http://pim.filmer.nl'};
 var app = express();
 
 // Middleware that validates JsonWebTokens and set req.user.
@@ -13,8 +9,8 @@ var bodyParser = require('body-parser');
 var secret = require('./config/secret');
 
 app.listen(3001);
-//app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
+//app.use(cors());
 app.use(bodyParser());
 
 // Enable http logging

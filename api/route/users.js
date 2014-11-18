@@ -59,6 +59,7 @@ exports.register = function(req, res) {
   var password = req.body.password || '';
   var passwordConfirmation = req.body.passwordConfirmation || '';
 
+  console.log("Register " + req.username);
   if (username == '' || password == '' || password != passwordConfirmation) {
     return res.send(400); // Bad Request
   }

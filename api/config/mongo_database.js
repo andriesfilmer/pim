@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
+var secret = require('./secret');
 var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
-var mongodbURL = 'mongodb://localhost/pim';
+var mongodbURL = secret.mongodbURL;
 var mongodbOptions = { };
 
 mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
@@ -25,14 +26,15 @@ var User = new Schema({
 
 var Post = new Schema({
     title: { type: String, required: true },
+    description: { type: String},
     tags: [ {type: String} ],
-    type: {type: String, default: 'note'},
     is_published: { type: Boolean, default: false },
-    content: { type: String},
+    art: { type: Boolean, default: false },
+    lang: {type: String, default: 'NL'},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    read: { type: Number, default: 0 },
-    likes: { type: Number, default: 0 }
+    content: { type: String},
+    type: {type: String, default: 'note'},
 });
 
 

@@ -1,6 +1,7 @@
 .sass-cache
 app/bower_components/
 api/node_modules
+api/config/secret.js
 app/node_modules
 api/config/snapshots
 public/
