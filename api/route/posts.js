@@ -2,7 +2,6 @@ var db = require('../config/mongo_database.js');
 var publicFields = '_id title url tags type content created updated is_published';
 
 // List published posts
-//
 exports.listPublic = function(req, res) {
 
   var query = db.postModel.find({is_published: true});
@@ -24,9 +23,7 @@ exports.listPublic = function(req, res) {
 
 };
 
-
 // Public function list all posts
-//
 exports.listAll = function(req, res) {
 
   if (!req.user) {
@@ -36,7 +33,7 @@ exports.listAll = function(req, res) {
   var query = db.postModel.find();
 
   query.select(publicFields);
-  query.sort('-created');
+  query.sort('-updated');
   query.exec(function(err, results) {
     if (err) {
         console.log(err);
@@ -49,8 +46,43 @@ exports.listAll = function(req, res) {
 
 };
 
+// Search all posts
+exports.searchAll = function(req, res) {
+  console.log('##### test -> '); 
+
+  var post = req.body.post; 
+
+  if (!req.user) {
+    return res.send(401); // Unauthorized
+  }
+
+  if (post.searchKey) {
+    console.log('##### post search -> ' + post.searchKey); 
+    var query = db.postModel.find({ $or: [ 
+                                          {title:   { $exists: true, $regex: post.searchKey } },
+                                          {content: { $exists: true, $regex: post.searchKey } }, 
+                                          {tags:    { $exists: true, $regex: post.searchKey } } 
+                                         ] } );
+  } else {
+    console.log('##### post empty search -> '); 
+    var query = db.postModel.find();
+  }
+
+  query.select(publicFields);
+  query.sort('-updated');
+  query.exec(function(err, results) {
+    if (err) {
+      console.log(err);
+      return res.send(400); // Bad Request
+    }
+
+    return res.status(200).json(results); // OK
+
+  });
+
+};
+
 // Show post 'id').
-//
 exports.read = function(req, res) {
 
   if (!req.user) {
@@ -78,7 +110,7 @@ exports.read = function(req, res) {
       return res.send(400); // Bad Request
     }
   });
-};
+}; 
 
 exports.create = function(req, res) {
 
@@ -93,7 +125,17 @@ exports.create = function(req, res) {
 
   var postEntry = new db.postModel();
   postEntry.title = post.title;
+
   //postEntry.tags = post.tags.split(',');
+  if (post.tags != null) {
+    if (Object.prototype.toString.call(post.tags) === '[object Array]') {
+      postEntry.tags = post.tags;
+    }
+    else {
+      postEntry.tags = post.tags.split(',');
+    }
+  }
+
   postEntry.is_published = post.is_published;
   postEntry.content = post.content;
 

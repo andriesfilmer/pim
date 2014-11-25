@@ -6,6 +6,7 @@
   "devDependencies": {
     "grunt-env": "~0.4.0",
     "grunt-preprocess": "~4.0.0",
+    "grunt-appcache": "~0.1.8",
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-cssmin": "~0.10.0",
     "grunt-contrib-sass": "~0.8.1",

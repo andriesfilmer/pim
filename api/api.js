@@ -9,9 +9,10 @@ var bodyParser = require('body-parser');
 var secret = require('./config/secret');
 
 app.listen(3001);
-app.use(cors(corsOptions));
-//app.use(cors());
+//app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser());
+console.log('API is starting on port 3001');
 
 // Enable http logging
 //var morgan  = require('morgan'); 
@@ -34,22 +35,24 @@ app.get('/user/logout', routes.users.logout);
 // Get posts by tag
 app.get('/tag/:tagName', routes.posts.listByTag); 
 
-//Get all posts
+// Get all public posts
 app.get('/post/public', routes.posts.listPublic);
 
-//Get all published post
+// Search all posts
+app.post('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.searchAll);
+
+// Get all posts
 app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.listAll);
 
 // Get the post id
 app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 
 
-//Create a new post
+// Create a new post
 app.post('/post', expressJwt({secret: secret.secretToken}), routes.posts.create); 
 
-//Edit the post id
+// Edit the post id
 app.put('/post', expressJwt({secret: secret.secretToken}), routes.posts.update); 
 
-//Delete the post id
+// Delete the post id
 app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.delete); 
 
-console.log('API is starting on port 3001');

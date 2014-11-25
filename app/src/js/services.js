@@ -3,8 +3,7 @@ appServices.factory('AuthenticationService', function() {
   return auth;
 });
 
-
-appServices.factory('TokenInterceptor', function ($q, $window, $location, AuthenticationService) {
+appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationService) {
   return {
     request: function (config) {
       config.headers = config.headers || {};
@@ -28,32 +27,34 @@ appServices.factory('TokenInterceptor', function ($q, $window, $location, Authen
       return response || $q.when(response);
     },
 
-    /* Revoke client authentication if 401 is received */
+    // Revoke client authentication if 401 is received 
     responseError: function(rejection) {
       //if (rejection != null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
       if (rejection.status === 401) {
         delete $window.sessionStorage.token;
         AuthenticationService.isAuthenticated = false;
         console.log('TokenInterceptor -> rejection -> 401'); 
-        $location.path("/user/login");
       }
       return $q.reject(rejection);
     }
   };
 });
 
-appServices.factory('PostService', function($http, $location) {
+appServices.factory('PostService',['$http', function($http) {
   return {
+
     read: function(id) {
       return $http.get(options.api.base_url + '/post/' + id);
     },
 
-    findAll: function() {
-      return $http.get(options.api.base_url + '/post/')
+    findAll: function(searchKey) {
+      return $http.get(options.api.base_url + '/post/', {'post': { searchKey: searchKey } })
       .error(function(data, status, headers, config) {
-        console.log('Not authorized (find)'); 
-        $location.path("/user/login");
       });
+    },
+
+    searchAll: function(searchKey) { 
+      return $http.post(options.api.base_url + '/post/search', {'post': {searchKey: searchKey}});
     },
 
     changePublicState: function(id, newPublicState) {
@@ -73,7 +74,7 @@ appServices.factory('PostService', function($http, $location) {
     },
 
   };
-});
+}]);
 
 appServices.factory('UserService', function ($http) {
   return {

@@ -39,8 +39,7 @@ app.config(['$locationProvider', '$routeProvider',
       }).
       when('/bookmark', {
         templateUrl: 'partials/bookmark.list.html',
-        controller: 'BookmarkListCtrl',
-        access: { requiredAuthentication: true }
+        controller: 'BookmarkListCtrl'
       }).
       when('/user/register', {
         templateUrl: 'partials/user.register.html',
@@ -55,29 +54,40 @@ app.config(['$locationProvider', '$routeProvider',
         controller: 'UserCtrl',
         access: { requiredAuthentication: true }
       }).
+      when('/offline', {
+        templateUrl: 'partials/offline.html'
+      }).
       otherwise({
-        redirectTo: '/post'
+        redirectTo: '/post/search'
       });
   }
 ]);
 
 app.config(function ($httpProvider) {
-    $httpProvider.interceptors.push('TokenInterceptor');
+  $httpProvider.interceptors.push('TokenInterceptor');
 });
 
 app.run(function($rootScope, $location, $window, AuthenticationService) {
 
+  // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 
-    // Redirect only if both isAuthenticated is false and no token is set
-    if (nextRoute != null && 
-        nextRoute.access != null && 
-        nextRoute.access.requiredAuthentication && 
-        !AuthenticationService.isAuthenticated && 
-        !$window.sessionStorage.token) {
-          $location.path("/admin/login");
-     }
+    // Are we online?
+    //$rootScope.online = navigator.onLine;
+    $rootScope.online = true;
+    //if ($rootScope.online === false) {
+    //      $location.path("/offline");
+    //}
 
+    //  if (nextRoute != null && 
+    //      nextRoute.access != null && 
+    //      nextRoute.access.requiredAuthentication && 
+    //      !AuthenticationService.isAuthenticated && 
+    //      !$window.sessionStorage.token) {
+    //        $location.path("/user/login");
+    //   }
   });
 
+
 });
+

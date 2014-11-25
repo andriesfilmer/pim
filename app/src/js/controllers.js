@@ -1,21 +1,48 @@
 appControllers.controller('CalendarListCtrl', ['$scope', function($scope) {
   $scope.greeting = 'Calendar controller....';
 }]);
+
 appControllers.controller('BookmarkListCtrl', ['$scope', function($scope) {
   $scope.greeting = 'Bookmarks controller....';
 }]);
 
-appControllers.controller('PostListCtrl', ['$scope', '$sce', 'PostService',
-  function PostListCtrl($scope, $sce, PostService) {
+appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$window', '$sce', 'PostService', 
+  function PostListCtrl($rootScope, $scope, $window, $sce, PostService) {
+
+    $scope.searchForm = true;  // Hide searchFrom, toggle first.
+    $scope.toggleSearch = function () {
+      $scope.searchForm = !$scope.searchForm;
+    };
 
     $scope.posts = [];
 
     PostService.findAll().success(function(data) {
       $scope.posts = data;
+      $window.localStorage.postsAll = JSON.stringify(data);
     }).error(function(data, status) {
       console.log(status);
-      console.log('Error PostService.findAll');
+      console.log('postsAll error');
+      if(status === 0) {
+        console.log('postsAll from localstorage');
+        $rootScope.online = false;
+        $scope.posts = JSON.parse($window.localStorage.postsAll);
+      }
     });
+
+    $scope.postSearch = function postSearch(searchKey) {
+      if ($scope.searchKey != undefined) {
+
+        PostService.searchAll($scope.searchKey).success(function(data) {
+          $scope.posts = data;
+        }).error(function(data, status) {
+          console.log(status);
+          console.log('Posts search error');
+          if(status === 0) {
+            console.log('Posts search notting found');
+          } 
+        }); 
+      }
+    }
 
     $scope.updatePublicState = function updatePublicState(post, makePublic) {
       if (post != undefined && makePublic != undefined) {
@@ -54,12 +81,12 @@ appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService
       if (post != undefined) {
 
         // String comma separated to array
-        //if (Object.prototype.toString.call(post.tags) !== '[object Array]') {
-        // post.tags = post.tags.split(',');
-        //}
+        if (Object.prototype.toString.call(post.tags) !== '[object Array]') {
+         post.tags = post.tags.split(',');
+        }
 
         PostService.create(post).success(function(data) {
-           $location.path("/kb");
+           $location.path("/post");
         }).error(function(status, data) {
           console.log(status);
           console.log(data);
@@ -69,7 +96,7 @@ appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService
   }
 ]);
 
-appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService',
+appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService', 
   function PostEditCtrl($scope, $routeParams, $location, $sce, PostService) {
 
     $(document).foundation();
@@ -104,9 +131,9 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
         }
 
         PostService.update(post).success(function(data) {
-          console.log('Post updated success.'); 
           $('#postSettings').foundation('reveal', 'close');
-          $location.path("/kb/");
+          $location.path("/post/");
+          console.log('Post updated success.'); 
         }).error(function(status, data) {
           console.log(status);
           console.log(data);
@@ -120,7 +147,7 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
         PostService.delete(id).success(function(data) {
           console.log('Deleted post:' + post._id); 
           $('#postSettings').foundation('reveal', 'close');
-          $location.path("/kb/");
+          $location.path("/post/");
         }).error(function(status, data) {
           console.log(status);
           console.log(data);
@@ -146,7 +173,7 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
                 $window.localStorage.username = username;
                 $window.localStorage.password = password;
                 $window.sessionStorage.token = data.token;
-                $location.path("/kb/");
+                $location.path("/");
             }).error(function(status, data) {
                 console.log(status);
                 console.log(data);
@@ -181,3 +208,5 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
   }
 ]);
 
+// end
+//

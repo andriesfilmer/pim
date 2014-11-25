@@ -17,16 +17,16 @@ div.row(ng-show="editForm")
 div.row(ng-hide="editForm")
  div.column.small-12
   form
-   input#inputTitle.form-control(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
-   textarea#textareaContent.form-control(rows="19", ng-model="post.content", ng-change="change()")
-   input#inputTags.form-control(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
+   input#inputTitle(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
+   textarea#textareaContent(rows="19", ng-model="post.content", ng-change="change()")
+   input#inputTags(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
 div.row
  div.column.small-12.post-meta
   i.fi-star  {{post.created | date:'medium'}}
  div.column.small-12.post-meta
    ul.inline-list
     li(ng-repeat='tag in post.tags')
-     a.label.radius.success(href='#/tag/{{tag}}'){{tag}}
+     a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
 
 div.row
  div#postSettings.reveal-modal(data-reveal='')

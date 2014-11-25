@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest-off="manifest.appcache">
 <head>
   <title><!-- @echo pkgname --></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -13,9 +13,6 @@
   <meta name="mobile-web-app-capable" content="yes">
 
   <!-- Place favicon.ico and apple-touch-icon(s) -->
-
-  <!-- CSS production CDN's -->
-  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
 
   <!-- @if NODE_ENV == 'DEVELOPMENT' -->
   <!-- CSS development <!-- @echo pkgname --> -->
@@ -52,6 +49,7 @@
       <li><a href="#/bookmark/">Bookmarks</a></li>
       <li class="divider"></li>
     </ul>
+
     <ul class="right">
       <li class="divider"></li>
       <li><a href="#/user/register">Register</a></li>
@@ -64,6 +62,7 @@
 </nav>
 
 <div class="container">
+   <div class="alert-box alert" ng-hide="online">Offline</div>
    <div ng-view></div>
 </div>
 

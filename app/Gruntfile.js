@@ -26,8 +26,21 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'src/js/*.js']
     },
     copy: {
-      static: { src: 'static/**/*', dest: 'public/' },
-      vendor: { src: 'vendor/**/*', dest: 'public/' }
+      static:   { src: 'static/**/*', dest: 'public/' },
+      vendor:   { src: 'vendor/**/*', dest: 'public/' },
+      manifest: { src: 'manifest.appcache', dest: 'public/' }
+    },
+    appcache: {
+      options: {
+        basePath: 'public',
+        preferOnline: true
+      },
+      all: {
+        dest: 'public/manifest.appcache',
+        cache: 'public/**/*',
+        network: ['*', 'http://*', 'https://*'],
+        fallback: '/ /partials/offline.html'
+      }
     },
     jade: {
       compile: {
@@ -115,6 +128,7 @@ module.exports = function(grunt) {
   // Load the plugin that provides the tasks.
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-preprocess');
+  grunt.loadNpmTasks('grunt-appcache');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-concat');
@@ -129,7 +143,7 @@ module.exports = function(grunt) {
   // Default task(s).
   grunt.registerTask('default', ['env:dev', 'preprocess', 'sass', 'jade', 'concat','connect','watch']);
   // grunt prod task(s).
-  grunt.registerTask('prod', ['env:prod', 'preprocess', 'sass', 'uglify', 'cssmin', 'clean','connect','watch']);
+  grunt.registerTask('prod', ['env:prod', 'preprocess', 'appcache', 'sass', 'uglify', 'cssmin', 'clean','connect','watch']);
 
 
 };
