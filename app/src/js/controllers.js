@@ -6,8 +6,8 @@ appControllers.controller('BookmarkListCtrl', ['$scope', function($scope) {
   $scope.greeting = 'Bookmarks controller....';
 }]);
 
-appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$window', '$sce', 'PostService', 
-  function PostListCtrl($rootScope, $scope, $window, $sce, PostService) {
+appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', '$window', '$sce', 'PostService', 
+  function PostListCtrl($rootScope, $scope, $location, $window, $sce, PostService) {
 
     $scope.searchForm = true;  // Hide searchFrom, toggle first.
     $scope.toggleSearch = function () {
@@ -160,11 +160,6 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
 appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
   function UserCtrl($scope, $location, $window, UserService, AuthenticationService) {
 
-    $scope.user = {
-      username: $window.localStorage.username,
-      password: $window.localStorage.password
-    };
-
     $scope.signIn = function signIn(username, password) {
         if (username != null && password != null) {
 
@@ -184,9 +179,8 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
     $scope.logOut = function logOut() {
       AuthenticationService.isAuthenticated = false;
       delete $window.sessionStorage.token;
-      delete $window.localStorage.username;
-      delete $window.localStorage.password;
-      $location.path("/");
+      $location.path("/user/login");
+      console.log('UserCtrl -> logOut');
     }
 
     $scope.register = function register(username, password, passwordConfirm) {
@@ -208,5 +202,3 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
   }
 ]);
 
-// end
-//

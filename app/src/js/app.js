@@ -58,13 +58,13 @@ app.config(['$locationProvider', '$routeProvider',
         templateUrl: 'partials/offline.html'
       }).
       otherwise({
-        redirectTo: '/post/search'
+        redirectTo: '/post'
       });
   }
 ]);
 
 app.config(function ($httpProvider) {
-  $httpProvider.interceptors.push('TokenInterceptor');
+   $httpProvider.interceptors.push('TokenInterceptor');
 });
 
 app.run(function($rootScope, $location, $window, AuthenticationService) {
@@ -73,19 +73,20 @@ app.run(function($rootScope, $location, $window, AuthenticationService) {
   $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 
     // Are we online?
-    //$rootScope.online = navigator.onLine;
-    $rootScope.online = true;
-    //if ($rootScope.online === false) {
-    //      $location.path("/offline");
-    //}
+    $rootScope.online = navigator.onLine;
+    //$rootScope.online = true; // Testing on/offline
 
-    //  if (nextRoute != null && 
-    //      nextRoute.access != null && 
-    //      nextRoute.access.requiredAuthentication && 
-    //      !AuthenticationService.isAuthenticated && 
-    //      !$window.sessionStorage.token) {
-    //        $location.path("/user/login");
-    //   }
+    if ($rootScope.online === false) {
+          $location.path("/offline");
+    }
+
+    if (nextRoute != null && 
+        nextRoute.access != null && 
+        nextRoute.access.requiredAuthentication && 
+        !AuthenticationService.isAuthenticated && 
+        !$window.sessionStorage.token) {
+          $location.path("/user/login");
+    }
   });
 
 

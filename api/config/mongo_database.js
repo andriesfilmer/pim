@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
-var secret = require('./secret');
 var bcrypt = require('bcrypt');
+
+var secret = require('./secret');
 var SALT_WORK_FACTOR = 10;
 var mongodbURL = secret.mongodbURL;
 var mongodbOptions = { };
@@ -25,6 +26,7 @@ var User = new Schema({
 });
 
 var Post = new Schema({
+    user_id: { type: String},
     title: { type: String, required: true },
     description: { type: String},
     tags: [ {type: String} ],

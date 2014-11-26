@@ -1,7 +1,9 @@
-var db = require('../config/mongo_database');
 var jwt = require('jsonwebtoken');
-var secret = require('../config/secret');
+
+var db = require('../config/mongo_database');
 var config = require('../config/config.js');
+var secret = require('../config/secret');
+
 
 exports.signin = function(req, res) {
   var username = req.body.username || '';
@@ -33,7 +35,7 @@ exports.signin = function(req, res) {
        }
 
       var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: config.expireToken });
-      console.log('users -> Logged in with user id:' + user._id + 'Token expires: ' + config.expireToken );
+      console.log('users -> Logged in with user id:' + user._id + ' Token expires: ' + config.expireToken );
       return res.json({token:token});
     });
 
@@ -45,6 +47,7 @@ exports.logout = function(req, res) {
   // Angular has already destroyed the sessionStorage.token
   // So do we need this?
   console.log("Logout -> no user from angular yet! " + req.user);
+  console.log('##### test logout -> ' + req.body.username); 
   if (req.user) {
     delete req.user;  
     return res.send(200); // OK

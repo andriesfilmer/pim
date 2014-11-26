@@ -1,4 +1,9 @@
-var db = require('../config/mongo_database.js');
+var jwt = require('jsonwebtoken');
+var mongoose = require('mongoose');
+
+var secret = require('../config/secret');
+var db = require('../config/mongo_database');
+
 var publicFields = '_id title url tags type content created updated is_published';
 
 // List published posts
@@ -30,7 +35,7 @@ exports.listAll = function(req, res) {
     return res.send(401); // Unauthorized
   }
 
-  var query = db.postModel.find();
+  var query = db.postModel.find({user_id: req.user.id});
 
   query.select(publicFields);
   query.sort('-updated');
@@ -48,7 +53,6 @@ exports.listAll = function(req, res) {
 
 // Search all posts
 exports.searchAll = function(req, res) {
-  console.log('##### test -> '); 
 
   var post = req.body.post; 
 
@@ -59,10 +63,10 @@ exports.searchAll = function(req, res) {
   if (post.searchKey) {
     console.log('##### post search -> ' + post.searchKey); 
     var query = db.postModel.find({ $or: [ 
-                                          {title:   { $exists: true, $regex: post.searchKey } },
-                                          {content: { $exists: true, $regex: post.searchKey } }, 
-                                          {tags:    { $exists: true, $regex: post.searchKey } } 
-                                         ] } );
+                                          {title:   { $exists: true, $regex: post.searchKey, $options: 'i' } },
+                                          {content: { $exists: true, $regex: post.searchKey, $options: 'i' } }, 
+                                          {tags:    { $exists: true, $regex: post.searchKey, $options: 'i' } } 
+                                         ],user_id: req.user.id } );
   } else {
     console.log('##### post empty search -> '); 
     var query = db.postModel.find();
@@ -117,6 +121,7 @@ exports.create = function(req, res) {
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
+  console.log('##### user_id -> ' + req.user.id); 
 
   var post = req.body.post;
   if (post == null || post.title == null ) {
@@ -124,6 +129,7 @@ exports.create = function(req, res) {
   }
 
   var postEntry = new db.postModel();
+  postEntry.user_id = req.user.id;
   postEntry.title = post.title;
 
   //postEntry.tags = post.tags.split(',');

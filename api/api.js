@@ -1,16 +1,19 @@
 var express = require('express');
 var cors = require('cors');
-var corsOptions = { origin: 'http://pim.filmer.nl'};
+
+var config = require('./config/config.js');
+var secret = require('./config/secret');
+
+var corsOptions = { origin: config.url}; 
+//var corsOptions = { origin: 'http://localhost'};    // Production
 var app = express();
 
 // Middleware that validates JsonWebTokens and set req.user.
 var expressJwt = require('express-jwt');
 var bodyParser = require('body-parser');
-var secret = require('./config/secret');
 
 app.listen(3001);
-//app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(bodyParser());
 console.log('API is starting on port 3001');
 

@@ -29,7 +29,6 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
 
     // Revoke client authentication if 401 is received 
     responseError: function(rejection) {
-      //if (rejection != null && rejection.status === 401 && ($window.sessionStorage.token || AuthenticationService.isAuthenticated)) {
       if (rejection.status === 401) {
         delete $window.sessionStorage.token;
         AuthenticationService.isAuthenticated = false;
