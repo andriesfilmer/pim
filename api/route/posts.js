@@ -4,12 +4,10 @@ var mongoose = require('mongoose');
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
 
-var publicFields = '_id title url tags type content created updated is_published';
-
 // List published posts
 exports.listPublic = function(req, res) {
 
-  var query = db.postModel.find({is_published: true});
+  var query = db.postModel.find({public: true, user_id: req.user.id });
   query.sort('-created');
   query.exec(function(err, results) {
     if (err) {
@@ -37,7 +35,7 @@ exports.listAll = function(req, res) {
 
   var query = db.postModel.find({user_id: req.user.id});
 
-  query.select(publicFields);
+  query.select("_id title type tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
     if (err) {
@@ -69,10 +67,10 @@ exports.searchAll = function(req, res) {
                                          ],user_id: req.user.id } );
   } else {
     console.log('##### post empty search -> '); 
-    var query = db.postModel.find();
+    var query = db.postModel.find({ user_id: req.user.id });
   }
 
-  query.select(publicFields);
+  query.select("_id title type tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
     if (err) {
@@ -98,8 +96,8 @@ exports.read = function(req, res) {
     return res.send(400); // Bad Request
   }
 
-  var query = db.postModel.findOne({_id: id});
-  query.select(publicFields);
+  var query = db.postModel.findOne({ _id: id, user_id: req.user.id });
+  query.select('_id title tags type content created updated public');
   query.exec(function(err, result) {
     if (err) {
         console.log(err);
@@ -142,7 +140,7 @@ exports.create = function(req, res) {
     }
   }
 
-  postEntry.is_published = post.is_published;
+  postEntry.public = post.public;
   postEntry.content = post.content;
 
   postEntry.save(function(err) {
@@ -187,8 +185,8 @@ exports.update = function(req, res) {
     updatePost.type = post.type;
   }
 
-  if (post.is_published != null) {
-    updatePost.is_published = post.is_published;
+  if (post.public != null) {
+    updatePost.public = post.public;
   }
 
   if (post.content != null && post.content != "") {
@@ -240,8 +238,8 @@ exports.listByTag = function(req, res) {
     return res.send(400);
   }
 
-  var query = db.postModel.find({tags: tagName, is_published: true});
-  query.select(publicFields);
+  var query = db.postModel.find({tags: tagName, public: true, user_id: req.user.id });
+  query.select('_id title tags type created updated public');
   query.sort('-created');
   query.exec(function(err, results) {
     if (err) {

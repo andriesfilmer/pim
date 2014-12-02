@@ -5,7 +5,7 @@ div.row
   a.fi-page-edit(ng-show="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-hide="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  a.fi-wrench(data-reveal-id="postSettings") 
+  a.fi-wrench(data-reveal-id="post-settings") 
   span.divider
   a.fi-plus(href='#/post/create', title='New item')
 
@@ -17,48 +17,48 @@ div.row(ng-show="editForm")
 div.row(ng-hide="editForm")
  div.column.small-12
   form
-   input#inputTitle(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
-   textarea#textareaContent(rows="19", ng-model="post.content", ng-change="change()")
+   input#title-input(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
+   textarea#textarea-content(rows="19", ng-model="post.content", ng-change="change()")
    input#inputTags(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
 div.row
  div.column.small-12.post-meta
   i.fi-star  {{post.created | date:'medium'}}
  div.column.small-12.post-meta
    ul.inline-list
-    li(ng-repeat='tag in post.tags')
+    li.tag(ng-repeat='tag in post.tags')
      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
 
 div.row
- div#postSettings.reveal-modal(data-reveal='')
+ div#post-settings.reveal-modal(data-reveal='')
   a.close-reveal-modal &#215;
   fieldset
    div.row
     div.column.small-6.my-row.todo Todo
     div.switch.radius.column.small-6.post-todo
-     input#postTodo.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="change()")
-     label(for="postTodo")
+     input#post-todo.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="change()")
+     label(for="post-todo")
    div.row
     div.column.small-6.my-row.note Note
     div.switch.radius.column.small-6.post-note
-     input#postNote(type="radio", value="note", name="postType", ng-model="post.type", ng-change="change()")
-     label(for="postNote")
+     input#post-note(type="radio", value="note", name="postType", ng-model="post.type", ng-change="change()")
+     label(for="post-note")
    div.row
     div.column.small-6.my-row.blog Blog
     div.switch.radius.column.small-6.post-blog
-     input#postBlog(type="radio", value="blog", name="postType", ng-model="post.type", ng-change="change()")
-     label(for="postBlog") 
+     input#post-blog(type="radio", value="blog", name="postType", ng-model="post.type", ng-change="change()")
+     label(for="post-blog") 
    div.row
     div.column.small-6.my-row.kb Knowlege base
     div.switch.radius.column.small-6.post-kb
-     input#postkb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="change()")
-     label(for="postkb") 
+     input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="change()")
+     label(for="post-kb") 
   fieldset
    div.row
     div.column.small-12 &nbsp;
    div.row
     div.column.small-6 Public switch
     div.switch.radius.column.small-6.post-public
-     input#public(type="checkbox", ng-model="post.is_published", ng-change="change()")
+     input#public(type="checkbox", ng-model="post.public", ng-change="change()")
      label(for="public")
   fieldset
    div.row

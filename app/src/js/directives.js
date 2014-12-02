@@ -28,5 +28,5 @@ appDirectives.directive('myTags', function($parse) {
           });
          }
     }
-});;
+});
 

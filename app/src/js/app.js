@@ -84,7 +84,7 @@ app.run(function($rootScope, $location, $window, AuthenticationService) {
         nextRoute.access != null && 
         nextRoute.access.requiredAuthentication && 
         !AuthenticationService.isAuthenticated && 
-        !$window.sessionStorage.token) {
+        !$window.localStorage.token) {
           $location.path("/user/login");
     }
   });

@@ -2,15 +2,15 @@
 
 Project is just started.....
 
-PIM is a simple application built with AngularJS, Node.js and MongoDB.
+PIM is a application built with AngularJS, Node.js and MongoDB.
 
 ## Description
 
 A private PIM with:
 
-* Personal calendar
+* Personal calendar (not ready yet)
 * Posts i.o Todo/Note/Blog/
-* Bookmarks
+* Bookmarks (not ready yet)
 * Register/Login/Logout users
 
 ## Dependencies
@@ -30,12 +30,15 @@ Look into the packages.json file for more dependencies.
    grunt 
 
 The app is running on http://localhost:3000
+Change the `options.api.base_url` in `app.js` for production. 
+And run `grunt prod`
 
 ### The api part:
 
    cd api && node api.js
 
 The api is running on http://localhost:3001
+Change `exports.url` in config.js for production.
 
 Edit api/api.js and replace the value of Access-Control-Allow-Origin to match your server configuration for production.
 

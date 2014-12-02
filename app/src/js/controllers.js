@@ -9,59 +9,59 @@ appControllers.controller('BookmarkListCtrl', ['$scope', function($scope) {
 appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', '$window', '$sce', 'PostService', 
   function PostListCtrl($rootScope, $scope, $location, $window, $sce, PostService) {
 
-    $scope.searchForm = true;  // Hide searchFrom, toggle first.
-    $scope.toggleSearch = function () {
-      $scope.searchForm = !$scope.searchForm;
-    };
+  $scope.searchForm = true;  // Hide searchFrom, toggle first.
+  $scope.toggleSearch = function () {
+    $scope.searchForm = !$scope.searchForm;
+  };
 
-    $scope.posts = [];
+  $scope.posts = [];
 
-    PostService.findAll().success(function(data) {
-      $scope.posts = data;
-      $window.localStorage.postsAll = JSON.stringify(data);
-    }).error(function(data, status) {
-      console.log(status);
-      console.log('postsAll error');
-      if(status === 0) {
-        console.log('postsAll from localstorage');
-        $rootScope.online = false;
-        $scope.posts = JSON.parse($window.localStorage.postsAll);
-      }
-    });
-
-    $scope.postSearch = function postSearch(searchKey) {
-      if ($scope.searchKey != undefined) {
-
-        PostService.searchAll($scope.searchKey).success(function(data) {
-          $scope.posts = data;
-        }).error(function(data, status) {
-          console.log(status);
-          console.log('Posts search error');
-          if(status === 0) {
-            console.log('Posts search notting found');
-          } 
-        }); 
-      }
+  PostService.findAll().success(function(data) {
+    $scope.posts = data;
+    $window.localStorage.postsAll = JSON.stringify(data);
+  }).error(function(data, status) {
+    console.log(status);
+    console.log('postsAll error');
+    if(status === 0) {
+      console.log('postsAll from localstorage');
+      $rootScope.online = false;
+      $scope.posts = JSON.parse($window.localStorage.postsAll);
     }
+  });
 
-    $scope.updatePublicState = function updatePublicState(post, makePublic) {
-      if (post != undefined && makePublic != undefined) {
+  $scope.postSearch = function postSearch(searchKey) {
+    if ($scope.searchKey != undefined) {
 
-        PostService.changePublicState(post._id, makePublic).success(function(data) {
-          var posts = $scope.posts;
-          for (var postKey in posts) {
-            if (posts[postKey]._id == post._id) {
-              $scope.posts[postKey].is_published = makePublic;
-              break;
-            }
-          }
-        }).error(function(status, data) {
-          console.log(status);
-          console.log(data);
-        });
-      }
+      PostService.searchAll($scope.searchKey).success(function(data) {
+        $scope.posts = data;
+      }).error(function(data, status) {
+        console.log(status);
+        console.log('Posts search error');
+        if(status === 0) {
+          console.log('Posts search notting found');
+        } 
+      }); 
     }
   }
+
+  $scope.updatePublicState = function updatePublicState(post, makePublic) {
+    if (post != undefined && makePublic != undefined) {
+
+      PostService.changePublicState(post._id, makePublic).success(function(data) {
+        var posts = $scope.posts;
+        for (var postKey in posts) {
+          if (posts[postKey]._id == post._id) {
+            $scope.posts[postKey].public = makePublic;
+            break;
+          }
+        }
+      }).error(function(status, data) {
+        console.log(status);
+        console.log(data);
+      });
+    }
+  }
+}
 ]);
 
 appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService',
@@ -131,7 +131,7 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
         }
 
         PostService.update(post).success(function(data) {
-          $('#postSettings').foundation('reveal', 'close');
+          $('#post-settings').foundation('reveal', 'close');
           $location.path("/post/");
           console.log('Post updated success.'); 
         }).error(function(status, data) {
@@ -146,7 +146,7 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
       if (id != undefined) {
         PostService.delete(id).success(function(data) {
           console.log('Deleted post:' + post._id); 
-          $('#postSettings').foundation('reveal', 'close');
+          $('#post-settings').foundation('reveal', 'close');
           $location.path("/post/");
         }).error(function(status, data) {
           console.log(status);
@@ -161,24 +161,24 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
   function UserCtrl($scope, $location, $window, UserService, AuthenticationService) {
 
     $scope.signIn = function signIn(username, password) {
-        if (username != null && password != null) {
+      if (username != null && password != null) {
 
-            UserService.signIn(username, password).success(function(data) {
-                AuthenticationService.isAuthenticated = true;
-                $window.localStorage.username = username;
-                $window.localStorage.password = password;
-                $window.sessionStorage.token = data.token;
-                $location.path("/");
-            }).error(function(status, data) {
-                console.log(status);
-                console.log(data);
-            });
-        }
+        UserService.signIn(username, password).success(function(data) {
+            AuthenticationService.isAuthenticated = true;
+            // We choose localStorage i.o. sessionStorage so that 
+            // we keep authenticated after clossing the browser.
+            $window.localStorage.token = data.token;
+            $location.path("/");
+        }).error(function(status, data) {
+            console.log(status);
+            console.log(data);
+        });
+      }
     }
 
     $scope.logOut = function logOut() {
       AuthenticationService.isAuthenticated = false;
-      delete $window.sessionStorage.token;
+      delete $window.localStorage.token;
       $location.path("/user/login");
       console.log('UserCtrl -> logOut');
     }

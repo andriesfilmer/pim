@@ -7,8 +7,8 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
   return {
     request: function (config) {
       config.headers = config.headers || {};
-      if ($window.sessionStorage.token) {
-        config.headers.Authorization = 'Bearer ' + $window.sessionStorage.token;
+      if ($window.localStorage.token) {
+        config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
       }
       return config;
     },
@@ -20,7 +20,7 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
       console.log('TokenInterceptor check authenticated'); 
-      if (response != null && response.status == 200 && $window.sessionStorage.token && !AuthenticationService.isAuthenticated) {
+      if (response != null && response.status == 200 && $window.localStorage.token && !AuthenticationService.isAuthenticated) {
         AuthenticationService.isAuthenticated = true;
         console.log('TokenInterceptor is authenticated'); 
       }
@@ -30,7 +30,7 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
     // Revoke client authentication if 401 is received 
     responseError: function(rejection) {
       if (rejection.status === 401) {
-        delete $window.sessionStorage.token;
+        delete $window.localStorage.token;
         AuthenticationService.isAuthenticated = false;
         console.log('TokenInterceptor -> rejection -> 401'); 
       }
@@ -57,7 +57,7 @@ appServices.factory('PostService',['$http', function($http) {
     },
 
     changePublicState: function(id, newPublicState) {
-      return $http.put(options.api.base_url + '/post', {'post': {_id: id, is_published: newPublicState}});
+      return $http.put(options.api.base_url + '/post', {'post': {_id: id, public: newPublicState}});
     },
 
     delete: function(id) {
