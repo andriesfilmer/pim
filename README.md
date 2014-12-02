@@ -26,7 +26,6 @@ Look into the packages.json file for more dependencies.
    sudo apt-get install nodejs
    sudo apt-get install mongodb
    cd app && npm install
-   grunt copy  // Once for vendor addons.
    grunt 
 
 The app is running on http://localhost:3000
@@ -44,7 +43,6 @@ The api is running on http://localhost:3001
 Change `exports.url` in config.js for production.
 
 Edit api/api.js and replace the value of Access-Control-Allow-Origin to match your server configuration for production.
-
 Run for example `forever` for your api and create a webserver configuration (zie api/nginx.conf as a example).
 
 ## Resources

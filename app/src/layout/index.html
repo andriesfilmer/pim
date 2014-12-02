@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" manifest-off="manifest.appcache">
+<html lang="en" manifest="manifest.appcache">
 <head>
   <title><!-- @echo pkgname --></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -74,7 +74,6 @@
 <script src="vendor/js/angular-route.min.js"></script>
 <script src="vendor/js/angular-sanitize.min.js"></script>
 <script src="vendor/js/jquery.min.js"></script>
-<script src="vendor/js/ngStorage.min.js"></script>
 <script src="vendor/js/foundation.min.js"></script>
 <script src="vendor/js/showdown.js"></script>
 <script src="vendor/js/showdown-table.js"></script>
@@ -85,7 +84,7 @@
 
 <!-- @if NODE_ENV == 'PRODUCTION' -->
 <!-- JS production <!-- @echo pkgname --> -->
-<script src="vendor/js/all.min.js"></script>
+<script src="vendor/js/all.js"></script>
 <script src="js/<!-- @echo pkgname -->.min.js"></script>
 <!-- @endif -->
 

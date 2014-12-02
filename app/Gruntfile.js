@@ -47,7 +47,7 @@ module.exports = function(grunt) {
               'vendor/js/showdown-table.js',
               'vendor/js/markdown.js'
               ],
-        dest: 'public/vendor/js/all.min.js'
+        dest: 'public/vendor/js/all.js'
       },
       cssVendor: {
         src: [
@@ -119,7 +119,8 @@ module.exports = function(grunt) {
     },
     clean: {
       dev: ["public/js/<%= pkg.name %>.js",
-            "public/css/<%= pkg.name %>.css"]
+            "public/css/<%= pkg.name %>.css",
+            "public/vendor/css/all.css"]
     },
     watch: {
       all: {
@@ -155,9 +156,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jade');
 
   // Default task(s).
-  grunt.registerTask('default', ['env:dev', 'preprocess','concat', 'uglify', 'sass', 'jade', 'connect','watch']);
+  grunt.registerTask('default', ['env:dev', 'preprocess','concat', 'copy', 'uglify', 'sass', 'jade', 'connect','watch']);
   // grunt prod task(s).
-  grunt.registerTask('prod', ['env:prod', 'preprocess', 'copy:manifest', 'concat', 'uglify' ,'appcache', 'jade', 'sass', 'cssmin','clean']);
+  grunt.registerTask('prod', ['env:prod', 'preprocess', 'copy', 'concat', 'uglify' ,'appcache', 'jade', 'sass', 'cssmin','clean']);
 
 
 };
