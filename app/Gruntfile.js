@@ -30,6 +30,45 @@ module.exports = function(grunt) {
       vendor:   { src: 'vendor/**/*', dest: 'public/' },
       manifest: { src: 'manifest.appcache', dest: 'public/' }
     },
+    concat: {
+      jsDev: {
+        src: ['src/js/*.js'],
+        dest: 'public/js/<%= pkg.name %>.js'
+      },
+      jsVendor: {
+        src: [
+              'vendor/js/angular.min.js',
+              'vendor/js/angular-route.min.js',
+              'vendor/js/angular-sanitize.min.js',
+              'vendor/js/jquery.min.js',
+              'vendor/js/ngStorage.min.js',
+              'vendor/js/foundation.min.js',
+              'vendor/js/showdown.js',
+              'vendor/js/showdown-table.js',
+              'vendor/js/markdown.js'
+              ],
+        dest: 'public/vendor/js/all.min.js'
+      },
+      cssVendor: {
+        src: [
+              'vendor/css/normalize.css',
+              'vendor/css/foundation.css',
+              'vendor/css/foundation-icons.css'
+             ],
+        dest: 'public/vendor/css/all.css'
+      },
+    },
+    uglify: {
+      buildJs: {
+        options: {
+          mangle: false,
+          banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */'
+        },
+        files: {
+          'public/js/<%= pkg.name %>.min.js' : ['public/js/<%= pkg.name %>.js']
+        }
+      },
+    },
     appcache: {
       options: {
         basePath: 'public',
@@ -67,31 +106,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    concat: {
-      jsdev: {
-        src: ['src/js/*.js'],
-        dest: 'public/js/<%= pkg.name %>.js'
-      },
-    },
-    uglify: {
-      buildVendorJs: {
-        options: {
-          banner: '/*! Vendor package <%= grunt.template.today("yyyy-mm-dd") %> */'
-        },
-        files: {
-          'public/vendor/<%= pkg.name %>.min.js' : ['public/vendor/js/*.js']
-        }
-      },
-      buildJs: {
-        options: {
-          mangle: false,
-          banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */'
-        },
-        files: {
-          'public/js/<%= pkg.name %>.min.js' : ['public/js/<%= pkg.name %>.js']
-        }
-      },
-    },
     cssmin: {
       add_banner: {
         options: {
@@ -99,12 +113,12 @@ module.exports = function(grunt) {
         },
         files: {
           'public/css/<%= pkg.name %>.min.css': ['public/css/<%= pkg.name %>.css'],
-          'public/vendor/css/<%= pkg.name %>.min.css': ['vendor/css/*.css']
+          'public/vendor/css/all.min.css': ['public/vendor/css/all.css']
         }
       }
     },
     clean: {
-      dev: ["public/js/<%= pkg.name %>.js", 
+      dev: ["public/js/<%= pkg.name %>.js",
             "public/css/<%= pkg.name %>.css"]
     },
     watch: {
@@ -141,9 +155,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jade');
 
   // Default task(s).
-  grunt.registerTask('default', ['env:dev', 'preprocess', 'sass', 'jade', 'concat','connect','watch']);
+  grunt.registerTask('default', ['env:dev', 'preprocess','concat', 'uglify', 'sass', 'jade', 'connect','watch']);
   // grunt prod task(s).
-  grunt.registerTask('prod', ['env:prod', 'preprocess', 'appcache', 'sass', 'uglify', 'cssmin', 'clean','connect','watch']);
+  grunt.registerTask('prod', ['env:prod', 'preprocess', 'copy:manifest', 'concat', 'uglify' ,'appcache', 'jade', 'sass', 'cssmin','clean']);
 
 
 };
