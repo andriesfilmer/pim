@@ -1,19 +1,21 @@
 div.row
  div.colums.small-12.secondary-menu
-  a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search')
+  a.fi-magnifying-glass(ng-focus='toggleSearch()', ng-click='toggleSearch()', title='Search', tabindex="1")
   span.divider
   a.fi-plus(href='#/post/create',title='New item')
+
 div.row(ng-hide="searchForm")
  form
   div.columns.small-8
-   input#search-input(type="text", placeholder="Keywords...", ng-model="searchKey", tabindex="1")
+   input#search-input(type="text", placeholder="Keywords...", ng-model="searchKey", tabindex="2")
   div.columns.small-4
-   button.radius.small(type="submit", ng-click="postSearch(searchKey)", tabindex="2") Search
+   button.radius.small(type="submit", ng-click="postSearch(searchKey)", tabindex="3") Search
+
 div.row.my-row(ng-repeat='post in posts', ng-class="post.type")
  a(href='#/post/{{post._id}}')
   div.columns.medium-8 {{post.title}}
  div.column.medium-2.hide-for-small
-  div.round.secondary.label {{post.updated | date:'short'}}
+  div.round.secondary.label {{post.updated | date: 'yyyy-MM-dd'}}
  div.column.medium-2.hide-for-small
   div.round.alert.label(ng-show='post.public', ng-click='updatePublicState(post, false)') public
   div.round.secondary.label(ng-show='!post.public', ng-click='updatePublicState(post, true)') private

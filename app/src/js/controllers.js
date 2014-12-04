@@ -21,11 +21,14 @@ appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', 
     $window.localStorage.postsAll = JSON.stringify(data);
   }).error(function(data, status) {
     console.log(status);
+    status = 0; // online - offline
     console.log('postsAll error');
-    if(status === 0) {
-      console.log('postsAll from localstorage');
+    if(status === 0 ) {
       $rootScope.online = false;
-      $scope.posts = JSON.parse($window.localStorage.postsAll);
+      if($window.localStorage.getItem('postsAll') !== null) {
+        console.log('postsAll from localstorage');
+        $scope.posts = JSON.parse($window.localStorage.postsAll);
+      }
     }
   });
 
@@ -64,8 +67,14 @@ appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', 
 }
 ]);
 
-appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService',
-  function PostCreateCtrl($scope, $location, PostService) {
+appControllers.controller('PostCreateCtrl', ['$rootScope', '$scope', '$window', '$location', 'PostService',
+  function PostCreateCtrl($rootScope, $scope, $window, $location, PostService) {
+
+    $scope.searchForm = true;  // Hide searchFrom, toggle first.
+    $scope.toggleSearch = function () {
+      $scope.searchForm = !$scope.searchForm;
+    };
+
 
     $scope.editForm = false; // Show editFrom, toggle first.
     $scope.saveForm = false; // Show save icon, $scope.change first.
@@ -81,13 +90,16 @@ appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService
       if (post != undefined) {
 
         // String comma separated to array
-        if (Object.prototype.toString.call(post.tags) !== '[object Array]') {
+        if (post.tags != undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
          post.tags = post.tags.split(',');
         }
 
         PostService.create(post).success(function(data) {
            $location.path("/post");
         }).error(function(status, data) {
+          if(status === 0) {
+            $rootScope.online = false;
+          }
           console.log(status);
           console.log(data);
         });
@@ -96,8 +108,13 @@ appControllers.controller('PostCreateCtrl', ['$scope', '$location', 'PostService
   }
 ]);
 
-appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location', '$sce', 'PostService', 
-  function PostEditCtrl($scope, $routeParams, $location, $sce, PostService) {
+appControllers.controller('PostEditCtrl', ['$rootScope', '$scope', '$window', '$routeParams', '$location', '$sce', 'PostService', 
+  function PostEditCtrl($rootScope, $scope, $window, $routeParams, $location, $sce, PostService) {
+
+    $scope.searchForm = true;  // Hide searchFrom, toggle first.
+    $scope.toggleSearch = function () {
+      $scope.searchForm = !$scope.searchForm;
+    };
 
     $(document).foundation();
 
@@ -116,10 +133,19 @@ appControllers.controller('PostEditCtrl', ['$scope', '$routeParams', '$location'
 
     PostService.read(id).success(function(data) {
       $scope.post = data;
+      $window.localStorage['post_' + id] = JSON.stringify(data);
       $scope.content = $sce.trustAsHtml(data.content);
     }).error(function(status, data) {
       console.log('Post read failure!'); 
-      $location.path("/user/login");
+      console.log('Status: ' + status);
+      status = 0; // Test online - offline
+      if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
+        $rootScope.online = false;
+        $scope.post = JSON.parse($window.localStorage['post_' + id]);
+        console.log('Post from localstorage id: ' + id);
+      } else {
+        console.log('No post from localstorage id: ' + id);
+      }
     });
 
     $scope.save = function save(post) {
@@ -166,7 +192,7 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
         UserService.signIn(username, password).success(function(data) {
             AuthenticationService.isAuthenticated = true;
             // We choose localStorage i.o. sessionStorage so that 
-            // we keep authenticated after clossing the browser.
+            // we keep content after clossing the browser.
             $window.localStorage.token = data.token;
             $location.path("/");
         }).error(function(status, data) {
@@ -178,7 +204,8 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
 
     $scope.logOut = function logOut() {
       AuthenticationService.isAuthenticated = false;
-      delete $window.localStorage.token;
+      // We have logout so we delete localstore for security.
+      delete $window.localStorage.clear();
       $location.path("/user/login");
       console.log('UserCtrl -> logOut');
     }

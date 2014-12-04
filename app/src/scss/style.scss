@@ -41,7 +41,6 @@ input#search-input {
 }
 
 .secondary-menu {
-  float: right;
   padding-right: 1rem;
   border-bottom: 1px #eee solid;
   text-align: right;
@@ -87,5 +86,6 @@ $color-kb: blue;
 
 .post-meta {
   font-size: 0.8rem;
+  padding: 0.25rem;
 }
 
