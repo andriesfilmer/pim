@@ -1,7 +1,7 @@
 div.row
  div.column.small-6.text-left.secondary-menu
-  a.fi-page-edit(ng-show="editForm", ng-click='toggleForm()', title='Edit item')
-  a.fi-eye(ng-hide="editForm", ng-click='toggleForm()', title='View item')
+  a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
+  a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
   a.fi-wrench(data-reveal-id="post-settings") 
   span.divider
@@ -19,12 +19,12 @@ div.row(ng-hide="searchForm")
   div.columns.small-4
    button.radius.small(type="submit", ng-click="postSearch(searchKey)", tabindex="2") Search
 
-div.row(ng-show="editForm")
+div.row(ng-hide="editForm")
  div.column.small-12
   h1 {{post.title}} 
     p(btf-markdown='post.content') 
 
-div.row(ng-hide="editForm")
+div.row(ng-show="editForm")
  div.column.small-12
   form
    input#title-input(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")

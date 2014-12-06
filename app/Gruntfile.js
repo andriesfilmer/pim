@@ -23,6 +23,11 @@ module.exports = function(grunt) {
       }
     },
     jshint: {
+      options: {
+        globals: {
+          angular: true
+        },
+      },
       all: ['Gruntfile.js', 'src/js/*.js']
     },
     copy: {

@@ -1,4 +1,3 @@
-'use strict';
 
 var app = angular.module('app', ['ngRoute', 'appControllers', 'appServices', 'appDirectives']);
 
@@ -20,7 +19,7 @@ app.config(['$locationProvider', '$routeProvider',
     $routeProvider.
       when('/calendar', {
         templateUrl: 'partials/calendar.list.html',
-        controller: 'CalendarListCtrl',
+        controller: 'CalendarCtrl',
         access: { requiredAuthentication: true }
       }).
       when('/post', {
@@ -30,35 +29,40 @@ app.config(['$locationProvider', '$routeProvider',
       }).
       when('/post/create', {
         templateUrl: 'partials/post.view.html',
-        controller: 'PostCreateCtrl',
+        controller: 'PostCtrl',
         access: { requiredAuthentication: true }
       }).
       when('/post/:id', {
         templateUrl: 'partials/post.view.html',
-        controller: 'PostEditCtrl'
+        controller: 'PostCtrl',
+        access: { requiredAuthentication: true }
       }).
       when('/bookmark', {
         templateUrl: 'partials/bookmark.list.html',
-        controller: 'BookmarkListCtrl'
+        controller: 'BookmarkCtrl',
+        access: { requiredAuthentication: true }
       }).
       when('/user/register', {
         templateUrl: 'partials/user.register.html',
-        controller: 'UserCtrl'
+        controller: 'UserCtrl',
+        access: { requiredAuthentication: false }
       }).
       when('/user/login', {
         templateUrl: 'partials/user.signin.html',
-        controller: 'UserCtrl'
+        controller: 'UserCtrl',
+        access: { requiredAuthentication: false }
       }).
       when('/user/logout', {
         templateUrl: 'partials/user.logout.html',
         controller: 'UserCtrl',
-        access: { requiredAuthentication: true }
+        access: { requiredAuthentication: false }
       }).
       when('/offline', {
         templateUrl: 'partials/offline.html'
       }).
       otherwise({
-        redirectTo: '/post'
+        redirectTo: '/user/login',
+        access: { requiredAuthentication: false }
       });
   }
 ]);
@@ -72,21 +76,19 @@ app.run(function($rootScope, $location, $window, AuthenticationService) {
   // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on("$routeChangeStart", function(event, nextRoute, currentRoute) {
 
-    // Are we online?
-    $rootScope.online = navigator.onLine;
-    //$rootScope.online = true; // Testing on/offline
+    $rootScope.online = true; // Testing on/offline
 
     if ($rootScope.online === false) {
           $location.path("/offline");
     }
 
-    if (nextRoute != null && 
-        nextRoute.access != null && 
+    if (nextRoute !== null && 
+        nextRoute.access !== null && 
         nextRoute.access.requiredAuthentication && 
         !AuthenticationService.isAuthenticated && 
         !$window.localStorage.token) {
-          $location.path("/user/login");
-    }
+          $location.path("/offline");
+        }
   });
 
 

@@ -1,5 +1,5 @@
 appServices.factory('AuthenticationService', function() {
-  var auth = {isAuthenticated: false }
+  var auth = {isAuthenticated: false };
   return auth;
 });
 
@@ -20,7 +20,7 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
       console.log('TokenInterceptor check authenticated'); 
-      if (response != null && response.status == 200 && $window.localStorage.token && !AuthenticationService.isAuthenticated) {
+      if (response !== null && response.status === 200 && $window.localStorage.token && !AuthenticationService.isAuthenticated) {
         AuthenticationService.isAuthenticated = true;
         console.log('TokenInterceptor is authenticated'); 
       }
@@ -80,11 +80,10 @@ appServices.factory('UserService', function ($http) {
     signIn: function(username, password) {
       return $http.post(options.api.base_url + '/user/signin', {username: username, password: password});
     },
-
     register: function(username, password, passwordConfirmation) {
       return $http.post(options.api.base_url + '/user/register', {username: username, password: password, passwordConfirmation: passwordConfirmation });
     }
-  }
+  };
 });
 
 
