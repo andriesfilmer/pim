@@ -26,14 +26,15 @@ Look into the packages.json file for more dependencies.
    sudo apt-get install nodejs
    sudo apt-get install mongodb
    cd app && npm install
-   grunt 
+   grunt copy    # To copy static files once.
+   grunt         # With 'connect' to run a server on port 3000
 
 The app is running on http://localhost:3000
 Change the `options.api.base_url` in `app.js` **for production**. 
 
     grunt prod
 
-After running `grunt prod` create a root path to `public` folder in your webserver.
+After running `grunt prod` copy the `public` folder in your webserver.
 
 ### The api part:
 

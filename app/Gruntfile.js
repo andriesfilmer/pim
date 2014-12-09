@@ -35,33 +35,58 @@ module.exports = function(grunt) {
       vendor:   { src: 'vendor/**/*', dest: 'public/' },
       manifest: { src: 'manifest.appcache', dest: 'public/' }
     },
+    sass: {
+      options: {
+        sourcemap: 'none'
+      },
+      dist: {
+        files: [{
+          expand: true,
+          cwd: 'src/scss',
+          src: ['*.scss'],
+          dest: 'tmp/css',
+          ext: '.css'
+        }]
+      }
+    },
     concat: {
-      jsDev: {
-        src: ['src/js/*.js'],
-        dest: 'public/js/<%= pkg.name %>.js'
+      dev: {
+        files: {
+          'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
+          'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
+        }
       },
-      jsVendor: {
-        src: [
-              'vendor/js/angular.min.js',
-              'vendor/js/angular-route.min.js',
-              'vendor/js/angular-sanitize.min.js',
-              'vendor/js/jquery.min.js',
-              'vendor/js/ngStorage.min.js',
-              'vendor/js/foundation.min.js',
-              'vendor/js/showdown.js',
-              'vendor/js/showdown-table.js',
-              'vendor/js/markdown.js'
-              ],
-        dest: 'public/vendor/js/all.js'
-      },
-      cssVendor: {
-        src: [
-              'vendor/css/normalize.css',
-              'vendor/css/foundation.css',
-              'vendor/css/foundation-icons.css'
-             ],
-        dest: 'public/vendor/css/all.css'
-      },
+      prod: {
+        files: {
+          'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
+          'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
+          'public/vendor/js/all.js': [
+            'vendor/js/angular.min.js',
+            'vendor/js/angular-route.min.js',
+            'vendor/js/angular-sanitize.min.js',
+            'vendor/js/jquery.min.js',
+            'vendor/js/ngStorage.min.js',
+            'vendor/js/foundation.min.js',
+            'vendor/js/showdown.js',
+            'vendor/js/showdown-table.js',
+            'vendor/js/markdown.js'],
+          'public/vendor/css/all.css': [
+             'vendor/css/normalize.css',
+             'vendor/css/foundation.css',
+             'vendor/css/foundation-icons.css'],
+        },
+      }
+    },
+    cssmin: {
+      add_banner: {
+        options: {
+          banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */'
+        },
+        files: {
+          'public/css/<%= pkg.name %>.min.css': ['public/css/<%= pkg.name %>.css'],
+          'public/vendor/css/all.min.css': ['public/vendor/css/all.css']
+        }
+      }
     },
     uglify: {
       buildJs: {
@@ -99,27 +124,6 @@ module.exports = function(grunt) {
           ext: '.html',
           extDot: 'last'
         } ]
-      }
-    },
-    sass: {
-      dist: {
-        options: {
-          style: 'expanded'
-        },
-        files: {
-          'public/css/<%= pkg.name %>.css' : 'src/scss/*.scss'
-        }
-      }
-    },
-    cssmin: {
-      add_banner: {
-        options: {
-          banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */'
-        },
-        files: {
-          'public/css/<%= pkg.name %>.min.css': ['public/css/<%= pkg.name %>.css'],
-          'public/vendor/css/all.min.css': ['public/vendor/css/all.css']
-        }
       }
     },
     clean: {
@@ -161,9 +165,9 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jade');
 
   // Default task(s).
-  grunt.registerTask('default', ['env:dev', 'preprocess','concat', 'copy', 'uglify', 'sass', 'jade', 'connect','watch']);
+  grunt.registerTask('default', ['env:dev',  'preprocess', 'sass', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
   // grunt prod task(s).
-  grunt.registerTask('prod', ['env:prod', 'preprocess', 'copy', 'concat', 'uglify' ,'appcache', 'jade', 'sass', 'cssmin','clean']);
+  grunt.registerTask('prod',    ['env:prod', 'preprocess', 'sass', 'concat:prod', 'cssmin', 'uglify', 'jade', 'copy', 'appcache', 'clean']);
 
 
 };

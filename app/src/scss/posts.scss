@@ -1,0 +1,99 @@
+
+@mixin my-row {
+  border-bottom: 1px #eee solid;
+  padding: 8px;
+}
+.my-row { @include my-row}
+
+$color-note: orange;
+$color-blog: green;
+$color-todo: red;
+$color-kb: blue;
+
+.note { @include my-row; border-left: 8px $color-note solid; }
+.blog { @include my-row; border-left: 8px $color-blog solid; }
+.todo { @include my-row; border-left: 8px $color-todo solid; }
+.kb   { @include my-row; border-left: 8px $color-kb solid; }
+
+.switch.post-public input:checked + label {
+  background: #f04124; // red
+}
+.switch.post-note input:checked + label {
+  background: $color-note;
+}
+.switch.post-blog input:checked + label {
+  background: $color-blog;
+}
+.switch.post-todo input:checked + label {
+  background: $color-todo;
+}
+.switch.post-kb input:checked + label {
+  background: $color-kb;
+}
+
+.post-meta {
+  font-size: 0.8rem;
+  padding: 0.25rem;
+}
+
+pre {
+  background-color: #eee;
+  padding: 0.125rem 0.3125rem 0.0625rem;
+}
+code {
+  background-color: #eee;
+  border-style: none;
+  padding: 0
+}
+
+input#title-input {
+  font-size: 1.5rem;
+}
+
+
+.search-box,.close-icon {
+  position: relative;
+  padding: 10px;
+}
+
+input[type="text"].search-box {
+  padding: 1.3rem;
+  font-size: 1.5rem;
+  width: 80%;
+  display: inline;
+  border-radius: 25px;
+  margin-top: 1em;
+  &:not(:valid) ~ .close-icon {
+    display: none !important;
+  }
+}
+
+// Search box clearing icon
+.close-icon {
+  border:1px solid transparent;
+  background-color: transparent;
+  display: inline-block;
+  vertical-align: super;
+  outline: 0;
+  cursor: pointer;
+  // Overwrite foundation
+  &:hover {
+    background-color: transparent;
+  }
+  &:focus {
+    background-color: transparent;
+  }
+  &:after {
+	content: "X";
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	background-color: #FA9595;
+	right: 35px;
+	bottom: 0;
+	padding: 4px;
+	border-radius: 50%;
+	cursor: pointer;
+  }
+}
+

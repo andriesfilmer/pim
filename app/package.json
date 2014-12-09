@@ -1,6 +1,6 @@
 {
   "name": "PIM",
-  "description": "Knowlege Base (KB)",
+  "description": "Personal Information Manager (PIM)",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {

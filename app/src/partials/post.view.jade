@@ -8,16 +8,7 @@ div.row
   a.fi-save(ng-show="saveForm", ng-click='save(post, false)', title='Save item')
  div.column.small-6.text-right.secondary-menu
   span.divider
-  a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search')
-  span.divider
   a.fi-plus(href='#/post/create',title='New item')
-
-div.row(ng-hide="searchForm")
- form
-  div.columns.small-8
-   input#search-input(type="text", placeholder="Keywords...", ng-model="searchKey", tabindex="1")
-  div.columns.small-4
-   button.radius.small(type="submit", ng-click="postSearch(searchKey)", tabindex="2") Search
 
 div.row(ng-hide="editForm")
  div.column.small-12

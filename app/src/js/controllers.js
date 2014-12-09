@@ -14,6 +14,7 @@ appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', 
   $scope.searchForm = true;  // Hide searchFrom, toggle first.
   $scope.toggleSearch = function () {
     $scope.searchForm = !$scope.searchForm;
+    $scope.searchKey =  $window.sessionStorage.postSearchKey;
   };
 
   $scope.posts = [];
@@ -34,20 +35,20 @@ appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', 
     }
   });
 
-  $scope.postSearch = function postSearch(searchKey) {
-    if ($scope.searchKey !== undefined) {
-
-      PostService.searchAll($scope.searchKey).success(function(data) {
-        $scope.posts = data;
-      }).error(function(data, status) {
-        console.log(status);
-        console.log('Posts search error');
-        if(status === 0) {
-          console.log('Posts search notting found');
-        } 
-      }); 
-    }
-  };
+  $scope.$watch('searchKey', function(searchKey) {
+      if (searchKey !== undefined) {
+        $window.sessionStorage.postSearchKey = searchKey;
+        PostService.searchAll(searchKey).success(function(data) {
+          $scope.posts = data;
+        }).error(function(data, status) {
+          console.log(status);
+          console.log('Posts search error');
+          if(status === 0) {
+            console.log('Posts search notting found');
+          } 
+        }); 
+      }
+  });
 
   $scope.updatePublicState = function updatePublicState(post, makePublic) {
     if (post !== undefined && makePublic !== undefined) {
@@ -78,7 +79,6 @@ appControllers.controller('PostCtrl', ['$rootScope', '$scope', '$window', '$rout
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
     };
-
 
     $scope.saveForm = false; // Hide save icon, $scope.change first.
     $scope.toggleForm = function () {
