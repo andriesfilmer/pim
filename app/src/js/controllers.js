@@ -36,7 +36,7 @@ appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', 
   });
 
   $scope.$watch('searchKey', function(searchKey) {
-      if (searchKey !== undefined) {
+      if (searchKey !== undefined && searchKey.length >= 3) {
         $window.sessionStorage.postSearchKey = searchKey;
         PostService.searchAll(searchKey).success(function(data) {
           $scope.posts = data;
