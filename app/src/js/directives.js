@@ -30,3 +30,19 @@ appDirectives.directive('myTags', function($parse) {
     };
 });
 
+appDirectives.directive('markdown', function (markdownConverter) {
+    return {
+      restrict: 'AE',
+      link: function (scope, element, attrs) {
+        if (attrs.markdown) {
+          scope.$watch(attrs.markdown, function (newVal) {
+            var html = newVal ? markdownConverter.makeHtml(newVal) : '';
+            element.html(html);
+          });
+        } else {
+          var html = markdownConverter.makeHtml(element.text());
+          element.html(html);
+        }
+      }
+    };
+});

@@ -1,5 +1,6 @@
 .sass-cache
 tags
+tmp
 app/bower_components/
 api/node_modules
 api/config/secret.js

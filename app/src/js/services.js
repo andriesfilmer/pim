@@ -1,3 +1,16 @@
+// Showdown.js required
+appServices.provider('markdownConverter', function () {
+    var opts = { extensions: ['table'] };
+    return {
+      config: function (newOpts) {
+        opts = newOpts;
+      },
+      $get: function () {
+        return new Showdown.converter(opts);
+      }
+    };
+});
+
 appServices.factory('AuthenticationService', function() {
   var auth = {isAuthenticated: false };
   return auth;

@@ -1,9 +1,8 @@
 
-var app = angular.module('app', ['ngRoute', 'appControllers', 'appServices', 'appDirectives']);
-
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
-var appDirectives = angular.module('appDirectives', ['btford.markdown']);
+var appDirectives = angular.module('appDirectives', []);
+var app = angular.module('app', ['ngRoute', 'appControllers', 'appServices', 'appDirectives']);
 
 var options = {};
 options.api = {};
