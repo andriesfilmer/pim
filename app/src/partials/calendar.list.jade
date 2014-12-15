@@ -1,5 +1,3 @@
-div.row
- div.colums.small-12.secondary-menu
-  a.fi-plus(href='#/calendar/create',title='New item')
-div.row.my-row
- div.column.small-12 Calendar page.....
+h3 List of calendar items
+ul
+  li(ng-repeat="item in calendarItems") {{ item }}

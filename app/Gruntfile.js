@@ -53,7 +53,8 @@ module.exports = function(grunt) {
       dev: {
         files: {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
-          'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
+          'public/vendor/js/foundation.js': ['vendor/js/foundation/**/*.js'],
+          'public/js/<%= pkg.name %>.js': ['src/js/*.js']
         }
       },
       prod: {

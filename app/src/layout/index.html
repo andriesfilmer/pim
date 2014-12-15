@@ -41,29 +41,26 @@
 
   <section class="top-bar-section">
     <ul class="left">
+      <li><a ui-sref="calendar">Calendar</a></li>
       <li class="divider"></li>
-      <li><a href="#/calendar">Calendar</a></li>
+      <li><a ui-sref="post">Posts</a></li>
       <li class="divider"></li>
-      <li><a href="#/post">Posts</a></li>
-      <li class="divider"></li>
-      <li><a href="#/bookmark">Bookmarks</a></li>
+      <li><a ui-sref="bookmark" ui-sref-active="menu-active">Bookmarks</a></li>
       <li class="divider"></li>
     </ul>
 
     <ul class="right">
       <li class="divider"></li>
-      <li><a href="#/user/register">Register</a></li>
       <li class="divider"></li>
-      <li><a href="#/user/login">Login</a></li>
-      <li class="divider"></li>
-      <li><a href="#/user/logout">Logout</a></li>
+      <li><a ui-sref="user.signin">Login</a></li>
+      <li><a ui-sref="user">User</a></li>
     </ul>
   </section>
 </nav>
 
 <div class="container">
-   <div class="alert-box alert" ng-hide="online">Offline</div>
-   <div ng-view></div>
+   <div class="alert-box alert" ng-show="offline">Offline</div>
+   <div ui-view></div>
 </div>
 
 <!-- JS production CDN's -->
@@ -72,7 +69,7 @@
 <!-- JS development <!-- @echo pkgname --> -->
 <script src="vendor/js/angular.min.js"></script>
 <script src="vendor/js/angular-route.min.js"></script>
-<script src="vendor/js/angular-sanitize.min.js"></script>
+<script src="vendor/js/angular-ui-router.min.js"></script>
 <script src="vendor/js/jquery.min.js"></script>
 <script src="vendor/js/foundation.min.js"></script>
 <script src="vendor/js/showdown.js"></script>

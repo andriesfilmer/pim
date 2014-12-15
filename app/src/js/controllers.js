@@ -1,13 +1,17 @@
-appControllers.controller('CalendarCtrl', ['$scope', function($scope) {
+appControllers.controller('CalendarController', ['$scope', function($scope) {
+
   $scope.greeting = 'Calendar controller....';
+  $scope.calendarItems = ["item 1","item 2","item 3","item 4"];
+
 }]);
 
-appControllers.controller('BookmarkCtrl', ['$scope', function($scope) {
+appControllers.controller('BookmarkController', ['$scope', function($scope) {
   $scope.greeting = 'Bookmark controller....';
+  $scope.bookmarks = ["bookmark 1","bookmark 2","bookmark 3","bookmark 4"];
 }]);
 
-appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', '$window', 'PostService', 
-  function PostListCtrl($rootScope, $scope, $location, $window, PostService) {
+appControllers.controller('PostListController', ['$rootScope', '$scope', '$location', '$window', 'PostService', 
+  function PostListController($rootScope, $scope, $location, $window, PostService) {
 
   "use strict";
 
@@ -70,8 +74,8 @@ appControllers.controller('PostListCtrl', ['$rootScope', '$scope', '$location', 
 }
 ]);
 
-appControllers.controller('PostCtrl', ['$rootScope', '$scope', '$window', '$routeParams', '$location', 'PostService', 
-  function PostCtrl($rootScope, $scope, $window, $routeParams, $location, PostService) {
+appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', '$location', 'PostService', 
+  function PostController($rootScope, $scope, $state, $window, $stateParams, $location, PostService) {
 
     $(document).foundation();
 
@@ -89,10 +93,12 @@ appControllers.controller('PostCtrl', ['$rootScope', '$scope', '$window', '$rout
         $scope.saveForm = true;
     };
 
+    console.log('##### $state.current.name -> ' + $state.current.name); 
+    console.log('##### $stateParams.id -> ' + $stateParams.id); 
     $scope.post = {};
-    var id = $routeParams.id;
+    var id = $stateParams.id;
 
-    if (id !== undefined) {
+    if ($stateParams.id.length > 23) {
       PostService.read(id).success(function(data) {
         $scope.post = data;
         $window.localStorage['post_' + id] = JSON.stringify(data);
@@ -108,7 +114,9 @@ appControllers.controller('PostCtrl', ['$rootScope', '$scope', '$window', '$rout
           console.log('No post from localstorage id: ' + id);
         }
       });
-    } else {
+    }
+
+    if ($stateParams.id === "create") {
       $scope.editForm = true;  // Hide editFrom, toggle first.
     }
 
@@ -157,8 +165,8 @@ appControllers.controller('PostCtrl', ['$rootScope', '$scope', '$window', '$rout
     };
   }
 ]);
-appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
-  function UserCtrl($scope, $location, $window, UserService, AuthenticationService) {
+appControllers.controller('UserController', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
+  function UserController($scope, $location, $window, UserService, AuthenticationService) {
 
     $scope.signIn = function signIn(username, password) {
       if (username !== null && password !== null) {
@@ -181,18 +189,18 @@ appControllers.controller('UserCtrl', ['$scope', '$location', '$window', 'UserSe
       // We have logout so we delete localstore for security.
       $window.localStorage.clear();
       $location.path("/user/login");
-      console.log('UserCtrl -> logOut');
+      console.log('UserController -> logOut');
     };
 
     $scope.register = function register(username, password, passwordConfirm) {
-      console.log('UserCtrl -> register');
+      console.log('UserController -> register');
       if (AuthenticationService.isAuthenticated) {
-        console.log('UserCtrl -> no redirect?');
+        console.log('UserController -> no redirect?');
         $location.path("/user/login");
       }
       else {
         UserService.register(username, password, passwordConfirm).success(function(data) {
-          console.log('UserCtrl -> register success -> no redirect?');
+          console.log('UserController -> register success -> no redirect?');
         }).error(function(status, data) {
           console.log(status);
           console.log(data);

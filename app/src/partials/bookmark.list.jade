@@ -1,5 +1,3 @@
-div.row
- div.colums.small-12.secondary-menu
-  a.fi-plus(href='#/bookmark/create',title='New item')
-div.row.my-row
- div.column.small-12 Bookmark page.....
+h3 List of bookmarks
+ul
+  li(ng-repeat="bookmark in bookmarks") {{ bookmark }}
