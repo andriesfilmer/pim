@@ -6,10 +6,12 @@ div.row.my-row
   h2 User page.....
    ul
     li
+     a(ui-sref="user") Close below...
+    li
      a(ui-sref="user.register") Register
     li
      a(ui-sref="user.signin") Signin
     li
      a(ui-sref="user.logout") Logout
 div.row
- div.column.small-12(ui-view="")
+ div.column.small-12.toggle(ui-view="")

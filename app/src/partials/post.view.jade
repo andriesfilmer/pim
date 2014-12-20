@@ -3,9 +3,9 @@ div.row
   a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  a.fi-wrench(data-reveal-id="post-settings") 
+  a.fi-wrench(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
   span.divider
-  a.fi-save(ng-show="saveForm", ng-click='save(post, false)', title='Save item')
+  a.fi-save(ng-show="saveForm", ng-click='save(post)', title='Save item')
  div.column.small-6.text-right.secondary-menu
   span.divider
   a.fi-plus(href='#/post/create',title='New item')
@@ -37,22 +37,22 @@ div.row
   fieldset
    div.row
     div.column.small-6.my-row.todo Todo
-    div.switch.radius.column.small-6.post-todo
+    div.switch.round.column.small-6.post-todo
      input#post-todo.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="change()")
      label(for="post-todo")
    div.row
     div.column.small-6.my-row.note Note
-    div.switch.radius.column.small-6.post-note
+    div.switch.round.column.small-6.post-note
      input#post-note(type="radio", value="note", name="postType", ng-model="post.type", ng-change="change()")
      label(for="post-note")
    div.row
     div.column.small-6.my-row.blog Blog
-    div.switch.radius.column.small-6.post-blog
+    div.switch.round.column.small-6.post-blog
      input#post-blog(type="radio", value="blog", name="postType", ng-model="post.type", ng-change="change()")
      label(for="post-blog") 
    div.row
     div.column.small-6.my-row.kb Knowlege base
-    div.switch.radius.column.small-6.post-kb
+    div.switch.round.column.small-6.post-kb
      input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="change()")
      label(for="post-kb") 
   fieldset
@@ -60,7 +60,7 @@ div.row
     div.column.small-12 &nbsp;
    div.row
     div.column.small-6 Public switch
-    div.switch.radius.column.small-6.post-public
+    div.switch.round.column.small-6.post-public
      input#public(type="checkbox", ng-model="post.public", ng-change="change()")
      label(for="public")
   fieldset

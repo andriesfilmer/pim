@@ -1,5 +1,4 @@
 appControllers.controller('CalendarController', ['$scope', function($scope) {
-
   $scope.greeting = 'Calendar controller....';
   $scope.calendarItems = ["item 1","item 2","item 3","item 4"];
 
@@ -13,9 +12,7 @@ appControllers.controller('BookmarkController', ['$scope', function($scope) {
 appControllers.controller('PostListController', ['$rootScope', '$scope', '$location', '$window', 'PostService', 
   function PostListController($rootScope, $scope, $location, $window, PostService) {
 
-  "use strict";
-
-  $scope.searchForm = true;  // Hide searchFrom, toggle first.
+  $scope.searchForm = false;  // Hide searchFrom, toggle first.
   $scope.toggleSearch = function () {
     $scope.searchForm = !$scope.searchForm;
     $scope.searchKey =  $window.sessionStorage.postSearchKey;
@@ -28,7 +25,6 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$locat
     $window.localStorage.postsAll = JSON.stringify(data);
   }).error(function(data, status) {
     console.log(status);
-    status = 0; // online - offline
     console.log('postsAll error');
     if(status === 0 ) {
       $rootScope.online = false;
@@ -79,11 +75,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
     $(document).foundation();
 
-    $scope.searchForm = true;  // Hide searchFrom, toggle first.
-    $scope.toggleSearch = function () {
-      $scope.searchForm = !$scope.searchForm;
-    };
-
     $scope.saveForm = false; // Hide save icon, $scope.change first.
     $scope.toggleForm = function () {
       $scope.editForm = !$scope.editForm;
@@ -93,8 +84,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         $scope.saveForm = true;
     };
 
-    console.log('##### $state.current.name -> ' + $state.current.name); 
-    console.log('##### $stateParams.id -> ' + $stateParams.id); 
     $scope.post = {};
     var id = $stateParams.id;
 
@@ -105,7 +94,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       }).error(function(status, data) {
         console.log('Post read failure!'); 
         console.log('Status: ' + status);
-        status = 0; // Test online - offline
         if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
           $rootScope.online = false;
           $scope.post = JSON.parse($window.localStorage['post_' + id]);
@@ -121,7 +109,10 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     }
 
     $scope.save = function save(post) {
+
       if (post !== undefined && post.title !== undefined && post.title !== "") {
+
+        $('a.close-reveal-modal').trigger('click');
 
         // String comma separated to array
         if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
@@ -129,7 +120,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         }
         if (post._id !== undefined) {
           PostService.update(post).success(function(data) {
-            $('#post-settings').foundation('reveal', 'close');
             $location.path("/post");
             console.log('Post updated success.'); 
           }).error(function(status, data) {
@@ -153,9 +143,9 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
     $scope.deletePost = function deletePost(post) {
       if (id !== undefined) {
+        $('a.close-reveal-modal').trigger('click');
         PostService.delete(id).success(function(data) {
           console.log('Deleted post:' + post._id); 
-          $('#post-settings').foundation('reveal', 'close');
           $location.path("/post");
         }).error(function(status, data) {
           console.log(status);
@@ -165,6 +155,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     };
   }
 ]);
+
 appControllers.controller('UserController', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
   function UserController($scope, $location, $window, UserService, AuthenticationService) {
 
@@ -196,7 +187,7 @@ appControllers.controller('UserController', ['$scope', '$location', '$window', '
       console.log('UserController -> register');
       if (AuthenticationService.isAuthenticated) {
         console.log('UserController -> no redirect?');
-        $location.path("/user/login");
+        $location.path("/user");
       }
       else {
         UserService.register(username, password, passwordConfirm).success(function(data) {

@@ -8,8 +8,8 @@ PIM is a application built with AngularJS, Node.js and MongoDB.
 
 A private PIM with:
 
+* Posts i.o Todo/Note/Blog/Knowledge base
 * Personal calendar (not ready yet)
-* Posts i.o Todo/Note/Blog/
 * Bookmarks (not ready yet)
 * Register/Login/Logout users
 
@@ -25,7 +25,8 @@ Look into the packages.json file for more dependencies.
 
    sudo apt-get install nodejs
    sudo apt-get install mongodb
-   cd app && npm install
+   git clone https://github.com/andriesfilmer/pim.git
+   cd pim/app && npm install
    grunt copy    # To copy static files once.
    grunt         # With 'connect' to run a server on port 3000
 
@@ -40,11 +41,10 @@ After running `grunt prod` copy the `public` folder in your webserver.
 
    cd api && node api.js
 
-The api is running on http://localhost:3001
-Change `exports.url` in config.js for production.
-
-Edit api/api.js and replace the value of Access-Control-Allow-Origin to match your server configuration for production.
-Run for example `forever` for your api and create a webserver configuration (zie api/nginx.conf as a example).
+- The api is running on http://localhost:3001
+- Change `exports.url` in config.js for production.
+- Edit api/api.js and replace the value of Access-Control-Allow-Origin to match your server configuration for production.
+- Run for example `forever` for your api and create a webserver configuration (zie api/nginx.conf as a example).
 
 ## Resources
 

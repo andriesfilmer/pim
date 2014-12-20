@@ -28,16 +28,16 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
     requestError: function(rejection) {
       return $q.reject(rejection);
       AuthenticationService.isAuthenticated = false;
-      console.log('TokenInterceptor request error -> rejection: '+ rejection); 
+      console.log('TokenInterceptor -> request error -> rejection: '+ rejection); 
     },
 
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
-      console.log('TokenInterceptor check authenticated -> response.status: '+ response.status); 
+      console.log('TokenInterceptor -> check authenticated -> response.status: '+ response.status); 
       //if (response !== null && response.status === 200 && $window.localStorage.token && !AuthenticationService.isAuthenticated) {
       if (response !== null && response.status === 200 && $window.localStorage.token) {
         AuthenticationService.isAuthenticated = true;
-        console.log('TokenInterceptor is authenticated -> response.status: '+ response.status); 
+        console.log('TokenInterceptor -> is authenticated -> response.status: '+ response.status); 
       }
       return response || $q.when(response);
     },

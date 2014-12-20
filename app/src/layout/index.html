@@ -8,6 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="My personal information manager.">
   <meta name="author" content="Andries Filmer">
+
   <meta name="fragment" content="!">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
@@ -53,23 +54,25 @@
       <li class="divider"></li>
       <li class="divider"></li>
       <li><a ui-sref="user.signin">Login</a></li>
-      <li><a ui-sref="user">User</a></li>
+      <li><a class="toggle" ui-sref="user">User</a></li>
     </ul>
   </section>
 </nav>
 
 <div class="container">
    <div class="alert-box alert" ng-show="offline">Offline</div>
-   <div ui-view></div>
+   <div class="toggle" ui-view></div>
 </div>
 
 <!-- JS production CDN's -->
 
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->
 <!-- JS development <!-- @echo pkgname --> -->
+<script src="vendor/js/modernizr.js"></script>
 <script src="vendor/js/angular.min.js"></script>
 <script src="vendor/js/angular-route.min.js"></script>
 <script src="vendor/js/angular-ui-router.min.js"></script>
+<script src="vendor/js/angular-animate.min.js"></script>
 <script src="vendor/js/jquery.min.js"></script>
 <script src="vendor/js/foundation.min.js"></script>
 <script src="vendor/js/showdown.js"></script>
@@ -83,10 +86,6 @@
 <script src="vendor/js/all.js"></script>
 <script src="js/<!-- @echo pkgname -->.min.js"></script>
 <!-- @endif -->
-
-<script>
-//    $(document).foundation();
-</script>
 
 </body>
 </html>

@@ -62,15 +62,16 @@ module.exports = function(grunt) {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
           'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
           'public/vendor/js/all.js': [
+            'vendor/js/modernizr.js',
             'vendor/js/angular.min.js',
-            'vendor/js/angular-route.min.js',
-            'vendor/js/angular-sanitize.min.js',
+            'vendor/js/angular-ui-router.min.js',
+            'vendor/js/angular-animate.min.js',
             'vendor/js/jquery.min.js',
             'vendor/js/ngStorage.min.js',
             'vendor/js/foundation.min.js',
             'vendor/js/showdown.js',
-            'vendor/js/showdown-table.js',
-            'vendor/js/markdown.js'],
+            'vendor/js/showdown-table.js'
+          ],
           'public/vendor/css/all.css': [
              'vendor/css/normalize.css',
              'vendor/css/foundation.css',

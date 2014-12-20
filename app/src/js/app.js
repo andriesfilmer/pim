@@ -2,7 +2,7 @@
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
-var app = angular.module('app', ['ui.router' ,'appControllers', 'appServices', 'appDirectives']);
+var app = angular.module('app', ['ui.router', 'ngAnimate' ,'appControllers', 'appServices', 'appDirectives']);
 
 var options = {};
 options.api = {};
@@ -15,7 +15,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /state1
-  $urlRouterProvider.otherwise("/post");
+  $urlRouterProvider.otherwise("/user/signin");
   //
   // Now set up the states
   $stateProvider
@@ -63,7 +63,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/user",
       templateUrl: 'partials/user.html',
       controller: 'UserController',
-      access: { requiredAuthentication: true }
+      access: { requiredAuthentication: false }
     })
     .state('user.register', {
       url: "/register",
@@ -81,7 +81,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/logout",
       templateUrl: 'partials/user.logout.html',
       controller: 'UserController',
-      access: { requiredAuthentication: true }
+      access: { requiredAuthentication: false }
     })
     .state('offline', {
       url: "/offline",
@@ -100,15 +100,16 @@ app.run(function ($rootScope, $state, $location, AuthenticationService) {
   // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-    //$rootScope.online = true; // Testing on/offline
-    console.log('##### test -> toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
-    console.log('##### test -> AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 
+    console.log('toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
+    console.log('AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 
 
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
-      $state.go('user.signin');
       event.preventDefault();
+      $state.go('user.signin');
     }
-    console.log('##### StateChange -> ' + toState.name); 
+    console.log('StateChange -> ' + toState.name); 
   });
+
+
 
 });
