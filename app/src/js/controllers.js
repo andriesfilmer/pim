@@ -90,6 +90,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     if ($stateParams.id.length > 23) {
       PostService.read(id).success(function(data) {
         $scope.post = data;
+        $scope.toc = processToc(data);
         $window.localStorage['post_' + id] = JSON.stringify(data);
       }).error(function(status, data) {
         console.log('Post read failure!'); 
@@ -153,6 +154,57 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         });
       }
     };
+
+    function processToc(data) {
+
+      // Inspiration from Eugene Datsky
+      // https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js
+
+      var indents = [""];
+      for(var i = 1; i < 10; i++) {
+          indents.push(indents[i-1] + "    ");
+      }
+
+      if (data.content !== undefined) {
+
+        var lines = data.content.trimRight().split('\n');
+        var titles = [];
+        var toc = [];
+        var depths = [];
+        var minDepth = 1000000;
+
+        for(var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          var m = line.match(/^(#+)(.*)$/);
+          if (!m) continue;
+          minDepth = Math.min(minDepth, m[1].length);
+          depths.push(m[1].length);
+
+          title = m[2];
+          uri = title.trim().toLowerCase().replace(/[\s-]/g, '').replace(/[^-0-9a-z]/g, '');
+
+          titles.push({title: title, uri: uri}).trim;
+        }
+
+        // Show TOC if we have more then 3 titles.
+        if (titles.length > 3) {
+          $scope.showToc = true;
+        } else {
+          $scope.showToc = false;
+        }
+
+        for(var i = 0; i < depths.length; i++) {
+          depths[i] -= minDepth;
+        }
+
+        for(var i = 0; i < depths.length; i++) {
+          toc.push(indents[depths[i]] + "- [" + titles[i].title + "](/#/post/" + id + "#" + titles[i].uri + ")");
+        }
+        return toc.join('\n');
+
+      }
+    }
+
   }
 ]);
 

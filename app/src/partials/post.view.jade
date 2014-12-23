@@ -12,8 +12,11 @@ div.row
 
 div.row(ng-hide="editForm")
  div.column.small-12
-  h1 {{post.title}} 
-    p(markdown='post.content') 
+  h1(ng-class='post.type') {{post.title}} 
+  fieldset.post-toc(ng-show="showToc")
+   legend Content
+   div(markdown='toc') 
+  p(markdown='post.content') 
 
 div.row(ng-show="editForm")
  div.column.small-12
