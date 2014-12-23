@@ -162,7 +162,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
       var indents = [""];
       for(var i = 1; i < 10; i++) {
-          indents.push(indents[i-1] + "    ");
+          indents.push(indents[i-1] + " ");
       }
 
       if (data.content !== undefined) {

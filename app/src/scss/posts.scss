@@ -2,6 +2,7 @@
 @mixin my-row {
   border-bottom: 1px #eee solid;
   padding: 8px;
+  margin-top: 0;
 }
 .my-row { @include my-row}
 
