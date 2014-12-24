@@ -6,7 +6,7 @@ h1 {
 }
 
 h2 {
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   border-bottom: 1px solid #eee;
 }
@@ -28,10 +28,6 @@ p {
   margin-top: 1.25rem;
 }
 
-.top-bar {
-  margin-bottom: 5px;
-}
-
 .secondary-menu {
   padding-right: 1rem;
   border-bottom: 1px #eee solid;
@@ -43,11 +39,6 @@ p {
   }
   a {color: #BBB4B4};
 }
-
-.top-bar-section ul li > a.menu-active {
-  color: aqua;
-}
-
 
 ul.inline-list {
   margin-left: 0rem;

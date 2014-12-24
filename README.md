@@ -26,15 +26,15 @@ You need nodejs and mongodb (default install will do)
     sudo apt-get install nodejs
     git clone https://github.com/andriesfilmer/pim.git
     cd pim/app && npm install
-    grunt copy    # To copy static files once.
+    grunt once    # To copy and compile vendor files once.
     grunt         # With 'connect' to run a server on port 3000
 
 The app is running on http://localhost:3000  
 Change the `options.api.base_url` in `app.js` **for production** and run: 
 
-    grunt prod
+    grunt production
 
-After running `grunt prod` copy the `public` folder on your webserver.
+After running `grunt production` copy the `public` folder on your webserver.
 
 ### The api part:
 

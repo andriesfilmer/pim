@@ -39,6 +39,15 @@ module.exports = function(grunt) {
       options: {
         sourcemap: 'none'
       },
+      foundation: {
+        files: [{
+          expand: true,
+          cwd: 'src/scss/foundation',
+          src: ['*.scss'],
+          dest: 'tmp/css/foundation',
+          ext: '.css'
+        }]
+      },
       dist: {
         files: [{
           expand: true,
@@ -49,7 +58,17 @@ module.exports = function(grunt) {
         }]
       }
     },
+    removelogging: {
+      dist: {
+        src: "public/js/<%= pkg.name %>.js" // File will be overwritten with the output!
+      }
+    },
     concat: {
+      once: {
+        files: {
+          'public/vendor/css/foundation.css': ['tmp/css/foundation/foundation.css']
+        }
+      },
       dev: {
         files: {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
@@ -67,8 +86,6 @@ module.exports = function(grunt) {
             'vendor/js/angular-ui-router.min.js',
             'vendor/js/angular-animate.min.js',
             'vendor/js/jquery.min.js',
-            'vendor/js/ngStorage.min.js',
-            'vendor/js/foundation.min.js',
             'vendor/js/showdown.js',
             'vendor/js/showdown-table.js'
           ],
@@ -165,11 +182,22 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks("grunt-remove-logging");
 
-  // Default task(s).
-  grunt.registerTask('default', ['env:dev',  'preprocess', 'sass', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
-  // grunt prod task(s).
-  grunt.registerTask('prod',    ['env:prod', 'preprocess', 'sass', 'concat:prod', 'cssmin', 'uglify', 'jade', 'copy', 'appcache', 'clean']);
+
+  // Run once to copy and compile vendors
+  grunt.registerTask('once', ['sass:foundation', 'copy', 'concat:once']);
+
+  // Default tasks
+  grunt.registerTask('default', ['env:dev',  'preprocess', 'sass:dist', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
+
+  // grunt without sass compile (faster with js development)
+  grunt.registerTask('nosass', ['env:dev',  'preprocess', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
+
+  // grunt for production (minified files)
+  grunt.registerTask('production',    ['env:prod', 'preprocess', 'sass', 
+                                       'concat:prod', 'removelogging', 'cssmin', 'uglify', 
+                                       'jade', 'copy', 'appcache', 'clean']);
 
 
 };
