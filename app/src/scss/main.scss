@@ -45,6 +45,14 @@ p {
 }
 
 .top-bar-section ul li > a.menu-active {
-  color: yellow;
+  color: aqua;
 }
 
+
+ul.inline-list {
+  margin-left: 0rem;
+  > li.tag {
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+  }
+}

@@ -1,0 +1,29 @@
+div.row
+ div.colums.small-12.secondary-menu
+  a.fi-lock(href='#/user/logout',title='logout')
+div.row
+ div.column.small-12
+  p.strong The personal information manager (PIM).
+div.row
+ div.column.small-12
+  fieldset.panel.radius
+   ul
+    li
+     a(ui-sref="user.signin") Signin 
+    li
+     a(ui-sref="user.signup") Signup (Register as new user)
+div.row
+ div.column.small-12
+  fieldset.panel.radius
+    legend Login required
+    ul
+     li
+      a(ui-sref="post") <strong>Posts</strong> i.o. Notes, Todo, Blog and Knowlodge base.  
+     li
+      a(ui-sref="calendar") <strong>Calendar</strong> (work in process)
+     li
+      a(ui-sref="bookmark") <strong>Bookmarks</strong> (work in process)
+div.row
+ div.column.small-12
+  p See full source code on 
+   a.fi-social-github(href="https://github.com/andriesfilmer/pim")  Github.

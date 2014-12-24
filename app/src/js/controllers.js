@@ -23,11 +23,12 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$locat
   PostService.findAll().success(function(data) {
     $scope.posts = data;
     $window.localStorage.postsAll = JSON.stringify(data);
+    $rootScope.offline = false;
   }).error(function(data, status) {
-    console.log(status);
+    console.log('Status: ' + status);
     console.log('postsAll error');
-    if(status === 0 ) {
-      $rootScope.online = false;
+    if(status === 0) {
+      $rootScope.offline = true;
       if($window.localStorage.getItem('postsAll') !== null) {
         console.log('postsAll from localstorage');
         $scope.posts = JSON.parse($window.localStorage.postsAll);
@@ -92,11 +93,12 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         $scope.post = data;
         $scope.toc = processToc(data);
         $window.localStorage['post_' + id] = JSON.stringify(data);
-      }).error(function(status, data) {
+        $rootScope.offline = false;
+      }).error(function(data, status) {
         console.log('Post read failure!'); 
         console.log('Status: ' + status);
         if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
-          $rootScope.online = false;
+          $rootScope.offline = true;
           $scope.post = JSON.parse($window.localStorage['post_' + id]);
           console.log('Post from localstorage id: ' + id);
         } else {

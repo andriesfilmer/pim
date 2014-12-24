@@ -58,11 +58,13 @@ appServices.factory('PostService',['$http', function($http) {
   return {
 
     read: function(id) {
-      return $http.get(options.api.base_url + '/post/' + id);
+      return $http.get(options.api.base_url + '/post/' + id)
+      .error(function(data, status, headers, config) {
+      });
     },
 
-    findAll: function(searchKey) {
-      return $http.get(options.api.base_url + '/post/', {'post': { searchKey: searchKey } })
+    findAll: function() {
+      return $http.get(options.api.base_url + '/post/')
       .error(function(data, status, headers, config) {
       });
     },

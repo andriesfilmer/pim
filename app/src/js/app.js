@@ -15,10 +15,15 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /state1
-  $urlRouterProvider.otherwise("/user/signin");
+  $urlRouterProvider.otherwise("/home");
   //
   // Now set up the states
   $stateProvider
+   .state('home', {
+      url: "/home",
+      templateUrl: "partials/home.html",
+      access: { requiredAuthentication: false }
+    })
    .state('calendar', {
       url: "/calendar",
       templateUrl: "partials/calendar.html",
@@ -65,14 +70,14 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: false }
     })
-    .state('user.register', {
-      url: "/register",
-      templateUrl: 'partials/user.register.html',
+    .state('user.signup', {
+      url: "/signup",
+      templateUrl: 'partials/user.signup.html',
       controller: 'UserController',
       access: { requiredAuthentication: false }
     })
     .state('user.signin', {
-      url: "/login",
+      url: "/signin",
       templateUrl: 'partials/user.signin.html',
       controller: 'UserController',
       access: { requiredAuthentication: false }

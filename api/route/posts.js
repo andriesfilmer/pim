@@ -42,9 +42,7 @@ exports.listAll = function(req, res) {
         console.log(err);
         return res.send(400); // Bad Request
       }
-
       return res.status(200).json(results); // OK
-
   });
 
 };

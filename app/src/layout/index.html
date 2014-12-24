@@ -34,17 +34,17 @@
 <nav class="top-bar" data-topbar role="navigation">
   <ul class="title-area">
     <li class="name">
-      <h1><a href="#/post">PIM</a></h1>
+      <h1><a href="#/home">PIM</a></h1>
     </li>
      <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
-    <li class="toggle-topbar menu-icon"><a href="/#/post"><span>Menu</span></a></li>
+    <li class="toggle-topbar menu-icon"><a><span></span></a></li>
   </ul>
 
   <section class="top-bar-section">
     <ul class="left">
-      <li><a ui-sref="calendar">Calendar</a></li>
+      <li><a ui-sref="calendar" ui-sref-active="menu-active">Calendar</a></li>
       <li class="divider"></li>
-      <li><a ui-sref="post">Posts</a></li>
+      <li><a ui-sref="post" ui-sref-active="menu-active">Posts</a></li>
       <li class="divider"></li>
       <li><a ui-sref="bookmark" ui-sref-active="menu-active">Bookmarks</a></li>
       <li class="divider"></li>
@@ -52,9 +52,7 @@
 
     <ul class="right">
       <li class="divider"></li>
-      <li class="divider"></li>
-      <li><a ui-sref="user.signin">Login</a></li>
-      <li><a class="toggle" ui-sref="user">User</a></li>
+      <li><a ui-sref="user.signin" ui-sref-active="menu-active">Signin</a></li>
     </ul>
   </section>
 </nav>
