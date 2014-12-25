@@ -44,7 +44,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/scss/foundation',
           src: ['*.scss'],
-          dest: 'tmp/css/foundation',
+          dest: 'tmp/css/',
           ext: '.css'
         }]
       },
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
     concat: {
       once: {
         files: {
-          'public/vendor/css/foundation.css': ['tmp/css/foundation/foundation.css']
+          'public/vendor/css/foundation.css': ['tmp/css/foundation.css']
         }
       },
       dev: {
@@ -196,9 +196,9 @@ module.exports = function(grunt) {
   grunt.registerTask('nosass', ['env:dev',  'preprocess', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
 
   // grunt for production (minified files)
-  grunt.registerTask('production',    ['env:prod', 'preprocess', 'sass', 
+  grunt.registerTask('production',    ['env:prod', 'preprocess', 'sass:dist', 
                                        'concat:prod', 'removelogging', 'cssmin', 'uglify', 
-                                       'jade', 'copy', 'appcache', 'clean']);
+                                       'jade', 'appcache', 'clean']);
 
 
 };
