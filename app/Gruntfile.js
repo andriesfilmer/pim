@@ -154,7 +154,7 @@ module.exports = function(grunt) {
     watch: {
       all: {
         options: { livereload: true },
-        files: ['src/layout/*', 'src/js/*', 'src/scss/*','src/partials/**/*.jade'],
+        files: ['Gruntfile.js', 'src/layout/*', 'src/js/*', 'src/scss/*','src/partials/**/*.jade'],
         tasks: ['default']
       },
     },
@@ -199,6 +199,5 @@ module.exports = function(grunt) {
   grunt.registerTask('production',    ['env:prod', 'preprocess', 'sass:dist', 
                                        'concat:prod', 'removelogging', 'cssmin', 'uglify', 
                                        'jade', 'appcache', 'clean']);
-
 
 };

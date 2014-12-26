@@ -33,7 +33,7 @@ exports.listAll = function(req, res) {
     return res.send(401); // Unauthorized
   }
 
-  var query = db.postModel.find({user_id: req.user.id});
+  var query = db.postModel.find({user_id: req.user.id}).limit(req.query.limit);
 
   query.select("_id title type tags created updated public");
   query.sort('-updated');
@@ -50,18 +50,18 @@ exports.listAll = function(req, res) {
 // Search all posts
 exports.searchAll = function(req, res) {
 
-  var post = req.body.post; 
+  var posts = req.query; 
 
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
 
-  if (post.searchKey) {
-    console.log('##### post search -> ' + post.searchKey); 
+  if (posts.searchKey) {
+    console.log('##### post search -> ' + posts.searchKey); 
     var query = db.postModel.find({ $or: [ 
-                                          {title:   { $exists: true, $regex: post.searchKey, $options: 'i' } },
-                                          {content: { $exists: true, $regex: post.searchKey, $options: 'i' } }, 
-                                          {tags:    { $exists: true, $regex: post.searchKey, $options: 'i' } } 
+                                          {title:   { $exists: true, $regex: posts.searchKey, $options: 'i' } },
+                                          {content: { $exists: true, $regex: posts.searchKey, $options: 'i' } }, 
+                                          {tags:    { $exists: true, $regex: posts.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   } else {
     console.log('##### post empty search -> '); 

@@ -63,14 +63,14 @@ appServices.factory('PostService',['$http', function($http) {
       });
     },
 
-    findAll: function() {
-      return $http.get(options.api.base_url + '/post/')
+    findAll: function(limit) {
+      return $http.get(options.api.base_url + '/post/', {'params': {limit: limit}})
       .error(function(data, status, headers, config) {
       });
     },
 
     searchAll: function(searchKey) { 
-      return $http.post(options.api.base_url + '/post/search', {'post': {searchKey: searchKey}});
+      return $http.get(options.api.base_url + '/post/search', {'params': {searchKey: searchKey}});
     },
 
     changePublicState: function(id, newPublicState) {

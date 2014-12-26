@@ -42,7 +42,7 @@ app.get('/tag/:tagName', routes.posts.listByTag);
 app.get('/post/public', routes.posts.listPublic);
 
 // Search all posts
-app.post('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.searchAll);
+app.get('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.searchAll);
 
 // Get all posts
 app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.listAll);

@@ -1,6 +1,9 @@
 div.row
- div.colums.small-12.secondary-menu
+ div.column.small-8.text-left.secondary-menu
   a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search', tabindex="1")
+  span.divider
+  a.fi-wrench(href="", title="Settings", data-reveal-id="post-settings", data-reveal-ajax="true") 
+ div.column.small-4.text-right.secondary-menu
   span.divider
   a.fi-plus(href='#/post/create',title='New item')
 
@@ -17,3 +20,38 @@ div.row.toggle(ng-repeat='post in posts', ng-class="post.type ? post.type : 'my-
  div.column.medium-2.hide-for-small
   div.round.alert.label(ng-show='post.public', ng-click='updatePublicState(post, false)') public
   div.round.secondary.label(ng-show='!post.public', ng-click='updatePublicState(post, true)') private
+
+div.row
+ div#post-settings.reveal-modal(data-reveal='')
+  a.close-reveal-modal &#215;
+  h2 General post settings
+  fieldset
+   div.row
+    div.column.small-6.my-row List 20 posts
+    div.switch.round.column.small-6
+     input#post-20(type="radio", value="20", name="postLimit", ng-model="postLimit", ng-change="changeLimit(20)")
+     label(for="post-20")
+   div.row
+    div.column.small-6.my-row List 50 posts
+    div.switch.round.column.small-6
+     input#post-50(type="radio", value="50", name="postLimit", ng-model="postLimit", ng-change="changeLimit(50)")
+     label(for="post-50") 
+   div.row
+    div.column.small-6.my-row List 100 posts
+    div.switch.round.column.small-6
+     input#post-100(type="radio", value="100", name="postLimit", ng-model="postLimit", ng-change="changeLimit(100)")
+     label(for="post-100") 
+   div.row
+    div.column.small-6.my-row List 1000 posts
+    div.switch.round.column.small-6
+     input#post-1000(type="radio", value="1000", name="postLimit", ng-model="postLimit", ng-change="changeLimit(1000)")
+     label(for="post-1000")
+  fieldset
+   div.row
+    div.column.small-12 &nbsp;
+   div.row
+    div.column.small-6
+     button.radius(ng-click='saveSettings()', title='Save settings') Save settings
+    div.column.small-6
+     p Setting wil be reset on logout
+

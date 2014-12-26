@@ -9,66 +9,80 @@ appControllers.controller('BookmarkController', ['$scope', function($scope) {
   $scope.bookmarks = ["bookmark 1","bookmark 2","bookmark 3","bookmark 4"];
 }]);
 
-appControllers.controller('PostListController', ['$rootScope', '$scope', '$location', '$window', 'PostService', 
-  function PostListController($rootScope, $scope, $location, $window, PostService) {
+appControllers.controller('PostListController', ['$rootScope', '$scope', '$state', '$window', 'PostService', 
+  function PostListController($rootScope, $scope, $state, $window, PostService) {
 
-  $scope.searchForm = false;  // Hide searchFrom, toggle first.
-  $scope.toggleSearch = function () {
-    $scope.searchForm = !$scope.searchForm;
-    $scope.searchKey =  $window.sessionStorage.postSearchKey;
-  };
+    $(document).foundation();
 
-  $scope.posts = [];
-
-  PostService.findAll().success(function(data) {
-    $scope.posts = data;
-    $window.localStorage.postsAll = JSON.stringify(data);
-    $rootScope.offline = false;
-  }).error(function(data, status) {
-    console.log('Status: ' + status);
-    console.log('postsAll error');
-    if(status === 0) {
-      $rootScope.offline = true;
-      if($window.localStorage.getItem('postsAll') !== null) {
-        console.log('postsAll from localstorage');
-        $scope.posts = JSON.parse($window.localStorage.postsAll);
-      }
+    // Save general post settings
+    $scope.saveSettings = function saveSettings() {
+      $('a.close-reveal-modal').trigger('click');
+      $state.go('post', {}, {reload: true});
     }
-  });
 
-  $scope.$watch('searchKey', function(searchKey) {
-      if (searchKey !== undefined && searchKey.length >= 3) {
-        $window.sessionStorage.postSearchKey = searchKey;
-        PostService.searchAll(searchKey).success(function(data) {
-          $scope.posts = data;
-        }).error(function(data, status) {
-          console.log(status);
-          console.log('Posts search error');
-          if(status === 0) {
-            console.log('Posts search notting found');
-          } 
-        }); 
-      }
-  });
+    // Set post limit for all posts
+    $scope.postLimit =  $window.localStorage.postLimit;
+    $scope.changeLimit = function(limit) {
+      $window.localStorage.postLimit =  limit;
+    };
 
-  $scope.updatePublicState = function updatePublicState(post, makePublic) {
-    if (post !== undefined && makePublic !== undefined) {
+    $scope.searchForm = false;  // Hide searchFrom, toggle first.
+    $scope.toggleSearch = function () {
+      $scope.searchForm = !$scope.searchForm;
+      $scope.searchKey =  $window.sessionStorage.postSearchKey;
+    };
 
-      PostService.changePublicState(post._id, makePublic).success(function(data) {
-        var posts = $scope.posts;
-        for (var postKey in posts) {
-          if (posts[postKey]._id == post._id) {
-            $scope.posts[postKey].public = makePublic;
-            break;
-          }
+    $scope.posts = [];
+
+    PostService.findAll($window.localStorage.postLimit).success(function(data) {
+      $scope.posts = data;
+      $window.localStorage.postsAll = JSON.stringify(data);
+      $rootScope.offline = false;
+    }).error(function(data, status) {
+      console.log('Status: ' + status);
+      console.log('postsAll error');
+      if(status === 0) {
+        $rootScope.offline = true;
+        if($window.localStorage.getItem('postsAll') !== null) {
+          console.log('postsAll from localstorage');
+          $scope.posts = JSON.parse($window.localStorage.postsAll);
         }
-      }).error(function(status, data) {
-        console.log(status);
-        console.log(data);
-      });
-    }
-  };
-}
+      }
+    });
+
+    $scope.$watch('searchKey', function(searchKey) {
+        if (searchKey !== undefined && searchKey.length >= 3) {
+          $window.sessionStorage.postSearchKey = searchKey;
+          PostService.searchAll(searchKey).success(function(data) {
+            $scope.posts = data;
+          }).error(function(data, status) {
+            console.log(status);
+            console.log('Posts search error');
+            if(status === 0) {
+              console.log('Posts search notting found');
+            } 
+          }); 
+        }
+    });
+
+    $scope.updatePublicState = function updatePublicState(post, makePublic) {
+      if (post !== undefined && makePublic !== undefined) {
+
+        PostService.changePublicState(post._id, makePublic).success(function(data) {
+          var posts = $scope.posts;
+          for (var postKey in posts) {
+            if (posts[postKey]._id == post._id) {
+              $scope.posts[postKey].public = makePublic;
+              break;
+            }
+          }
+        }).error(function(status, data) {
+          console.log(status);
+          console.log(data);
+        });
+      }
+    };
+  }
 ]);
 
 appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', '$location', 'PostService', 
