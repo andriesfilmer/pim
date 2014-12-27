@@ -1,5 +1,4 @@
 
-
 @mixin my-row {
   border-bottom: 1px #eee solid;
   padding: 8px;
@@ -58,6 +57,10 @@ code {
   background-color: #eee;
   border-style: none;
   padding: 0
+}
+
+textarea#posts-content {
+ font-family: courier;
 }
 
 input#title-input {

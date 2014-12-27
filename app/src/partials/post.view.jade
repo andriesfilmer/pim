@@ -23,7 +23,7 @@ div.row(ng-show="editForm")
  div.column.small-12
   form
    input#title-input(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
-   textarea#textarea-content(rows="19", ng-model="post.content", ng-change="change()")
+   textarea#post-content(rows="19", ng-model="post.content", ng-change="change()")
    input#inputTags(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
 div.row
  div.column.small-6.post-meta.panel

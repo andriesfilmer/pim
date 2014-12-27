@@ -44,7 +44,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'src/scss/foundation',
           src: ['*.scss'],
-          dest: 'tmp/css/',
+          dest: 'public/vendor/css',
           ext: '.css'
         }]
       },
@@ -64,11 +64,6 @@ module.exports = function(grunt) {
       }
     },
     concat: {
-      once: {
-        files: {
-          'public/vendor/css/foundation.css': ['tmp/css/foundation.css']
-        }
-      },
       dev: {
         files: {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
@@ -80,7 +75,7 @@ module.exports = function(grunt) {
         files: {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
           'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
-          'public/vendor/js/all.js': [
+          'public/vendor/js/vendor.js': [
             'vendor/js/modernizr.js',
             'vendor/js/angular.min.js',
             'vendor/js/angular-ui-router.min.js',
@@ -90,9 +85,9 @@ module.exports = function(grunt) {
             'vendor/js/showdown.js',
             'vendor/js/showdown-table.js'
           ],
-          'public/vendor/css/all.css': [
+          'public/vendor/css/vendor.css': [
              'vendor/css/normalize.css',
-             'vendor/css/foundation.css',
+             'public/vendor/css/foundation.css',
              'vendor/css/foundation-icons.css'],
         },
       }
@@ -104,7 +99,7 @@ module.exports = function(grunt) {
         },
         files: {
           'public/css/<%= pkg.name %>.min.css': ['public/css/<%= pkg.name %>.css'],
-          'public/vendor/css/all.min.css': ['public/vendor/css/all.css']
+          'public/vendor/css/vendor.min.css': ['public/vendor/css/vendor.css']
         }
       }
     },
@@ -128,7 +123,7 @@ module.exports = function(grunt) {
         dest: 'public/manifest.appcache',
         cache: 'public/**/*',
         network: ['*', 'http://*', 'https://*'],
-        fallback: '/ /partials/offline.html'
+        fallback: '/ /partials/home.html'
       }
     },
     jade: {
@@ -149,7 +144,7 @@ module.exports = function(grunt) {
     clean: {
       dev: ["public/js/<%= pkg.name %>.js",
             "public/css/<%= pkg.name %>.css",
-            "public/vendor/css/all.css"]
+            "public/vendor/css/vendor.css"]
     },
     watch: {
       all: {
@@ -187,7 +182,7 @@ module.exports = function(grunt) {
 
 
   // Run once to copy and compile vendors
-  grunt.registerTask('once', ['sass:foundation', 'copy', 'concat:once']);
+  grunt.registerTask('once', ['sass:foundation', 'copy']);
 
   // Default tasks
   grunt.registerTask('default', ['env:dev',  'preprocess', 'sass:dist', 'concat:dev',  'uglify', 'jade', 'connect','watch']);

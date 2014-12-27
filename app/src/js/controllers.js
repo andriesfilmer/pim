@@ -126,9 +126,11 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
     $scope.save = function save(post) {
 
-      if (post !== undefined && post.title !== undefined && post.title !== "") {
-
+      if($("#post-settings").is(":visible")) {
         $('a.close-reveal-modal').trigger('click');
+      }
+
+      if (post !== undefined && post.title !== undefined && post.title !== "") {
 
         // String comma separated to array
         if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
@@ -141,7 +143,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
           }).error(function(status, data) {
             console.log(status);
             console.log(data);
-            $location.path("/user/login");
+            $location.path("/login");
           });
         } else {
           PostService.create(post).success(function(data) {
