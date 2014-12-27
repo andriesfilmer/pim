@@ -2,7 +2,7 @@
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
-var app = angular.module('app', ['ui.router', 'ngAnimate' ,'appControllers', 'appServices', 'appDirectives']);
+var app = angular.module('app', ['ui.router', 'ngAnimate', 'appControllers', 'appServices', 'appDirectives']);
 
 var options = {};
 options.api = {};
@@ -27,6 +27,11 @@ app.config(['$stateProvider', '$urlRouterProvider',
    .state('calendar', {
       url: "/calendar",
       templateUrl: "partials/calendar.html",
+      access: { requiredAuthentication: true }
+    })
+   .state('contact', {
+      url: "/contact",
+      templateUrl: "partials/contact.html",
       access: { requiredAuthentication: true }
     })
     .state('calendar.list', {
@@ -70,15 +75,15 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: false }
     })
-    .state('user.signup', {
+    .state('signup', {
       url: "/signup",
-      templateUrl: 'partials/user.signup.html',
+      templateUrl: 'partials/signup.html',
       controller: 'UserController',
       access: { requiredAuthentication: false }
     })
-    .state('user.signin', {
+    .state('signin', {
       url: "/signin",
-      templateUrl: 'partials/user.signin.html',
+      templateUrl: 'partials/signin.html',
       controller: 'UserController',
       access: { requiredAuthentication: false }
     })
@@ -88,9 +93,9 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: false }
     })
-    .state('offline', {
-      url: "/offline",
-      templateUrl: 'partials/offline.html',
+    .state('reload', {
+      url: "/reload",
+      templateUrl: 'partials/reload.html',
       access: { requiredAuthentication: false }
     })
   }
@@ -100,17 +105,29 @@ app.config(function ($httpProvider) {
    $httpProvider.interceptors.push('TokenInterceptor');
 });
 
-app.run(function ($rootScope, $state, $location, AuthenticationService) {
+app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
 
   // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
+    $rootScope.isAuthenticated = AuthenticationService.isAuthenticated;
+
+    // Because we use token based authentication with te first page load 
+    // we don't have 'AuthenticationService.isAuthenticated' true.
+    if (!$rootScope.reloadAuthenticated) {
+      flash('App reloaded');
+      $rootScope.reloadAuthenticated = true;
+      event.preventDefault();
+      $state.go('reload');
+    }
 
     console.log('toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
     console.log('AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 
 
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
+      flash('alert-box alert', 'Login first');
       event.preventDefault();
-      $state.go('user.signin');
+     $state.go('signin');
     }
     console.log('StateChange -> ' + toState.name); 
   });

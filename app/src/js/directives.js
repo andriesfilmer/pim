@@ -48,3 +48,21 @@ appDirectives.directive('markdown', function (markdownConverter) {
       }
     };
 });
+
+// Thanks to: https://github.com/gtramontina/angular-flash
+appDirectives.directive('flashMessages', [function() {
+  var directive = { restrict: 'EA', replace: true };
+  directive.template =
+    '<ol id="flash-messages">' +
+      '<li ng-repeat="m in messages" class="toggle alert-box {{m.level}}">{{m.text}}</li>' +
+    '</ol>';
+
+  directive.controller = ['$scope', '$rootScope', function($scope, $rootScope) {
+    $rootScope.$on('flash:message', function(_, messages, done) {
+      $scope.messages = messages;
+      done();
+    });
+  }];
+
+  return directive;
+}]);

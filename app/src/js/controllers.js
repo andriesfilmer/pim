@@ -9,8 +9,8 @@ appControllers.controller('BookmarkController', ['$scope', function($scope) {
   $scope.bookmarks = ["bookmark 1","bookmark 2","bookmark 3","bookmark 4"];
 }]);
 
-appControllers.controller('PostListController', ['$rootScope', '$scope', '$state', '$window', 'PostService', 
-  function PostListController($rootScope, $scope, $state, $window, PostService) {
+appControllers.controller('PostListController', ['$rootScope', '$scope', '$state', '$window', 'flash', 'PostService', 
+  function PostListController($rootScope, $scope, $state, $window, flash, PostService) {
 
     $(document).foundation();
 
@@ -37,12 +37,11 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
     PostService.findAll($window.localStorage.postLimit).success(function(data) {
       $scope.posts = data;
       $window.localStorage.postsAll = JSON.stringify(data);
-      $rootScope.offline = false;
     }).error(function(data, status) {
       console.log('Status: ' + status);
-      console.log('postsAll error');
+      flash('alert', 'Error finding posts');
       if(status === 0) {
-        $rootScope.offline = true;
+        flash('alert', 'Working offline');
         if($window.localStorage.getItem('postsAll') !== null) {
           console.log('postsAll from localstorage');
           $scope.posts = JSON.parse($window.localStorage.postsAll);
@@ -85,8 +84,8 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
   }
 ]);
 
-appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', '$location', 'PostService', 
-  function PostController($rootScope, $scope, $state, $window, $stateParams, $location, PostService) {
+appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', '$location', 'flash', 'PostService', 
+  function PostController($rootScope, $scope, $state, $window, $stateParams, $location, flash, PostService) {
 
     $(document).foundation();
 
@@ -107,15 +106,15 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         $scope.post = data;
         $scope.toc = processToc(data);
         $window.localStorage['post_' + id] = JSON.stringify(data);
-        $rootScope.offline = false;
       }).error(function(data, status) {
-        console.log('Post read failure!'); 
+        flash('alert', 'Post read failure');
         console.log('Status: ' + status);
         if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
-          $rootScope.offline = true;
+          flash('alert', 'Read only - Working offline');
           $scope.post = JSON.parse($window.localStorage['post_' + id]);
           console.log('Post from localstorage id: ' + id);
         } else {
+          flash('alert', 'This post is not offline!');
           console.log('No post from localstorage id: ' + id);
         }
       });
@@ -224,8 +223,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   }
 ]);
 
-appControllers.controller('UserController', ['$scope', '$location', '$window', 'UserService', 'AuthenticationService',
-  function UserController($scope, $location, $window, UserService, AuthenticationService) {
+appControllers.controller('UserController', ['$scope', '$location', '$window', 'flash', 'UserService', 'AuthenticationService',
+  function UserController($scope, $location, $window, flash, UserService, AuthenticationService) {
 
     $scope.signIn = function signIn(username, password) {
       if (username !== null && password !== null) {
@@ -234,11 +233,16 @@ appControllers.controller('UserController', ['$scope', '$location', '$window', '
             AuthenticationService.isAuthenticated = true;
             // We choose localStorage i.o. sessionStorage so that 
             // we keep content after clossing the browser.
+            flash('Signed in');
             $window.localStorage.token = data.token;
             $location.path("/post");
         }).error(function(status, data) {
-            console.log(status);
-            console.log(data);
+          if(status === 0 && status === null) {
+            flash('alert', 'Not online');
+          } else {
+            flash('alert', 'Wrong credentials');
+          }
+          console.log("Signin status: " + status);
         });
       }
     };
@@ -246,26 +250,28 @@ appControllers.controller('UserController', ['$scope', '$location', '$window', '
     $scope.logOut = function logOut() {
       AuthenticationService.isAuthenticated = false;
       // We have logout so we delete localstore for security.
+      flash('alert', 'Logged out and deleted local information');
       $window.localStorage.clear();
-      $location.path("/user/login");
+      $location.path("/login");
       console.log('UserController -> logOut');
     };
 
     $scope.register = function register(username, password, passwordConfirm) {
       console.log('UserController -> register');
       if (AuthenticationService.isAuthenticated) {
-        console.log('UserController -> no redirect?');
+        flash('success', 'Succesfull registered as new user');
         $location.path("/user");
       }
       else {
         UserService.register(username, password, passwordConfirm).success(function(data) {
           console.log('UserController -> register success -> no redirect?');
         }).error(function(status, data) {
-          console.log(status);
+          flash('alert', 'Something went wrong');
+          console.log("Signin status: " + status);
           console.log(data);
         });
       }
-      $location.path("/user/login");
+      $location.path("/login");
     };
   }
 ]);

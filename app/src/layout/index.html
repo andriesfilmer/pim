@@ -56,21 +56,22 @@
   <a class="item" ui-sref="calendar" ui-sref-active="menu-active">
     <i class="fi-calendar"></i>
   </a>
+  <a class="item" ui-sref="contact" ui-sref-active="menu-active">
+    <i class="fi-torsos"></i>
+  </a>
   <a class="item" ui-sref="post" ui-sref-active="menu-active">
     <i class="fi-page-copy"></i>
   </a>
   <a class="item" ui-sref="bookmark" ui-sref-active="menu-active">
     <i class="fi-bookmark"></i>
   </a>
-  <a class="item" ui-sref="user.signin" ui-sref-active="menu-active">
-    <i class="fi-torso"></i>
-  </a>
 </div>
 
 <div class="container">
-   <div class="alert-box alert" ng-show="offline">Offline</div>
+   <flash:messages></flash:messages>
    <div class="toggle" ui-view></div>
 </div>
+
 
 <!-- JS production CDN's -->
 
@@ -78,7 +79,6 @@
 <!-- JS development <!-- @echo pkgname --> -->
 <script src="vendor/js/modernizr.js"></script>
 <script src="vendor/js/angular.min.js"></script>
-<script src="vendor/js/angular-route.min.js"></script>
 <script src="vendor/js/angular-ui-router.min.js"></script>
 <script src="vendor/js/angular-animate.min.js"></script>
 <script src="vendor/js/jquery.min.js"></script>

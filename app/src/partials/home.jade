@@ -1,28 +1,49 @@
 div.row
- div.colums.small-12.secondary-menu
-  a.fi-lock(href='#/user/logout',title='logout')
-div.row
  div.column.small-12
-  p.strong The personal information manager (PIM).
+  p.strong Personal information manager (PIM).
 div.row
  div.column.small-12
   fieldset.panel.radius
-   ul
-    li
-     a(ui-sref="user.signin") Signin 
-    li
-     a(ui-sref="user.signup") Signup (Register as new user)
+   ul(style="list-style-type: none;")
+    li.fi-unlock(ng-if="!isAuthenticated")
+     a(ui-sref="signin")  Signin 
+    li.fi-torso(ng-if="!isAuthenticated")
+     a(ui-sref="signup")  Signup (Register as new user)
+    li.fi-lock(ng-if="isAuthenticated")
+     a(ui-sref="user.logout")  Logout
 div.row
  div.column.small-12
-  fieldset.panel.radius
-    legend Login required
-    ul
-     li
-      a(ui-sref="post") <strong>Posts</strong> i.o. Notes, Todo, Blog and Knowlodge base.  
-     li
-      a(ui-sref="calendar") <strong>Calendar</strong> (work in process)
-     li
-      a(ui-sref="bookmark") <strong>Bookmarks</strong> (work in process)
+  fieldset.radius
+    legend Main features
+    ul(style="list-style-type: none;")
+     li.fi-calendar
+      a(ui-sref="calendar")  Calendar
+     li.fi-torsos
+      a(ui-sref="contact")  Concacts
+     li.fi-page-copy
+      a(ui-sref="post")  Posts
+     li.fi-bookmark
+      a(ui-sref="bookmark")  Bookmarks
+div.row
+ div.column.small-12
+  h2.fi-lock  Access to your data
+  p Keep your personal information private. Access your data wherever you are, whenever you need it, all under your control. 
+   |Undependent of Google, Facebook or other provider who can peek into your data.
+  p PIM has a responsive design so you can use it on your mobile, tablet or desktop.
+div.row
+ div.column.small-12
+  h2.fi-page-copy  Posts
+  P With posts you can create a post with the flag: todo, note, blog or knowlodge base. 
+   |You can make a small note or a big article. 
+   a(href="http://daringfireball.net/projects/markdown/") Markdown is integrated. 
+   |You can flag your posts 'public' because there is also a API avialable so you can publish you 'posts' on a different public site.
+  h2.fi-calendar  Calendar
+  p Working on a fullcalendar integration
+  h2.fi-torsos  Contacts
+  p Working on contacts...
+   |It wil be possible to link a post to a contact.
+  h2.fi-bookmark  Bookmarks
+  p Saving and searching your bookmarks.
 div.row
  div.column.small-12
   p See full source code on 
