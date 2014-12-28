@@ -225,8 +225,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   }
 ]);
 
-appControllers.controller('UserController', ['$scope', '$location', '$window', 'flash', 'UserService', 'AuthenticationService',
-  function UserController($scope, $location, $window, flash, UserService, AuthenticationService) {
+appControllers.controller('UserController', ['$scope', '$state', '$window', 'flash', 'UserService', 'AuthenticationService',
+  function UserController($scope, $state, $window, flash, UserService, AuthenticationService) {
 
     $scope.signIn = function signIn(username, password) {
       if (username !== null && password !== null) {
@@ -235,13 +235,14 @@ appControllers.controller('UserController', ['$scope', '$location', '$window', '
             AuthenticationService.isAuthenticated = true;
             // We choose localStorage i.o. sessionStorage so that 
             // we keep content after clossing the browser.
-            flash('Signed in');
+            flash('succes', 'Signed in');
             $window.localStorage.token = data.token;
-            $location.path("/post");
+            $state.go('home');
         }).error(function(status, data) {
           if(status === 0 && status === null) {
             flash('alert', 'Not online');
-          } else {
+          }
+          else {
             flash('alert', 'Wrong credentials');
           }
           console.log("Signin status: " + status);
@@ -252,28 +253,29 @@ appControllers.controller('UserController', ['$scope', '$location', '$window', '
     $scope.logOut = function logOut() {
       AuthenticationService.isAuthenticated = false;
       // We have logout so we delete localstore for security.
-      flash('alert', 'Logged out and deleted local information');
+      flash('success', 'Logged out and deleted local information');
       $window.localStorage.clear();
-      $location.path("/login");
+      $state.go('home');
       console.log('UserController -> logOut');
     };
 
     $scope.register = function register(username, password, passwordConfirm) {
       console.log('UserController -> register');
       if (AuthenticationService.isAuthenticated) {
-        flash('success', 'Succesfull registered as new user');
-        $location.path("/user");
+        console.log('Register -> Already logged in!'); 
+        flash('alert', 'Already logged in!');
       }
       else {
         UserService.register(username, password, passwordConfirm).success(function(data) {
-          console.log('UserController -> register success -> no redirect?');
+          console.log('UserController -> register success');
+          flash('success', 'Succesfull registered as new a user');
         }).error(function(status, data) {
           flash('alert', 'Something went wrong');
           console.log("Signin status: " + status);
           console.log(data);
         });
       }
-      $location.path("/login");
+      $state.go('home');
     };
   }
 ]);

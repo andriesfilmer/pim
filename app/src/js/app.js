@@ -15,7 +15,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /state1
-  $urlRouterProvider.otherwise("/home");
+  $urlRouterProvider.otherwise("/reload");
   //
   // Now set up the states
   $stateProvider
@@ -107,19 +107,19 @@ app.config(function ($httpProvider) {
 
 app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
 
+  // Because we use token based authentication with te first page load 
+  // we don't have 'AuthenticationService.isAuthenticated' true.
+  if (!$rootScope.reloadAuthenticated) {
+    console.log('##### test -> reload'); 
+    flash('App reloaded');
+    $rootScope.reloadAuthenticated = true;
+    $location.path('/#/reload');
+  }
+
   // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
     $rootScope.isAuthenticated = AuthenticationService.isAuthenticated;
-
-    // Because we use token based authentication with te first page load 
-    // we don't have 'AuthenticationService.isAuthenticated' true.
-    if (!$rootScope.reloadAuthenticated) {
-      flash('App reloaded');
-      $rootScope.reloadAuthenticated = true;
-      event.preventDefault();
-      $state.go('reload');
-    }
 
     console.log('toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
     console.log('AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 

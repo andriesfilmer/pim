@@ -1,16 +1,11 @@
 div.row
- div.column.small-12
-  p.strong Personal information manager (PIM).
+ div.colums.small-12.secondary-menu
+  button.fi-unlock(ui-sref="signin", ng-if="!isAuthenticated", title="Sign in")  Sign in
+  button.secondary.fi-torso(ui-sref="signup", ng-if="!isAuthenticated", title="Sign up")   Sign up
+  button.small.fi-lock(ui-sref="user.logout", ng-if="isAuthenticated")  Logout
 div.row
  div.column.small-12
-  fieldset.panel.radius
-   ul(style="list-style-type: none;")
-    li.fi-unlock(ng-if="!isAuthenticated")
-     a(ui-sref="signin")  Signin 
-    li.fi-torso(ng-if="!isAuthenticated")
-     a(ui-sref="signup")  Signup (Register as new user)
-    li.fi-lock(ng-if="isAuthenticated")
-     a(ui-sref="user.logout")  Logout
+  p.strong Personal information manager (PIM).
 div.row
  div.column.small-12
   fieldset.radius
@@ -18,7 +13,7 @@ div.row
     ul(style="list-style-type: none;")
      li.fi-calendar
       a(ui-sref="calendar")  Calendar
-     li.fi-torsos
+     li.fi-address-book
       a(ui-sref="contact")  Concacts
      li.fi-page-copy
       a(ui-sref="post")  Posts
@@ -39,7 +34,7 @@ div.row
    |You can flag your posts 'public' because there is also a API avialable so you can publish you 'posts' on a different public site.
   h2.fi-calendar  Calendar
   p Working on a fullcalendar integration
-  h2.fi-torsos  Contacts
+  h2.fi-address-book  Contacts
   p Working on contacts...
    |It wil be possible to link a post to a contact.
   h2.fi-bookmark  Bookmarks
