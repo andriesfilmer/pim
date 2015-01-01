@@ -17,6 +17,7 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
     // Save general post settings
     $scope.saveSettings = function saveSettings() {
       $('a.close-reveal-modal').trigger('click');
+      flash('success', 'Settings saved');
       $state.go('post', {}, {reload: true});
     }
 
@@ -84,8 +85,8 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
   }
 ]);
 
-appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', '$location', 'flash', 'PostService', 
-  function PostController($rootScope, $scope, $state, $window, $stateParams, $location, flash, PostService) {
+appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 
+  function PostController($rootScope, $scope, $state, $window, $stateParams, flash, PostService) {
 
     $(document).foundation();
 
@@ -94,8 +95,9 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.editForm = !$scope.editForm;
     };
 
+    // Show save icon
     $scope.change = function() {
-        $scope.saveForm = true;
+      $scope.saveForm = true;
     };
 
     $scope.post = {};
@@ -120,8 +122,9 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       });
     }
 
+    // Hide editFrom, toggle first.
     if ($stateParams.id === "create") {
-      $scope.editForm = true;  // Hide editFrom, toggle first.
+      $scope.editForm = true;
     }
 
     $scope.save = function save(post) {
@@ -138,22 +141,22 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         }
         if (post._id !== undefined) {
           PostService.update(post).success(function(data) {
-            $location.path("/post");
-            console.log('Post updated success.'); 
+            $state.go("post");
+            console.log('Post updated successii.'); 
+            flash('success', 'Post update successful');
           }).error(function(status, data) {
-            console.log(status);
-            console.log(data);
-            $location.path("/login");
+            flash('alert', 'Post update failure');
+            $state.go("login");
           });
         } else {
           PostService.create(post).success(function(data) {
-             $location.path("/post");
+             flash('success', 'Post create successful');
+             $state.go("post");
           }).error(function(status, data) {
             if(status === 0) {
               $rootScope.online = false;
             }
-            console.log(status);
-            console.log(data);
+            flash('alert', 'Post create failure');
           });
         }
       }
@@ -164,10 +167,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         $('a.close-reveal-modal').trigger('click');
         PostService.delete(id).success(function(data) {
           console.log('Deleted post:' + post._id); 
-          $location.path("/post");
-        }).error(function(status, data) {
-          console.log(status);
-          console.log(data);
+          flash('success', 'Post deleted successful');
+          $state.go("post");
         });
       }
     };

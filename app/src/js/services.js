@@ -105,8 +105,8 @@ appServices.factory('UserService', function ($http) {
 
 // Thanks to: https://github.com/gtramontina/angular-flash
 appServices.factory('flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
-  var messages = [];
 
+  var messages = [];
   var reset;
   var cleanup = function() {
     $timeout.cancel(reset);

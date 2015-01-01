@@ -49,6 +49,9 @@
 
 </head>
 <body ng-app="app">
+<div class="flip-in">
+<flash:messages ></flash:messages>
+</div>
 <div class="icon-bar five-up">
   <a class="item" ui-sref="home" ui-sref-active="menu-active">
     <i class="fi-home"></i>
@@ -68,8 +71,7 @@
 </div>
 
 <div class="container">
-   <flash:messages></flash:messages>
-   <div class="toggle" ui-view></div>
+   <div class="" ui-view></div>
 </div>
 
 
@@ -78,10 +80,10 @@
 <!-- @if NODE_ENV == 'DEVELOPMENT' -->
 <!-- JS development <!-- @echo pkgname --> -->
 <script src="vendor/js/modernizr.js"></script>
+<script src="vendor/js/jquery.min.js"></script>
 <script src="vendor/js/angular.min.js"></script>
 <script src="vendor/js/angular-ui-router.min.js"></script>
 <script src="vendor/js/angular-animate.min.js"></script>
-<script src="vendor/js/jquery.min.js"></script>
 <script src="vendor/js/foundation.min.js"></script>
 <script src="vendor/js/showdown.js"></script>
 <script src="vendor/js/showdown-table.js"></script>
