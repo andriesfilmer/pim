@@ -51,7 +51,7 @@ table p {
 }
 pre {
   background-color: #eee;
-  padding: 0.125rem 0.3125rem 0.0625rem;
+  margin-bottom: 2rem;
 }
 code {
   background-color: #eee;
@@ -74,7 +74,6 @@ input#title-input {
 }
 
 input[type="text"].search-box {
-  padding: 1.3rem;
   font-size: 1.5rem;
   width: 80%;
   display: inline;

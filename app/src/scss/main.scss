@@ -39,6 +39,10 @@ p {
   margin-top: 1.25rem;
 }
 
+.icon-bar {
+  margin-bottom: -6px; /* Icon-bar issue?! */
+}
+
 .secondary-menu {
   padding-right: 1rem;
   border-bottom: 1px #eee solid;
@@ -58,3 +62,14 @@ ul.inline-list {
     margin-left: 0.5rem;
   }
 }
+
+/* Calendar */
+
+table.fc-header {
+  border: none;
+  margin-bottom: 0;
+}
+.fc-button {height: 2.2em;}
+.fc-sat { background-color: #ECF7FA; }
+.fc-sun { background-color: #ECF7FA; }
+

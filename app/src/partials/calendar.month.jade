@@ -1,0 +1,49 @@
+div.row
+ div.column.small-8.text-left.secondary-menu
+  a.fi-thumbnails(ng-click="changeView('month')", title='Month view')
+  span.divider
+  a.fi-list-thumbnails(ng-click="changeView('basicWeek')", title='Week view')
+  span.divider
+  a.fi-list(ng-click="changeView('basicDay')", title='Day view')
+ div.column.small-4.text-right.secondary-menu
+  span.divider
+  a.fi-stop(ng-click="gotoToday()", title='Today')
+
+div.row
+ div#myCalendar.calendar(ui-calendar="uiConfig.calendar" ng-model="eventSources")
+
+div.row
+ div#calendar-item.full.reveal-modal(data-reveal='')
+  form
+   div.row
+    div.column.small-12 
+     button.radius(ng-click='addEvent(cal)', ng-show="showAddBt", title='Add event', tabindex=2) Add
+     button.radius(ng-click='updateEvent(cal)', ng-hide="showAddBt", title='Update event', tabindex=2) Update
+     button.radius(ng-click='cancelEvent()', title='Cancel') Cancel
+   div.row
+    div.column.small-12 
+     h2 {{cal.start | date:'d MMMM y HH'}} ({{cal.id}})
+   div.row
+    div.column.small-12 Title
+     input(type="text",ng-model="cal.title", tabindex=1)
+   div.row(ng-hide="cal.allDay")
+    div.column.small-12.medium-6 Start
+     input(type="date", ng-model="cal.start", ng-change="setEnd(cal)")
+    div.column.small-12.medium-6 &nbsp;
+     input(type="time", ng-model="cal.start", ng-change="setEnd(cal)")
+    div.column.small-12.medium-6 End
+     input(type="date", ng-model="cal.end")
+    div.column.small-12.medium-6 &nbsp;
+     input(type="time", ng-model="cal.end")
+    div.column.small-12
+   div.row
+    div.column.small-6 All day event
+    div.column.small-6 
+     div.switch.round.large
+      input(id="allDay", type="checkbox", ng-model="cal.allDay", ng-change="allDayChange(cal)")
+      label(for="allDay")
+   div.row
+    div.column.small-12 Description
+     textarea(ng-model="cal.desc")
+   a.close-reveal-modal
+

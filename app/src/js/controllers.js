@@ -1,6 +1,133 @@
-appControllers.controller('CalendarController', ['$scope', function($scope) {
-  $scope.greeting = 'Calendar controller....';
-  $scope.calendarItems = ["item 1","item 2","item 3","item 4"];
+appControllers.controller('CalendarController', ['$rootScope','$scope', '$filter', 'flash',
+  function CalendarController($scope, $filter, flash) {
+
+  $(document).foundation();
+
+  Date.prototype.addHours= function(h) {
+    this.setHours(this.getHours()+h);
+    return this;
+  }
+
+  var date = new Date();
+  var i = date.getMinutes();
+  var h = date.getHours();
+  var d = date.getDate();
+  var m = date.getMonth();
+  var y = date.getFullYear();
+
+  $scope.uiConfig = {
+    calendar:{
+      editable: true,
+      firstDay: 1,
+      header:{
+        left: 'prevYear,prev',
+        center: 'title',
+        right: 'next,nextYear'
+      },
+      weekNumbers: true,
+      draggable: false,
+      dayClick: function(date, jsEvent, view) {
+        $scope.showAddBt  = true;
+        $scope.cal = {};
+        $scope.cal.allDay = true;
+        $scope.cal.start = date; 
+        $scope.cal.end = date; 
+        $('#calendar-item').foundation('reveal', 'open');
+        console.log('DayClick date -> ' + date); 
+      },
+      eventClick: function(calEvent, jsEvent, view) {
+        $scope.showAddBt  = false;
+        $scope.cal = {};
+        $scope.cal.id     = calEvent.id;
+        $scope.cal.title  = calEvent.title;
+        $scope.cal.allDay = calEvent.allDay;
+        $scope.cal.start  = calEvent.start; 
+        $scope.cal.end    = calEvent.end; 
+        $('#calendar-item').foundation('reveal', 'open');
+        console.log('EventClick date -> ' + date); 
+      }
+    }
+  };
+
+  $scope.changeView = function(view) {
+    $('#myCalendar').fullCalendar('changeView', view);
+  };
+
+  $scope.gotoToday = function() {
+    $('#myCalendar').fullCalendar('today');
+  };
+
+  $scope.setEnd = function(cal) {
+    if ($scope.cal.start >= $scope.cal.end) {
+      $scope.cal.end = cal.start.addHours(1); 
+    }
+  };
+
+  $scope.allDayChange = function(cal) {
+
+    //console.log('AlldayChange getHours' + cal.start.getHours());
+    //if(cal.start.getHours() === 0) {
+    //  cal.start.addHours(12);
+    //  $scope.cal.start = cal.start; 
+    //}
+
+    if (Object.prototype.toString.call(cal.end) !== '[object Date]') {
+      $scope.cal.end = cal.start.addHours(1); 
+    }
+
+  };
+
+  $scope.events = [
+      {id: 1, title: 'All Day Event',start: new Date(y, m, 1)},
+      {id: 2, title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
+      {id: 9, title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
+      {id: 9, title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
+      {id: 8, title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
+      {id: 4, title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
+    ];
+
+  $scope.addEvent = function addEvent(cal) {
+    $('a.close-reveal-modal').trigger('click');
+    if (cal.title !== undefined) {
+      console.log('addEvent: ' + cal.title); 
+      console.log('addEvent start: ' + cal.start); 
+      console.log('addEvent end: ' + cal.end); 
+      console.log('addEvent allDay: ' + cal.allDay); 
+      cal.id = new Date ();
+      $scope.events.push({
+        id: cal.id,
+        title: cal.title,
+        start: cal.start,
+        end: cal.end,
+        allDay: cal.allDay
+      });
+    }
+  }
+
+  $scope.updateEvent = function updateEvent(cal) {
+    $('a.close-reveal-modal').trigger('click');
+    if (cal.title !== undefined) {
+      console.log('addEvent: ' + cal.title); 
+      console.log('addEvent start: ' + cal.start); 
+      console.log('addEvent end: ' + cal.end); 
+      console.log('addEvent allDay: ' + cal.allDay); 
+      cal.id = new Date ();
+      $scope.events.indexpush({
+        id: cal.id,
+        title: cal.title,
+        start: cal.start,
+        end: cal.end,
+        allDay: cal.allDay
+      });
+    }
+  }
+
+  $scope.cancelEvent = function cancelEvent() {
+    $('a.close-reveal-modal').trigger('click');
+    console.log('##### test -> close'); 
+  }
+
+  $scope.eventSources = [$scope.events];
 
 }]);
 
@@ -142,7 +269,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         if (post._id !== undefined) {
           PostService.update(post).success(function(data) {
             $state.go("post");
-            console.log('Post updated successii.'); 
             flash('success', 'Post update successful');
           }).error(function(status, data) {
             flash('alert', 'Post update failure');

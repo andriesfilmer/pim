@@ -77,10 +77,13 @@ module.exports = function(grunt) {
           'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
           'public/vendor/js/vendor.js': [
             'vendor/js/modernizr.js',
+            'vendor/js/jquery.min.js',
+            'vendor/js/jquery-ui.js',
             'vendor/js/angular.min.js',
             'vendor/js/angular-ui-router.min.js',
             'vendor/js/angular-animate.min.js',
-            'vendor/js/jquery.min.js',
+            'vendor/js/calendar.js',
+            'vendor/js/fullcalendar.js',
             'vendor/js/foundation.min.js',
             'vendor/js/showdown.js',
             'vendor/js/showdown-table.js'
@@ -88,6 +91,7 @@ module.exports = function(grunt) {
           'public/vendor/css/vendor.css': [
              'vendor/css/normalize.css',
              'public/vendor/css/foundation.css',
+             'public/vendor/css/fullcalendar.css',
              'vendor/css/foundation-icons.css'],
         },
       }

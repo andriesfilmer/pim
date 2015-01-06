@@ -38,6 +38,7 @@
   <link href="vendor/css/normalize.css" rel="stylesheet" />
   <link href="vendor/css/foundation.css" rel="stylesheet" />
   <link href="vendor/css/foundation-icons.css" rel="stylesheet" />
+  <link href="vendor/css/fullcalendar.css" rel="stylesheet" />
   <link href="css/<!-- @echo pkgname -->.css" rel="stylesheet" />
   <!-- @endif -->
 
@@ -56,7 +57,7 @@
   <a class="item" ui-sref="home" ui-sref-active="menu-active">
     <i class="fi-home"></i>
   </a>
-  <a class="item" ui-sref="calendar" ui-sref-active="menu-active">
+  <a class="item" ui-sref="calendar.month" ui-sref-active="menu-active">
     <i class="fi-calendar"></i>
   </a>
   <a class="item" ui-sref="contact" ui-sref-active="menu-active">
@@ -71,6 +72,7 @@
 </div>
 
 <div class="container">
+
    <div class="" ui-view></div>
 </div>
 
@@ -81,10 +83,13 @@
 <!-- JS development <!-- @echo pkgname --> -->
 <script src="vendor/js/modernizr.js"></script>
 <script src="vendor/js/jquery.min.js"></script>
+<script src="vendor/js/jquery-ui.js"></script>
 <script src="vendor/js/angular.min.js"></script>
 <script src="vendor/js/angular-ui-router.min.js"></script>
 <script src="vendor/js/angular-animate.min.js"></script>
 <script src="vendor/js/foundation.min.js"></script>
+<script src="vendor/js/calendar.js"></script>
+<script src="vendor/js/fullcalendar.js"></script>
 <script src="vendor/js/showdown.js"></script>
 <script src="vendor/js/showdown-table.js"></script>
 <script src="js/<!-- @echo pkgname -->.js"></script>

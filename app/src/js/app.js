@@ -2,7 +2,7 @@
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
-var app = angular.module('app', ['ui.router', 'ngAnimate', 'appControllers', 'appServices', 'appDirectives']);
+var app = angular.module('app', ['ui.router', 'ui.calendar', 'ngAnimate', 'appControllers', 'appServices', 'appDirectives']);
 
 var options = {};
 options.api = {};
@@ -15,7 +15,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /state1
-  $urlRouterProvider.otherwise("/reload");
+  $urlRouterProvider.otherwise("/calendar/month");
   //
   // Now set up the states
   $stateProvider
@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
    .state('calendar', {
       url: "/calendar",
       templateUrl: "partials/calendar.html",
-      access: { requiredAuthentication: true }
+      access: { requiredAuthentication: false }
     })
    .state('contact', {
       url: "/contact",
@@ -38,7 +38,13 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/list",
       templateUrl: "partials/calendar.list.html",
       controller: "CalendarController",
-      access: { requiredAuthentication: true }
+      access: { requiredAuthentication: false }
+    })
+    .state('calendar.month', {
+      url: "/month",
+      templateUrl: "partials/calendar.month.html",
+      controller: "CalendarController",
+      access: { requiredAuthentication: false }
     })
     .state('bookmark', {
       url: "/bookmark",
