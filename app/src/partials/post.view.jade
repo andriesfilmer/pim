@@ -22,7 +22,7 @@ div.row(ng-hide="editForm")
 div.row(ng-show="editForm")
  div.column.small-12
   form
-   input#title-input(type="text", placeholder="Title", value="{{post.title}}", ng-model="post.title", ng-change="change()")
+   input#title-input(type="text", placeholder="Title", ng-model="post.title", ng-change="change()")
    textarea#post-content(rows="19", ng-model="post.content", ng-change="change()")
    input#inputTags(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
 div.row
@@ -65,7 +65,7 @@ div.row
    div.row
     div.column.small-6 Public switch
     div.switch.round.column.small-6.post-public
-     input#public(type="checkbox", ng-model="post.public", ng-change="change()")
+     input#public(type="checkbox", ng-model="post.public")
      label(for="public")
   fieldset
    div.row

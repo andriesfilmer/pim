@@ -54,6 +54,36 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
   };
 });
 
+appServices.factory('CalendarService',['$http', function($http) {
+  return {
+
+    read: function(id) {
+      return $http.get(options.api.base_url + '/calendar/' + id)
+      .error(function(data, status, headers, config) {
+      });
+    },
+
+    findAll: function(limit) {
+      return $http.get(options.api.base_url + '/calendar/', {'params': {limit: limit}})
+      .error(function(data, status, headers, config) {
+      });
+    },
+
+    delete: function(id) {
+      return $http.delete(options.api.base_url + '/calendar/' + id);
+    },
+
+    create: function(calendar) {
+      return $http.post(options.api.base_url + '/calendar', {'calendar': calendar});
+    },
+
+    update: function(calendar) {
+      return $http.put(options.api.base_url + '/calendar', {'calendar': calendar});
+    },
+
+  };
+}]);
+
 appServices.factory('PostService',['$http', function($http) {
   return {
 

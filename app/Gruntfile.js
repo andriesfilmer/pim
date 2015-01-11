@@ -60,7 +60,8 @@ module.exports = function(grunt) {
     },
     removelogging: {
       dist: {
-        src: "public/js/<%= pkg.name %>.js" // File will be overwritten with the output!
+        // File will be overwritten with the output!
+        src: "public/js/<%= pkg.name %>.js" 
       }
     },
     concat: {
@@ -72,6 +73,7 @@ module.exports = function(grunt) {
         }
       },
       prod: {
+        // File order is important.
         files: {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
           'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
@@ -82,6 +84,7 @@ module.exports = function(grunt) {
             'vendor/js/angular.min.js',
             'vendor/js/angular-ui-router.min.js',
             'vendor/js/angular-animate.min.js',
+            'vendor/js/moment.js',
             'vendor/js/calendar.js',
             'vendor/js/fullcalendar.js',
             'vendor/js/foundation.min.js',
@@ -91,7 +94,7 @@ module.exports = function(grunt) {
           'public/vendor/css/vendor.css': [
              'vendor/css/normalize.css',
              'public/vendor/css/foundation.css',
-             'public/vendor/css/fullcalendar.css',
+             'vendor/css/fullcalendar.css',
              'vendor/css/foundation-icons.css'],
         },
       }
@@ -146,7 +149,8 @@ module.exports = function(grunt) {
       }
     },
     clean: {
-      dev: ["public/js/<%= pkg.name %>.js",
+      dev: ["tmp/*",
+            "public/js/<%= pkg.name %>.js",
             "public/css/<%= pkg.name %>.css",
             "public/vendor/css/vendor.css"]
     },
@@ -195,7 +199,7 @@ module.exports = function(grunt) {
   grunt.registerTask('nosass', ['env:dev',  'preprocess', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
 
   // grunt for production (minified files)
-  grunt.registerTask('production',    ['env:prod', 'preprocess', 'sass:dist', 
+  grunt.registerTask('production',    ['once', 'env:prod', 'preprocess', 'sass:dist', 
                                        'concat:prod', 'removelogging', 'cssmin', 'uglify', 
                                        'jade', 'appcache', 'clean']);
 

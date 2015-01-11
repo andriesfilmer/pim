@@ -17,12 +17,28 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
 
 var Schema = mongoose.Schema;
 
-// User schema
 var User = new Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     is_admin: { type: Boolean, default: false },
     created: { type: Date, default: Date.now }
+});
+
+var Event = new Schema({
+    user_id: { type: String},
+    title: { type: String, required: true },
+    start: {type: Date},
+    end: {type: Date},
+    allDay: { type: String},
+    description: { type: String},
+    status: { type: String},
+    className: { type: String},
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
+    actions_id: { type: String},
+    naw_id: { type: String},
+    name: { type: String},
+    bound: { type: String}
 });
 
 var Post = new Schema({
@@ -35,7 +51,7 @@ var Post = new Schema({
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
     content: { type: String},
-    type: {type: String, default: 'note'},
+    type: {type: String, default: 'note'}
 });
 
 
@@ -67,9 +83,11 @@ User.methods.comparePassword = function(password, cb) {
 
 //Define Models
 var userModel = mongoose.model('User', User);
+var eventModel = mongoose.model('Event', Event);
 var postModel = mongoose.model('Post', Post);
 
 
 // Export Models
 exports.userModel = userModel;
+exports.eventModel = eventModel;
 exports.postModel = postModel;

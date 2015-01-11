@@ -193,7 +193,7 @@ exports.update = function(req, res) {
 
   updatePost.updated = new Date();
 
-  db.postModel.update({_id: post._id}, updatePost, function(err, nbRows, raw) {
+  db.postModel.update({_id: post._id, user_id: req.user.id}, updatePost, function(err, nbRows, raw) {
     return res.status(200).end();
   });
 };

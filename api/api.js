@@ -23,6 +23,7 @@ console.log('API is starting on port 3001');
 
 // Routes
 var routes = {};
+routes.events = require('./route/events.js');
 routes.posts = require('./route/posts.js');
 routes.users = require('./route/users.js');
 
@@ -34,6 +35,29 @@ app.post('/user/signin', routes.users.signin);
 
 // Logout
 app.get('/user/logout', routes.users.logout); 
+
+/*******************/
+/* event routes */
+/*******************/
+
+// Get all events
+app.get('/calendar', expressJwt({secret: secret.secretToken}), routes.events.list);
+
+// Get the event (id)
+app.get('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.read); 
+
+// Create a new event item
+app.post('/calendar', expressJwt({secret: secret.secretToken}), routes.events.create); 
+
+// Update event item (id)
+app.put('/calendar', expressJwt({secret: secret.secretToken}), routes.events.update); 
+
+// Delete event item (id)
+app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.delete); 
+
+/*******************/
+/* posts routes    */
+/*******************/
 
 // Get posts by tag
 app.get('/tag/:tagName', routes.posts.listByTag); 

@@ -39,10 +39,6 @@ p {
   margin-top: 1.25rem;
 }
 
-.icon-bar {
-  margin-bottom: -6px; /* Icon-bar issue?! */
-}
-
 .secondary-menu {
   padding-right: 1rem;
   border-bottom: 1px #eee solid;
@@ -52,7 +48,7 @@ p {
     border-left: 1px #eee solid;
     margin: 1rem;
   }
-  a {color: #BBB4B4};
+  a {color: #008CBA};
 }
 
 ul.inline-list {
@@ -63,13 +59,15 @@ ul.inline-list {
   }
 }
 
-/* Calendar */
+/* Foundation overwrites */
 
-table.fc-header {
-  border: none;
-  margin-bottom: 0;
+.icon-bar {
+  margin-bottom: -6px; /* Icon-bar issue?! */
 }
-.fc-button {height: 2.2em;}
-.fc-sat { background-color: #ECF7FA; }
-.fc-sun { background-color: #ECF7FA; }
+
+button {
+  margin-bottom: 0px;
+}
+
+/* fullcalendar overwrites */
 

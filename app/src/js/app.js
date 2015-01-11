@@ -19,21 +19,21 @@ app.config(['$stateProvider', '$urlRouterProvider',
   //
   // Now set up the states
   $stateProvider
-   .state('home', {
-      url: "/home",
-      templateUrl: "partials/home.html",
-      access: { requiredAuthentication: false }
-    })
-   .state('calendar', {
-      url: "/calendar",
-      templateUrl: "partials/calendar.html",
-      access: { requiredAuthentication: false }
-    })
-   .state('contact', {
-      url: "/contact",
-      templateUrl: "partials/contact.html",
-      access: { requiredAuthentication: true }
-    })
+    .state('home', {
+       url: "/home",
+       templateUrl: "partials/home.html",
+       access: { requiredAuthentication: false }
+     })
+    .state('calendar', {
+       url: "/calendar",
+       templateUrl: "partials/calendar.html",
+       access: { requiredAuthentication: false }
+     })
+    .state('contact', {
+       url: "/contact",
+       templateUrl: "partials/contact.html",
+       access: { requiredAuthentication: true }
+     })
     .state('calendar.list', {
       url: "/list",
       templateUrl: "partials/calendar.list.html",
@@ -44,6 +44,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/month",
       templateUrl: "partials/calendar.month.html",
       controller: "CalendarController",
+      access: { requiredAuthentication: false }
+    })
+    .state('calendar.event', {
+      url: "/event?id&start",
+      templateUrl: "partials/calendar.event.html",
+      controller: "EventController",
       access: { requiredAuthentication: false }
     })
     .state('bookmark', {
@@ -61,7 +67,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/post",
       templateUrl: "partials/post.list.html",
       controller: 'PostListController',
-      access: { requiredAuthentication: true }
+      access: { requiredAuthentication: false }
     })
     .state('post.create', {
       url: "/post/create",
@@ -116,7 +122,7 @@ app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
   // Because we use token based authentication with te first page load 
   // we don't have 'AuthenticationService.isAuthenticated' true.
   if (!$rootScope.reloadAuthenticated) {
-    console.log('##### test -> reload'); 
+    console.log('App reloaded'); 
     flash('App reloaded');
     $rootScope.reloadAuthenticated = true;
     $location.path('/#/reload');
@@ -133,7 +139,7 @@ app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
       flash('alert-box alert', 'Login first');
       event.preventDefault();
-     $state.go('signin');
+      $state.go('signin');
     }
     console.log('StateChange -> ' + toState.name); 
   });
