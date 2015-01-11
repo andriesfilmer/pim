@@ -1,0 +1,38 @@
+div.row
+  form(novalidate='')
+   div.row
+    div.column.small-6 
+     button.small(ng-click='addEvent(cal)', ng-show="showAddBt", title='Add event', tabindex=2) Add
+     button.small(ng-click='updateEvent(cal)', ng-hide="showAddBt", title='Update event', tabindex=2) Update
+    div.column.small-6.text-right 
+     button.small(ui-sref='calendar.month', title='Cancel') Cancel
+   fieldset
+    legend {{cal.title}} 
+    div.row
+     div.column.small-12
+      input(type="text",ng-model="cal.title", placeholder="Title", tabindex=1)
+    div.row
+     div.column.small-2 Start
+     div.column.small-6
+      input(type="date", ng-model="cal.start", ng-change="setEnd(cal)")
+     div.column.small-4 
+      input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
+    div.row
+     div.column.small-2 End
+     div.column.small-6
+      input(type="date", ng-model="cal.end")
+     div.column.small-4
+      input(type="time", ng-model="cal.end", ng-hide="cal.allDay")
+    div.row
+     div.column.small-2 Allday
+     div.column.small-10 
+      div.switch.round.large
+       input#allDay(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
+       label(for="allDay")
+    div.row
+     div.column.small-12 Description
+      textarea(ng-model="cal.description")
+    div.row
+     div.column.small-12 
+      button.radius.alert(ng-show="cal.showDeleteBt", ng-click='deleteEvent(cal)', title='Delete item') Delete
+
