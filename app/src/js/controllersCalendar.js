@@ -44,6 +44,16 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$window', 
 
   $scope.eventSources = [$scope.events];
 
+  // Swipe left
+  $scope.next = function() {
+    $('#myCalendar').fullCalendar('next');
+  };
+
+  // Swipe right
+  $scope.prev = function() {
+    $('#myCalendar').fullCalendar('prev');
+  };
+
   $scope.changeView = function(view) {
     $('#myCalendar').fullCalendar('changeView', view);
   };
@@ -54,8 +64,8 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$window', 
 
 }]);
 
-appControllers.controller('EventController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
-  function EventController($scope, $state, $stateParams, $window, flash, CalendarService) {
+appControllers.controller('EventController', ['$scope','$timeout', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
+  function EventController($scope, $timeout, $state, $stateParams, $window, flash, CalendarService) {
 
   var id = $stateParams.id || 0;
   var date = new Date();
@@ -68,16 +78,16 @@ appControllers.controller('EventController', ['$scope', '$state', '$stateParams'
   // Length of mongoDb _id = 24, so it must be a existing event.
   if (id.length === 24) {
     console.log('Fetch -> _id: ' + id); 
-    CalendarService.read(id).success(function(data) {
-      $scope.cal = data;
-      console.log("Event id: " + data._id);
-      $scope.cal.start = new Date(data.start);
-      $scope.cal.end = new Date(data.end);
-      $scope.cal.allDay = JSON.parse(data.allDay);
-      $scope.showAddBt  = false;
+    CalendarService.read(id).success(function(cal) {
+      $scope.cal = cal;
+      console.log("Event id: " + cal._id);
+      $scope.cal.start = new Date(cal.start);
+      $scope.cal.end = new Date(cal.end);
+      $scope.cal.allDay = JSON.parse(cal.allDay);
+      $scope.cal.showAddBt  = false;
       $scope.cal.showDeleteBt  = true;
-      $window.localStorage['event_' + id] = JSON.stringify(data);
-    }).error(function(data, status) {
+      $window.localStorage['event_' + id] = JSON.stringify(cal);
+    }).error(function(cal, status) {
       flash('alert', 'Event read failure');
       console.log('Status: ' + status);
       if(status === 0 && $window.localStorage.getItem('event_' + id) !== null) {
@@ -95,11 +105,12 @@ appControllers.controller('EventController', ['$scope', '$state', '$stateParams'
   if ($stateParams.start !== undefined) {
     console.log('INIT new event -> params.start: ' + $stateParams.start); 
     var start = $stateParams.start || date;
+    var initializing = true
     $scope.cal = {};
     $scope.cal.start = new Date(start);
     $scope.cal.end = new Date(start);
     $scope.cal.allDay = true;
-    $scope.showAddBt  = true;
+    $scope.cal.showAddBt  = true;
     $scope.cal.showDeleteBt  = false;
   }
 
@@ -128,9 +139,9 @@ appControllers.controller('EventController', ['$scope', '$state', '$stateParams'
       console.log('addEvent start: ' + cal.start); 
       console.log('addEvent end: ' + cal.end); 
       console.log('addEvent allDay: ' + cal.allDay); 
-      CalendarService.create(cal).success(function(data) {
+      CalendarService.create(cal).success(function(cal) {
          flash('success', 'Event create successful');
-      }).error(function(status, data) {
+      }).error(function(status, cal) {
         flash('alert', 'Event create failure');
       });
       $state.go('calendar.month');
@@ -147,7 +158,7 @@ appControllers.controller('EventController', ['$scope', '$state', '$stateParams'
       console.log('updateEvent start: ' + cal.start); 
       console.log('updateEvent end: ' + cal.end); 
       console.log('updateEvent allDay: ' + cal.allDay); 
-      CalendarService.update(cal).success(function(data) {
+      CalendarService.update(cal).success(function(cal) {
         flash('success', 'Event update successful');
         $state.go('calendar.month');
       });
@@ -156,13 +167,24 @@ appControllers.controller('EventController', ['$scope', '$state', '$stateParams'
 
   $scope.deleteEvent = function deleteEvent(cal) {
     if (id !== undefined && id !== 0) {
-      CalendarService.delete(id).success(function(data) {
+      CalendarService.delete(id).success(function(cal) {
         console.log('Deleted event:' + cal._id); 
         flash('success', 'Event deleted successful');
         $state.go("calendar.month");
       });
     }
   };
+
+  // Show save button/icon on change cal scope.
+  $scope.$watchCollection('cal', function(oldCal, newCal) {
+    if (initializing) {
+      $timeout(function() { initializing = false; });
+    } else {
+      if (newCal !== undefined ) {
+        $scope.isChanged = true;
+      }
+    }
+  });
 
 }]);
 

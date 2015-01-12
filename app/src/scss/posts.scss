@@ -16,6 +16,10 @@ $color-kb: blue;
 .todo { @include my-row; border-left: 8px $color-todo solid; }
 .kb   { @include my-row; border-left: 8px $color-kb solid; }
 
+.public-alert {
+  color: red;
+}
+
 .switch.post-public input:checked + label {
   background: #f04124; // red
 }

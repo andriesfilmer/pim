@@ -80,9 +80,9 @@ module.exports = function(grunt) {
           'public/vendor/js/vendor.js': [
             'vendor/js/modernizr.js',
             'vendor/js/jquery.min.js',
-            'vendor/js/jquery-ui.js',
             'vendor/js/angular.min.js',
             'vendor/js/angular-ui-router.min.js',
+            'vendor/js/angular-touch.min.js',
             'vendor/js/angular-animate.min.js',
             'vendor/js/moment.js',
             'vendor/js/calendar.js',

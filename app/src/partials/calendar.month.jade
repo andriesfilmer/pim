@@ -10,5 +10,5 @@ div.row
   a.fi-target-two(ng-click="gotoToday()", title='Today')
 
 div.row
- div#myCalendar.calendar(ui-calendar="uiConfig.calendar" ng-model="eventSources")
+ div#myCalendar.calendar(ui-calendar="uiConfig.calendar" ng-model="eventSources", ng-swipe-left="next()", ng-swipe-right="prev()")
 

@@ -5,10 +5,10 @@ div.row
   span.divider
   a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
   span.divider
-  a.fi-save(ng-show="saveForm", ng-click='save(post)', title='Save item')
+  a.fi-upload.alert(ng-show="saveForm", ng-click='save(post)', title='Save item')
  div.column.small-4.text-right.secondary-menu
   span.divider
-  a.fi-plus(href='#/post/create',title='New item')
+  a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
 
 div.row(ng-hide="editForm")
  div.column.small-12
@@ -23,7 +23,7 @@ div.row(ng-show="editForm")
  div.column.small-12
   form
    input#title-input(type="text", placeholder="Title", ng-model="post.title", ng-change="change()")
-   textarea#post-content(rows="19", ng-model="post.content", ng-change="change()")
+   textarea#post-content(rows="19", ng-model="post.content", ng-change="change()", placeholder="More content....")
    input#inputTags(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
 div.row
  div.column.small-6.post-meta.panel
@@ -71,8 +71,6 @@ div.row
    div.row
     div.column.small-12 &nbsp;
    div.row
-    div.column.small-5
-     button.radius(ng-click='save(post)', title='Save item') Save
-    div.column.small-7
-     button.radius.alert(ng-click='deletePost(post)', title='Delete item') Delete
+    div.column.small-12
+     button.radius(ng-click='save(post)', title='Save item') Save settings
 

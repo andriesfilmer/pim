@@ -2,7 +2,7 @@
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
-var app = angular.module('app', ['ui.router', 'ui.calendar', 'ngAnimate', 'appControllers', 'appServices', 'appDirectives']);
+var app = angular.module('app', ['ui.router', 'ui.calendar','ngTouch', 'ngAnimate', 'appControllers', 'appServices', 'appDirectives']);
 
 var options = {};
 options.api = {};

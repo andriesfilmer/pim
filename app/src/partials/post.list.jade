@@ -14,7 +14,7 @@ div.row.flip-in(ng-show="searchForm")
    button.close-icon(type="reset")
 div.row.toggle(ng-repeat='post in posts', ng-class="post.type ? post.type : 'my-row'")
  a(href='#/post/{{post._id}}')
-  div.columns.medium-8 {{post.title}}
+  div.columns.medium-8(ng-class="post.public ? post.public : 'public'") {{post.title}}
  div.column.medium-2.hide-for-small
   div.round.secondary.label {{post.updated | date: 'yyyy-MM-dd'}}
  div.column.medium-2.hide-for-small

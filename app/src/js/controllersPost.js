@@ -80,140 +80,139 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
 appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 
   function PostController($rootScope, $scope, $state, $window, $stateParams, flash, PostService) {
 
-    $(document).foundation();
+  $(document).foundation();
 
-    $scope.saveForm = false; // Hide save icon, $scope.change first.
-    $scope.toggleForm = function () {
-      $scope.editForm = !$scope.editForm;
-    };
+  $scope.saveForm = false; // Hide save icon, $scope.change first.
+  $scope.toggleForm = function () {
+    $scope.editForm = !$scope.editForm;
+  };
 
-    // Show save icon
-    $scope.change = function() {
-      $scope.saveForm = true;
-    };
+  // Show save icon
+  $scope.change = function() {
+    $scope.saveForm = true;
+  };
 
-    $scope.post = {};
-    var id = $stateParams.id;
+  $scope.post = {};
+  var id = $stateParams.id;
 
-    if ($stateParams.id.length > 23) {
-      PostService.read(id).success(function(data) {
-        $scope.post = data;
-        $scope.toc = processToc(data);
-        $window.localStorage['post_' + id] = JSON.stringify(data);
-      }).error(function(data, status) {
-        flash('alert', 'Post read failure');
-        console.log('Status: ' + status);
-        if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
-          flash('alert', 'Read only - Working offline');
-          $scope.post = JSON.parse($window.localStorage['post_' + id]);
-          console.log('Post from localstorage id: ' + id);
-        } else {
-          flash('alert', 'This post is not offline!');
-          console.log('No post from localstorage id: ' + id);
-        }
-      });
+  if ($stateParams.id.length > 23) {
+    PostService.read(id).success(function(data) {
+      $scope.post = data;
+      $scope.toc = processToc(data);
+      $window.localStorage['post_' + id] = JSON.stringify(data);
+    }).error(function(data, status) {
+      flash('alert', 'Post read failure');
+      console.log('Status: ' + status);
+      if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
+        flash('alert', 'Read only - Working offline');
+        $scope.post = JSON.parse($window.localStorage['post_' + id]);
+        console.log('Post from localstorage id: ' + id);
+      } else {
+        flash('alert', 'This post is not offline!');
+        console.log('No post from localstorage id: ' + id);
+      }
+    });
+  }
+
+  // Hide editFrom, toggle first.
+  if ($stateParams.id === "create") {
+    $scope.editForm = true;
+  }
+
+  $scope.save = function save(post) {
+
+    if($("#post-settings").is(":visible")) {
+      $('a.close-reveal-modal').trigger('click');
     }
 
-    // Hide editFrom, toggle first.
-    if ($stateParams.id === "create") {
-      $scope.editForm = true;
-    }
+    if (post !== undefined && post.title !== undefined && post.title !== "") {
 
-    $scope.save = function save(post) {
-
-      if($("#post-settings").is(":visible")) {
-        $('a.close-reveal-modal').trigger('click');
+      // String comma separated to array
+      if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
+        post.tags = post.tags.split(',');
       }
-
-      if (post !== undefined && post.title !== undefined && post.title !== "") {
-
-        // String comma separated to array
-        if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
-          post.tags = post.tags.split(',');
-        }
-        if (post._id !== undefined) {
-          PostService.update(post).success(function(data) {
-            $state.go("post");
-            flash('success', 'Post update successful');
-          }).error(function(status, data) {
-            flash('alert', 'Post update failure');
-            $state.go("login");
-          });
-        } else {
-          PostService.create(post).success(function(data) {
-             flash('success', 'Post create successful');
-             $state.go("post");
-          }).error(function(status, data) {
-            if(status === 0) {
-              $rootScope.online = false;
-            }
-            flash('alert', 'Post create failure');
-          });
-        }
-      }
-    };
-
-    $scope.deletePost = function deletePost(post) {
-      if (id !== undefined) {
-        $('a.close-reveal-modal').trigger('click');
-        PostService.delete(id).success(function(data) {
-          console.log('Deleted post:' + post._id); 
-          flash('success', 'Post deleted successful');
+      if (post._id !== undefined) {
+        PostService.update(post).success(function(data) {
           $state.go("post");
+          flash('success', 'Post update successful');
+        }).error(function(status, data) {
+          flash('alert', 'Post update failure');
+          $state.go("login");
+        });
+      } else {
+        PostService.create(post).success(function(data) {
+           flash('success', 'Post create successful');
+           $state.go("post");
+        }).error(function(status, data) {
+          if(status === 0) {
+            $rootScope.online = false;
+          }
+          flash('alert', 'Post create failure');
         });
       }
-    };
+    }
+  };
 
-    function processToc(data) {
+  $scope.deletePost = function deletePost(post) {
+    if (id !== undefined) {
+      $('a.close-reveal-modal').trigger('click');
+      PostService.delete(id).success(function(data) {
+        console.log('Deleted post:' + post._id); 
+        flash('success', 'Post deleted successful');
+        $state.go("post");
+      });
+    }
+  };
 
-      // Inspiration from Eugene Datsky
-      // https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js
+  function processToc(data) {
 
-      var indents = [""];
-      for(var i = 1; i < 10; i++) {
-          indents.push(indents[i-1] + " ");
-      }
+    // Inspiration from Eugene Datsky
+    // https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js
 
-      if (data.content !== undefined) {
-
-        var lines = data.content.trimRight().split('\n');
-        var titles = [];
-        var toc = [];
-        var depths = [];
-        var minDepth = 1000000;
-
-        for(var i = 0; i < lines.length; i++) {
-          var line = lines[i];
-          var m = line.match(/^(#+)(.*)$/);
-          if (!m) continue;
-          minDepth = Math.min(minDepth, m[1].length);
-          depths.push(m[1].length);
-
-          title = m[2];
-          uri = title.trim().toLowerCase().replace(/[\s-]/g, '').replace(/[^-0-9a-z]/g, '');
-
-          titles.push({title: title, uri: uri}).trim;
-        }
-
-        // Show TOC if we have more then 3 titles.
-        if (titles.length > 3) {
-          $scope.showToc = true;
-        } else {
-          $scope.showToc = false;
-        }
-
-        for(var i = 0; i < depths.length; i++) {
-          depths[i] -= minDepth;
-        }
-
-        for(var i = 0; i < depths.length; i++) {
-          toc.push(indents[depths[i]] + "- [" + titles[i].title + "](/#/post/" + id + "#" + titles[i].uri + ")");
-        }
-        return toc.join('\n');
-
-      }
+    var indents = [""];
+    for(var i = 1; i < 10; i++) {
+        indents.push(indents[i-1] + " ");
     }
 
+    if (data.content !== undefined) {
+
+      var lines = data.content.trimRight().split('\n');
+      var titles = [];
+      var toc = [];
+      var depths = [];
+      var minDepth = 1000000;
+
+      for(var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        var m = line.match(/^(#+)(.*)$/);
+        if (!m) continue;
+        minDepth = Math.min(minDepth, m[1].length);
+        depths.push(m[1].length);
+
+        title = m[2];
+        uri = title.trim().toLowerCase().replace(/[\s-]/g, '').replace(/[^-0-9a-z]/g, '');
+
+        titles.push({title: title, uri: uri}).trim;
+      }
+
+      // Show TOC if we have more then 3 titles.
+      if (titles.length > 3) {
+        $scope.showToc = true;
+      } else {
+        $scope.showToc = false;
+      }
+
+      for(var i = 0; i < depths.length; i++) {
+        depths[i] -= minDepth;
+      }
+
+      for(var i = 0; i < depths.length; i++) {
+        toc.push(indents[depths[i]] + "- [" + titles[i].title + "](/#/post/" + id + "#" + titles[i].uri + ")");
+      }
+      return toc.join('\n');
+
+    }
   }
-]);
+
+}]);
 
