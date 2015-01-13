@@ -1,15 +1,15 @@
 div.row
  div.column.small-6.text-left.secondary-menu
+  a.fi-widget(href="",data-reveal-id="cal-settings", data-reveal-ajax="true") 
+  span.divider
   a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click='addEvent(cal)', ng-show="cal.showAddBt", title='Add event', tabindex=2)
   a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click='updateEvent(cal)', ng-hide="cal.showAddBt", title='Update event', tabindex=2)
-  span.divider
  div.column.small-6.text-right.secondary-menu
   a.fi-trash(ng-show="cal.showDeleteBt", ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
 
 div.row
  form(novalidate='')
-  fieldset
-   legend {{cal.title}} 
+  div.column
    div.row
     div.column.small-12
      input(type="text",ng-model="cal.title", placeholder="Title", tabindex=1)
@@ -34,4 +34,27 @@ div.row
    div.row
     div.column.small-12 Description
      textarea(ng-model="cal.description")
+div.row
+ div.column.small-6.post-meta.panel
+  i Created:  {{cal.created | date: 'yyyy-MM-dd HH:mm'}}
+ div.column.small-6.post-meta.panel
+  i Updated:  {{cal.updated | date: 'yyyy-MM-dd HH:mm'}}
+ div.column.small-12.post-meta
+   ul.inline-list
+    li.tag(ng-repeat='tag in post.tags')
+     a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
 
+div.row
+ div#cal-settings.reveal-modal(data-reveal='')
+  a.close-reveal-modal &#215;
+  fieldset
+   div.row
+    div.column.small-6.my-row.appointment Appointment
+    div.switch.round.column.small-6.cal-appointment
+     input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
+     label(for="cal-appointment") 
+   div.row
+    div.column.small-6.my-row.memo memo
+    div.switch.round.column.small-6.cal-memo
+     input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
+     label(for="cal-memo") 

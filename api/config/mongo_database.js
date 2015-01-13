@@ -32,13 +32,13 @@ var Event = new Schema({
     allDay: { type: String},
     description: { type: String},
     status: { type: String},
-    className: { type: String},
+    className: { type: String, default: 'appointment'},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    actions_id: { type: String},
-    naw_id: { type: String},
-    name: { type: String},
-    bound: { type: String}
+    actions_id: { type: String}, // deprecated
+    naw_id: { type: String},     // deprecated
+    name: { type: String},       // deprecated
+    bound: { type: String}       // deprecated
 });
 
 var Post = new Schema({

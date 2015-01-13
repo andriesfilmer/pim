@@ -1,0 +1,32 @@
+$color-appointment: #008CBA;
+$color-memo: orange;
+
+.memo { border-left: 8px $color-memo solid;
+  &.fc-event { 
+    background-color: $color-memo; 
+    border-color: darkorange;
+    border-left: 2px; 
+  }
+}
+.appointment { 
+  border-left: 8px $color-appointment solid; 
+  &.fc-event { 
+    background-color: $color-appointment; 
+    border-left: 2px; 
+  }
+}
+
+.switch.cal-appointment input:checked + label {
+  background: $color-appointment;
+}
+.switch.cal-memo input:checked + label {
+  background: $color-memo;
+}
+
+/* Fullcalendar overwrites */
+
+.fc-state-default {
+  background-image: none;
+  &:focus {background-color: #f5f5f5;}
+  &:focus {color: #000000;}
+}

@@ -10,12 +10,14 @@ exports.list = function(req, res) {
     return res.send(401); // Unauthorized
   }
 
-  var query = db.eventModel.find({user_id: req.user.id});
-  query.select("_id title start end allDay description");
+  var dateStart = req.query.start.substr(1,10);
+  var dateEnd = req.query.end.substr(1,10);
+  var query = db.eventModel.find({"start": {"$gte": dateStart, "$lt": dateEnd}, user_id: req.user.id });
+  query.select("_id title start end allDay className");
   query.exec(function(err, results) {
     if (err) {
       console.log(err);
-      return res.send(400); // Bad Request
+      return res.sendStatus(400); // Bad Request
     }
     return res.status(200).json(results); // OK
   });
@@ -35,7 +37,7 @@ exports.read = function(req, res) {
   }
 
   var query = db.eventModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id title start end allDay description created updated');
+  query.select('_id title start end allDay description className created updated');
   query.exec(function(err, result) {
     if (err) {
         console.log(err);
@@ -102,9 +104,6 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
 
-  console.log('##### req.body.calendar #####'); 
-  console.dir(req.body.calendar);
-
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
@@ -132,6 +131,9 @@ exports.update = function(req, res) {
   if (event.allDay !== undefined) {
     updateEvent.allDay = event.allDay;
   }
+  if (event.className !== undefined) {
+    updateEvent.className = event.className;
+  }
   updateEvent.updated = new Date();
 
   db.eventModel.update({_id: event._id, user_id: req.user.id}, updateEvent, function(err, nbRows, raw) {
@@ -157,7 +159,6 @@ exports.delete = function(req, res) {
   }
 
   var query = db.eventModel.findOne({_id: id, user_id: req.user.id});
-  query.select("_id title start end allDay description");
   query.exec(function(err, result) {
     if (err) {
       console.log(err);

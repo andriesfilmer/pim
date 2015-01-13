@@ -63,8 +63,8 @@ appServices.factory('CalendarService',['$http', function($http) {
       });
     },
 
-    findAll: function(limit) {
-      return $http.get(options.api.base_url + '/calendar/', {'params': {limit: limit}})
+    findAll: function(start, end) {
+      return $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
       .error(function(data, status, headers, config) {
       });
     },

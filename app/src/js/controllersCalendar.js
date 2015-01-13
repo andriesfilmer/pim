@@ -4,7 +4,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$window', 
   var date = new Date();
 
   $scope.events = function(start, end, timezone, callback) {
-    CalendarService.findAll().success(function(events) {
+    CalendarService.findAll(start, end).success(function(events) {
       //console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
 
       // We get a allDay false/true as string, convert it to a boolean.
@@ -19,7 +19,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$window', 
   $scope.uiConfig = {
     calendar:{
       timezone: 'local',
-      editable: true,
+      editable: false,
       contentHeight: 'auto',
       aspectRatio: 0,
       firstDay: 1,
@@ -69,6 +69,8 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
 
   var id = $stateParams.id || 0;
   var date = new Date();
+
+  $(document).foundation();
 
   Date.prototype.addHours= function(h) {
     this.setHours(this.getHours()+h);
@@ -152,8 +154,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   }
 
   $scope.updateEvent = function updateEvent(cal) {
-    $('a.close-reveal-modal').trigger('click');
-    if (cal.title !== undefined) {
+    if (cal.title !== '') {
       console.log('updateEvent: ' + cal.title); 
       console.log('updateEvent start: ' + cal.start); 
       console.log('updateEvent end: ' + cal.end); 
@@ -163,6 +164,10 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
         $state.go('calendar.month');
       });
     }
+    else {
+      flash('alert', 'Event title required');
+    }
+    //$('a.close-reveal-modal').trigger('click');
   }
 
   $scope.deleteEvent = function deleteEvent(cal) {

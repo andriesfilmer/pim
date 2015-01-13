@@ -1,7 +1,7 @@
 
 @mixin my-row {
   border-bottom: 1px #eee solid;
-  padding: 8px;
+  padding: 6px;
   margin-top: 0;
 }
 .my-row { @include my-row}
@@ -9,7 +9,7 @@
 $color-note: orange;
 $color-blog: green;
 $color-todo: red;
-$color-kb: blue;
+$color-kb: #008CBA;
 
 .note { @include my-row; border-left: 8px $color-note solid; }
 .blog { @include my-row; border-left: 8px $color-blog solid; }
@@ -72,48 +72,16 @@ input#title-input {
 }
 
 
-.search-box,.close-icon {
-  position: relative;
-  padding: 10px;
+#post-search input[type="text"].search-box {
+  margin-top: 1rem;
+  font-size: 1.2rem;
 }
 
-input[type="text"].search-box {
-  font-size: 1.5rem;
-  width: 80%;
-  display: inline;
-  border-radius: 25px;
-  margin-top: 1em;
-  &:not(:valid) ~ .close-icon {
-    display: none !important;
-  }
+#post-search .reset-button {
+  margin-top: 0.5rem;
+  padding: 0;
+  font-size: 2.6875rem;
+  color: #AAAAAA;
+  background: transparent;
+  font-weight: bold;
 }
-
-// Search box clearing icon
-.close-icon {
-  border:1px solid transparent;
-  background-color: transparent;
-  display: inline-block;
-  vertical-align: super;
-  outline: 0;
-  cursor: pointer;
-  // Overwrite foundation
-  &:hover {
-    background-color: transparent;
-  }
-  &:focus {
-    background-color: transparent;
-  }
-  &:after {
-	content: "X";
-	width: 25px;
-	height: 25px;
-	position: absolute;
-	background-color: #FA9595;
-	right: 35px;
-	bottom: 0;
-	padding: 4px;
-	border-radius: 50%;
-	cursor: pointer;
-  }
-}
-

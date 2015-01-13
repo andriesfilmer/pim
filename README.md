@@ -1,7 +1,5 @@
 # PIM (personal information manager)
 
-Project has just started.....
-
 PIM is a application built with AngularJS, Node.js, Express and MongoDB.
 
 ## Description
@@ -9,7 +7,7 @@ PIM is a application built with AngularJS, Node.js, Express and MongoDB.
 A private PIM with:
 
 * Posts i.o Todo/Note/Blog/Knowledge base
-* Personal calendar (not ready yet)
+* Personal calendar (appiontments, memos)
 * Bookmarks (not ready yet)
 * Register/Login/Logout users
 
@@ -56,5 +54,6 @@ Inspired by the code from the articles:
 * [Interceptors in Angularjs] (http://www.webdeveasy.com/interceptors-in-angularjs-and-useful-examples/)
 
 ## Licence
+
 The MIT License (MIT)
 

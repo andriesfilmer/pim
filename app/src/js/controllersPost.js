@@ -20,6 +20,9 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
+      if ($scope.searchForm === false) {
+        $state.go('post', {}, {reload: true});
+      }
     };
 
     $scope.posts = [];

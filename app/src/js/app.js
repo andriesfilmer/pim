@@ -67,7 +67,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/post",
       templateUrl: "partials/post.list.html",
       controller: 'PostListController',
-      access: { requiredAuthentication: false }
+      access: { requiredAuthentication: true }
     })
     .state('post.create', {
       url: "/post/create",
