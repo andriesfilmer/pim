@@ -12,7 +12,7 @@ exports.listPublic = function(req, res) {
   query.exec(function(err, results) {
     if (err) {
         console.log(err);
-        return res.send(400); // Bad Request
+        return res.sendStatus(400); // Bad Request
     }
 
     for (var postKey in results) {
@@ -20,7 +20,12 @@ exports.listPublic = function(req, res) {
       results[postKey].content = results[postKey].content.substr(0, 400);
     }
 
-    return res.status(200).json(results); // OK
+    if (result !== null) {
+      return res.status(200).json(results); // OK
+    }
+    else {
+      return res.sendStatus(404); // Not Found
+    }
 
   });
 
@@ -30,7 +35,7 @@ exports.listPublic = function(req, res) {
 exports.listAll = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var query = db.postModel.find({user_id: req.user.id}).limit(req.query.limit);
@@ -38,11 +43,19 @@ exports.listAll = function(req, res) {
   query.select("_id title type tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
+
     if (err) {
-        console.log(err);
-        return res.send(400); // Bad Request
-      }
+      console.log(err);
+      return res.sendStatus(400); // Bad Request
+    }
+
+    //if (results !== null) {
       return res.status(200).json(results); // OK
+    //}
+    //else {
+    //  return res.sendStatus(404); // Not Found
+    //}
+
   });
 
 };
@@ -53,82 +66,100 @@ exports.searchAll = function(req, res) {
   var posts = req.query; 
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   if (posts.searchKey) {
-    console.log('##### post search -> ' + posts.searchKey); 
+    //console.log('Post search -> ' + posts.searchKey); 
     var query = db.postModel.find({ $or: [ 
                                           {title:   { $exists: true, $regex: posts.searchKey, $options: 'i' } },
                                           {content: { $exists: true, $regex: posts.searchKey, $options: 'i' } }, 
                                           {tags:    { $exists: true, $regex: posts.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   } else {
-    console.log('##### post empty search -> '); 
+    //console.log('Post empty search -> Show all'); 
     var query = db.postModel.find({ user_id: req.user.id });
   }
 
   query.select("_id title type tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
+
     if (err) {
       console.log(err);
-      return res.send(400); // Bad Request
+      return res.sendStatus(400); // Bad Request
     }
 
-    return res.status(200).json(results); // OK
+    if (results !== null) {
+      return res.status(200).json(results); // OK
+    }
+    else {
+      return res.sendStatus(404); // Not Found
+    }
 
   });
 
 };
 
-// Show post 'id').
+// Show post id.
 exports.read = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id || '';
-  if (id == '') {
-    return res.send(400); // Bad Request
+  if (id === '') {
+    return res.sendStatus(400); // Bad Request
   }
 
   var query = db.postModel.findOne({ _id: id, user_id: req.user.id });
   query.select('_id title tags type content created updated public');
   query.exec(function(err, result) {
+
     if (err) {
         console.log(err);
-        return res.send(400); // Bad Request
+        return res.sendStatus(400); // Bad Request
     }
 
     if (result != null) {
       result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
         return res.status(200).json(result);
       });
-    } else {
-      return res.send(400); // Bad Request
     }
+    else {
+      return res.sendStatus(400); // Bad Request
+    }
+
   });
 }; 
 
 exports.create = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
-  console.log('##### user_id -> ' + req.user.id); 
 
   var post = req.body.post;
-  if (post == null || post.title == null ) {
-    return res.send(400); // Bad Request
+  if (post == null) {
+    return res.sendStatus(400); // Bad Request
   }
 
   var postEntry = new db.postModel();
-  postEntry.user_id = req.user.id;
-  postEntry.title = post.title;
 
-  //postEntry.tags = post.tags.split(',');
+  postEntry.user_id = req.user.id;
+
+  // Title required
+  if (post.title !== null && post.title !== "") {
+    postEntry.title = post.title;
+  }
+  else {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  postEntry.public = post.public;
+  postEntry.content = post.content;
+
   if (post.tags != null) {
     if (Object.prototype.toString.call(post.tags) === '[object Array]') {
       postEntry.tags = post.tags;
@@ -138,16 +169,13 @@ exports.create = function(req, res) {
     }
   }
 
-  postEntry.public = post.public;
-  postEntry.content = post.content;
-
   postEntry.save(function(err) {
     if (err) {
       console.log(err);
-      return res.send(400);
+      return res.sendStatus(400);
     }
 
-    return res.status(200).end();
+    return res.sendStatus(200).end();
 
   });
 }
@@ -155,20 +183,28 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.send(401);
+    return res.send(401); // Not authorized
   }
 
   var post = req.body.post;
-
-  if (post == null || post._id == null) {
+  if (post == null) {
     res.send(400);
   }
 
   var updatePost = {};
 
-  if (post.title != null && post.title != "") {
+  // id required
+  if (post._id === null || post._id === "" || post._id === undefined) {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  // Title required
+  if (post.title !== null && post.title !== "") {
     updatePost.title = post.title;
-  } 
+  }
+  else {
+    return res.sendStatus(400); // Bad Request
+  }
 
   if (post.tags != null) {
     if (Object.prototype.toString.call(post.tags) === '[object Array]') {
@@ -201,12 +237,12 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
 
   if (!req.user) {
-    return res.send(401);
+    return res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id;
   if (id == null || id == '') {
-    res.send(400);
+    res.sendStatus(400); // Bad request
   }
 
   var query = db.postModel.findOne({_id:id});
@@ -214,16 +250,16 @@ exports.delete = function(req, res) {
   query.exec(function(err, result) {
     if (err) {
       console.log(err);
-      return res.send(400);
+      return res.sendStatus(400); // Bad request
     }
 
     if (result != null) {
       result.remove();
-      return res.status(200).end();
+      return res.sendStatus(200).end();
       console.log('Post -> delete'); 
     }
     else {
-      return res.send(400);
+      return res.sendStatus(404); // Not Found
     }
 
   });
@@ -233,7 +269,7 @@ exports.listByTag = function(req, res) {
 
   var tagName = req.params.tagName || '';
   if (tagName == '') {
-    return res.send(400);
+    return res.sendStatus(400);
   }
 
   var query = db.postModel.find({tags: tagName, public: true, user_id: req.user.id });
@@ -242,7 +278,7 @@ exports.listByTag = function(req, res) {
   query.exec(function(err, results) {
     if (err) {
       console.log(err);
-      return res.send(400);
+      return res.sendStatus(400);
     }
 
     for (var postKey in results) {

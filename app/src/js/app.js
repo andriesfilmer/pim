@@ -34,16 +34,22 @@ app.config(['$stateProvider', '$urlRouterProvider',
        templateUrl: "partials/contact.html",
        access: { requiredAuthentication: true }
      })
-    .state('calendar.list', {
-      url: "/list",
-      templateUrl: "partials/calendar.list.html",
+    .state('calendar.search', {
+      url: "/search",
+      templateUrl: "partials/calendar.search.html",
       controller: "CalendarController",
       access: { requiredAuthentication: false }
     })
     .state('calendar.month', {
-      url: "/month",
+      url: "/month?start",
       templateUrl: "partials/calendar.month.html",
       controller: "CalendarController",
+      access: { requiredAuthentication: false }
+    })
+    .state('calendar.event/:id', {
+      url: "/event/:id",
+      templateUrl: "partials/calendar.event.html",
+      controller: "EventController",
       access: { requiredAuthentication: false }
     })
     .state('calendar.event', {

@@ -53,9 +53,6 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
           }).error(function(data, status) {
             console.log(status);
             console.log('Posts search error');
-            if(status === 0) {
-              console.log('Posts search notting found');
-            } 
           }); 
         }
     });

@@ -12,8 +12,9 @@ exports.list = function(req, res) {
 
   var dateStart = req.query.start.substr(1,10);
   var dateEnd = req.query.end.substr(1,10);
-  var query = db.eventModel.find({"start": {"$gte": dateStart, "$lt": dateEnd}, user_id: req.user.id });
+  var query = db.eventModel.find({"start": {"$gte": dateStart, "$lt": dateEnd}, user_id: req.user.id }).limit(500);
   query.select("_id title start end allDay className");
+  query.sort('start');
   query.exec(function(err, results) {
     if (err) {
       console.log(err);
@@ -24,7 +25,48 @@ exports.list = function(req, res) {
 
 };
 
+// Search calendar
+exports.searchAll = function(req, res) {
+
+  var calendar = req.query; 
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  if (calendar.searchKey) {
+    console.log('Event search -> ' + calendar.searchKey); 
+    var query = db.eventModel.find({ $or: [ 
+                                          {title:   { $exists: true, $regex: calendar.searchKey, $options: 'i' } },
+                                          {description: { $exists: true, $regex: calendar.searchKey, $options: 'i' } }, 
+                                         ],user_id: req.user.id } ).limit(100);
+  } else {
+    console.log('Event empty search -> Show all'); 
+    var query = db.eventModel.find({ user_id: req.user.id });
+  }
+
+  query.select("_id title start end allDay className created updated");
+  query.sort('-updated');
+  query.exec(function(err, results) {
+
+    if (err) {
+      console.log(err);
+      return res.sendStatus(400); // Bad Request
+    }
+
+    if (results !== null) {
+      return res.status(200).json(results); // OK
+    }
+    else {
+      return res.sendStatus(404); // Not Found
+    }
+
+  });
+
+};
+
 exports.read = function(req, res) {
+
   console.log('Event get id: ' + req.params.id); 
 
   if (!req.user) {
@@ -33,7 +75,7 @@ exports.read = function(req, res) {
 
   var id = req.params.id || '';
   if (id == '') {
-    return res.send(400); // Bad Request
+    return res.send(406); // Not Acceptable
   }
 
   var query = db.eventModel.findOne({ _id: id, user_id: req.user.id });
@@ -44,17 +86,18 @@ exports.read = function(req, res) {
         return res.send(400); // Bad Request
     }
 
-    if (result != null) {
-      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
-        return res.status(200).json(result);
-      });
+    if (result !== null) {
+      return res.status(200).json(result);
     } else {
-      return res.sendStatus(400); // Bad Request
+      return res.sendStatus(404); // Not found
     }
   });
+
 }; 
 
 exports.create = function(req, res) {
+
+  console.dir(req.body.calendar);
 
   if (!req.user) {
     return res.send(401); // Unauthorized
@@ -62,7 +105,7 @@ exports.create = function(req, res) {
   console.log('Event create -> with user_id -> ' + req.user.id); 
 
   var event = req.body.calendar;
-  if (event == null || event.title == null ) {
+  if (event == null) {
     return res.sendStatus(400); // Bad Request
   }
 
@@ -70,23 +113,32 @@ exports.create = function(req, res) {
 
   createEvent.user_id = req.user.id;
 
+  // Title required
   if (event.title != null && event.title != "") {
     createEvent.title = event.title;
   }
   else {
-    createEvent.title = 'Empty title';
+    return res.sendStatus(400); // Bad Request
   }
 
-  if (event.start != null && event.start != "") {
+  // Start required
+  if (event.start !== undefined && event.start !== "" && event.start !== null) {
     createEvent.start = event.start;
   }
+  else {
+    return res.sendStatus(400); // Bad Request
+  }
 
-  if (event.end != null && event.end != "") {
+  if (event.end != undefined) {
     createEvent.end = event.end;
   }
 
-  if (event.description != null && event.description != "") {
+  if (event.description !== undefined) {
     createEvent.description = event.description;
+  }
+
+  if (event.className !== undefined) {
+    createEvent.className = event.className;
   }
 
   createEvent.allDay = event.allDay;
@@ -94,11 +146,9 @@ exports.create = function(req, res) {
   createEvent.save(function(err) {
     if (err) {
       console.log(err);
-      return res.send(400);
+      return res.sendStatus(400); // Bad Request
     }
-
-    return res.status(200).end();
-
+    return res.sendStatus(200).end();
   });
 }
 
@@ -108,32 +158,48 @@ exports.update = function(req, res) {
     return res.send(401); // Unauthorized
   }
 
+  console.dir(req.body.calendar);
+
   var event = req.body.calendar;
 
   if (event == null || event._id == null) {
-    res.sendStatus(400); // Bad request
-      console.log('Error no _id!'); 
+    res.sendStatus(404); // Not found
+      console.log('404 - Not Found'); 
   }
 
+  // Title required
   var updateEvent = {};
-  if (event.title != undefined && event.title != "") {
+  if (event.title !== undefined && event.title !== "") {
     updateEvent.title = event.title;
   }
-  if (event.start != undefined && event.start != "") {
+  else {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  // Start required
+  if (event.start !== undefined && event.start !== "" && event.start !== null) {
     updateEvent.start = event.start;
   }
-  if (event.end != undefined && event.end != "") {
+  else {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  if (event.end != undefined) {
     updateEvent.end = event.end;
   }
-  if (event.description !== undefined && event.description !== "") {
+
+  if (event.description != undefined) {
     updateEvent.description = event.description;
   }
-  if (event.allDay !== undefined) {
+
+  if (event.allDay != undefined) {
     updateEvent.allDay = event.allDay;
   }
-  if (event.className !== undefined) {
+
+  if (event.className != undefined) {
     updateEvent.className = event.className;
   }
+
   updateEvent.updated = new Date();
 
   db.eventModel.update({_id: event._id, user_id: req.user.id}, updateEvent, function(err, nbRows, raw) {
@@ -143,38 +209,42 @@ exports.update = function(req, res) {
       return res.sendStatus(400);
       console.log('Event update error -> id: ' + event._id); 
     }
-    return res.status(200).end();
+    return res.sendStatus(200).end();
   });
 };
 
 exports.delete = function(req, res) {
+
+  console.dir(req.params);
 
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
 
   var id = req.params.id;
-  if (id == null || id == '') {
+  if (id === null || id === '') {
     res.send(400); // Bad request
   }
 
   var query = db.eventModel.findOne({_id: id, user_id: req.user.id});
   query.exec(function(err, result) {
-    if (err) {
+    if (err) {
       console.log(err);
       return res.send(400); // Bad request
     }
 
-    if (id !== undefined) {
+    if (result !== null) {
       result.remove();
       console.log('Event -> deleted -> id: ' + id); 
-      return res.status(200).end();
+      return res.sendStatus(200).end();
     }
     else {
-      return res.send(400);
+      return res.sendStatus(400); // Bad request
     }
 
   });
 };
+
+
 
 

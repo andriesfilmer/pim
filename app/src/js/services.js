@@ -69,6 +69,10 @@ appServices.factory('CalendarService',['$http', function($http) {
       });
     },
 
+    searchAll: function(searchKey) { 
+      return $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}});
+    },
+
     delete: function(id) {
       return $http.delete(options.api.base_url + '/calendar/' + id);
     },

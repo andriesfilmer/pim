@@ -2,21 +2,21 @@ div.row
  div.column.small-6.text-left.secondary-menu
   a.fi-widget(href="",data-reveal-id="cal-settings", data-reveal-ajax="true") 
   span.divider
-  a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click='addEvent(cal)', ng-show="cal.showAddBt", title='Add event', tabindex=2)
-  a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click='updateEvent(cal)', ng-hide="cal.showAddBt", title='Update event', tabindex=2)
+  a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
+  a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
  div.column.small-6.text-right.secondary-menu
-  a.fi-trash(ng-show="cal.showDeleteBt", ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
+  a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")
 
 div.row
  form(novalidate='')
   div.column
    div.row
     div.column.small-12
-     input(type="text",ng-model="cal.title", placeholder="Title", tabindex=1)
+     input(type="text",ng-model="cal.title", required="", placeholder="Title", tabindex=1)
    div.row
-    div.column.small-2 Start
+    div.column.small-2 Start 
     div.column.small-6
-     input(type="date", ng-model="cal.start", ng-change="setEnd(cal)")
+     input(type="date", ng-model="cal.start", required="", ng-change="setEnd(cal)")
     div.column.small-4 
      input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
    div.row
@@ -58,3 +58,4 @@ div.row
     div.switch.round.column.small-6.cal-memo
      input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
      label(for="cal-memo") 
+

@@ -1,7 +1,8 @@
-appControllers.controller('CalendarController', ['$scope', '$state', '$window', 'flash', 'CalendarService',
-  function CalendarController($scope, $state, $window, flash, CalendarService) {
+appControllers.controller('CalendarController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
+  function CalendarController($scope, $state, $stateParams, $window, flash, CalendarService) {
 
   var date = new Date();
+  var startDate = $stateParams.start || date;
 
   $scope.events = function(start, end, timezone, callback) {
     CalendarService.findAll(start, end).success(function(events) {
@@ -23,6 +24,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$window', 
       contentHeight: 'auto',
       aspectRatio: 0,
       firstDay: 1,
+      defaultDate: startDate,
       header:{
         left: 'prevYear,prev',
         center: 'title',
@@ -62,6 +64,22 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$window', 
     $('#myCalendar').fullCalendar('today');
   };
 
+  $scope.searchCalendar = function () {
+    $state.go('calendar.search');
+  };
+
+  $scope.searchKey =  $window.sessionStorage.calendarSearchKey;
+  $scope.$watch('searchKey', function(searchKey) {
+      if (searchKey !== undefined && searchKey.length >= 3) {
+        $window.sessionStorage.calendarSearchKey = searchKey;
+        CalendarService.searchAll(searchKey).success(function(events) {
+          $scope.events = events;
+        }).error(function(events, status) {
+          console.log(status);
+          console.log('Calendar search error');
+        }); 
+      }
+  });
 }]);
 
 appControllers.controller('EventController', ['$scope','$timeout', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
@@ -83,11 +101,12 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     CalendarService.read(id).success(function(cal) {
       $scope.cal = cal;
       console.log("Event id: " + cal._id);
+      console.dir(cal); 
       $scope.cal.start = new Date(cal.start);
       $scope.cal.end = new Date(cal.end);
       $scope.cal.allDay = JSON.parse(cal.allDay);
-      $scope.cal.showAddBt  = false;
-      $scope.cal.showDeleteBt  = true;
+      $scope.showAddBt  = false;
+      $scope.showDeleteBt  = true;
       $window.localStorage['event_' + id] = JSON.stringify(cal);
     }).error(function(cal, status) {
       flash('alert', 'Event read failure');
@@ -112,8 +131,8 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.cal.start = new Date(start);
     $scope.cal.end = new Date(start);
     $scope.cal.allDay = true;
-    $scope.cal.showAddBt  = true;
-    $scope.cal.showDeleteBt  = false;
+    $scope.showAddBt  = true;
+    $scope.showDeleteBt  = false;
   }
 
   $scope.setEnd = function(cal) {
@@ -135,39 +154,36 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     }
   };
 
-  $scope.addEvent = function addEvent(cal) {
-    if (cal.title !== undefined) {
-      console.log('addEvent: ' + cal.title); 
-      console.log('addEvent start: ' + cal.start); 
-      console.log('addEvent end: ' + cal.end); 
-      console.log('addEvent allDay: ' + cal.allDay); 
-      CalendarService.create(cal).success(function(cal) {
-         flash('success', 'Event create successful');
-      }).error(function(status, cal) {
-        flash('alert', 'Event create failure');
-      });
-      $state.go('calendar.month');
+  $scope.upsertEvent = function upsertEvent(cal, upsert) {
+    if (cal.title !== undefined && cal.start !== undefined) {
+      console.log('upsertEvent: ' + upsert); 
+      console.log('upsertEvent title: ' + cal.title); 
+      console.log('upsertEvent start: ' + cal.start); 
+      console.log('upsertEvent end: ' + cal.end); 
+      console.log('upsertEvent allDay: ' + cal.allDay); 
+      // Insert a event
+      if (upsert === 'insert') {
+        CalendarService.create(cal).success(function(cal) {
+        }).success(function(status, cal) {
+          flash('success', 'Event create successful');
+        }).error(function(status, cal) {
+          flash('alert', 'Event create failure');
+        });
+      } 
+      // Update a event
+      else { 
+        CalendarService.update(cal).success(function(cal) {
+        }).success(function(status, cal) {
+          flash('success', 'Event update successful');
+        }).error(function(status, cal) {
+          flash('alert', 'Event update failure');
+        });
+      }
+      $state.go('calendar.month',{start: cal.start.toISOString()});
     }
     else {
       flash('alert', 'Event title required');
     }
-  }
-
-  $scope.updateEvent = function updateEvent(cal) {
-    if (cal.title !== '') {
-      console.log('updateEvent: ' + cal.title); 
-      console.log('updateEvent start: ' + cal.start); 
-      console.log('updateEvent end: ' + cal.end); 
-      console.log('updateEvent allDay: ' + cal.allDay); 
-      CalendarService.update(cal).success(function(cal) {
-        flash('success', 'Event update successful');
-        $state.go('calendar.month');
-      });
-    }
-    else {
-      flash('alert', 'Event title required');
-    }
-    //$('a.close-reveal-modal').trigger('click');
   }
 
   $scope.deleteEvent = function deleteEvent(cal) {
@@ -175,8 +191,8 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       CalendarService.delete(id).success(function(cal) {
         console.log('Deleted event:' + cal._id); 
         flash('success', 'Event deleted successful');
-        $state.go("calendar.month");
       });
+      $state.go('calendar.month',{start: cal.start.toISOString()});
     }
   };
 

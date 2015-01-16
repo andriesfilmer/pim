@@ -1,0 +1,15 @@
+div.row
+  form#search
+   div.columns.small-10
+    input.radius.search-box(name="focus", type="text", placeholder="Enter search words...", ng-model="searchKey", tabindex="2" )
+   div.columns.small-2
+    button.tiny.reset-button(type="reset") &#215;
+
+div.row.my-row(ng-repeat='event in events', ng-class="event.className")
+ a(href='#/calendar/event/{{event._id}}')
+  div.columns.medium-9 {{event.title}}
+ div.column.medium-3
+  div.round.secondary.label {{event.start | date: 'yyyy-MM-dd'}}
+  div.round.secondary.label(ng-show='event.allDay==="true"') all day
+  div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
+  div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}}

@@ -27,7 +27,9 @@ routes.events = require('./route/events.js');
 routes.posts = require('./route/posts.js');
 routes.users = require('./route/users.js');
 
-// Create a new user
+/*******************/
+// User routes     */
+/*******************/
 app.post('/user/register', routes.users.register); 
 
 // Login
@@ -37,11 +39,14 @@ app.post('/user/signin', routes.users.signin);
 app.get('/user/logout', routes.users.logout); 
 
 /*******************/
-/* event routes */
+/* Event routes    */
 /*******************/
 
 // Get all events
 app.get('/calendar', expressJwt({secret: secret.secretToken}), routes.events.list);
+
+// Search events
+app.get('/calendar/search', expressJwt({secret: secret.secretToken}), routes.events.searchAll);
 
 // Get the event (id)
 app.get('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.read); 
@@ -56,7 +61,7 @@ app.put('/calendar', expressJwt({secret: secret.secretToken}), routes.events.upd
 app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.delete); 
 
 /*******************/
-/* posts routes    */
+/* Posts routes    */
 /*******************/
 
 // Get posts by tag
@@ -65,7 +70,7 @@ app.get('/tag/:tagName', routes.posts.listByTag);
 // Get all public posts
 app.get('/post/public', routes.posts.listPublic);
 
-// Search all posts
+// Search posts
 app.get('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.searchAll);
 
 // Get all posts

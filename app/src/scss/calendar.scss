@@ -1,17 +1,25 @@
+
+@mixin my-row {
+  border-bottom: 1px #eee solid;
+  padding: 6px;
+  margin-top: 0;
+}
+.my-row { @include my-row}
+
 $color-appointment: #008CBA;
 $color-memo: orange;
 
-.memo { border-left: 8px $color-memo solid;
-  &.fc-event { 
-    background-color: $color-memo; 
-    border-color: darkorange;
-    border-left: 2px; 
-  }
-}
 .appointment { 
   border-left: 8px $color-appointment solid; 
   &.fc-event { 
     background-color: $color-appointment; 
+    border-left: 2px; 
+  }
+}
+.memo { border-left: 8px $color-memo solid;
+  &.fc-event { 
+    background-color: $color-memo; 
+    border-color: darkorange;
     border-left: 2px; 
   }
 }
@@ -21,6 +29,10 @@ $color-memo: orange;
 }
 .switch.cal-memo input:checked + label {
   background: $color-memo;
+}
+
+span#search-calendar.fi-calendar {
+  font-size: 1.8em;
 }
 
 /* Fullcalendar overwrites */

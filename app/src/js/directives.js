@@ -54,7 +54,7 @@ appDirectives.directive('flashMessages', [function() {
   var directive = { restrict: 'EA', replace: true };
   directive.template =
     '<ol id="flash-messages">' +
-      '<li ng-repeat="m in messages" class="alert-box {{m.level}}">{{m.text}}</li>' +
+      '<li ng-repeat="m in messages" class="alert-box {{m.level}}">{{m.text}} <a href="#" class="close">&times;</a></li>' +
     '</ol>';
 
   directive.controller = ['$scope', '$rootScope', function($scope, $rootScope) {
