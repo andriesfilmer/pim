@@ -58,4 +58,7 @@ div.row
     div.switch.round.column.small-6.cal-memo
      input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
      label(for="cal-memo") 
-
+   div.row
+    div.column.small-12
+     button.radius(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event') Insert
+     button.radius(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event') Update

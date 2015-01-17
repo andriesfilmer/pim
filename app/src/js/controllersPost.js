@@ -1,5 +1,5 @@
-appControllers.controller('PostListController', ['$rootScope', '$scope', '$state', '$window', 'flash', 'PostService', 
-  function PostListController($rootScope, $scope, $state, $window, flash, PostService) {
+appControllers.controller('PostListController', ['$scope', '$state', '$window', 'flash', 'PostService', 
+  function PostListController($scope, $state, $window, flash, PostService) {
 
     $(document).foundation();
 
@@ -16,7 +16,8 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
       $window.localStorage.postLimit =  limit;
     };
 
-    $scope.searchForm = false;  // Hide searchFrom, toggle first.
+    // Hide searchFrom, toggle first.
+    $scope.searchForm = false;  
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
@@ -27,9 +28,13 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
 
     $scope.posts = [];
 
+    // Get posts from MongoDb.
     PostService.findAll($window.localStorage.postLimit).success(function(data) {
+
       $scope.posts = data;
+      // Save posts for offline.
       $window.localStorage.postsAll = JSON.stringify(data);
+
     }).error(function(data, status) {
       console.log('Status: ' + status);
       if(status === 0) {
@@ -45,6 +50,7 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
       }
     });
 
+    // Get new posts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
         if (searchKey !== undefined && searchKey.length >= 3) {
           $window.sessionStorage.postSearchKey = searchKey;
@@ -57,6 +63,7 @@ appControllers.controller('PostListController', ['$rootScope', '$scope', '$state
         }
     });
 
+    // Just by clicking on the label (in the post list)  we change public/private.
     $scope.updatePublicState = function updatePublicState(post, makePublic) {
       if (post !== undefined && makePublic !== undefined) {
 
@@ -82,10 +89,17 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $(document).foundation();
 
-  $scope.saveForm = false; // Hide save icon, $scope.change first.
+  // By clicking the edit icon we show the edit from.
+  // Hide save icon, $scope.change first.
+  $scope.saveForm = false; 
   $scope.toggleForm = function () {
     $scope.editForm = !$scope.editForm;
   };
+
+  // Show edit from if we create a new post.
+  if ($stateParams.id === "create") {
+    $scope.editForm = true;
+  }
 
   // Show save icon
   $scope.change = function() {
@@ -95,6 +109,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   $scope.post = {};
   var id = $stateParams.id;
 
+  // Length of mongoDb _id = 24, so it must be a existing post.
   if ($stateParams.id.length > 23) {
     PostService.read(id).success(function(data) {
       $scope.post = data;
@@ -114,11 +129,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     });
   }
 
-  // Hide editFrom, toggle first.
-  if ($stateParams.id === "create") {
-    $scope.editForm = true;
-  }
-
   $scope.save = function save(post) {
 
     if($("#post-settings").is(":visible")) {
@@ -131,6 +141,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
         post.tags = post.tags.split(',');
       }
+
+      // If we have a _id we update the post, else we create a new post.
       if (post._id !== undefined) {
         PostService.update(post).success(function(data) {
           $state.go("post");
@@ -155,7 +167,11 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $scope.deletePost = function deletePost(post) {
     if (id !== undefined) {
-      $('a.close-reveal-modal').trigger('click');
+
+      if($("#post-settings").is(":visible")) {
+        $('a.close-reveal-modal').trigger('click');
+      }
+
       PostService.delete(id).success(function(data) {
         console.log('Deleted post:' + post._id); 
         flash('success', 'Post deleted successful');
