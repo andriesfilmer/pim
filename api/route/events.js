@@ -13,8 +13,7 @@ exports.list = function(req, res) {
   console.dir(req.query); 
   var dateStart = req.query.start.replace(/"/g,"").substr(0,10);
   var dateEnd = req.query.end.replace(/"/g,"").substr(0,10);
-  console.log('##### startEnd-> ' + dateStart + ' end: ' + dateEnd); 
-  var query = db.eventModel.find({"start": {"$gte": dateStart, "$lt": dateEnd}, user_id: req.user.id }).limit(500);
+  var query = db.eventModel.find({"start": {"$gte": dateStart, "$lte": dateEnd}, user_id: req.user.id }).limit(500);
   query.select("_id title start end allDay className");
   query.sort('start');
   query.exec(function(err, results) {
@@ -37,13 +36,11 @@ exports.searchAll = function(req, res) {
   }
 
   if (calendar.searchKey) {
-    console.log('Event search -> ' + calendar.searchKey); 
     var query = db.eventModel.find({ $or: [ 
                                           {title:   { $exists: true, $regex: calendar.searchKey, $options: 'i' } },
                                           {description: { $exists: true, $regex: calendar.searchKey, $options: 'i' } }, 
                                          ],user_id: req.user.id } ).limit(100);
   } else {
-    console.log('Event empty search -> Show all'); 
     var query = db.eventModel.find({ user_id: req.user.id });
   }
 
@@ -99,12 +96,11 @@ exports.read = function(req, res) {
 
 exports.create = function(req, res) {
 
-  console.dir(req.body.calendar);
+  console.log('Event create -> with user_id -> ' + req.user.id); 
 
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
-  console.log('Event create -> with user_id -> ' + req.user.id); 
 
   var event = req.body.calendar;
   if (event == null) {
@@ -116,7 +112,7 @@ exports.create = function(req, res) {
   createEvent.user_id = req.user.id;
 
   // Title required
-  if (event.title != null && event.title != "") {
+  if (event.title !== undefined && event.title !== null && event.title !== "") {
     createEvent.title = event.title;
   }
   else {
@@ -131,7 +127,7 @@ exports.create = function(req, res) {
     return res.sendStatus(400); // Bad Request
   }
 
-  if (event.end != undefined) {
+  if (event.end !== undefined) {
     createEvent.end = event.end;
   }
 
@@ -143,7 +139,9 @@ exports.create = function(req, res) {
     createEvent.className = event.className;
   }
 
-  createEvent.allDay = event.allDay;
+  if (event.allDay !== undefined) {
+    createEvent.allDay = event.allDay;
+  }
 
   createEvent.save(function(err) {
     if (err) {
@@ -156,11 +154,11 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
 
+  //console.dir(req.body.calendar);
+
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
-
-  console.dir(req.body.calendar);
 
   var event = req.body.calendar;
 
@@ -171,7 +169,7 @@ exports.update = function(req, res) {
 
   // Title required
   var updateEvent = {};
-  if (event.title !== undefined && event.title !== "") {
+  if (event.title !== undefined && event.title !== "" && event.title !== null) {
     updateEvent.title = event.title;
   }
   else {
@@ -186,19 +184,19 @@ exports.update = function(req, res) {
     return res.sendStatus(400); // Bad Request
   }
 
-  if (event.end != undefined) {
+  if (event.end !== undefined) {
     updateEvent.end = event.end;
   }
 
-  if (event.description != undefined) {
+  if (event.description !== undefined) {
     updateEvent.description = event.description;
   }
 
-  if (event.allDay != undefined) {
+  if (event.allDay !== undefined) {
     updateEvent.allDay = event.allDay;
   }
 
-  if (event.className != undefined) {
+  if (event.className !== undefined) {
     updateEvent.className = event.className;
   }
 
@@ -224,7 +222,7 @@ exports.delete = function(req, res) {
   }
 
   var id = req.params.id;
-  if (id === null || id === '') {
+  if (id === null || id === undefined || id === '') {
     res.send(400); // Bad request
   }
 
@@ -246,7 +244,4 @@ exports.delete = function(req, res) {
 
   });
 };
-
-
-
 

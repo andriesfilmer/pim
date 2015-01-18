@@ -9,7 +9,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   $scope.events = function(start, end, timezone, callback) {
     CalendarService.findAll(start, end).success(function(events) {
 
-      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
+      console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
 
       // We get a allDay false/true as string, convert it to a boolean.
       events.forEach(function(event) {
@@ -120,6 +120,12 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     return this;
   }
 
+  // Hide save icon, $scope.change first.
+  $scope.editForm = false;
+  $scope.toggleForm = function () {
+    $scope.editForm = !$scope.editForm;
+  };
+
   // Length of mongoDb _id = 24, so it must be a existing event.
   if (id.length === 24) {
     console.log('Fetch -> _id: ' + id); 
@@ -158,6 +164,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.cal.allDay = true;
     $scope.showAddBt  = true;
     $scope.showDeleteBt  = false;
+    $scope.editForm = true;
   }
 
   // If start DateTime is change we check if the end DateTime is not in the past.

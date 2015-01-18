@@ -15,7 +15,7 @@ div.row.flip-in(ng-show="searchForm")
    button.tiny.reset-button(type="reset") &#215;
 
 
-div.row.toggle(ng-repeat='post in posts', ng-class="post.type ? post.type : 'my-row'")
+div.row.my-row.toggle(ng-repeat='post in posts', ng-class="post.type ? post.type : 'my-row'")
  a(href='#/post/{{post._id}}')
   div.columns.medium-8 {{post.title}}
  div.column.medium-2.hide-for-small

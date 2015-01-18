@@ -102,7 +102,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   }
 
   // Show save icon
-  $scope.change = function() {
+  $scope.isChanged = function() {
     $scope.saveForm = true;
   };
 
@@ -131,6 +131,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $scope.save = function save(post) {
 
+    // Close modal if its open.
     if($("#post-settings").is(":visible")) {
       $('a.close-reveal-modal').trigger('click');
     }
@@ -168,6 +169,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   $scope.deletePost = function deletePost(post) {
     if (id !== undefined) {
 
+      // Close model if its open
       if($("#post-settings").is(":visible")) {
         $('a.close-reveal-modal').trigger('click');
       }
@@ -179,6 +181,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       });
     }
   };
+
 
   function processToc(data) {
 

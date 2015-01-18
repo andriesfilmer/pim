@@ -20,11 +20,12 @@ div.row(ng-hide="editForm")
   p(markdown='post.content') 
 
 div.row(ng-show="editForm")
+ div.column.small-12(ng-class="post.type")
+  input#title-input(type="text", placeholder="Title", ng-model="post.title", ng-change="isChanged()")
+div.row(ng-show="editForm")
  div.column.small-12
-  form
-   input#title-input(type="text", placeholder="Title", ng-model="post.title", ng-change="change()")
-   textarea#post-content(rows="19", ng-model="post.content", ng-change="change()", placeholder="More content....")
-   input#inputTags(type="text", placeholder="Tags #1, Tags #2, ...", my-tags='', ng-model="post.tags", ng-change="change()")
+  textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="Write your text with Markdown.....")
+  input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
 div.row
  div.column.small-6.post-meta.panel
   i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
@@ -42,22 +43,22 @@ div.row
    div.row
     div.column.small-6.my-row.todo Todo
     div.switch.round.column.small-6.post-todo
-     input#post-todo.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="change()")
+     input#post-todo.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="isChanged()")
      label(for="post-todo")
    div.row
     div.column.small-6.my-row.note Note
     div.switch.round.column.small-6.post-note
-     input#post-note(type="radio", value="note", name="postType", ng-model="post.type", ng-change="change()")
+     input#post-note(type="radio", value="note", name="postType", ng-model="post.type", ng-change="isChanged()")
      label(for="post-note")
    div.row
     div.column.small-6.my-row.blog Blog
     div.switch.round.column.small-6.post-blog
-     input#post-blog(type="radio", value="blog", name="postType", ng-model="post.type", ng-change="change()")
+     input#post-blog(type="radio", value="blog", name="postType", ng-model="post.type", ng-change="isChanged()")
      label(for="post-blog") 
    div.row
     div.column.small-6.my-row.kb Knowlege base
     div.switch.round.column.small-6.post-kb
-     input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="change()")
+     input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="isChanged()")
      label(for="post-kb") 
   fieldset
    div.row

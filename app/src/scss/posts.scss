@@ -11,10 +11,26 @@ $color-blog: green;
 $color-todo: red;
 $color-kb: #008CBA;
 
-.note { @include my-row; border-left: 8px $color-note solid; }
-.blog { @include my-row; border-left: 8px $color-blog solid; }
-.todo { @include my-row; border-left: 8px $color-todo solid; }
-.kb   { @include my-row; border-left: 8px $color-kb solid; }
+.note {
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-note solid; 
+}
+.blog {
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-blog solid; 
+}
+.todo { 
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-todo solid; 
+}
+.kb   {
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-kb solid; 
+}
 
 .public-alert {
   color: red;

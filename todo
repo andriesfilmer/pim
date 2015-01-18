@@ -1,0 +1,3 @@
+- We don't want to show the delete icon when creating a event.
+  But the $scope.showDeleteBt don't work because of a conflict
+  with the directive 'confirmation-needed'.
