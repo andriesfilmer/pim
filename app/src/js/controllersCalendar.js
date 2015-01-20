@@ -2,28 +2,72 @@
 appControllers.controller('CalendarController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
   function CalendarController($scope, $state, $stateParams, $window, flash, CalendarService) {
 
-  var date = new Date();
-  var startDate = $stateParams.start || date;
+  var startDate = $stateParams.start || new Date();
+
 
   // Load events (json) from mongodb.
   $scope.events = function(start, end, timezone, callback) {
+
+    // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
+    var eventsLocalStorage = 'events_' + new Date(start).toISOString().substr(0,7);
+
     CalendarService.findAll(start, end).success(function(events) {
 
-      console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
+      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
 
       // We get a allDay false/true as string, convert it to a boolean.
       events.forEach(function(event) {
-        event.allDay = JSON.parse(event.allDay);
+        //event.allDay = JSON.parse(event.allDay);
+
+        // 00:00:00 is exclusieve so it don't show on the next day!?
+        // So we have a hack for displaying multiple days in the fullcalendar
+        // There must be a simpler way, but I don't get is :( Is this a bug?
+        var sDate = new Date(event.start);
+        var eDate = new Date(event.end);
+        var sm = sDate.getMonth();
+        var sd = sDate.getDay();
+        var em = eDate.getMonth();
+        var ed = eDate.getDay();
+        if ( sm+sd !== em+ed ) {
+           event.end = new Date(eDate.getTime() + 60000);
+           event.allDay = false;
+        }
+
       });
-      $window.localStorage['eventsAll'] = JSON.stringify(events);
+
+      // Store events in LocalStorage with year+day io 'yyyy-dd'.
+      $window.localStorage[eventsLocalStorage] = JSON.stringify(events);
+
       callback(events);
+
+    }).error(function(data, status) {
+
+      console.log('Status error events service: ' + status);
+      if(status === 0) {
+        flash('alert', 'Working offline');
+        if($window.localStorage.getItem(eventsLocalStorage) !== null) {
+          console.log('Events from localstorage: ' + eventsLocalStorage);
+          callback(JSON.parse($window.localStorage[eventsLocalStorage]));
+        }
+        else {
+          flash('alert', 'No events offline');
+        }
+      }
+      else {
+        flash('alert', 'Error finding events');
+        $state.go('login');
+      }
+
     });
+
   }
+
 
   // Fullcalendar options.
   $scope.uiConfig = {
     calendar:{
       timezone: 'local',
+      nextDayThreshold: '00:00:00',
       editable: false,
       contentHeight: 'auto',
       aspectRatio: 0,

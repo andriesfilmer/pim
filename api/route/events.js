@@ -10,10 +10,11 @@ exports.list = function(req, res) {
     return res.send(401); // Unauthorized
   }
 
-  console.dir(req.query); 
-  var dateStart = req.query.start.replace(/"/g,"").substr(0,10);
-  var dateEnd = req.query.end.replace(/"/g,"").substr(0,10);
-  var query = db.eventModel.find({"start": {"$gte": dateStart, "$lte": dateEnd}, user_id: req.user.id }).limit(500);
+  // Remove quotes and use only date (YYYY-mm-dd)
+  var start = req.query.start.replace(/"/g,"").substr(0,10);
+  var end = req.query.end.replace(/"/g,"").substr(0,10);
+
+  var query = db.eventModel.find({"start": {"$gte": start, "$lte": end}, user_id: req.user.id }).limit(500);
   query.select("_id title start end allDay className");
   query.sort('start');
   query.exec(function(err, results) {

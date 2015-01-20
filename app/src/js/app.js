@@ -2,7 +2,14 @@
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
-var app = angular.module('app', ['ui.router', 'ui.calendar','ngTouch', 'ngAnimate', 'appControllers', 'appServices', 'appDirectives']);
+var app = angular.module('app', ['ui.router', 
+                                 'ui.calendar',
+                                 'ngTouch',
+                                 'ngAnimate',
+                                 'appControllers',
+                                 'appServices',
+                                 'appDirectives'
+]);
 
 var options = {};
 options.api = {};
@@ -24,69 +31,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
        templateUrl: "partials/home.html",
        access: { requiredAuthentication: false }
      })
-    .state('calendar', {
-       url: "/calendar",
-       templateUrl: "partials/calendar.html",
-       access: { requiredAuthentication: false }
-     })
-    .state('contact', {
-       url: "/contact",
-       templateUrl: "partials/contact.html",
-       access: { requiredAuthentication: true }
-     })
-    .state('calendar.search', {
-      url: "/search",
-      templateUrl: "partials/calendar.search.html",
-      controller: "CalendarController",
-      access: { requiredAuthentication: false }
-    })
-    .state('calendar.month', {
-      url: "/month?start",
-      templateUrl: "partials/calendar.month.html",
-      controller: "CalendarController",
-      access: { requiredAuthentication: false }
-    })
-    .state('calendar.event/:id', {
-      url: "/event/:id",
-      templateUrl: "partials/calendar.event.html",
-      controller: "EventController",
-      access: { requiredAuthentication: false }
-    })
-    .state('calendar.event', {
-      url: "/event?id&start",
-      templateUrl: "partials/calendar.event.html",
-      controller: "EventController",
-      access: { requiredAuthentication: false }
-    })
-    .state('bookmark', {
-      url: "/bookmark",
-      templateUrl: "partials/bookmark.html",
-      access: { requiredAuthentication: true }
-    })
-    .state('bookmark.list', {
-      url: "/list",
-      templateUrl: "partials/bookmark.list.html",
-      controller: "BookmarkController",
-      access: { requiredAuthentication: true }
-    })
-    .state('post', {
-      url: "/post",
-      templateUrl: "partials/post.list.html",
-      controller: 'PostListController',
-      access: { requiredAuthentication: true }
-    })
-    .state('post.create', {
-      url: "/post/create",
-      templateUrl: "partials/post.view.html",
-      controller: 'PostController',
-      access: { requiredAuthentication: true }
-    })
-    .state('post/:id', {
-      url: "/post/:id",
-      templateUrl: "partials/post.view.html",
-      controller: 'PostController',
-      access: { requiredAuthentication: true }
-    })
     .state('user', {
       url: "/user",
       templateUrl: 'partials/user.html',
@@ -109,7 +53,70 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/logout",
       templateUrl: 'partials/user.logout.html',
       controller: 'UserController',
+      access: { requiredAuthentication: true }
+    })
+    .state('contact', {
+       url: "/contact",
+       templateUrl: "partials/contact.html",
+       access: { requiredAuthentication: true }
+     })
+    .state('calendar', {
+       url: "/calendar",
+       templateUrl: "partials/calendar.html",
+       access: { requiredAuthentication: true }
+     })
+    .state('calendar.search', {
+      url: "/search",
+      templateUrl: "partials/calendar.search.html",
+      controller: "CalendarController",
+      access: { requiredAuthentication: true }
+    })
+    .state('calendar.month', {
+      url: "/month?start",
+      templateUrl: "partials/calendar.month.html",
+      controller: "CalendarController",
       access: { requiredAuthentication: false }
+    })
+    .state('calendar.event/:id', {
+      url: "/event/:id",
+      templateUrl: "partials/calendar.event.html",
+      controller: "EventController",
+      access: { requiredAuthentication: true }
+    })
+    .state('calendar.event', {
+      url: "/event?id&start",
+      templateUrl: "partials/calendar.event.html",
+      controller: "EventController",
+      access: { requiredAuthentication: true }
+    })
+    .state('post', {
+      url: "/post",
+      templateUrl: "partials/post.list.html",
+      controller: 'PostListController',
+      access: { requiredAuthentication: true }
+    })
+    .state('post.create', {
+      url: "/post/create",
+      templateUrl: "partials/post.view.html",
+      controller: 'PostController',
+      access: { requiredAuthentication: true }
+    })
+    .state('post/:id', {
+      url: "/post/:id",
+      templateUrl: "partials/post.view.html",
+      controller: 'PostController',
+      access: { requiredAuthentication: true }
+    })
+    .state('bookmark', {
+      url: "/bookmark",
+      templateUrl: "partials/bookmark.html",
+      access: { requiredAuthentication: true }
+    })
+    .state('bookmark.list', {
+      url: "/list",
+      templateUrl: "partials/bookmark.list.html",
+      controller: "BookmarkController",
+      access: { requiredAuthentication: true }
     })
     .state('reload', {
       url: "/reload",

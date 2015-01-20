@@ -27,7 +27,7 @@ div.row(ng-show="editForm")
   div.column
    div.row
     div.column.small-12(ng-class="cal.className")
-     input#title-input(type="text",ng-model="cal.title", required="", placeholder="Title", tabindex=1)
+     input#title-input(type="text",ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: DD}}", tabindex=1)
    div.row 
     div.column.small-12 &nbsp; 
    div.row
