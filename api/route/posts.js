@@ -32,7 +32,7 @@ exports.listPublic = function(req, res) {
 };
 
 // Public function list all posts
-exports.listAll = function(req, res) {
+exports.list = function(req, res) {
 
   if (!req.user) {
     return res.sendStatus(401); // Unauthorized
@@ -61,7 +61,7 @@ exports.listAll = function(req, res) {
 };
 
 // Search all posts
-exports.searchAll = function(req, res) {
+exports.search = function(req, res) {
 
   var posts = req.query; 
 

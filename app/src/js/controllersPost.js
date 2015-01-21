@@ -35,7 +35,8 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       // Save posts for offline.
       $window.localStorage.postsAll = JSON.stringify(data);
 
-    }).error(function(data, status) {
+    })
+    .error(function(data, status) {
       console.log('Status: ' + status);
       if(status === 0) {
         flash('alert', 'Working offline');
@@ -75,14 +76,11 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
               break;
             }
           }
-        }).error(function(status, data) {
-          console.log(status);
-          console.log(data);
         });
       }
     };
-  }
-]);
+
+}]);
 
 appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 
   function PostController($rootScope, $scope, $state, $window, $stateParams, flash, PostService) {
@@ -115,7 +113,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.post = data;
       $scope.toc = processToc(data);
       $window.localStorage['post_' + id] = JSON.stringify(data);
-    }).error(function(data, status) {
+    })
+    .error(function(data, status) {
       flash('alert', 'Post read failure');
       console.log('Status: ' + status);
       if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
@@ -145,18 +144,23 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
       // If we have a _id we update the post, else we create a new post.
       if (post._id !== undefined) {
+
         PostService.update(post).success(function(data) {
           $state.go("post");
           flash('success', 'Post update successful');
-        }).error(function(status, data) {
+        })
+        .error(function(status, data) {
           flash('alert', 'Post update failure');
           $state.go("login");
         });
+
       } else {
+
         PostService.create(post).success(function(data) {
            flash('success', 'Post create successful');
            $state.go("post");
-        }).error(function(status, data) {
+        })
+        .error(function(status, data) {
           if(status === 0) {
             $rootScope.online = false;
           }

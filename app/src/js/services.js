@@ -63,13 +63,13 @@ appServices.factory('CalendarService',['$http', function($http) {
       });
     },
 
-    findAll: function(start, end) {
+    find: function(start, end) {
       return $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
       .error(function(data, status, headers, config) {
       });
     },
 
-    searchAll: function(searchKey) { 
+    search: function(searchKey) { 
       return $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}});
     },
 

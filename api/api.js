@@ -46,7 +46,7 @@ app.get('/user/logout', routes.users.logout);
 app.get('/calendar', expressJwt({secret: secret.secretToken}), routes.events.list);
 
 // Search events
-app.get('/calendar/search', expressJwt({secret: secret.secretToken}), routes.events.searchAll);
+app.get('/calendar/search', expressJwt({secret: secret.secretToken}), routes.events.search);
 
 // Get the event (id)
 app.get('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.read); 
@@ -71,10 +71,10 @@ app.get('/tag/:tagName', routes.posts.listByTag);
 app.get('/post/public', routes.posts.listPublic);
 
 // Search posts
-app.get('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.searchAll);
+app.get('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.search);
 
 // Get all posts
-app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.listAll);
+app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.list);
 
 // Get the post id
 app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 

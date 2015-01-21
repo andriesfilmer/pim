@@ -4,24 +4,24 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   var startDate = $stateParams.start || new Date();
 
-
   // Load events (json) from mongodb.
   $scope.events = function(start, end, timezone, callback) {
 
     // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
     var eventsLocalStorage = 'events_' + new Date(start).toISOString().substr(0,7);
 
-    CalendarService.findAll(start, end).success(function(events) {
+    CalendarService.find(start, end).success(function(events) {
 
       //console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
 
       // We get a allDay false/true as string, convert it to a boolean.
       events.forEach(function(event) {
-        //event.allDay = JSON.parse(event.allDay);
+        event.allDay = JSON.parse(event.allDay);
 
-        // 00:00:00 is exclusieve so it don't show on the next day!?
+        // 00:00:00 is exclusieve it don't show on the next day!
+        // If allDay is true it even don't show if it is the next day !?!
         // So we have a hack for displaying multiple days in the fullcalendar
-        // There must be a simpler way, but I don't get is :( Is this a bug?
+        // There must be a simpler way, but I don't get is. Is this a bug?
         var sDate = new Date(event.start);
         var eDate = new Date(event.end);
         var sm = sDate.getMonth();
@@ -29,8 +29,8 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
         var em = eDate.getMonth();
         var ed = eDate.getDay();
         if ( sm+sd !== em+ed ) {
-           event.end = new Date(eDate.getTime() + 60000);
-           event.allDay = false;
+          event.end = new Date(eDate.getTime() + 60000);
+          event.allDay = false;
         }
 
       });
@@ -62,12 +62,11 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   }
 
-
   // Fullcalendar options.
   $scope.uiConfig = {
     calendar:{
       timezone: 'local',
-      nextDayThreshold: '00:00:00',
+      nextDayThreshold: '00:00:01',
       editable: false,
       contentHeight: 'auto',
       aspectRatio: 0,
@@ -86,7 +85,6 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
       },
       eventClick: function(calEvent, jsEvent, view) {
         $scope.cal = calEvent;
-        console.log('EventClick date -> ' + date); 
         $state.go('calendar.event', {id: calEvent._id});
       }
     }
@@ -94,6 +92,15 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   // Feed events into Fullcalendar
   $scope.eventSources = [$scope.events];
+
+  // Month, week and day view
+  $scope.changeView = function(view) {
+    $('#myCalendar').fullCalendar('changeView', view);
+  };
+
+  $scope.gotoToday = function() {
+    $('#myCalendar').fullCalendar('today');
+  };
 
   // Swipe left
   $scope.next = function() {
@@ -103,15 +110,6 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   // Swipe right
   $scope.prev = function() {
     $('#myCalendar').fullCalendar('prev');
-  };
-
-  // Month, week and day view
-  $scope.changeView = function(view) {
-    $('#myCalendar').fullCalendar('changeView', view);
-  };
-
-  $scope.gotoToday = function() {
-    $('#myCalendar').fullCalendar('today');
   };
 
   // Clicked on search icon.
@@ -128,7 +126,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   // Only load searched events if searchKey is defined and we are on the search page.
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
-    CalendarService.findAll(date, '3016-01-17T09:36:47.362Z').success(function(events) {
+    CalendarService.find(startDate, '3000-01-01').success(function(events) {
       $scope.events = events;
     }).error(function(events, status) {
       console.log(status);
@@ -138,16 +136,17 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   // After each searchKey change get new evenst from MongoDb.
   $scope.$watch('searchKey', function(searchKey) {
-      if (searchKey !== undefined && searchKey.length >= 3) {
-        $window.sessionStorage.calendarSearchKey = searchKey;
-        CalendarService.searchAll(searchKey).success(function(events) {
-          $scope.events = events;
-        }).error(function(events, status) {
-          console.log(status);
-          console.log('Calendar search error');
-        }); 
-      }
+    if (searchKey !== undefined && searchKey.length >= 3 && $state.$current.name === 'calendar.search') {
+      $window.sessionStorage.calendarSearchKey = searchKey;
+      CalendarService.search(searchKey).success(function(events) {
+        $scope.events = events;
+      }).error(function(events, status) {
+        console.log(status);
+        console.log('Calendar search error');
+      }); 
+    }
   });
+
 }]);
 
 // Controller for the single events
@@ -155,10 +154,10 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   function EventController($scope, $timeout, $state, $stateParams, $window, flash, CalendarService) {
 
   var id = $stateParams.id || 0;
-  var date = new Date();
 
   $(document).foundation();
 
+  // If we enable the getHours feature.
   Date.prototype.addHours= function(h) {
     this.setHours(this.getHours()+h);
     return this;
@@ -176,7 +175,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     CalendarService.read(id).success(function(cal) {
       $scope.cal = cal;
       console.log("Event id: " + cal._id);
-      console.dir(cal); 
       $scope.cal.start = new Date(cal.start);
       $scope.cal.end = new Date(cal.end);
       $scope.cal.allDay = JSON.parse(cal.allDay);
@@ -200,8 +198,8 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   // Must be a new event, so we init.
   if ($stateParams.start !== undefined) {
     console.log('INIT new event -> params.start: ' + $stateParams.start); 
-    var start = $stateParams.start || date;
     var initializing = true
+    var start = $stateParams.start || new Date();
     $scope.cal = {};
     $scope.cal.start = new Date(start);
     $scope.cal.end = new Date(start);

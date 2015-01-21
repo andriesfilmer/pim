@@ -3,6 +3,9 @@ module.exports = function(grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    // We have a different index.html for development.
+    // With each js and css file separate. Created by 'preprocess'
     env : {
       dev: {
           NODE_ENV : 'DEVELOPMENT'
@@ -58,6 +61,7 @@ module.exports = function(grunt) {
         }]
       }
     },
+    // Remove console.log
     removelogging: {
       dist: {
         // File will be overwritten with the output!
@@ -189,18 +193,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-remove-logging");
 
 
-  // Run once to copy and compile vendors
+  // Run once to compile foundation css and copy vendor files
   grunt.registerTask('once', ['sass:foundation', 'copy']);
 
-  // Default tasks
-  grunt.registerTask('default', ['env:dev',  'preprocess', 'sass:dist', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
+  // Default tasks for development
+  grunt.registerTask('default', ['env:dev',  'preprocess', 'sass:dist', 'concat:dev', 
+                                 'uglify', 'jade', 'connect','watch']);
 
-  // grunt without sass compile (faster with js development)
-  grunt.registerTask('nosass', ['env:dev',  'preprocess', 'concat:dev',  'uglify', 'jade', 'connect','watch']);
-
-  // grunt for production (minified files)
-  grunt.registerTask('production',    ['once', 'env:prod', 'preprocess', 'sass:dist', 
-                                       'concat:prod', 'removelogging', 'cssmin', 'uglify', 
-                                       'jade', 'appcache', 'clean']);
+  // grunt for production (minified files, remove logging, clean-up)
+  grunt.registerTask('production', ['once', 'env:prod', 'preprocess', 'sass', 
+                                    'concat:prod', 'removelogging', 'cssmin', 'uglify', 
+                                    'jade', 'appcache', 'clean']);
 
 };

@@ -28,7 +28,7 @@ exports.list = function(req, res) {
 };
 
 // Search calendar
-exports.searchAll = function(req, res) {
+exports.search = function(req, res) {
 
   var calendar = req.query; 
 
