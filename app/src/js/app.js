@@ -14,9 +14,9 @@ var app = angular.module('app', ['ui.router',
 var options = {};
 options.api = {};
 // Development
-options.api.base_url = "http://test.filmer.net:3001";
+//options.api.base_url = "http://test.filmer.net:3001";
 // Production
-//options.api.base_url = "http://api.filmer.nl";
+options.api.base_url = "http://api.filmer.nl";
 
 app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
