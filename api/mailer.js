@@ -13,16 +13,15 @@ var mStart = moment().add(1, 'days').format("YYYY-MM-DD HH:mm");
 var mEnd   = moment().add(1, 'days').add(5, 'minutes').format("YYYY-MM-DD HH:mm");
 
 // Debugging
-//console.log('Start -> ' + mStart); 
-//console.log('End -> ' + mEnd); 
+//console.log('Between -> ' + mStart + ' And -> ' + mEnd); 
 
 // Get events from MongoDb.
-getEvents();
+getEvents(mStart, mEnd);
 
-function getEvents(qStart,qEnd) {
+function getEvents(mStart, mEnd) {
 
-  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lte": mEnd}}).limit(2);
-  queryEvent.select("_id user_id title start end allDay description className");
+  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lte": mEnd}});
+  queryEvent.select("_id user_id title start end allDay description className created");
   queryEvent.sort('start');
   queryEvent.exec(function(err, results) {
     if (err) {
@@ -44,6 +43,7 @@ function getEvents(qStart,qEnd) {
       });
     }
   });
+
 
 };
 
@@ -69,23 +69,35 @@ function getUser(event) {
 function sendReminder(event,user) {
  
   var transporter = nodemailer.createTransport({ 
-    port: 1025 // For developent with mailcatcher.
-    //port: 25 // Production to smtp smarthost.
+    //port: 1025 // For developent with mailcatcher.
+    port: 25, // Production to smtp smarthost.
+    ignoreTLS: true
   });
 
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
   console.log('Send reminder to: ' + emailAddress); 
 
+  var description;
+  if (event.description) {
+    description = event.description;
+  }
+
   transporter.sendMail({
       from: 'pim@filmer.nl',
       to: emailAddress,
       subject: 'Reminder: ' + event.title,
-      text: 'Start: ' + event.start + '\n'
-        + ' End: ' + event.end + '\n\n'
-        + event.description + '\n\n'
-        + '----------------------------------------\n'
+      text: 'Start: ' + moment(event.start).format('YYYY-MM-DD HH:mm') + '\n'
+        + 'End  : ' + moment(event.end).format('YYYY-MM-DD HH:mm') + '\n\n'
+        + description + '\n\n'
+        + '------------------------------------------------\n'
         + 'Created: ' + event.created + '\n'
-        + '----------------------------------------\n'
+        + '------------------------------------------------\n'
   });
 
 }
+
+setTimeout(function() {
+  console.log('Exiting.');
+  process.exit(0);
+}, 100);
+
