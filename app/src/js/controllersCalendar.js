@@ -55,7 +55,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
       }
       else {
         flash('alert', 'Error finding events');
-        $state.go('login');
+        $state.go('signin');
       }
 
     });

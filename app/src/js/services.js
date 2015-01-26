@@ -128,11 +128,12 @@ appServices.factory('PostService',['$http', function($http) {
 
 appServices.factory('UserService', function ($http) {
   return {
-    signIn: function(username, password) {
-      return $http.post(options.api.base_url + '/user/signin', {username: username, password: password});
+    signIn: function(email, password) {
+      return $http.post(options.api.base_url + '/user/signin', {email: email, password: password});
     },
-    register: function(username, password, passwordConfirmation) {
-      return $http.post(options.api.base_url + '/user/register', {username: username, password: password, passwordConfirmation: passwordConfirmation });
+    register: function(fullname, email, password, passwordConfirmation) {
+      return $http.post(options.api.base_url + '/user/register', 
+         {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
     }
   };
 });

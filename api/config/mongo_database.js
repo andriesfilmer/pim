@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 var bcrypt = require('bcrypt');
 
 var secret = require('./secret');
@@ -18,11 +19,14 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
 var Schema = mongoose.Schema;
 
 var User = new Schema({
-    username: { type: String, required: true, unique: true },
+    fullname: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    is_admin: { type: Boolean, default: false },
     created: { type: Date, default: Date.now }
 });
+
+// mongoose-unique-validator
+User.plugin(uniqueValidator);
 
 var Event = new Schema({
     user_id: { type: String},
@@ -72,7 +76,8 @@ User.pre('save', function(next) {
   });
 });
 
-//Password verification
+
+// Password verification
 User.methods.comparePassword = function(password, cb) {
     bcrypt.compare(password, this.password, function(err, isMatch) {
         if (err) return cb(err);
@@ -81,7 +86,7 @@ User.methods.comparePassword = function(password, cb) {
 };
 
 
-//Define Models
+// Define Models
 var userModel = mongoose.model('User', User);
 var eventModel = mongoose.model('Event', Event);
 var postModel = mongoose.model('Post', Post);

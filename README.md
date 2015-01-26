@@ -45,6 +45,16 @@ After running `grunt production` copy the `public` folder on your webserver.
 - Run for example `forever` for your api and create a webserver configuration  
   (zie api/nginx.conf as a example).
 
+## Reminders for calendar events
+
+I you want reminders 24 hours before each event (that what i like).
+Create a `cron` for each 5 minutes that run: `/usr/bin/node /path/to/api/mailer.js`
+
+## Credits
+
+I use a lot off NPM Packages and Bower Packages. Look in `packages.json` and `bower.json`.
+Many thanks for the maintainers!
+
 ## Resources
 
 Inspired by the code from the articles:

@@ -1,5 +1,3 @@
-var jwt = require('jsonwebtoken');
-var mongoose = require('mongoose');
 
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');

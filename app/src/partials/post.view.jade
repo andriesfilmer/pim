@@ -24,7 +24,7 @@ div.row(ng-show="editForm")
   input#title-input(type="text", placeholder="Title", ng-model="post.title", ng-change="isChanged()")
 div.row(ng-show="editForm")
  div.column.small-12
-  textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="Write your text with Markdown.....")
+  textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="Write your post... \nYou can use Markdown :-)")
   input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
 div.row
  div.column.small-6.post-meta.panel
