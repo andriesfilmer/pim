@@ -47,8 +47,8 @@ After running `grunt production` copy the `public` folder on your webserver.
 
 ## Reminders for calendar events
 
-I you want reminders 24 hours before each event (that what i like).
-Create a `cron` for each 5 minutes that run: `/usr/bin/node /path/to/api/mailer.js`
+I you want reminders 24 hours before each event (that what I like).
+Create a `cron` for each 5 minutes that run: `*/5 * * * * /usr/bin/node /path/to/api/mailer.js`
 
 ## Credits
 

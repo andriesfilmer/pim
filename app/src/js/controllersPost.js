@@ -146,7 +146,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       if (post._id !== undefined) {
 
         PostService.update(post).success(function(data) {
-          $state.go("post");
+          $scope.editForm = false;
           flash('success', 'Post update successful');
         })
         .error(function(status, data) {

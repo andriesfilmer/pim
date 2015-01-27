@@ -41,8 +41,7 @@ var Event = new Schema({
     updated: { type: Date, default: Date.now },
     actions_id: { type: String}, // deprecated
     naw_id: { type: String},     // deprecated
-    name: { type: String},       // deprecated
-    bound: { type: String}       // deprecated
+    name: { type: String}        // deprecated
 });
 
 var Post = new Schema({
