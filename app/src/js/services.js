@@ -88,7 +88,7 @@ appServices.factory('CalendarService',['$http', function($http) {
   };
 }]);
 
-appServices.factory('PostService',['$http', function($http) {
+appServices.factory('PostService', function($http, $q, $window) {
   return {
 
     read: function(id) {
@@ -98,9 +98,30 @@ appServices.factory('PostService',['$http', function($http) {
     },
 
     findAll: function(limit) {
-      return $http.get(options.api.base_url + '/post/', {'params': {limit: limit}})
-      .error(function(data, status, headers, config) {
+
+      var deferred = $q.defer();
+
+      $http.get(options.api.base_url + '/post/', {'params': {limit: limit}
+      })
+      .success(function(data) {
+        console.log('Save data from MongoDb to localStorage.'); 
+        $window.localStorage.postsAll = JSON.stringify(data);
+        deferred.resolve(data);
+      })
+      .error(function(data) {
+        console.log('Error connecting MongoDb, load localStorage if exists.'); 
+        if($window.localStorage.getItem('postsAll') === null) {
+          deferred.reject('Posts not in localStorage');
+        }
+        else {
+          console.log('Post exists in localStorage');
+          data = JSON.parse($window.localStorage.postsAll);
+          deferred.notify(data);
+        }
       });
+
+      return deferred.promise;
+
     },
 
     searchAll: function(searchKey) { 
@@ -124,7 +145,7 @@ appServices.factory('PostService',['$http', function($http) {
     },
 
   };
-}]);
+});
 
 appServices.factory('UserService', function ($http) {
   return {

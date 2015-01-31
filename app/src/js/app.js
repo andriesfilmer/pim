@@ -2,7 +2,8 @@
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
-var app = angular.module('app', ['ui.router', 
+var app = angular.module('app', [
+                                 'ui.router', 
                                  'ui.calendar',
                                  'ngTouch',
                                  'ngAnimate',

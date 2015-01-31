@@ -10,6 +10,11 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       $state.go('post', {}, {reload: true});
     }
 
+    $scope.resetSearch = function resetSearch() {
+      $state.go('post', {}, {reload: true});
+      delete $window.localStorage.postSearchKey;
+    }
+
     // Set post limit for all posts
     $scope.postLimit =  $window.localStorage.postLimit;
     $scope.changeLimit = function(limit) {
@@ -20,35 +25,24 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.searchForm = false;  
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.postSearchKey;
-      if ($scope.searchForm === false) {
-        $state.go('post', {}, {reload: true});
-      }
+      //$scope.searchKey =  $window.sessionStorage.postSearchKey;
+      //if ($scope.searchForm === false) {
+      //  $state.go('post', {}, {reload: true});
+      //}
     };
 
     $scope.posts = [];
 
-    // Get posts from MongoDb.
-    PostService.findAll($window.localStorage.postLimit).success(function(data) {
-
+    PostService.findAll($window.localStorage.postLimit).then(function(data) {
+      console.log('Posts from MongoDb.');
       $scope.posts = data;
-      // Save posts for offline.
-      $window.localStorage.postsAll = JSON.stringify(data);
-
-    })
-    .error(function(data, status) {
-      console.log('Status: ' + status);
-      if(status === 0) {
-        flash('alert', 'Working offline');
-        if($window.localStorage.getItem('postsAll') !== null) {
-          console.log('postsAll from localstorage');
-          $scope.posts = JSON.parse($window.localStorage.postsAll);
-        }
-      }
-      else {
-        flash('alert', 'Error finding posts');
-        $state.go('login');
-      }
+    }, function(err) {
+      console.log(err);
+      flash('alert', 'Offline, no posts available');
+    }, function(offlineData) {
+      console.log('Posts from localStorage');
+      $scope.posts = offlineData;
+      flash('alert', 'Working offline');
     });
 
     // Get new posts if we change the SearchKey
@@ -147,6 +141,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
         PostService.update(post).success(function(data) {
           $scope.editForm = false;
+          $scope.saveForm = false;
           flash('success', 'Post update successful');
         })
         .error(function(status, data) {

@@ -38,6 +38,8 @@ exports.list = function(req, res) {
 
   var query = db.postModel.find({user_id: req.user.id}).limit(req.query.limit);
 
+console.log('##### test limit -> ' + req.query.limit); 
+
   query.select("_id title type tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
@@ -180,21 +182,23 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
 
+  console.log('##### update #####'); 
+  console.dir(req.body); 
   if (!req.user) {
     return res.send(401); // Not authorized
   }
 
   var post = req.body.post;
   if (post == null) {
-    res.send(400);
+    res.sendStatus(400);
   }
 
   var updatePost = {};
 
   // id required
-  if (post._id === null || post._id === "" || post._id === undefined) {
-    return res.sendStatus(400); // Bad Request
-  }
+  //if (post._id === null || post._id === "" || post._id === undefined) {
+  //  return res.sendStatus(400); // Bad Request
+  //}
 
   // Title required
   if (post.title !== null && post.title !== "") {

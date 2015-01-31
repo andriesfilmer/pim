@@ -12,7 +12,7 @@ div.row.flip-in(ng-show="searchForm")
   div.columns.small-10
    input.radius.search-box(name="focus", type="text", placeholder="Enter search words...", ng-model="searchKey", tabindex="2" )
   div.columns.small-2
-   button.tiny.reset-button(type="reset") &#215;
+   button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
 
 div.row.my-row.toggle(ng-repeat='post in posts', ng-class="post.type ? post.type : 'my-row'")
