@@ -10,31 +10,28 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       $state.go('post', {}, {reload: true});
     }
 
-    $scope.resetSearch = function resetSearch() {
-      $state.go('post', {}, {reload: true});
-      delete $window.localStorage.postSearchKey;
-    }
-
     // Set post limit for all posts
     $scope.postLimit =  $window.localStorage.postLimit;
     $scope.changeLimit = function(limit) {
       $window.localStorage.postLimit =  limit;
     };
 
-    // Hide searchFrom, toggle first.
-    $scope.searchForm = false;  
+    // Hide searchForm, toggle first. Save search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
-      //$scope.searchKey =  $window.sessionStorage.postSearchKey;
-      //if ($scope.searchForm === false) {
-      //  $state.go('post', {}, {reload: true});
-      //}
+      $scope.searchKey =  $window.sessionStorage.postSearchKey;
     };
+
+    // Remove search.
+    $scope.resetSearch = function resetSearch() {
+      delete $window.sessionStorage.postSearchKey;
+    }
 
     $scope.posts = [];
 
-    PostService.findAll($window.localStorage.postLimit).then(function(data) {
-      console.log('Posts from MongoDb.');
+    // Init posts page and show all posts.
+    $scope.init = PostService.findAll($window.localStorage.postLimit).then(function(data) {
+      console.log('Succes: Posts from MongoDb.');
       $scope.posts = data;
     }, function(err) {
       console.log(err);
@@ -42,7 +39,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     }, function(offlineData) {
       console.log('Posts from localStorage');
       $scope.posts = offlineData;
-      flash('alert', 'Working offline');
+      flash('warning', 'Working offline');
     });
 
     // Get new posts if we change the SearchKey
@@ -112,7 +109,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       flash('alert', 'Post read failure');
       console.log('Status: ' + status);
       if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
-        flash('alert', 'Read only - Working offline');
+        flash('warning', 'Working offline');
         $scope.post = JSON.parse($window.localStorage['post_' + id]);
         console.log('Post from localstorage id: ' + id);
       } else {

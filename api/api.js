@@ -1,25 +1,43 @@
 var express = require('express');
-var cors = require('cors');
 
-var config = require('./config/config.js');
-var secret = require('./config/secret');
+/**************/
+// Middleware */
+/**************/
 
-var corsOptions = { origin: config.url}; 
-//var corsOptions = { origin: 'http://localhost'};    // Production
-var app = express();
-
-// Middleware that validates JsonWebTokens and set req.user.
+// Validates JsonWebTokens and set req.user.
 var expressJwt = require('express-jwt');
+
+// body-parsing middleware to populate req.body.
 var bodyParser = require('body-parser');
 
-app.listen(3001);
+// CORS - Access-Control-Allow-Origin
+var cors = require('cors');
+
+/**************/
+// Config     */
+/**************/
+
+// This file is in .gitignore. You have to create it (zie readme.md)
+var secret = require('./config/secret');
+
+var config = require('./config/config.js');
+var config = config.env();
+var corsOptions = { origin: config.cors_url}; 
+
+// Use Express Framework.
+var app = express();
+
+// For production use upstream (nginx.conf).
+app.listen(config.api_port);
+
 app.use(cors(corsOptions));
 app.use(bodyParser());
-console.log('API is starting on port 3001');
 
 // Enable http logging
 //var morgan  = require('morgan'); 
 //app.use(morgan());
+
+console.log('API (' + config.name + ') is starting on port ' + config.api_port);
 
 // Routes
 var routes = {};

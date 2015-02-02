@@ -20,7 +20,7 @@ getEvents(mStart, mEnd);
 
 function getEvents(mStart, mEnd) {
 
-  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lte": mEnd}});
+  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lt": mEnd}});
   queryEvent.select("_id user_id title start end allDay description className created");
   queryEvent.sort('start');
   queryEvent.exec(function(err, results) {
@@ -69,8 +69,7 @@ function getUser(event) {
 function sendReminder(event,user) {
  
   var transporter = nodemailer.createTransport({ 
-    //port: 1025 // For developent with mailcatcher.
-    port: 25, // Production to smtp smarthost.
+    port: config.mail_port,
     ignoreTLS: true
   });
 
@@ -83,7 +82,7 @@ function sendReminder(event,user) {
   }
 
   transporter.sendMail({
-      from: 'pim@filmer.nl',
+      from: config.mail_from,
       to: emailAddress,
       subject: 'Reminder: ' + event.title,
       text: 'Start: ' + moment(event.start).format('YYYY-MM-DD HH:mm') + '\n'

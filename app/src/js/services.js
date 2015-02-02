@@ -89,6 +89,8 @@ appServices.factory('CalendarService',['$http', function($http) {
 }]);
 
 appServices.factory('PostService', function($http, $q, $window) {
+
+
   return {
 
     read: function(id) {

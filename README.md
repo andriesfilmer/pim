@@ -36,12 +36,19 @@ After running `grunt production` copy the `public` folder on your webserver.
 
 ### The api part:
 
+Create a file `api/config/secret.js`
+
+    exports.mongodbURL = 'mongodb://pim:yourpassword@localhost/pim';
+    exports.secretToken = 'feb5ed8--your-secret-token--rzeSFejmplc';
+
+Install MongoDb and run the api.
+
     sudo apt-get install mongodb
-    cd api && node api.js
+    cd api && NODE_ENV=production node api.js
 
 - The api is running on http://localhost:3001
 - Change `exports.url` in config.js for production.
-- Edit `api/api.js` and replace the value of `Access-Control-Allow-Origin` to match your server configuration for production.
+- Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration for your enviroments.
 - Run for example `forever` for your api and create a webserver configuration  
   (zie api/nginx.conf as a example).
 
