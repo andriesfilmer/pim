@@ -2,10 +2,11 @@ var nodemailer = require('nodemailer');
 var moment = require('moment');
 
 var config = require('./config/config.js');
+var config = config.env();
 var secret = require('./config/secret');
 var db = require('./config/mongo_database');
 
-console.log('Mailer is checking for sending reminders');
+//console.log('Mailer is checking for sending reminders');
 
 
 // I have a cron that runs each 5 minutes. So the mEnd =+ 5 minutes.
@@ -74,7 +75,7 @@ function sendReminder(event,user) {
   });
 
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
-  console.log('Send reminder to: ' + emailAddress); 
+  //console.log('Send reminder to: ' + emailAddress); 
 
   var description;
   if (event.description) {
@@ -96,7 +97,6 @@ function sendReminder(event,user) {
 }
 
 setTimeout(function() {
-  console.log('Exiting.');
   process.exit(0);
 }, 100);
 

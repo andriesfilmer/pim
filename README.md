@@ -6,10 +6,11 @@ PIM is a application built with AngularJS, Node.js, Express and MongoDB.
 
 A private PIM with:
 
+* Register/Login/Logout users
 * Posts i.o Todo/Note/Blog/Knowledge base
 * Personal calendar (appiontments, memos)
+* Contacts (not ready yet)
 * Bookmarks (not ready yet)
-* Register/Login/Logout users
 
 ## Dependencies
 
@@ -48,14 +49,14 @@ Install MongoDb and run the api.
 
 - The api is running on http://localhost:3001
 - Change `exports.url` in config.js for production.
-- Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration for your enviroments.
-- Run for example `forever` for your api and create a webserver configuration  
+- Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration for your enviroment.
+- Run `node api.js` for your api or `forever api.js` and create a webserver configuration  
   (zie api/nginx.conf as a example).
 
 ## Reminders for calendar events
 
 I you want reminders 24 hours before each event (that what I like).
-Create a `cron` for each 5 minutes that run: `*/5 * * * * /usr/bin/node /path/to/api/mailer.js`
+Create a `cron` for each 5 minutes: `*/5 * * * * /usr/bin/node /path/to/api/mailer.js`
 
 ## Credits
 

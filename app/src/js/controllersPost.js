@@ -29,17 +29,19 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 
     $scope.posts = [];
 
-    // Init posts page and show all posts.
+    // Init posts with promises and show all posts.
     $scope.init = PostService.findAll($window.localStorage.postLimit).then(function(data) {
-      console.log('Succes: Posts from MongoDb.');
+      // Promise resolved
       $scope.posts = data;
-    }, function(err) {
-      console.log(err);
-      flash('alert', 'Offline, no posts available');
-    }, function(offlineData) {
-      console.log('Posts from localStorage');
-      $scope.posts = offlineData;
-      flash('warning', 'Working offline');
+    }, function(msg) {
+      // Promise reject
+      $scope.offline = true;
+      flash('alert', msg);
+    }, function(localData) {
+      // Promise notify
+      $scope.posts = localData;
+      $scope.offline = true;
+      flash('warning', 'Offline: Posts from local storage');
     });
 
     // Get new posts if we change the SearchKey
@@ -78,17 +80,23 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $(document).foundation();
 
+  // Close modal if its open.
+  if($("#post-settings").is(":visible")) {
+    $('a.close-reveal-modal').trigger('click');
+  }
+
   // By clicking the edit icon we show the edit from.
-  // Hide save icon, $scope.change first.
-  $scope.saveForm = false; 
   $scope.toggleForm = function () {
     $scope.editForm = !$scope.editForm;
   };
 
-  // Show edit from if we create a new post.
+  // Show edit mode if we want to create a new post.
   if ($stateParams.id === "create") {
     $scope.editForm = true;
   }
+
+  // Hide saveForm icon, $scope.change first.
+  $scope.saveForm = false; 
 
   // Show save icon
   $scope.isChanged = function() {
@@ -100,82 +108,64 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   // Length of mongoDb _id = 24, so it must be a existing post.
   if ($stateParams.id.length > 23) {
-    PostService.read(id).success(function(data) {
+    PostService.read(id).then(function(data) {
+      // Promise resolve
       $scope.post = data;
       $scope.toc = processToc(data);
-      $window.localStorage['post_' + id] = JSON.stringify(data);
-    })
-    .error(function(data, status) {
-      flash('alert', 'Post read failure');
-      console.log('Status: ' + status);
-      if(status === 0 && $window.localStorage.getItem('post_' + id) !== null) {
-        flash('warning', 'Working offline');
-        $scope.post = JSON.parse($window.localStorage['post_' + id]);
-        console.log('Post from localstorage id: ' + id);
-      } else {
-        flash('alert', 'This post is not offline!');
-        console.log('No post from localstorage id: ' + id);
-      }
+    }, function(msg) {
+      // Promise reject
+      $scope.offline = true;
+      flash('alert', msg);
+    }, function(localData) {
+      // Promise notify
+      $scope.post = localData;
+      $scope.toc = processToc(localData);
+      $scope.offline = true;
+      flash('warning', 'Offline: Post from local storage');
     });
   }
 
   $scope.save = function save(post) {
 
-    // Close modal if its open.
-    if($("#post-settings").is(":visible")) {
-      $('a.close-reveal-modal').trigger('click');
+    $scope.editForm = false;
+    $scope.saveForm = false;
+
+    // String comma separated to array
+    if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
+      post.tags = post.tags.split(',');
     }
 
-    if (post !== undefined && post.title !== undefined && post.title !== "") {
+    // If we have a _id we update the post, else we create a new post.
+    if (post._id !== undefined) {
 
-      // String comma separated to array
-      if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
-        post.tags = post.tags.split(',');
-      }
+      PostService.update(post).then(function(msg) {
+        // Promise reslove
+        flash('success', msg);
+      }, function(msg) {
+        // Promise reject
+        flash('alert', msg);
+      });
 
-      // If we have a _id we update the post, else we create a new post.
-      if (post._id !== undefined) {
+    } else {
 
-        PostService.update(post).success(function(data) {
-          $scope.editForm = false;
-          $scope.saveForm = false;
-          flash('success', 'Post update successful');
-        })
-        .error(function(status, data) {
-          flash('alert', 'Post update failure');
-          $state.go("login");
-        });
-
-      } else {
-
-        PostService.create(post).success(function(data) {
-           flash('success', 'Post create successful');
-           $state.go("post");
-        })
-        .error(function(status, data) {
-          if(status === 0) {
-            $rootScope.online = false;
-          }
-          flash('alert', 'Post create failure');
-        });
-      }
+      PostService.create(post).then(function(msg) {
+        // Promise reslove
+        flash('success', msg);
+        $state.go('post');
+      }, function(err) {
+        // Promise reject
+        flash('alert', err);
+      });
     }
+
   };
 
   $scope.deletePost = function deletePost(post) {
-    if (id !== undefined) {
-
-      // Close model if its open
-      if($("#post-settings").is(":visible")) {
-        $('a.close-reveal-modal').trigger('click');
-      }
-
-      PostService.delete(id).success(function(data) {
-        console.log('Deleted post:' + post._id); 
-        flash('success', 'Post deleted successful');
-        $state.go("post");
-      });
-    }
+    PostService.delete(id).success(function(msg) {
+      console.log('Deleted post:' + post._id + ' ' + msg); 
+      flash('success', 'Post deleted successful');
+      $state.go("post");
+    });
   };
 
 

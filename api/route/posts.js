@@ -38,8 +38,6 @@ exports.list = function(req, res) {
 
   var query = db.postModel.find({user_id: req.user.id}).limit(req.query.limit);
 
-console.log('##### test limit -> ' + req.query.limit); 
-
   query.select("_id title type tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
@@ -182,8 +180,6 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
 
-  console.log('##### update #####'); 
-  console.dir(req.body); 
   if (!req.user) {
     return res.send(401); // Not authorized
   }

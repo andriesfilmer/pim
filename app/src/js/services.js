@@ -90,40 +90,77 @@ appServices.factory('CalendarService',['$http', function($http) {
 
 appServices.factory('PostService', function($http, $q, $window) {
 
-
   return {
 
-    read: function(id) {
-      return $http.get(options.api.base_url + '/post/' + id)
-      .error(function(data, status, headers, config) {
-      });
-    },
-
     findAll: function(limit) {
-
       var deferred = $q.defer();
-
-      $http.get(options.api.base_url + '/post/', {'params': {limit: limit}
-      })
+      $http.get(options.api.base_url + '/post/', {'params': {limit: limit}})
       .success(function(data) {
-        console.log('Save data from MongoDb to localStorage.'); 
         $window.localStorage.postsAll = JSON.stringify(data);
+        console.log('Fetched posts from MongoDb and saved to localStorage.'); 
         deferred.resolve(data);
       })
-      .error(function(data) {
+      .error(function(data, status, headers, config) {
         console.log('Error connecting MongoDb, load localStorage if exists.'); 
         if($window.localStorage.getItem('postsAll') === null) {
-          deferred.reject('Posts not in localStorage');
+          deferred.reject('Offline: Posts not in local storage');
         }
         else {
-          console.log('Post exists in localStorage');
-          data = JSON.parse($window.localStorage.postsAll);
-          deferred.notify(data);
+          localData = JSON.parse($window.localStorage.postsAll);
+          deferred.notify(localData);
         }
       });
-
       return deferred.promise;
+    },
 
+    read: function(id) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/post/' + id)
+      .success(function(data) {
+        $window.localStorage['post_' + id] = JSON.stringify(data);
+        console.log('Fetched post from MongoDb and saved to localStorage.'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb, load localStorage if exists.'); 
+        if($window.localStorage.getItem('post_' + id) === null) {
+          deferred.reject('Offline: Post not in localStorage');
+        }
+        else {
+          localData = JSON.parse($window.localStorage['post_' + id]);
+          deferred.notify(localData);
+        }
+      });
+      return deferred.promise;
+    },
+
+    create: function(post) {
+      var deferred = $q.defer();
+      $http.post(options.api.base_url + '/post', {'post': post})
+      .success(function() {
+        console.log('Created post in MongoDb'); 
+        deferred.resolve('Created post successfull');
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb.'); 
+        deferred.reject('Error creating post');
+      });
+      return deferred.promise;
+    },
+
+    update: function(post) {
+      var deferred = $q.defer();
+      $http.put(options.api.base_url + '/post', {'post': post})
+      .success(function(data) {
+        $window.localStorage['post_' + post.id] = JSON.stringify(data);
+        console.log('Updated post in localStorage and MongoDb'); 
+        deferred.resolve('Updated post successfull');
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb.'); 
+        deferred.reject('Error updating post');
+      });
+      return deferred.promise;
     },
 
     searchAll: function(searchKey) { 
@@ -136,14 +173,6 @@ appServices.factory('PostService', function($http, $q, $window) {
 
     delete: function(id) {
       return $http.delete(options.api.base_url + '/post/' + id);
-    },
-
-    create: function(post) {
-      return $http.post(options.api.base_url + '/post', {'post': post});
-    },
-
-    update: function(post) {
-      return $http.put(options.api.base_url + '/post', {'post': post});
     },
 
   };

@@ -1,4 +1,3 @@
-
 var appServices = angular.module('appServices', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
@@ -133,6 +132,7 @@ app.config(function ($httpProvider) {
 });
 
 app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
+
 
   // Because we use token based authentication with te first page load 
   // we don't have 'AuthenticationService.isAuthenticated' true.

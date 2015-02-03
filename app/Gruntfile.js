@@ -140,7 +140,8 @@ module.exports = function(grunt) {
     jade: {
       compile: {
         options: {
-            pretty: true
+            pretty: true,
+            data: {package: '<%= pkg.name %>', version: '<%= pkg.version %>'}
         },
         files: [ { 
           expand: true, 
