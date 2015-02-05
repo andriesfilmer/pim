@@ -152,9 +152,9 @@ app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
     console.log('AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 
 
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
-      flash('alert-box alert', 'Login first');
       event.preventDefault();
       $state.go('signin');
+      flash('alert', 'Login first');
     }
     console.log('StateChange -> ' + toState.name); 
   });

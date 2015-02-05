@@ -1,4 +1,4 @@
-div.row
+div.row(ng-hide="offline")
   form#search
    div.columns.small-10
     input.radius.search-box(name="focus", type="text", placeholder="Enter search words...", ng-model="searchKey", tabindex="2" )

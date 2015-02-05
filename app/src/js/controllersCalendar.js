@@ -4,7 +4,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   var startDate = $stateParams.start || new Date();
 
-  // Load events (json) from mongodb.
+  // Load events (json) from CalendarService.
   $scope.events = function(start, end, timezone, callback) {
 
     // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
@@ -42,20 +42,23 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
     }).error(function(data, status) {
 
+      $scope.offline = true;
       console.log('Status error events service: ' + status);
       if(status === 0) {
-        flash('alert', 'Working offline');
         if($window.localStorage.getItem(eventsLocalStorage) !== null) {
-          console.log('Events from localstorage: ' + eventsLocalStorage);
+          flash('warning', 'Offline: Events from local storage');
           callback(JSON.parse($window.localStorage[eventsLocalStorage]));
         }
         else {
           flash('alert', 'No events offline');
         }
       }
+      else if(status === 401) {
+        flash('alert', 'Login first');
+        $state.go('signin');
+      }
       else {
         flash('alert', 'Error finding events');
-        $state.go('signin');
       }
 
     });
@@ -80,12 +83,19 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
       weekNumbers: true,
       draggable: false,
       dayClick: function(date, jsEvent, view) {
-        console.log('DayClick date -> ' + date); 
-        $state.go('calendar.event', {start: date});
+
+        // Prevent add events if offline
+        if(!$scope.offline) {
+          console.log('DayClick date -> ' + date); 
+          $state.go('calendar.event', {start: date});
+        }
+
       },
       eventClick: function(calEvent, jsEvent, view) {
+
         $scope.cal = calEvent;
         $state.go('calendar.event', {id: calEvent._id});
+
       }
     }
   };
@@ -128,13 +138,28 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
     CalendarService.find(startDate, '3000-01-01').success(function(events) {
       $scope.events = events;
+      // Store events in LocalStorage with year+day io 'yyyy-dd'.
+      $window.localStorage.eventsList = JSON.stringify(events);
     }).error(function(events, status) {
-      console.log(status);
-      console.log('Calendar search error');
+      console.log('Status error search events: ' + status);
+      if(status === 0) {
+        if($window.localStorage.getItem('eventsList') !== null) {
+          $scope.offline = true;
+          flash('warning', 'Offline: Events from local storage');
+          $scope.events = JSON.parse($window.localStorage.eventsList);
+        }
+        else {
+          flash('alert', 'No events offline');
+        }
+      }
+      else {
+        $scope.offline = true;
+        flash('alert', 'Error finding events');
+      }
     }); 
   }
 
-  // After each searchKey change get new evenst from MongoDb.
+  // After each searchKey change get new evenst from CalendarService.
   $scope.$watch('searchKey', function(searchKey) {
     if (searchKey !== undefined && searchKey.length >= 3 && $state.$current.name === 'calendar.search') {
       $window.sessionStorage.calendarSearchKey = searchKey;
@@ -169,7 +194,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.editForm = !$scope.editForm;
   };
 
-  // Length of mongoDb _id = 24, so it must be a existing event.
+  // Length of (MongoDb) _id = 24, so it must be a existing event.
   if (id.length === 24) {
     console.log('Fetch -> _id: ' + id); 
     CalendarService.read(id).success(function(cal) {
@@ -182,15 +207,20 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       $scope.showDeleteBt  = true;
       $window.localStorage['event_' + id] = JSON.stringify(cal);
     }).error(function(cal, status) {
-      flash('alert', 'Event read failure');
       console.log('Status: ' + status);
+      $scope.offline = true;
       if(status === 0 && $window.localStorage.getItem('event_' + id) !== null) {
-        flash('alert', 'Read only - Working offline');
-        $scope.cal = JSON.parse($window.localStorage['event_' + id]);
-        console.log('Event from localstorage id: ' + id);
+        flash('warning', 'Offline: Event from local storage');
+        var cal = JSON.parse($window.localStorage['event_' + id]);
+        $scope.cal = cal;
+        $scope.cal.start = new Date(cal.start);
+        $scope.cal.end = new Date(cal.end);
+        $scope.cal.allDay = JSON.parse(cal.allDay);
+      } 
+      else if(status === 0) {
+        flash('alert', 'This event is not offline');
       } else {
-        flash('alert', 'This event is not offline!');
-        console.log('No event from localstorage id: ' + id);
+        flash('alert', 'Error event service');
       }
     });
   };
@@ -212,7 +242,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   // If start DateTime is change we check if the end DateTime is not in the past.
   $scope.setEnd = function(cal) {
     if (cal.start >= cal.end) {
-      cal.end = cal.start;
+      cal.end = new Date(cal.start).addHours(1);
     }
   };
 
@@ -228,46 +258,41 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       $scope.cal.start = new Date(y, m, d);
       $scope.cal.end = new Date(y, m, d);
     }
-    // For convenience we set the time on the middle of the day.
-    //else
-    //  $scope.cal.start = new Date(y, m, d).addHours(12);
-    //  $scope.cal.end = new Date(y, m, d).addHours(13);
-    //
+    // For convenience we set the time on the start of the day.
+    else {
+      cal.start = new Date(y, m, d).addHours(9);
+      cal.end = new Date(y, m, d).addHours(10);
+    }
   };
 
   // Add or Insert a event.
   $scope.upsertEvent = function upsertEvent(cal, upsert) {
-    if (cal.title !== undefined && cal.start !== undefined) {
-      console.log('upsertEvent: ' + upsert); 
-      console.log('upsertEvent title: ' + cal.title); 
-      console.log('upsertEvent start: ' + cal.start); 
-      console.log('upsertEvent end: ' + cal.end); 
-      console.log('upsertEvent allDay: ' + cal.allDay); 
-      // Insert a event
-      if (upsert === 'insert') {
-        CalendarService.create(cal).success(function(cal) {
-        }).success(function(status, cal) {
-          flash('success', 'Event created successful');
-        }).error(function(status, cal) {
-          flash('alert', 'Event create failure');
-        });
-      } 
-      // Update a event
-      else { 
-        CalendarService.update(cal).success(function(cal) {
-        }).success(function(status, cal) {
-          flash('success', 'Event updated successful');
-        }).error(function(status, cal) {
-          flash('alert', 'Event update failure');
-        });
-      }
-      $state.go('calendar.month',{start: cal.start.toISOString()});
-      if($("#cal-settings").is(":visible")) {
-        $('a.close-reveal-modal').trigger('click');
-      }
+    console.log('upsertEvent: ' + upsert); 
+    console.log('upsertEvent title: ' + cal.title); 
+    console.log('upsertEvent start: ' + cal.start); 
+    console.log('upsertEvent end: ' + cal.end); 
+    console.log('upsertEvent allDay: ' + cal.allDay); 
+    // Insert a event
+    if (upsert === 'insert') {
+      CalendarService.create(cal).success(function(cal) {
+      }).success(function(status, cal) {
+        flash('success', 'Event created successful');
+      }).error(function(status, cal) {
+        flash('alert', 'Event create failure');
+      });
+    } 
+    // Update a event
+    else { 
+      CalendarService.update(cal).success(function(cal) {
+      }).success(function(status, cal) {
+        flash('success', 'Event updated successful');
+      }).error(function(status, cal) {
+        flash('alert', 'Event update failure');
+      });
     }
-    else {
-      flash('alert', 'Event title required');
+    $state.go('calendar.month',{start: cal.start.toISOString()});
+    if($("#cal-settings").is(":visible")) {
+      $('a.close-reveal-modal').trigger('click');
     }
   }
 

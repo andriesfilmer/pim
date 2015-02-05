@@ -1,5 +1,7 @@
-// Showdown.js required
 appServices.provider('markdownConverter', function () {
+
+    // Showdown.js required
+
     var opts = { extensions: ['table'] };
     return {
       config: function (newOpts) {
@@ -12,7 +14,7 @@ appServices.provider('markdownConverter', function () {
 });
 
 appServices.factory('AuthenticationService', function() {
-  var auth = {isAuthenticated: false };
+  var auth = {isAuthenticated: true };
   return auth;
 });
 
@@ -23,23 +25,22 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
       if ($window.localStorage.token) {
         config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
       }
+      console.log('TokenInterceptor -> request: ' + config.url); 
       return config;
     },
     requestError: function(rejection) {
+      //AuthenticationService.isAuthenticated = false;
+      console.log('TokenInterceptor -> requestError -> rejection: ' + rejection.status); 
       return $q.reject(rejection);
-      AuthenticationService.isAuthenticated = false;
-      console.log('TokenInterceptor -> request error -> rejection: '+ rejection); 
     },
 
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
-      console.log('TokenInterceptor -> check authenticated -> response.status: '+ response.status); 
-      //if (response !== null && response.status === 200 && $window.localStorage.token && !AuthenticationService.isAuthenticated) {
       if (response !== null && response.status === 200 && $window.localStorage.token) {
-        AuthenticationService.isAuthenticated = true;
-        console.log('TokenInterceptor -> is authenticated -> response.status: '+ response.status); 
+        //AuthenticationService.isAuthenticated = true;
       }
-      return response || $q.when(response);
+      console.log('TokenInterceptor -> response: ' + response.status); 
+      return $q.when(response);
     },
 
     // Revoke client authentication if 401 is received 
@@ -47,8 +48,8 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
       if (rejection.status === 401) {
         delete $window.localStorage.token;
         AuthenticationService.isAuthenticated = false;
-        console.log('TokenInterceptor -> rejection -> 401'); 
       }
+      console.log('TokenInterceptor -> responseError: ' + rejection.status); 
       return $q.reject(rejection);
     }
   };
@@ -103,7 +104,7 @@ appServices.factory('PostService', function($http, $q, $window) {
       .error(function(data, status, headers, config) {
         console.log('Error connecting MongoDb, load localStorage if exists.'); 
         if($window.localStorage.getItem('postsAll') === null) {
-          deferred.reject('Offline: Posts not in local storage');
+          deferred.reject('Posts are not offline');
         }
         else {
           localData = JSON.parse($window.localStorage.postsAll);
@@ -124,7 +125,7 @@ appServices.factory('PostService', function($http, $q, $window) {
       .error(function(data, status, headers, config) {
         console.log('Error connecting MongoDb, load localStorage if exists.'); 
         if($window.localStorage.getItem('post_' + id) === null) {
-          deferred.reject('Offline: Post not in localStorage');
+          deferred.reject('Post is not offline');
         }
         else {
           localData = JSON.parse($window.localStorage['post_' + id]);
@@ -190,8 +191,9 @@ appServices.factory('UserService', function ($http) {
   };
 });
 
-// Thanks to: https://github.com/gtramontina/angular-flash
 appServices.factory('flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+ 
+  // Thanks to: https://github.com/gtramontina/angular-flash
 
   var messages = [];
   var reset;
@@ -231,4 +233,61 @@ appServices.factory('flash', ['$rootScope', '$timeout', function($rootScope, $ti
 
   return flash;
 }]);
+
+appServices.service( 'MarkdownToc', function() {
+
+  var service = {
+
+    make: function(data) {
+
+      // Inspiration from Eugene Datsky
+      // https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js
+
+      var indents = [""];
+      for(var i = 1; i < 10; i++) {
+          indents.push(indents[i-1] + " ");
+      }
+
+      if (data.content !== undefined) {
+
+        var lines = data.content.trimRight().split('\n');
+        var titles = [];
+        var toc = [];
+        var depths = [];
+        var minDepth = 1000000;
+
+        for(var i = 0; i < lines.length; i++) {
+          var line = lines[i];
+          var m = line.match(/^(#+)(.*)$/);
+          if (!m) continue;
+          minDepth = Math.min(minDepth, m[1].length);
+          depths.push(m[1].length);
+
+          title = m[2];
+          uri = title.trim().toLowerCase().replace(/[\s-]/g, '').replace(/[^-0-9a-z]/g, '');
+
+          titles.push({title: title, uri: uri}).trim;
+        }
+
+        for(var i = 0; i < depths.length; i++) {
+          depths[i] -= minDepth;
+        }
+
+        for(var i = 0; i < depths.length; i++) {
+          toc.push(indents[depths[i]] + "- [" + titles[i].title + "](/#/post/" + data._id + "#" + titles[i].uri + ")");
+        }
+
+        // Show TOC if we have more then 3 titles.
+        if (titles.length <= 3) {
+          return false;
+        } else {
+          return toc.join('\n');
+        }
+      }
+    }
+  }
+
+  return service;
+
+});
 

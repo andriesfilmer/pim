@@ -1,4 +1,4 @@
-div.row
+div.row(ng-hide="offline")
  div.column.small-6.text-left.secondary-menu
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
@@ -13,9 +13,9 @@ div.row
 div.row(ng-hide="editForm", ng-class="cal.className")
  div.column.small-12 {{cal.title}} {{editFrom}}
  span &nbsp;
- div.round.secondary.label(ng-hide="editForm") {{cal.start | date: 'yyyy-MM-dd'}}
+ div.round.secondary.label {{cal.start | date: 'yyyy-MM-dd'}}
  div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
- div.round.secondary.label  {{cal.end | date: 'yyyy-MM-dd'}}
+ div.round.secondary.label  {{cal.end | date: 'yyyy-MM-dd'}} 
  div.round.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
  div.round.secondary.label(ng-show='cal.allDay') all day
 div.row(ng-hide="editForm")

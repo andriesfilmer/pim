@@ -88,9 +88,9 @@ module.exports = function(grunt) {
             'vendor/js/angular-ui-router.min.js',
             'vendor/js/angular-touch.min.js',
             'vendor/js/angular-animate.min.js',
-            'vendor/js/moment.js',
+            'vendor/js/moment.min.js',
             'vendor/js/calendar.js',
-            'vendor/js/fullcalendar.js',
+            'vendor/js/fullcalendar.min.js',
             'vendor/js/foundation.min.js',
             'vendor/js/showdown.js',
             'vendor/js/showdown-table.js'

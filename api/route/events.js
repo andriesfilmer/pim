@@ -65,7 +65,7 @@ exports.search = function(req, res) {
 
 exports.read = function(req, res) {
 
-  console.log('Event get id: ' + req.params.id); 
+  //console.log('Event get id: ' + req.params.id); 
 
   if (!req.user) {
     return res.send(401); // Unauthorized
@@ -95,7 +95,7 @@ exports.read = function(req, res) {
 
 exports.create = function(req, res) {
 
-  console.log('Event create -> with user_id -> ' + req.user.id); 
+  //console.log('Event create -> with user_id -> ' + req.user.id); 
 
   if (!req.user) {
     return res.send(401); // Unauthorized
@@ -163,7 +163,7 @@ exports.update = function(req, res) {
 
   if (event == null || event._id == null) {
     res.sendStatus(404); // Not found
-      console.log('404 - Not Found'); 
+      //console.log('404 - Not Found'); 
   }
 
   // Title required
@@ -202,11 +202,11 @@ exports.update = function(req, res) {
   updateEvent.updated = new Date();
 
   db.eventModel.update({_id: event._id, user_id: req.user.id}, updateEvent, function(err, nbRows, raw) {
-    console.log('Event update -> id: ' + event._id); 
+    //console.log('Event update -> id: ' + event._id); 
     if (err) {
       console.log(err);
       return res.sendStatus(400);
-      console.log('Event update error -> id: ' + event._id); 
+      //console.log('Event update error -> id: ' + event._id); 
     }
     return res.sendStatus(200).end();
   });
@@ -214,7 +214,7 @@ exports.update = function(req, res) {
 
 exports.delete = function(req, res) {
 
-  console.dir(req.params);
+  //console.dir(req.params);
 
   if (!req.user) {
     return res.send(401); // Unauthorized
@@ -234,7 +234,7 @@ exports.delete = function(req, res) {
 
     if (result !== null) {
       result.remove();
-      console.log('Event -> deleted -> id: ' + id); 
+      //console.log('Event -> deleted -> id: ' + id); 
       return res.sendStatus(200).end();
     }
     else {

@@ -8,25 +8,22 @@ appControllers.controller('UserController', ['$scope', '$state', '$window', 'fla
 
 
     $scope.signIn = function signIn(email, password) {
-      if (email !== null && password !== null) {
-
-        UserService.signIn(email, password).success(function(data) {
-            AuthenticationService.isAuthenticated = true;
-            // We choose localStorage i.o. sessionStorage so that 
-            // we keep content after clossing the browser.
-            flash('succes', 'Signed in');
-            $window.localStorage.token = data.token;
-            $state.go('home');
-        }).error(function(status, data) {
-          if(status === 0 && status === null) {
-            flash('alert', 'Not online');
-          }
-          else {
-            flash('alert', 'Wrong credentials');
-          }
-          console.log("Signin status: " + status);
-        });
-      }
+      UserService.signIn(email, password).success(function(data) {
+          AuthenticationService.isAuthenticated = true;
+          // We choose localStorage i.o. sessionStorage so that 
+          // we keep the token after clossing the browser.
+          flash('succes', 'Signed in');
+          $window.localStorage.token = data.token;
+          $state.go('home');
+      }).error(function(status, data) {
+        if(status === 0 && status === null) {
+          flash('alert', 'Not online');
+        }
+        else {
+          flash('alert', 'Wrong credentials');
+        }
+        console.log("Signin status: " + status);
+      });
     };
 
 
