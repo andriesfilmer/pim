@@ -1,6 +1,8 @@
 form(name="postForm")
  div.row(ng-hide="offline")
   div.column.small-8.text-left.secondary-menu
+   a.fi-page.reversed(title='Posts')
+
    a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
@@ -28,9 +30,9 @@ form(name="postForm")
    textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
    input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
  div.row
-  div.column.small-6.post-meta.panel
+  div.column.small-6.date-meta.panel
    i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
-  div.column.small-6.post-meta.panel
+  div.column.small-6.date-meta.panel
    i Updated:  {{post.updated | date: 'yyyy-MM-dd HH:mm'}}
   div.column.small-12.post-meta
     ul.inline-list

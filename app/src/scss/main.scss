@@ -33,14 +33,21 @@ h4 {
   font-style: italic;
 }
 
-
 p {
   margin-top: 0;
   margin-top: 1.25rem;
 }
 
+table p {
+  margin: 0px;
+}
+
+input#title-input {
+  font-size: 1.5rem;
+}
+
 .secondary-menu {
-  padding-right: 1rem;
+  padding-left: 0px;
   border-bottom: 1px #eee solid;
   text-align: right;
   font-size: 2rem;
@@ -74,6 +81,22 @@ ul.inline-list {
   color: #AAAAAA;
   background: transparent;
   font-weight: bold;
+}
+
+.date-meta {
+  font-size: 0.8rem;
+  padding: 0.25rem;
+}
+
+.reversed {
+  color: white;
+  padding: 6px 16px 7px 16px;
+  background: #008CBA;
+  margin-right: 18px;
+  &:hover {
+   color: #008CBA;
+   background: #eee;
+  }
 }
 
 /* Foundation overwrites */

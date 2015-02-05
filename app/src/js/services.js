@@ -179,6 +179,96 @@ appServices.factory('PostService', function($http, $q, $window) {
   };
 });
 
+appServices.factory('BookmarkService', function($http, $q, $window) {
+
+  return {
+
+    findAll: function(limit) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/bookmark/', {'params': {limit: limit}})
+      .success(function(data) {
+        $window.localStorage.bookmarksAll = JSON.stringify(data);
+        console.log('Fetched bookmarks from MongoDb and saved to localStorage.'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb, load localStorage if exists.'); 
+        if($window.localStorage.getItem('bookmarksAll') === null) {
+          deferred.reject('Posts are not offline');
+        }
+        else {
+          localData = JSON.parse($window.localStorage.bookmarksAll);
+          deferred.notify(localData);
+        }
+      });
+      return deferred.promise;
+    },
+
+    read: function(id) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/bookmark/' + id)
+      .success(function(data) {
+        $window.localStorage['bookmark_' + id] = JSON.stringify(data);
+        console.log('Fetched bookmark from MongoDb and saved to localStorage.'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb, load localStorage if exists.'); 
+        if($window.localStorage.getItem('bookmark_' + id) === null) {
+          deferred.reject('Post is not offline');
+        }
+        else {
+          localData = JSON.parse($window.localStorage['bookmark_' + id]);
+          deferred.notify(localData);
+        }
+      });
+      return deferred.promise;
+    },
+
+    create: function(bookmark) {
+      var deferred = $q.defer();
+      $http.post(options.api.base_url + '/bookmark', {'bookmark': bookmark})
+      .success(function() {
+        console.log('Created bookmark in MongoDb'); 
+        deferred.resolve('Created bookmark successfull');
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb.'); 
+        deferred.reject('Error creating bookmark');
+      });
+      return deferred.promise;
+    },
+
+    update: function(bookmark) {
+      var deferred = $q.defer();
+      $http.put(options.api.base_url + '/bookmark', {'bookmark': bookmark})
+      .success(function(data) {
+        $window.localStorage['bookmark_' + bookmark.id] = JSON.stringify(data);
+        console.log('Updated bookmark in localStorage and MongoDb'); 
+        deferred.resolve('Updated bookmark successfull');
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb.'); 
+        deferred.reject('Error updating bookmark');
+      });
+      return deferred.promise;
+    },
+
+    searchAll: function(searchKey) { 
+      return $http.get(options.api.base_url + '/bookmark/search', {'params': {searchKey: searchKey}});
+    },
+
+    changePublicState: function(id, newPublicState) {
+      return $http.put(options.api.base_url + '/bookmark', {'bookmark': {_id: id, public: newPublicState}});
+    },
+
+    delete: function(id) {
+      return $http.delete(options.api.base_url + '/bookmark/' + id);
+    },
+
+  };
+});
+
 appServices.factory('UserService', function ($http) {
   return {
     signIn: function(email, password) {

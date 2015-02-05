@@ -1,3 +1,61 @@
-h3 List of bookmarks (not ready yet)
-ul
-  li(ng-repeat="bookmark in bookmarks") {{ bookmark }}
+div.row(ng-hide="offline")
+ div.column.small-8.text-left.secondary-menu
+  a.fi-bookmark.reversed(title='Bookmarks')
+
+  a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search', tabindex="1")
+  span.divider
+  a.fi-widget(href="", title="Settings", data-reveal-id="bookmark-settings", data-reveal-ajax="true") 
+ div.column.small-4.text-right.secondary-menu
+  span.divider
+  a.fi-plus(href='#/bookmark/create',title='New item')
+
+div.row.flip-in(ng-show="searchForm")
+ form#search
+  div.columns.small-10
+   input.radius.search-box(name="focus", type="text", placeholder="Enter search words...", ng-model="searchKey", tabindex="2" )
+  div.columns.small-2
+   button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
+
+div.row.my-row.toggle(ng-repeat='bookmark in bookmarks', ng-class="bookmark.type ? bookmark.type : 'my-row'")
+ a(href='#/bookmark/{{bookmark._id}}')
+  div.columns.medium-8 {{bookmark.title}}
+ div.column.medium-2.hide-for-small
+  div.round.secondary.label {{bookmark.updated | date: 'yyyy-MM-dd'}}
+ div.column.medium-2.hide-for-small
+  div.round.alert.label(ng-show='bookmark.public', ng-click='updatePublicState(bookmark, false)') public
+  div.round.secondary.label(ng-show='!bookmark.public', ng-click='updatePublicState(bookmark, true)') private
+
+div.row
+ div#bookmark-settings.reveal-modal(data-reveal='')
+  a.close-reveal-modal &#215;
+  h2 General bookmark settings
+  fieldset
+   div.row
+    div.column.small-6.my-row List 20 bookmarks
+    div.switch.round.column.small-6
+     input#bookmark-20(type="radio", value="20", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(20)")
+     label(for="bookmark-20")
+   div.row
+    div.column.small-6.my-row List 50 bookmarks
+    div.switch.round.column.small-6
+     input#bookmark-50(type="radio", value="50", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(50)")
+     label(for="bookmark-50") 
+   div.row
+    div.column.small-6.my-row List 100 bookmarks
+    div.switch.round.column.small-6
+     input#bookmark-100(type="radio", value="100", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(100)")
+     label(for="bookmark-100") 
+   div.row
+    div.column.small-6.my-row List 1000 bookmarks
+    div.switch.round.column.small-6
+     input#bookmark-1000(type="radio", value="1000", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(1000)")
+     label(for="bookmark-1000")
+  fieldset
+   div.row
+    div.column.small-12 &nbsp;
+   div.row
+    div.column.small-6
+     button.radius(ng-click='saveSettings()', title='Save settings') Save
+    div.column.small-6
+     span.date-meta Settings wil be reset on logout
+

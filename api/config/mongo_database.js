@@ -58,6 +58,20 @@ var Post = new Schema({
 });
 
 
+var Bookmark = new Schema({
+    user_id: { type: String},
+    title: { type: String, required: true },
+    description: { type: String},
+    tags: [ {type: String} ],
+    public: { type: Boolean, default: false },
+    lang: {type: String, default: 'NL'},
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
+    content: { type: String},
+    type: {type: String, default: 'note'}
+});
+
+
 // Bcrypt middleware on UserSchema
 User.pre('save', function(next) {
   var user = this;
@@ -89,9 +103,12 @@ User.methods.comparePassword = function(password, cb) {
 var userModel = mongoose.model('User', User);
 var eventModel = mongoose.model('Event', Event);
 var postModel = mongoose.model('Post', Post);
+var bookmarkModel = mongoose.model('Bookmark', Post);
 
 
 // Export Models
 exports.userModel = userModel;
 exports.eventModel = eventModel;
 exports.postModel = postModel;
+exports.bookmarkModel = bookmarkModel;
+

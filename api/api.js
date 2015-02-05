@@ -41,9 +41,10 @@ console.log('API (' + config.name + ') is starting on port ' + config.api_port);
 
 // Routes
 var routes = {};
+routes.users = require('./route/users.js');
 routes.events = require('./route/events.js');
 routes.posts = require('./route/posts.js');
-routes.users = require('./route/users.js');
+routes.bookmarks = require('./route/bookmarks.js');
 
 /*******************/
 // User routes     */
@@ -105,4 +106,32 @@ app.put('/post', expressJwt({secret: secret.secretToken}), routes.posts.update);
 
 // Delete the post id
 app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.delete); 
+
+/*******************/
+/* Posts routes    */
+/*******************/
+
+// Get bookmarks by tag
+app.get('/tag/:tagName', routes.bookmarks.listByTag); 
+
+// Get all public bookmarks
+app.get('/bookmark/public', routes.bookmarks.listPublic);
+
+// Search bookmarks
+app.get('/bookmark/search', expressJwt({secret: secret.secretToken}), routes.bookmarks.search);
+
+// Get all bookmarks
+app.get('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.list);
+
+// Get the bookmark id
+app.get('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.read); 
+
+// Create a new bookmark
+app.post('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.create); 
+
+// Edit the bookmark id
+app.put('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.update); 
+
+// Delete the bookmark id
+app.delete('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.delete); 
 

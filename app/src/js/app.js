@@ -110,13 +110,20 @@ app.config(['$stateProvider', '$urlRouterProvider',
     })
     .state('bookmark', {
       url: "/bookmark",
-      templateUrl: "partials/bookmark.html",
+      templateUrl: "partials/bookmark.list.html",
+      controller: 'BookmarkListController',
+      access: { requiredAuthentication: false }
+    })
+    .state('bookmark.create', {
+      url: "/bookmark/create",
+      templateUrl: "partials/bookmark.view.html",
+      controller: 'BookmarkController',
       access: { requiredAuthentication: true }
     })
-    .state('bookmark.list', {
-      url: "/list",
-      templateUrl: "partials/bookmark.list.html",
-      controller: "BookmarkController",
+    .state('bookmark/:id', {
+      url: "/bookmark/:id",
+      templateUrl: "partials/bookmark.view.html",
+      controller: 'BookmarkController',
       access: { requiredAuthentication: true }
     })
     .state('reload', {

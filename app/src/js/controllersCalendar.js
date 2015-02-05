@@ -291,9 +291,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       });
     }
     $state.go('calendar.month',{start: cal.start.toISOString()});
-    if($("#cal-settings").is(":visible")) {
-      $('a.close-reveal-modal').trigger('click');
-    }
   }
 
   $scope.deleteEvent = function deleteEvent(cal) {

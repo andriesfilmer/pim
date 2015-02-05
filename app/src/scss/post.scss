@@ -32,9 +32,6 @@ $color-kb: #008CBA;
   border-left: 8px $color-kb solid; 
 }
 
-.public-alert {
-  color: red;
-}
 
 .switch.post-public input:checked + label {
   background: #f04124; // red
@@ -52,11 +49,6 @@ $color-kb: #008CBA;
   background: $color-kb;
 }
 
-.post-meta {
-  font-size: 0.8rem;
-  padding: 0.25rem;
-}
-
 fieldset.post-toc {
   padding-top: 1em;
   padding-bottom: 0em;
@@ -66,9 +58,6 @@ fieldset.post-toc {
   }
 }
 
-table p {
-  margin: 0px;
-}
 pre {
   background-color: #eee;
   margin-bottom: 2rem;
@@ -81,10 +70,6 @@ code {
 
 textarea#posts-content {
  font-family: courier;
-}
-
-input#title-input {
-  font-size: 1.5rem;
 }
 
 

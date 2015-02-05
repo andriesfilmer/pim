@@ -80,11 +80,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $(document).foundation();
 
-  // Close modal if its open.
-  if($("#post-settings").is(":visible")) {
-    $('a.close-reveal-modal').trigger('click');
-  }
-
   $scope.post = {};
   var id = $stateParams.id;
 
@@ -92,7 +87,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   $scope.toggleForm = function () {
 
     // Creat new TOC should be working but it doesn't. Don't know why yet.
-    $scope.toc = MarkdownToc.make($scope.post.content);
+    //$scope.toc = MarkdownToc.make($scope.post.content);
 
     $scope.editForm = !$scope.editForm;
 
@@ -158,6 +153,11 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
         // Promise reject
         flash('alert', err);
       });
+    }
+
+    // Close modal if its open.
+    if($("#post-settings").is(":visible")) {
+      $('a.close-reveal-modal').trigger('click');
     }
 
   };
