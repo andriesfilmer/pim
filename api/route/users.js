@@ -10,8 +10,8 @@ exports.signin = function(req, res) {
   var email = req.body.email || '';
   var password = req.body.password || '';
 
-  console.log('users -> signin -> email:' + email);
-  console.log('users -> signin -> password:' + password);
+  //console.log('users -> signin -> email:' + email);
+  //console.log('users -> signin -> password:' + password);
 
   if (email == '' || password == '') { 
     return res.sendStatus(401); // Unauthorized
@@ -31,11 +31,10 @@ exports.signin = function(req, res) {
     }
 
     user.comparePassword(password, function(isMatch) {
-      console.log('users -> signin compare password: ' + password);
       if (!isMatch) {
         console.log("users -> password mismatch " + user.email);
         return res.sendStatus(401); // Unauthorized
-       }
+      }
 
       var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: config.expireToken });
       console.log('users -> Logged in with user id:' + user._id + ' Token expires: ' + config.expireToken );
@@ -89,7 +88,6 @@ exports.register = function(req, res) {
 
     if (err) {
       console.log('Error user.save.');
-      console.log(err);
       return res.send(err); // Internal Server Error
     }
 

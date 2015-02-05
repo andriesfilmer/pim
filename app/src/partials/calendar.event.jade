@@ -1,66 +1,67 @@
-div.row(ng-hide="offline")
- div.column.small-6.text-left.secondary-menu
-  a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
-  a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
-  span.divider
-  a.fi-link(href="",data-reveal-id="cal-contacts", data-reveal-ajax="true") 
-  span.divider
-  a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
-  a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
- div.column.small-6.text-right.secondary-menu
-  a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")
-
-div.row(ng-hide="editForm", ng-class="cal.className")
- div.column.small-12 {{cal.title}} {{editFrom}}
- span &nbsp;
- div.round.secondary.label {{cal.start | date: 'yyyy-MM-dd'}}
- div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
- div.round.secondary.label  {{cal.end | date: 'yyyy-MM-dd'}} 
- div.round.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
- div.round.secondary.label(ng-show='cal.allDay') all day
-div.row(ng-hide="editForm")
-  div.column.small-12
-   p(markdown="cal.description")
-
-div.row(ng-show="editForm")
- form(novalidate='')
-  div.column
-   div.row
-    div.column.small-12(ng-class="cal.className")
-     input#title-input(type="text",ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEEE'}}", tabindex=1)
-   div.row 
-    div.column.small-12 &nbsp; 
-   div.row
-    div.column.small-2 Start 
-    div.column.small-6
-     input(type="date", ng-model="cal.start", required="", ng-change="setEnd(cal)")
-    div.column.small-4 
-     input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
-   div.row
-    div.column.small-2 End
-    div.column.small-6
-     input(type="date", ng-model="cal.end")
-    div.column.small-4
-     input(type="time", ng-model="cal.end", ng-hide="cal.allDay")
-   div.row
-    div.column.small-6 Allday
-    div.column.small-6 
-     div.switch.round
-      input#allDay(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
-      label(for="allDay")
-   div.row
-    div.column.small-12 Description
-     textarea(ng-model="cal.description", rows="10", placeholder="Write your text... \nYou can use Markdown :-)")
-   div.row
-    div.column.small-6 Appointment
-    div.switch.round.column.small-6.cal-appointment
-     input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
-     label(for="cal-appointment") 
-   div.row
-    div.column.small-6 Memo
-    div.switch.round.column.small-6.cal-memo
-     input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
-     label(for="cal-memo") 
+form(name="eventForm")
+ div.row(ng-hide="offline")
+  div.column.small-6.text-left.secondary-menu
+   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
+   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
+   span.divider
+   a.fi-link(href="",data-reveal-id="cal-contacts", data-reveal-ajax="true") 
+   span.divider
+   span(ng-hide="eventForm.title.$error.required")
+    a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
+    a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
+  div.column.small-6.text-right.secondary-menu
+   a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")
+ 
+ div.row(ng-hide="editForm", ng-class="cal.className")
+  div.column.small-12 {{cal.title}} {{editFrom}}
+  span &nbsp;
+  div.round.secondary.label {{cal.start | date: 'yyyy-MM-dd'}}
+  div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
+  div.round.secondary.label  {{cal.end | date: 'yyyy-MM-dd'}} 
+  div.round.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
+  div.round.secondary.label(ng-show='cal.allDay') all day
+ div.row(ng-hide="editForm")
+   div.column.small-12
+    p(markdown="cal.description")
+ 
+ div.row(ng-show="editForm")
+   div.column
+    div.row
+     div.column.small-12(ng-class="cal.className")
+      input#title-input(type="text", name="title", ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEEE'}}", tabindex=1)
+    div.row 
+     div.column.small-12 &nbsp; 
+    div.row
+     div.column.small-2 Start 
+     div.column.small-6
+      input(type="date", ng-model="cal.start", required="", ng-change="setEnd(cal)")
+     div.column.small-4 
+      input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
+    div.row
+     div.column.small-2 End
+     div.column.small-6
+      input(type="date", ng-model="cal.end")
+     div.column.small-4
+      input(type="time", ng-model="cal.end", ng-hide="cal.allDay")
+    div.row
+     div.column.small-6 Allday
+     div.column.small-6 
+      div.switch.round
+       input#allDay(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
+       label(for="allDay")
+    div.row
+     div.column.small-12 Description
+      textarea(ng-model="cal.description", rows="10", placeholder="Write your text... \nYou can use Markdown :-)")
+    div.row
+     div.column.small-6 Appointment
+     div.switch.round.column.small-6.cal-appointment
+      input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
+      label(for="cal-appointment") 
+    div.row
+     div.column.small-6 Memo
+     div.switch.round.column.small-6.cal-memo
+      input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
+      label(for="cal-memo") 
 
 div.row
  div.column.small-6.post-meta.panel

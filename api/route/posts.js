@@ -2,7 +2,6 @@
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
 
-// List published posts
 exports.listPublic = function(req, res) {
 
   var query = db.postModel.find({public: true, user_id: req.user.id });
@@ -29,7 +28,6 @@ exports.listPublic = function(req, res) {
 
 };
 
-// Public function list all posts
 exports.list = function(req, res) {
 
   if (!req.user) {
@@ -49,16 +47,15 @@ exports.list = function(req, res) {
 
     //if (results !== null) {
       return res.status(200).json(results); // OK
-    //}
+    //
     //else {
     //  return res.sendStatus(404); // Not Found
-    //}
+    //
 
   });
 
 };
 
-// Search all posts
 exports.search = function(req, res) {
 
   var posts = req.query; 
@@ -99,7 +96,6 @@ exports.search = function(req, res) {
 
 };
 
-// Show post id.
 exports.read = function(req, res) {
 
   if (!req.user) {
@@ -146,18 +142,11 @@ exports.create = function(req, res) {
   var postEntry = new db.postModel();
 
   postEntry.user_id = req.user.id;
-
-  // Title required
-  if (post.title !== null && post.title !== "") {
-    postEntry.title = post.title;
-  }
-  else {
-    return res.sendStatus(400); // Bad Request
-  }
-
+  postEntry.title = post.title;
   postEntry.public = post.public;
   postEntry.content = post.content;
 
+  // Tags are comma separated
   if (post.tags != null) {
     if (Object.prototype.toString.call(post.tags) === '[object Array]') {
       postEntry.tags = post.tags;
@@ -169,8 +158,7 @@ exports.create = function(req, res) {
 
   postEntry.save(function(err) {
     if (err) {
-      console.log(err);
-      return res.sendStatus(400);
+      return res.sendStatus(400); // Bad Request
     }
 
     return res.sendStatus(200).end();
@@ -186,22 +174,22 @@ exports.update = function(req, res) {
 
   var post = req.body.post;
   if (post == null) {
-    res.sendStatus(400);
+    res.sendStatus(400); // Bad request
   }
 
   var updatePost = {};
 
   // id required
-  //if (post._id === null || post._id === "" || post._id === undefined) {
+  //if (post._id === null || post._id === "" || post._id === undefined) 
   //  return res.sendStatus(400); // Bad Request
-  //}
+  //
 
   // Title required
   if (post.title !== null && post.title !== "") {
     updatePost.title = post.title;
   }
   else {
-    return res.sendStatus(400); // Bad Request
+    return res.sendStatus(400); // Bad request
   }
 
   if (post.tags != null) {
@@ -230,6 +218,7 @@ exports.update = function(req, res) {
   db.postModel.update({_id: post._id, user_id: req.user.id}, updatePost, function(err, nbRows, raw) {
     return res.status(200).end();
   });
+
 };
 
 exports.delete = function(req, res) {

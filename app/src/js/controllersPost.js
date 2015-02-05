@@ -85,9 +85,17 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     $('a.close-reveal-modal').trigger('click');
   }
 
+  $scope.post = {};
+  var id = $stateParams.id;
+
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
+
+    // Creat new TOC should be working but it doesn't. Don't know why yet.
+    $scope.toc = MarkdownToc.make($scope.post.content);
+
     $scope.editForm = !$scope.editForm;
+
   };
 
   // Show edit mode if we want to create a new post.
@@ -99,9 +107,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   $scope.isChanged = function() {
     $scope.saveForm = true;
   };
-
-  $scope.post = {};
-  var id = $stateParams.id;
 
   // Length of mongoDb _id = 24, so it must be a existing post.
   if ($stateParams.id.length > 23) {
@@ -116,7 +121,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     }, function(localData) {
       // Promise notify
       $scope.post = localData;
-      $scope.toc = processToc(localData);
+      $scope.toc = MarkdownToc.make(localData);
       $scope.offline = true;
       flash('warning', 'Offline: Post from local storage');
     });

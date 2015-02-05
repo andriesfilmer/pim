@@ -1,40 +1,41 @@
-div.row(ng-hide="offline")
- div.column.small-8.text-left.secondary-menu
-  a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
-  a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
-  span.divider
-  a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
-  span.divider
-  a.fi-save(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
- div.column.small-4.text-right.secondary-menu
-  span.divider
-  a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
+form(name="postForm")
+ div.row(ng-hide="offline")
+  div.column.small-8.text-left.secondary-menu
+   a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
+   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
+   span.divider
+   a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
+   span.divider
+   a.fi-save(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
+  div.column.small-4.text-right.secondary-menu
+   span.divider
+   a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
+ 
+ div.row(ng-hide="editForm")
+  div.column.small-12
+  h1(ng-class='post.type') {{post.title}} 
+  fieldset.post-toc(ng-show="toc")
+   legend Content
+   div(markdown='toc') {{toc}} 
+  div.column.small-12
+   p(markdown='post.content') 
 
-div.row(ng-hide="editForm")
- div.column.small-12
- h1(ng-class='post.type') {{post.title}} 
- fieldset.post-toc(ng-show="toc")
-  legend Content
-  div(markdown='toc') {{toc}} 
- div.column.small-12
-  p(markdown='post.content') 
-
-div.row(ng-show="editForm")
- div.column.small-12(ng-class="post.type")
-  input#title-input(type="text", placeholder="Title", ng-model="post.title", ng-change="isChanged()")
-div.row(ng-show="editForm")
- div.column.small-12
-  textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="Write your post... \nYou can use Markdown :-)")
-  input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
-div.row
- div.column.small-6.post-meta.panel
-  i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
- div.column.small-6.post-meta.panel
-  i Updated:  {{post.updated | date: 'yyyy-MM-dd HH:mm'}}
- div.column.small-12.post-meta
-   ul.inline-list
-    li.tag(ng-repeat='tag in post.tags')
-     a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
+ div.row(ng-show="editForm")
+  div.column.small-12(ng-class="post.type")
+   input#title-input(type="text", required='', name="title", placeholder="Title is required", ng-model="post.title", ng-change="isChanged()")
+ div.row(ng-show="editForm")
+  div.column.small-12
+   textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
+   input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
+ div.row
+  div.column.small-6.post-meta.panel
+   i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
+  div.column.small-6.post-meta.panel
+   i Updated:  {{post.updated | date: 'yyyy-MM-dd HH:mm'}}
+  div.column.small-12.post-meta
+    ul.inline-list
+     li.tag(ng-repeat='tag in post.tags')
+      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
 
 div.row
  div#post-settings.reveal-modal(data-reveal='')
