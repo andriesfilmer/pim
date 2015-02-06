@@ -77,7 +77,6 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
 appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'BookmarkService', 'MarkdownToc',
   function BookmarkController($rootScope, $scope, $state, $window, $stateParams, flash, BookmarkService, MarkdownToc) {
-
   $(document).foundation();
 
   $scope.bookmark = {};
@@ -85,12 +84,7 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
-
-    // Creat new TOC should be working but it doesn't. Don't know why yet.
-    //$scope.toc = MarkdownToc.make($scope.bookmark.content);
-
     $scope.editForm = !$scope.editForm;
-
   };
 
   // Show edit mode if we want to create a new bookmark.

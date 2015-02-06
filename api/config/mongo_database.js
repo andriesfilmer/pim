@@ -47,13 +47,12 @@ var Event = new Schema({
 var Post = new Schema({
     user_id: { type: String},
     title: { type: String, required: true },
-    description: { type: String},
+    description: { type: String}, // deprecated
+    content: { type: String},
     tags: [ {type: String} ],
     public: { type: Boolean, default: false },
-    lang: {type: String, default: 'NL'},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    content: { type: String},
     type: {type: String, default: 'note'}
 });
 
@@ -61,14 +60,13 @@ var Post = new Schema({
 var Bookmark = new Schema({
     user_id: { type: String},
     title: { type: String, required: true },
-    description: { type: String},
+    url: { type: String },
+    content: { type: String},
     tags: [ {type: String} ],
     public: { type: Boolean, default: false },
-    lang: {type: String, default: 'NL'},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    content: { type: String},
-    type: {type: String, default: 'note'}
+    category: {type: String}
 });
 
 
@@ -103,7 +101,7 @@ User.methods.comparePassword = function(password, cb) {
 var userModel = mongoose.model('User', User);
 var eventModel = mongoose.model('Event', Event);
 var postModel = mongoose.model('Post', Post);
-var bookmarkModel = mongoose.model('Bookmark', Post);
+var bookmarkModel = mongoose.model('Bookmark', Bookmark);
 
 
 // Export Models

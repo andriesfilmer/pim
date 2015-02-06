@@ -1,8 +1,8 @@
 form(name="eventForm")
  div.row(ng-hide="offline")
   div.column.small-6.text-left.secondary-menu
-   a.fi-calendar.reversed(title='Calendar')
-
+   i.fi-calendar.reversed(title='Calendar')
+   span.divider
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
@@ -10,6 +10,7 @@ form(name="eventForm")
     a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
     a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
   div.column.small-6.text-right.secondary-menu
+   span.divider
    a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")
  
  div.row(ng-hide="editForm", ng-class="cal.className")

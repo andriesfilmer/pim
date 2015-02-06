@@ -7,29 +7,29 @@
 .my-row { @include my-row}
 
 $color-fun: orange;
-$color-dev: green;
 $color-media: red;
 $color-kb: #008CBA;
+$color-other: green;
 
 .fun {
   padding-left: 6px;
   margin-top: 0;
   border-left: 8px $color-fun solid; 
 }
-.dev {
+.kb {
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-dev solid; 
+  border-left: 8px $color-kb solid; 
 }
 .media { 
   padding-left: 6px;
   margin-top: 0;
   border-left: 8px $color-media solid; 
 }
-.kb   {
+.other   {
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-kb solid; 
+  border-left: 8px $color-other solid; 
 }
 
 .public-alert {
@@ -42,14 +42,14 @@ $color-kb: #008CBA;
 .switch.bookmark-fun input:checked + label {
   background: $color-fun;
 }
-.switch.bookmark-dev input:checked + label {
-  background: $color-dev;
+.switch.bookmark-kb input:checked + label {
+  background: $color-kb;
 }
 .switch.bookmark-media input:checked + label {
   background: $color-media;
 }
-.switch.bookmark-kb input:checked + label {
-  background: $color-kb;
+.switch.bookmark-other input:checked + label {
+  background: $color-other;
 }
 
 pre {

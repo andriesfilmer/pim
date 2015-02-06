@@ -36,7 +36,7 @@ exports.list = function(req, res) {
 
   var query = db.bookmarkModel.find({user_id: req.user.id}).limit(req.query.limit);
 
-  query.select("_id title type tags created updated public");
+  query.select("_id title url category tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
 
@@ -45,12 +45,12 @@ exports.list = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    //if (results !== null) {
+    if (results !== null) {
       return res.status(200).json(results); // OK
-    //
-    //else {
-    //  return res.sendStatus(404); // Not Found
-    //
+    }
+    else {
+      return res.sendStatus(404); // Not Found
+    } 
 
   });
 
@@ -76,7 +76,7 @@ exports.search = function(req, res) {
     var query = db.bookmarkModel.find({ user_id: req.user.id });
   }
 
-  query.select("_id title type tags created updated public");
+  query.select("_id title url category tags created updated public");
   query.sort('-updated');
   query.exec(function(err, results) {
 
@@ -108,7 +108,7 @@ exports.read = function(req, res) {
   }
 
   var query = db.bookmarkModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id title tags type content created updated public');
+  query.select('_id title url category content tags created updated public');
   query.exec(function(err, result) {
 
     if (err) {
@@ -143,6 +143,7 @@ exports.create = function(req, res) {
 
   bookmarkEntry.user_id = req.user.id;
   bookmarkEntry.title = bookmark.title;
+  bookmarkEntry.url = bookmark.url;
   bookmarkEntry.public = bookmark.public;
   bookmarkEntry.content = bookmark.content;
 
@@ -179,19 +180,12 @@ exports.update = function(req, res) {
 
   var updateBookmark = {};
 
-  // id required
-  //if (bookmark._id === null || bookmark._id === "" || bookmark._id === undefined) 
-  //  return res.sendStatus(400); // Bad Request
-  //
-
   // Title required
-  if (bookmark.title !== null && bookmark.title !== "") {
+  if (bookmark.title !== null && bookmark.title !== "" && bookmark.title !== undefined) {
     updateBookmark.title = bookmark.title;
   }
-  else {
-    return res.sendStatus(400); // Bad request
-  }
 
+  // Convert commaseparate tags to objects.
   if (bookmark.tags != null) {
     if (Object.prototype.toString.call(bookmark.tags) === '[object Array]') {
       updateBookmark.tags = bookmark.tags;
@@ -201,8 +195,12 @@ exports.update = function(req, res) {
     }
   }
 
-  if (bookmark.type != null) {
-    updateBookmark.type = bookmark.type;
+  if (bookmark.url !== null && bookmark.url !== "" && bookmark.url !== undefined) {
+    updateBookmark.url = bookmark.url;
+  }
+
+  if (bookmark.category != null) {
+    updateBookmark.category = bookmark.category;
   }
 
   if (bookmark.public != null) {
@@ -260,7 +258,7 @@ exports.listByTag = function(req, res) {
   }
 
   var query = db.bookmarkModel.find({tags: tagName, public: true, user_id: req.user.id });
-  query.select('_id title tags type created updated public');
+  query.select('_id title url tags category created updated public');
   query.sort('-created');
   query.exec(function(err, results) {
     if (err) {

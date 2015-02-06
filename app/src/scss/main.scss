@@ -13,7 +13,7 @@ h1 {
   &:first-letter{
     text-transform: capitalize;
   }
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 h2 {
@@ -47,8 +47,9 @@ input#title-input {
 }
 
 .secondary-menu {
-  padding-left: 0px;
-  border-bottom: 1px #eee solid;
+  padding-left: 0px; 
+  padding-bottom: 10px;
+/* border-bottom: 1px #eee solid; */
   text-align: right;
   font-size: 2rem;
   .divider {
@@ -58,8 +59,21 @@ input#title-input {
   a.alert {color: #f04124};
 }
 
+.reversed {
+  color: white;
+  padding: 5px 16px 5px 16px;
+  background: #008CBA;
+  border-radius: 50%;
+  &:hover {
+   color: #008CBA;
+   background: #fff;
+  }
+}
+
+
 ul.inline-list {
   margin-left: 0rem;
+  margin-bottom: 0rem;
   > li.tag {
     margin-bottom: 0.5rem;
     margin-left: 0.5rem;
@@ -86,17 +100,6 @@ ul.inline-list {
 .date-meta {
   font-size: 0.8rem;
   padding: 0.25rem;
-}
-
-.reversed {
-  color: white;
-  padding: 6px 16px 7px 16px;
-  background: #008CBA;
-  margin-right: 18px;
-  &:hover {
-   color: #008CBA;
-   background: #eee;
-  }
 }
 
 /* Foundation overwrites */

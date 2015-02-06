@@ -1,8 +1,8 @@
 form(name="postForm")
  div.row(ng-hide="offline")
   div.column.small-8.text-left.secondary-menu
-   a.fi-page.reversed(title='Posts')
-
+   i.fi-page.reversed(title='Posts')
+   span.divider
    a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
@@ -30,14 +30,15 @@ form(name="postForm")
    textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
    input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
  div.row
-  div.column.small-6.date-meta.panel
-   i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
-  div.column.small-6.date-meta.panel
-   i Updated:  {{post.updated | date: 'yyyy-MM-dd HH:mm'}}
   div.column.small-12.post-meta
     ul.inline-list
      li.tag(ng-repeat='tag in post.tags')
       a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
+ div.row
+  div.column.small-6.date-meta.panel
+   i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
+  div.column.small-6.date-meta.panel
+   i Updated:  {{post.updated | date: 'yyyy-MM-dd HH:mm'}}
 
 div.row
  div#post-settings.reveal-modal(data-reveal='')
@@ -69,7 +70,7 @@ div.row
    div.row
     div.column.small-6 Public switch
     div.switch.round.column.small-6.post-public
-     input#public(type="checkbox", ng-model="post.public")
+     input#public(type="checkbox", ng-model="post.public", ng-change="isChanged()")
      label(for="public")
   fieldset
    div.row

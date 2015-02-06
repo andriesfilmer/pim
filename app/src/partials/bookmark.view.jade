@@ -1,12 +1,10 @@
 form(name="bookmarkForm")
  div.row(ng-hide="offline")
   div.column.small-8.text-left.secondary-menu
-   a.fi-bookmark.reversed(title='Bookmarks')
-
+   i.fi-bookmark.reversed(title='Bookmarks')
+   span.divider
    a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
-   span.divider
-   a.fi-widget(href="",data-reveal-id="bookmark-settings", data-reveal-ajax="true") 
    span.divider
    a.fi-save(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
   div.column.small-4.text-right.secondary-menu
@@ -15,66 +13,58 @@ form(name="bookmarkForm")
  
  div.row(ng-hide="editForm")
   div.column.small-12
-  h1(ng-class='bookmark.type') {{bookmark.title}} 
-  fieldset.bookmark-toc(ng-show="toc")
-   legend Content
-   div(markdown='toc') {{toc}} 
+  h1(ng-class='bookmark.category') {{bookmark.title}} 
+  div.column.small-12
+   a.fi-link(href="{{bookmark.url}}")  {{bookmark.url}} 
   div.column.small-12
    p(markdown='bookmark.content') 
 
  div.row(ng-show="editForm")
-  div.column.small-12(ng-class="bookmark.type")
+  div.column.small-12(ng-class="bookmark.category")
    input#title-input(type="text", required='', name="title", placeholder="Title is required", ng-model="bookmark.title", ng-change="isChanged()")
+ div.row(ng-show="editForm")
+  div.column.small-12
+   input(type="text", placeholder="http://.....", ng-model="bookmark.url", ng-change="isChanged()")
  div.row(ng-show="editForm")
   div.column.small-12
    textarea#bookmark-content(rows="19", ng-model="bookmark.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
    input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="bookmark.tags", ng-change="isChanged()")
  div.row
-  div.column.small-6.date-meta.panel
-   i Created:  {{bookmark.created | date: 'yyyy-MM-dd HH:mm'}}
-  div.column.small-6.date-meta.panel
-   i Updated:  {{bookmark.updated | date: 'yyyy-MM-dd HH:mm'}}
-  div.column.small-12.bookmark-meta
-    ul.inline-list
-     li.tag(ng-repeat='tag in bookmark.tags')
-      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
-
-div.row
- div#bookmark-settings.reveal-modal(data-reveal='')
-  a.close-reveal-modal &#215;
-  fieldset
+  div.column.small-12
+   ul.inline-list
+    li.tag(ng-repeat='tag in bookmark.tags')
+     a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
+ div.row
+  fieldset.radius
+   legend Category
    div.row
     div.column.small-6.my-row.media Media
     div.switch.round.column.small-6.bookmark-media
-     input#bookmark-media.media(type="radio", value="media", name="bookmarkType", ng-model="bookmark.type", ng-change="isChanged()")
+     input#bookmark-media.media(type="radio", value="media", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label(for="bookmark-media")
    div.row
     div.column.small-6.my-row.fun Fun
     div.switch.round.column.small-6.bookmark-fun
-     input#bookmark-fun(type="radio", value="fun", name="bookmarkType", ng-model="bookmark.type", ng-change="isChanged()")
+     input#bookmark-fun(type="radio", value="fun", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label(for="bookmark-fun")
-   div.row
-    div.column.small-6.my-row.dev Development
-    div.switch.round.column.small-6.bookmark-dev
-     input#bookmark-dev(type="radio", value="dev", name="bookmarkType", ng-model="bookmark.type", ng-change="isChanged()")
-     label(for="bookmark-dev") 
    div.row
     div.column.small-6.my-row.kb Knowlege base
     div.switch.round.column.small-6.bookmark-kb
-     input#bookmark-kb(type="radio", value="kb", name="bookmarkType", ng-model="bookmark.type", ng-change="isChanged()")
+     input#bookmark-kb(type="radio", value="kb", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label(for="bookmark-kb") 
-  fieldset
    div.row
-    div.column.small-12 &nbsp;
+    div.column.small-6.my-row.other Other
+    div.switch.round.column.small-6.bookmark-other
+     input#bookmark-other(type="radio", value="other", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
+     label(for="bookmark-other") 
+  fieldset.radius
    div.row
     div.column.small-6 Public switch
     div.switch.round.column.small-6.bookmark-public
-     input#public(type="checkbox", ng-model="bookmark.public")
+     input#public(type="checkbox", ng-model="bookmark.public", ng-change="isChanged()")
      label(for="public")
-  fieldset
-   div.row
-    div.column.small-12 &nbsp;
-   div.row
-    div.column.small-12
-     button.radius(ng-click='save(bookmark)', title='Save item') Save settings
-
+ div.row
+  div.column.small-6.date-meta.panel
+   i Created:  {{bookmark.created | date: 'yyyy-MM-dd HH:mm'}}
+  div.column.small-6.date-meta.panel
+   i Updated:  {{bookmark.updated | date: 'yyyy-MM-dd HH:mm'}}

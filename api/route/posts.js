@@ -179,19 +179,12 @@ exports.update = function(req, res) {
 
   var updatePost = {};
 
-  // id required
-  //if (post._id === null || post._id === "" || post._id === undefined) 
-  //  return res.sendStatus(400); // Bad Request
-  //
-
   // Title required
-  if (post.title !== null && post.title !== "") {
+  if (post.title !== null && post.title !== "" && post.title !== undefined) {
     updatePost.title = post.title;
   }
-  else {
-    return res.sendStatus(400); // Bad request
-  }
 
+  // Convert commaseparate tags to objects.
   if (post.tags != null) {
     if (Object.prototype.toString.call(post.tags) === '[object Array]') {
       updatePost.tags = post.tags;
