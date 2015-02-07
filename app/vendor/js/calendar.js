@@ -10,7 +10,7 @@
 
 angular.module('ui.calendar', [])
   .constant('uiCalendarConfig', {})
-  .controller('uiCalendarCtrl', ['$scope', '$timeout', function($scope, $timeout){
+  .controller('UiCalendarController', ['$scope', '$timeout', function($scope, $timeout){
 
       var sourceSerialId = 1,
           eventSerialId = 1,
@@ -187,7 +187,7 @@ angular.module('ui.calendar', [])
     return {
       restrict: 'A',
       scope: {eventSources:'=ngModel',calendarWatchEvent: '&'},
-      controller: 'uiCalendarCtrl',
+      controller: 'UiCalendarController',
       link: function(scope, elm, attrs, controller) {
 
         var sources = scope.eventSources,

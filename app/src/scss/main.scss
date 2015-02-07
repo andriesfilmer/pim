@@ -1,3 +1,5 @@
+/* main */
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
   display: none !important;
 }
@@ -44,6 +46,12 @@ table p {
 
 input#title-input {
   font-size: 1.5rem;
+}
+
+.my-row {
+  border-bottom: 1px #eee solid;
+  padding: 6px;
+  margin-top: 0;
 }
 
 .secondary-menu {
@@ -95,6 +103,13 @@ ul.inline-list {
   color: #AAAAAA;
   background: transparent;
   font-weight: bold;
+}
+
+.odd {
+  background: aliceblue;
+}
+.even {
+  background: white;
 }
 
 .date-meta {

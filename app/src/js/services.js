@@ -25,12 +25,12 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
       if ($window.localStorage.token) {
         config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
       }
-      console.log('TokenInterceptor -> request: ' + config.url); 
+      console.log('TokenInterceptor -> request -> url: ' + config.url); 
       return config;
     },
     requestError: function(rejection) {
       //AuthenticationService.isAuthenticated = false;
-      console.log('TokenInterceptor -> requestError -> rejection: ' + rejection.status); 
+      console.log('TokenInterceptor -> requestError -> rejection.status: ' + rejection.status); 
       return $q.reject(rejection);
     },
 
@@ -39,7 +39,7 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
       if (response !== null && response.status === 200 && $window.localStorage.token) {
         //AuthenticationService.isAuthenticated = true;
       }
-      console.log('TokenInterceptor -> response: ' + response.status); 
+      console.log('TokenInterceptor -> response -> response.status: ' + response.status); 
       return $q.when(response);
     },
 
@@ -49,7 +49,7 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
         delete $window.localStorage.token;
         AuthenticationService.isAuthenticated = false;
       }
-      console.log('TokenInterceptor -> responseError: ' + rejection.status); 
+      console.log('TokenInterceptor -> responseError -> reject.status: ' + rejection.status); 
       return $q.reject(rejection);
     }
   };
@@ -194,7 +194,7 @@ appServices.factory('BookmarkService', function($http, $q, $window) {
       .error(function(data, status, headers, config) {
         console.log('Error connecting MongoDb, load localStorage if exists.'); 
         if($window.localStorage.getItem('bookmarksAll') === null) {
-          deferred.reject('Posts are not offline');
+          deferred.reject('Bookmarks are not offline');
         }
         else {
           localData = JSON.parse($window.localStorage.bookmarksAll);
@@ -215,7 +215,7 @@ appServices.factory('BookmarkService', function($http, $q, $window) {
       .error(function(data, status, headers, config) {
         console.log('Error connecting MongoDb, load localStorage if exists.'); 
         if($window.localStorage.getItem('bookmark_' + id) === null) {
-          deferred.reject('Post is not offline');
+          deferred.reject('Bookmark is not offline');
         }
         else {
           localData = JSON.parse($window.localStorage['bookmark_' + id]);

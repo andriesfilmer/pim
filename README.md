@@ -60,8 +60,10 @@ Create a `cron` for each 5 minutes: `*/5 * * * * export NODE_ENV=production && /
 
 ## Credits
 
-I use a lot off NPM Packages and Bower Packages. Look in `packages.json` and `bower.json`.
-Many thanks for the maintainers!
+- [Zurb Foundation](http://foundation.zurb.com)
+- [Adam Shaw - Fullcalendar](http://fullcalendar.io/)
+
+I use a lot more Packages. Look in `packages.json` and `bower.json. Many thanks for the maintainers!
 
 ## Licence
 

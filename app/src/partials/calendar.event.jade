@@ -50,7 +50,7 @@ form(name="eventForm")
      label(for="allDay")
   div.row
    div.column.small-12 Description
-    textarea(ng-model="cal.description", rows="10", placeholder="Write your text... \nYou can use Markdown :-)")
+    textarea(ng-model="cal.description", rows="10", placeholder="You can use Markdown ...")
   div.row
    div.column.small-6 Appointment
    div.switch.round.column.small-6.cal-appointment
@@ -63,9 +63,9 @@ form(name="eventForm")
     label(for="cal-memo") 
 
 div.row
- div.column.small-6.post-meta.panel
+ div.column.small-6.date-meta.panel
   i Created:  {{cal.created | date: 'yyyy-MM-dd HH:mm'}}
- div.column.small-6.post-meta.panel
+ div.column.small-6.date-meta.panel
   i Updated:  {{cal.updated | date: 'yyyy-MM-dd HH:mm'}}
  div.column.small-12.post-meta
    ul.inline-list

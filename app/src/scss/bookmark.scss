@@ -1,10 +1,4 @@
-
-@mixin my-row {
-  border-bottom: 1px #eee solid;
-  padding: 6px;
-  margin-top: 0;
-}
-.my-row { @include my-row}
+/* bookmark */
 
 $color-fun: orange;
 $color-media: red;

@@ -12,7 +12,7 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
         console.log('Connection refused to ' + mongodbURL);
         console.log(err);
     } else {
-        console.log('Mongoose connection successful ');
+        //console.log('Mongoose connection successful ');
     }
 });
 

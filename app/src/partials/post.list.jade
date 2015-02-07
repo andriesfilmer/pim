@@ -12,19 +12,18 @@ div.row(ng-hide="offline")
 div.row.flip-in(ng-show="searchForm")
  form#search
   div.columns.small-10
-   input.radius.search-box(name="focus", type="text", placeholder="Enter search words...", ng-model="searchKey", tabindex="2" )
+   input.radius.search-box(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey", tabindex="2" )
   div.columns.small-2
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
-
-div.row.my-row.toggle(ng-repeat='post in posts', ng-class="post.type ? post.type : 'my-row'")
+div.row.my-row(ng-repeat='post in posts', ng-class="post.type", ng-class-odd="'odd'" ng-class-even="'even'")
  a(href='#/post/{{post._id}}')
-  div.columns.medium-8 {{post.title}}
- div.column.medium-2.hide-for-small
-  div.round.secondary.label {{post.updated | date: 'yyyy-MM-dd'}}
- div.column.medium-2.hide-for-small
-  div.round.alert.label(ng-show='post.public', ng-click='updatePublicState(post, false)') public
-  div.round.secondary.label(ng-show='!post.public', ng-click='updatePublicState(post, true)') private
+   div.columns.medium-8 {{post.title}}
+  div.column.medium-2.hide-for-small
+   div.round.secondary.label {{post.created | date: 'yyyy-MM-dd'}}
+  div.column.medium-2.hide-for-small
+   div.round.alert.label(ng-show='post.public', ng-click='updatePublicState(post, false)') public
+   div.round.secondary.label(ng-show='!post.public', ng-click='updatePublicState(post, true)') private
 
 div.row
  div#post-settings.reveal-modal(data-reveal='')

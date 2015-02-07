@@ -23,8 +23,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /state1
-  //$urlRouterProvider.otherwise("/calendar/month");
-  $urlRouterProvider.otherwise("/bookmark");
+  $urlRouterProvider.otherwise("/calendar/month");
   //
   // Now set up the states
   $stateProvider
@@ -127,34 +126,22 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'BookmarkController',
       access: { requiredAuthentication: true }
     })
-    .state('reload', {
-      url: "/reload",
-      templateUrl: 'partials/reload.html',
+    .state('sitemap', {
+      url: "/sitemap",
+      templateUrl: 'partials/sitemap.html',
       access: { requiredAuthentication: false }
     })
   }
 ]);
 
 app.config(function ($httpProvider) {
-   $httpProvider.interceptors.push('TokenInterceptor');
+  $httpProvider.interceptors.push('TokenInterceptor');
 });
 
 app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
 
-
-  // Because we use token based authentication with te first page load 
-  // we don't have 'AuthenticationService.isAuthenticated' true.
-  //if (!$rootScope.reloadAuthenticated) 
-  //  console.log('App reloaded'); 
-  //  flash('App reloaded');
-  //  $rootScope.reloadAuthenticated = true;
-  //  $location.path('/#/reload');
-  //
-
   // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-
-    $rootScope.isAuthenticated = AuthenticationService.isAuthenticated;
 
     console.log('toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
     console.log('AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 

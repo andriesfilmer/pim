@@ -12,18 +12,18 @@ div.row(ng-hide="offline")
 div.row.flip-in(ng-show="searchForm")
  form#search
   div.columns.small-10
-   input.radius.search-box(name="focus", type="text", placeholder="Enter search words...", ng-model="searchKey", tabindex="2" )
+   input.radius.search-box(name="focus", type="text", placeholder="Enter words...", ng-model="searchKey", tabindex="2" )
   div.columns.small-2
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
-div.row.my-row.toggle(ng-repeat='bookmark in bookmarks', ng-class="bookmark.category ? bookmark.category : 'my-row'")
- a(href='#/bookmark/{{bookmark._id}}')
-  div.columns.medium-8 {{bookmark.title}}
- div.column.medium-2.hide-for-small
-  div.round.secondary.label {{bookmark.updated | date: 'yyyy-MM-dd'}}
- div.column.medium-2.hide-for-small
-  div.round.alert.label(ng-show='bookmark.public', ng-click='updatePublicState(bookmark, false)') public
-  div.round.secondary.label(ng-show='!bookmark.public', ng-click='updatePublicState(bookmark, true)') private
+div.row.my-row(ng-repeat='bookmark in bookmarks', ng-class="bookmark.category", ng-class-odd="'odd'" ng-class-even="'even'")
+  a(href='#/bookmark/{{bookmark._id}}')
+   div.columns.medium-8 {{bookmark.title}}
+  div.column.medium-2.hide-for-small
+   div.round.secondary.label {{bookmark.created | date: 'yyyy-MM-dd'}}
+  div.column.medium-2.hide-for-small
+   div.round.alert.label(ng-show='bookmark.public', ng-click='updatePublicState(bookmark, false)') public
+   div.round.secondary.label(ng-show='!bookmark.public', ng-click='updatePublicState(bookmark, true)') private
 
 div.row
  div#bookmark-settings.reveal-modal(data-reveal='')

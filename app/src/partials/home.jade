@@ -12,7 +12,7 @@ div.row
     legend Main features
     ul(style="list-style-type: none;")
      li.fi-calendar
-      a(ui-sref="calendar")  Calendar
+      a(ui-sref="calendar.month")  Calendar
      li.fi-address-book
       a(ui-sref="contact")  Concacts
      li.fi-page
@@ -25,27 +25,29 @@ div.row
   p Keep your personal information private. Access your data wherever you are, whenever you need it, all under your control. 
    |Undependent of Google, Facebook or other installed app/provider who can peek into your data.
   p PIM has a responsive design so you can use it on your mobile, tablet or desktop. 
-   |All data is (read only) available offline.
 div.row
  div.column.small-12
-  h2.fi-page  Posts
-  P You can create a post with the flag: <code>todo, note, blog or knowlodge base</code>. 
-   |You can make a small note or a big article. Auto-generate a table of contents (TOC) on a large article. 
-   a(href="http://daringfireball.net/projects/markdown/") Markdown is integrated. 
-   |You can flag your posts 'public' because there is also a API avialable so you can publish you 'posts' on a different public site.
   h2.fi-calendar  Calendar
-  p You can create events with the flag: <code>appiontment or memo</code>. 
+  p You can create events with the flag: <code>appointment or memo</code>. 
    | You can search events and swipe the calendar (left/right). 
-   a(href="http://daringfireball.net/projects/markdown/") Markdown is integrated. 
    | Get reminders every 24hours before (via E-mail).
-   | The calendar is based on 
-   a(href="http://fullcalendar.io/") Adam Shaw - fullcalendar.
+   | The calendar has month, week and day view. 
   h2.fi-address-book  Contacts
   p Working on contacts...
-   | Saving an searching your contacts.
+  h2.fi-page  Posts
+  P You can create a post with the flag: <code>todo, note, blog or knowledge base</code>. 
+   |You can make a small note or a big article. Auto-generate a table of contents (TOC) on a large article. 
+   |You can flag your posts 'public' because there is also a API avialable so you can publish you 'posts' on a different public site.
   h2.fi-bookmark  Bookmarks
-  P You can create a bookmarks with the flag: <code>media, fun, knowlodge base, other</code>. 
+  P You can create a bookmarks with the flag: <code>media, fun, knowledge base, other</code>. 
    |You can flag your bookmarks 'public' because there is also a API avialable so you can publish you 'posts' on a different public site.
+div.row
+ div.column.small-12
+  h2.fi-star  Features
+  ul
+   li All data is (read only) available offline.
+   li 
+    a(href="http://daringfireball.net/projects/markdown/") Markdown is integrated. 
 div.row
  div.column.small-12
   hr
