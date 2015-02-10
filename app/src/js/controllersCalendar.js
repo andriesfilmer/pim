@@ -50,20 +50,20 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
           callback(JSON.parse($window.localStorage[eventsLocalStorage]));
         }
         else {
-          flash('alert', 'No events offline');
+          flash('alert', 'No events offline, are you logged in?');
         }
       }
       else if(status === 401) {
-        flash('alert', 'Login first');
+        flash('alert', 'Sign-in first');
         $state.go('signin');
       }
       else {
-        flash('alert', 'Error finding events');
+        flash('alert', 'Error finding events, are you logged in?');
       }
 
     });
 
-  }
+  };
 
   // Fullcalendar options.
   $scope.uiConfig = {
@@ -132,7 +132,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   $scope.resetSearchKey = function resetSearchKey() {
     $window.sessionStorage.clear('calendarSearchKey');
     $state.go('calendar.search', {}, {reload: true});
-  }
+  };
 
   // Only load searched events if searchKey is defined and we are on the search page.
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
@@ -186,7 +186,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   Date.prototype.addHours= function(h) {
     this.setHours(this.getHours()+h);
     return this;
-  }
+  };
 
   // Hide save icon, $scope.change first.
   $scope.editForm = false;
@@ -211,11 +211,11 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       $scope.offline = true;
       if(status === 0 && $window.localStorage.getItem('event_' + id) !== null) {
         flash('warning', 'Offline: Event from local storage');
-        var cal = JSON.parse($window.localStorage['event_' + id]);
-        $scope.cal = cal;
-        $scope.cal.start = new Date(cal.start);
-        $scope.cal.end = new Date(cal.end);
-        $scope.cal.allDay = JSON.parse(cal.allDay);
+        var lcal = JSON.parse($window.localStorage['event_' + id]);
+        $scope.cal = lcal;
+        $scope.cal.start = new Date(lcal.start);
+        $scope.cal.end = new Date(lcal.end);
+        $scope.cal.allDay = JSON.parse(lcal.allDay);
       } 
       else if(status === 0) {
         flash('alert', 'This event is not offline');
@@ -223,12 +223,12 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
         flash('alert', 'Error event service');
       }
     });
-  };
+  }
 
   // Must be a new event, so we init.
   if ($stateParams.start !== undefined) {
     console.log('INIT new event -> params.start: ' + $stateParams.start); 
-    var initializing = true
+    var initializing = true;
     var start = $stateParams.start || new Date();
     $scope.cal = {};
     $scope.cal.start = new Date(start);
@@ -291,7 +291,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       });
     }
     $state.go('calendar.month',{start: cal.start.toISOString()});
-  }
+  };
 
   $scope.deleteEvent = function deleteEvent(cal) {
     if (id !== undefined && id !== 0) {

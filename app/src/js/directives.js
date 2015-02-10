@@ -76,7 +76,7 @@ appDirectives.directive('confirmationNeeded', function () {
       var clickAction = attr.ngClick;
       element.bind('click',function () {
         if ( window.confirm(msg) ) {
-          scope.$eval(clickAction)
+          scope.$eval(clickAction);
         }
       });
     }

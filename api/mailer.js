@@ -77,7 +77,7 @@ function sendReminder(event,user) {
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
   //console.log('Send reminder to: ' + emailAddress); 
 
-  var description;
+  var description = '';
   if (event.description) {
     description = event.description;
   }
@@ -86,12 +86,14 @@ function sendReminder(event,user) {
       from: config.mail_from,
       to: emailAddress,
       subject: 'Reminder: ' + event.title,
-      text: 'Start: ' + moment(event.start).format('YYYY-MM-DD HH:mm') + '\n'
-        + 'End  : ' + moment(event.end).format('YYYY-MM-DD HH:mm') + '\n\n'
+      text: 'Title: ' + event.title + '\n'
+        + 'Start: ' + moment(event.start).format('YYYY-MM-DD HH:mm') + '\n'
+        + 'End  : ' + moment(event.end).format('YYYY-MM-DD HH:mm') + '\n'
+        + '---------------------------------------------------------------\n\n'
         + description + '\n\n'
-        + '------------------------------------------------\n'
-        + 'Created: ' + event.created + '\n'
-        + '------------------------------------------------\n'
+        + '---------------------------------------------------------------\n'
+        + 'Event created on: ' + moment(event.created).format('YYYY-MM-DD') + '\n'
+        + '---------------------------------------------------------------\n'
   });
 
 }

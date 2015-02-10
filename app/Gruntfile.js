@@ -1,20 +1,19 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     // We have a different index.html for development.
     // With each js and css file separate. Created by 'preprocess'
-    env : {
+    env: {
       dev: {
           NODE_ENV : 'DEVELOPMENT'
       },
-      prod : {
+      prod: {
           NODE_ENV : 'PRODUCTION'
       }
     },
-    preprocess : {
+    preprocess: {
       layout: {
         src : 'src/layout/index.html',
         dest : 'public/index.html',
@@ -25,6 +24,31 @@ module.exports = function(grunt) {
         }
       }
     },
+    // We have a different api for development and production.
+    // We write a new file with a module and a ENV constant.
+    ngconstant: {
+      options: {
+        name: 'appConfig',
+        wrap: '// Module created by Gruntfile.js. Don\'t edit here!.\n{%= __ngModule %}\n\n'
+      },
+      dev: {
+        options: {
+          dest: 'src/js/config.js',
+        },
+        constants: {
+          ENV: 'development'
+        }
+      },
+      prod: {
+        options: {
+          dest: 'src/js/config.js',
+        },
+        constants: {
+          ENV: 'production'
+        }
+      }
+    },
+    // JSHint, detect errors and potential problems in your JavaScript code.
     jshint: {
       options: {
         globals: {
@@ -77,7 +101,7 @@ module.exports = function(grunt) {
         }
       },
       prod: {
-        // File order is important.
+        // Concat files for production. File order is important!
         files: {
           'public/css/<%= pkg.name %>.css': ['tmp/css/*.css'],
           'public/js/<%= pkg.name %>.js': ['src/js/*.js'],
@@ -103,6 +127,7 @@ module.exports = function(grunt) {
         },
       }
     },
+    // Minify CSS for production
     cssmin: {
       add_banner: {
         options: {
@@ -114,6 +139,7 @@ module.exports = function(grunt) {
         }
       }
     },
+    // Minify JS for production
     uglify: {
       buildJs: {
         options: {
@@ -125,6 +151,7 @@ module.exports = function(grunt) {
         }
       },
     },
+    // Application caching for production
     appcache: {
       options: {
         basePath: 'public',
@@ -137,6 +164,7 @@ module.exports = function(grunt) {
         fallback: '/ /partials/home.html'
       }
     },
+    // Jade templating language focused on enabling quick HTML coding
     jade: {
       compile: {
         options: {
@@ -153,12 +181,14 @@ module.exports = function(grunt) {
         } ]
       }
     },
+    // Cleanup files we don't need on production
     clean: {
       dev: ["tmp/*",
             "public/js/<%= pkg.name %>.js",
             "public/css/<%= pkg.name %>.css",
             "public/vendor/css/vendor.css"]
     },
+    // Watch files we edit an reload the app on save.
     watch: {
       all: {
         options: { livereload: true },
@@ -166,6 +196,7 @@ module.exports = function(grunt) {
         tasks: ['default']
       },
     },
+    // Webserver for development
     connect: {
       server: {
         options: {
@@ -191,18 +222,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks("grunt-remove-logging");
 
 
-  // Run once to compile foundation css and copy vendor files
+  // Run once to compile foundation css and copy vendor files, save time on development ;)
   grunt.registerTask('once', ['sass:foundation', 'copy']);
 
   // Default tasks for development
-  grunt.registerTask('default', ['env:dev',  'preprocess', 'sass:dist', 'concat:dev', 
-                                 'uglify', 'jade', 'connect','watch']);
+  grunt.registerTask('default', ['env:dev',  'preprocess', 'ngconstant:dev', 'sass:dist', 'concat:dev', 
+                                 'uglify', 'jade', 'jshint', 'connect','watch']);
 
   // grunt for production (minified files, remove logging, clean-up)
-  grunt.registerTask('production', ['once', 'env:prod', 'preprocess', 'sass', 
+  grunt.registerTask('production', ['once', 'env:prod', 'preprocess', 'ngconstant:prod', 'sass', 
                                     'concat:prod', 'removelogging', 'cssmin', 'uglify', 
                                     'jade', 'appcache', 'clean']);
 

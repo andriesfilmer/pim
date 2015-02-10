@@ -12,7 +12,7 @@ form(name="eventForm")
   div.column.small-6.text-right.secondary-menu
    span.divider
    a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")
- 
+
  div.row(ng-hide="editForm", ng-class="cal.className")
   div.column.small-12 {{cal.title}} {{editFrom}}
   span &nbsp;
@@ -26,8 +26,9 @@ form(name="eventForm")
     p(markdown="cal.description")
 
  div.row(ng-show="editForm")
+  div.row(ng-class="cal.className")
    div.column.small-12(ng-class="cal.className")
-    input#title-input(type="text", name="title", ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEEE'}}", tabindex=1)
+   input#title-input(type="text", name="title", ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEEE'}}", tabindex=1)
   div.row 
    div.column.small-12 &nbsp; 
   div.row

@@ -8,7 +8,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       $('a.close-reveal-modal').trigger('click');
       flash('success', 'Settings saved');
       $state.go('post', {}, {reload: true});
-    }
+    };
 
     // Set post limit for all posts
     $scope.postLimit =  $window.localStorage.postLimit;
@@ -25,7 +25,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.postSearchKey;
-    }
+    };
 
     $scope.posts = [];
 

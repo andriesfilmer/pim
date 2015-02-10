@@ -6,6 +6,7 @@ var app = angular.module('app', [
                                  'ui.calendar',
                                  'ngTouch',
                                  'ngAnimate',
+                                 'appConfig',
                                  'appControllers',
                                  'appServices',
                                  'appDirectives'
@@ -14,15 +15,10 @@ var app = angular.module('app', [
 var options = {};
 options.api = {};
 
-// Development
-options.api.base_url = "http://test.filmer.net:3001";
-// Production
-//options.api.base_url = "http://api.filmer.nl";
-
 app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
-  // For any unmatched url, redirect to /state1
+  // For any unmatched url, redirect to /calendar/month
   $urlRouterProvider.otherwise("/calendar/month");
   //
   // Now set up the states
@@ -130,7 +126,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/sitemap",
       templateUrl: 'partials/sitemap.html',
       access: { requiredAuthentication: false }
-    })
+    });
   }
 ]);
 
@@ -138,22 +134,25 @@ app.config(function ($httpProvider) {
   $httpProvider.interceptors.push('TokenInterceptor');
 });
 
-app.run(function ($rootScope, $state, $location, flash, AuthenticationService) {
+app.run(function ($rootScope,$window, $state, $location, flash, AuthenticationService) {
 
-  // Redirect only if both isAuthenticated is false and no token is set
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
     console.log('toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
-    console.log('AuthenticationService.isAuthenticated ' + AuthenticationService.isAuthenticated); 
-
-    if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
-      event.preventDefault();
-      $state.go('signin');
-      flash('alert', 'Login first');
-    }
+    console.log('AuthenticationService.isAuthenticated: ' + AuthenticationService.isAuthenticated); 
     console.log('StateChange -> ' + toState.name); 
+
+    // Do we have a token in localStorage i.o. do we show sign-in or logout?.
+    if($window.localStorage.getItem('token')) {
+      $rootScope.isAuthenticated = true;
+    }
+
+    // Redirect only if both isAuthenticated is false and no token is set
+    if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
+      flash('alert', 'Sign-in first');
+      event.preventDefault();
+      $state.go('home');
+    }
   });
-
-
 
 });

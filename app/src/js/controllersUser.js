@@ -4,7 +4,7 @@ appControllers.controller('UserController', ['$scope', '$state', '$window', 'fla
     // Capitalize function for feedback in falsh messages
     String.prototype.capitalize = function() {
       return this.charAt(0).toUpperCase() + this.slice(1);
-    }
+    };
 
 
     $scope.signIn = function signIn(email, password) {
@@ -56,13 +56,13 @@ appControllers.controller('UserController', ['$scope', '$state', '$window', 'fla
             var err = feedback.errors;
             var msg = [];
             for (var key in err) {
+              var f = {};
               if (err.hasOwnProperty(key)) {
-                var f = {};
                 f.level = "warning";
                 //f.text = err[key].path.capitalize() + ' ' + err[key].type;
                 f.text = err[key].message.replace('Path','Value');
               }
-              msg.push (f);
+              msg.push(f);
             }
 
             flash(msg);

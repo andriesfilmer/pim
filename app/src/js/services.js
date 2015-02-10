@@ -1,55 +1,52 @@
-appServices.provider('markdownConverter', function () {
+appServices.factory('AuthenticationService', ['ENV', function(ENV) {
 
-    // Showdown.js required
+  // AuthenticationService is maybe not a good place for ENV.
+  // But i leave it for now......
+  if( ENV === 'production' ) {
+    options.api.base_url = "http://api.filmer.nl";
+    console.log('ENV in Production'); 
+  }
+  else {
+    options.api.base_url = "http://test.filmer.net:3001";
+    console.log('ENV in Development'); 
+  }
 
-    var opts = { extensions: ['table'] };
-    return {
-      config: function (newOpts) {
-        opts = newOpts;
-      },
-      $get: function () {
-        return new Showdown.converter(opts);
-      }
-    };
-});
-
-appServices.factory('AuthenticationService', function() {
-  var auth = {isAuthenticated: true };
+  var auth = {isAuthenticated: false };
   return auth;
-});
+
+}]);
 
 appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationService) {
   return {
     request: function (config) {
+      console.log('TokenInterceptor -> request -> url: ' + config.url); 
       config.headers = config.headers || {};
       if ($window.localStorage.token) {
         config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
       }
-      console.log('TokenInterceptor -> request -> url: ' + config.url); 
       return config;
     },
     requestError: function(rejection) {
-      //AuthenticationService.isAuthenticated = false;
       console.log('TokenInterceptor -> requestError -> rejection.status: ' + rejection.status); 
       return $q.reject(rejection);
     },
 
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
-      if (response !== null && response.status === 200 && $window.localStorage.token) {
-        //AuthenticationService.isAuthenticated = true;
-      }
       console.log('TokenInterceptor -> response -> response.status: ' + response.status); 
+      if (response !== null && response.status === 200 && $window.localStorage.token) {
+        AuthenticationService.isAuthenticated = true;
+      }
       return $q.when(response);
     },
 
     // Revoke client authentication if 401 is received 
     responseError: function(rejection) {
+      console.log('TokenInterceptor -> responseError -> reject.status: ' + rejection.status); 
       if (rejection.status === 401) {
         delete $window.localStorage.token;
         AuthenticationService.isAuthenticated = false;
       }
-      console.log('TokenInterceptor -> responseError -> reject.status: ' + rejection.status); 
       return $q.reject(rejection);
     }
   };
@@ -324,6 +321,21 @@ appServices.factory('flash', ['$rootScope', '$timeout', function($rootScope, $ti
   return flash;
 }]);
 
+appServices.provider('markdownConverter', function () {
+
+    // Showdown.js required
+
+    var opts = { extensions: ['table'] };
+    return {
+      config: function (newOpts) {
+        opts = newOpts;
+      },
+      $get: function () {
+        return new Showdown.converter(opts);
+      }
+    };
+});
+
 appServices.service( 'MarkdownToc', function() {
 
   var service = {
@@ -346,8 +358,8 @@ appServices.service( 'MarkdownToc', function() {
         var depths = [];
         var minDepth = 1000000;
 
-        for(var i = 0; i < lines.length; i++) {
-          var line = lines[i];
+        for(var j = 0; j < lines.length; j++) {
+          var line = lines[j];
           var m = line.match(/^(#+)(.*)$/);
           if (!m) continue;
           minDepth = Math.min(minDepth, m[1].length);
@@ -356,15 +368,15 @@ appServices.service( 'MarkdownToc', function() {
           title = m[2];
           uri = title.trim().toLowerCase().replace(/[\s-]/g, '').replace(/[^-0-9a-z]/g, '');
 
-          titles.push({title: title, uri: uri}).trim;
+          titles.push({title: title, uri: uri});
         }
 
-        for(var i = 0; i < depths.length; i++) {
-          depths[i] -= minDepth;
+        for(var k = 0; k < depths.length; k++) {
+          depths[k] -= minDepth;
         }
 
-        for(var i = 0; i < depths.length; i++) {
-          toc.push(indents[depths[i]] + "- [" + titles[i].title + "](/#/post/" + data._id + "#" + titles[i].uri + ")");
+        for(var l = 0; l < depths.length; l++) {
+          toc.push(indents[depths[l]] + "- [" + titles[l].title + "](/#/post/" + data._id + "#" + titles[l].uri + ")");
         }
 
         // Show TOC if we have more then 3 titles.
@@ -375,7 +387,7 @@ appServices.service( 'MarkdownToc', function() {
         }
       }
     }
-  }
+  };
 
   return service;
 

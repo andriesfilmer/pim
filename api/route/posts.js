@@ -168,6 +168,9 @@ exports.create = function(req, res) {
 
 exports.update = function(req, res) {
 
+console.log('##### post #####');
+console.dir(req.body.post); 
+
   if (!req.user) {
     return res.send(401); // Not authorized
   }

@@ -1,15 +1,15 @@
 div.row
- div.colums.small-12.secondary-menu
-  button.fi-unlock(ui-sref="signin", ng-if="!isAuthenticated", title="Sign in")  Sign in
-  button.secondary.fi-torso(ui-sref="signup", ng-if="!isAuthenticated", title="Sign up")   Sign up
+ div.columns.small-3
+  h1.home PIM
+ div.columns.small-9.text-right
+  button.small.fi-unlock(ui-sref="signin", ng-if="!isAuthenticated", title="Sign in")  Sign in
+  button.small.secondary.fi-torso(ui-sref="signup", ng-if="!isAuthenticated", title="Sign up")   Sign up
   button.small.fi-lock(ui-sref="user.logout", ng-if="isAuthenticated")  Logout
 div.row
  div.column.small-12
-  p.strong Personal information manager (PIM).
+  h2.strong Personal Information Manager 
 div.row
  div.column.small-12
-  fieldset.radius
-    legend Main features
     ul(style="list-style-type: none;")
      li.fi-calendar
       a(ui-sref="calendar.month")  Calendar

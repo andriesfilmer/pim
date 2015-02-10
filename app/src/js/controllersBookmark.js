@@ -8,7 +8,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
       $('a.close-reveal-modal').trigger('click');
       flash('success', 'Settings saved');
       $state.go('bookmark', {}, {reload: true});
-    }
+    };
 
     // Set bookmark limit for all bookmarks
     $scope.bookmarkLimit =  $window.localStorage.bookmarkLimit;
@@ -25,7 +25,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.bookmarkSearchKey;
-    }
+    };
 
     $scope.bookmarks = [];
 
