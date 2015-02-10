@@ -146,6 +146,9 @@ app.run(function ($rootScope,$window, $state, $location, flash, AuthenticationSe
     if($window.localStorage.getItem('token')) {
       $rootScope.isAuthenticated = true;
     }
+    else {
+      $rootScope.isAuthenticated = false;
+    }
 
     // Redirect only if both isAuthenticated is false and no token is set
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {

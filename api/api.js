@@ -45,7 +45,6 @@ routes.users = require('./route/users.js');
 routes.events = require('./route/events.js');
 routes.posts = require('./route/posts.js');
 routes.bookmarks = require('./route/bookmarks.js');
-routes.curl = require('./route/curl.js');
 
 /*******************/
 // User routes     */

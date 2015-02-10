@@ -2,13 +2,13 @@ appServices.factory('AuthenticationService', ['ENV', function(ENV) {
 
   // AuthenticationService is maybe not a good place for ENV.
   // But i leave it for now......
-  if( ENV === 'production' ) {
-    options.api.base_url = "http://api.filmer.nl";
-    console.log('ENV in Production'); 
-  }
-  else {
+  if ( ENV === 'development' ) {
     options.api.base_url = "http://test.filmer.net:3001";
     console.log('ENV in Development'); 
+  }
+  else {
+    options.api.base_url = "http://api.filmer.nl";
+    console.log('ENV in Production'); 
   }
 
   var auth = {isAuthenticated: false };
