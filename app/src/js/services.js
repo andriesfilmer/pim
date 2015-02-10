@@ -1,9 +1,9 @@
 appServices.factory('AuthenticationService', ['ENV', function(ENV) {
 
   // AuthenticationService is maybe not a good place for ENV.
-  // But i leave it for now......
+  // But I leave it for now......
   if ( ENV === 'development' ) {
-    options.api.base_url = "http://test.filmer.net:3001";
+    options.api.base_url = "http://test.lvh.me:3001";
     console.log('ENV in Development'); 
   }
   else {

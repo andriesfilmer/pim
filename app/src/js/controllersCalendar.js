@@ -229,7 +229,13 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   if ($stateParams.start !== undefined) {
     console.log('INIT new event -> params.start: ' + $stateParams.start); 
     var initializing = true;
-    var start = $stateParams.start || new Date();
+    if ($stateParams.start === 'new') {
+      start = new Date();
+    }
+    else {
+      start = $stateParams.start;
+    }
+    console.log('##### test -> ' + start); 
     $scope.cal = {};
     $scope.cal.start = new Date(start);
     $scope.cal.end = new Date(start);

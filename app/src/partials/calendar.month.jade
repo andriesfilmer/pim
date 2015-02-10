@@ -1,15 +1,16 @@
 div.row
- div.column.small-6.text-left.secondary-menu
+ div.column.small-8.text-left.secondary-menu
   | &nbsp;
-  a.fi-target-two(ng-click="gotoToday()", title='Today')
-  span.divider
-  a.fi-magnifying-glass(ng-click='searchCalendar()', title='Search', tabindex="1")
- div.column.small-6.text-right.secondary-menu
   a.fi-thumbnails(ng-click="changeView('month')", title='Month view')
   span.divider
   a.fi-list-thumbnails(ng-click="changeView('basicWeek')", title='Week view')
   span.divider
   a.fi-list(ng-click="changeView('basicDay')", title='Day view')
+  span.divider
+  a.fi-magnifying-glass(ng-click='searchCalendar()', title='Search', tabindex="1")
+ div.column.small-4.text-right.secondary-menu
+  span.divider
+  a.fi-plus(ui-sref="calendar.event({start: 'new'})", title='New event')
 
 div.row
  div#myCalendar.calendar.scale-fade(ui-calendar="uiConfig.calendar" ng-model="eventSources", 
