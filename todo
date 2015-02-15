@@ -1,6 +1,1 @@
-- Multiple days don't show correct in fullcalendar.
-  For example 2015-01-22T10:00:00Z to 2015-01-23T20:00:00Z shows as one day!?
-
-- We don't want to show the delete icon when creating a event.
-  But the $scope.showDeleteBt don't work because of a conflict
-  with the directive 'confirmation-needed'.
+- Duplicate 'tags' give a error and stops working.

@@ -7,8 +7,8 @@ form(name="eventForm")
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
    span(ng-hide="eventForm.title.$error.required")
-    a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
-    a.fi-save(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
+    a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
+    a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
   div.column.small-6.text-right.secondary-menu
    span.divider
    a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")

@@ -43,6 +43,7 @@ console.log('API (' + config.name + ') is starting on port ' + config.api_port);
 var routes = {};
 routes.users = require('./route/users.js');
 routes.events = require('./route/events.js');
+routes.contacts = require('./route/contacts.js');
 routes.posts = require('./route/posts.js');
 routes.bookmarks = require('./route/bookmarks.js');
 
@@ -80,6 +81,32 @@ app.put('/calendar', expressJwt({secret: secret.secretToken}), routes.events.upd
 app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.delete); 
 
 /*******************/
+/* Contacts routes    */
+/*******************/
+
+// Get contacts by tag
+app.get('/tag/:tagName', routes.contacts.listByTag); 
+
+// Search contacts
+app.get('/contact/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
+
+// Get all contacts
+app.get('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.list);
+
+// Get the contact id
+app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.read); 
+
+// Create a new contact
+app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.create); 
+
+// Edit the contact id
+app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 
+
+// Delete the contact id
+app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 
+
+
+/*******************/
 /* Posts routes    */
 /*******************/
 
@@ -108,7 +135,7 @@ app.put('/post', expressJwt({secret: secret.secretToken}), routes.posts.update);
 app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.delete); 
 
 /*******************/
-/* Posts routes    */
+/* Bookmark routes    */
 /*******************/
 
 // Get bookmarks by tag

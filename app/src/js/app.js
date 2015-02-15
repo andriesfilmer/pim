@@ -19,7 +19,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /calendar/month
-  $urlRouterProvider.otherwise("/calendar/month");
+  $urlRouterProvider.otherwise("/contact");
   //
   // Now set up the states
   $stateProvider
@@ -52,11 +52,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: true }
     })
-    .state('contact', {
-       url: "/contact",
-       templateUrl: "partials/contact.html",
-       access: { requiredAuthentication: true }
-     })
     .state('calendar', {
        url: "/calendar",
        templateUrl: "partials/calendar.html",
@@ -86,6 +81,26 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: "EventController",
       access: { requiredAuthentication: true }
     })
+
+    .state('contact', {
+      url: "/contact",
+      templateUrl: "partials/contact.list.html",
+      controller: 'ContactListController',
+      access: { requiredAuthentication: false}
+    })
+    .state('contact.create', {
+      url: "/contact/create",
+      templateUrl: "partials/contact.view.html",
+      controller: 'ContactController',
+      access: { requiredAuthentication: false }
+    })
+    .state('contact/:id', {
+      url: "/contact/:id",
+      templateUrl: "partials/contact.view.html",
+      controller: 'ContactController',
+      access: { requiredAuthentication: false}
+    })
+
     .state('post', {
       url: "/post",
       templateUrl: "partials/post.list.html",

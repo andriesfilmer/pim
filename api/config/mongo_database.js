@@ -44,6 +44,17 @@ var Event = new Schema({
     name: { type: String}        // deprecated
 });
 
+var Contact = new Schema({
+    user_id: { type: String},
+    name: { type: String, required: true },
+    note: { type: String}, 
+    tags: [ {type: String} ],
+    starred: { type: Boolean, default: false },
+    created: { type: Date, default: Date.now },
+    updated: { type: Date, default: Date.now },
+    relation: {type: String}
+});
+
 var Post = new Schema({
     user_id: { type: String},
     title: { type: String, required: true },
@@ -100,6 +111,7 @@ User.methods.comparePassword = function(password, cb) {
 // Define Models
 var userModel = mongoose.model('User', User);
 var eventModel = mongoose.model('Event', Event);
+var contactModel = mongoose.model('Contact', Contact);
 var postModel = mongoose.model('Post', Post);
 var bookmarkModel = mongoose.model('Bookmark', Bookmark);
 
@@ -107,6 +119,7 @@ var bookmarkModel = mongoose.model('Bookmark', Bookmark);
 // Export Models
 exports.userModel = userModel;
 exports.eventModel = eventModel;
+exports.contactModel = contactModel;
 exports.postModel = postModel;
 exports.bookmarkModel = bookmarkModel;
 

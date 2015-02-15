@@ -1,0 +1,57 @@
+/* Contacts */
+
+$color-friend: orange;
+$color-family: green;
+$color-colleague: red;
+$color-business: #008CBA;
+
+.friend {
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-friend solid; 
+}
+.family {
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-family solid; 
+}
+.colleague { 
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-colleague solid; 
+}
+.business   {
+  padding-left: 6px;
+  margin-top: 0;
+  border-left: 8px $color-business solid; 
+}
+
+
+.switch.contact-public input:checked + label {
+  background: #f04124; // red
+}
+.switch.contact-friend input:checked + label {
+  background: $color-friend;
+}
+.switch.contact-family input:checked + label {
+  background: $color-family;
+}
+.switch.contact-colleague input:checked + label {
+  background: $color-colleague;
+}
+.switch.contact-business input:checked + label {
+  background: $color-business;
+}
+
+.starred {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: orange;
+}
+
+.un-starred {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #ddd;
+}
+

@@ -86,6 +86,96 @@ appServices.factory('CalendarService',['$http', function($http) {
   };
 }]);
 
+appServices.factory('ContactService', function($http, $q, $window) {
+
+  return {
+
+    findAll: function(limit) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/contact/', {'params': {limit: limit}})
+      .success(function(data) {
+        $window.localStorage.contactsAll = JSON.stringify(data);
+        console.log('Fetched contacts from MongoDb and saved to localStorage.'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb, load localStorage if exists.'); 
+        if($window.localStorage.getItem('contactsAll') === null) {
+          deferred.reject('Contacts are not offline');
+        }
+        else {
+          localData = JSON.parse($window.localStorage.contactsAll);
+          deferred.notify(localData);
+        }
+      });
+      return deferred.promise;
+    },
+
+    read: function(id) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/contact/' + id)
+      .success(function(data) {
+        $window.localStorage['contact_' + id] = JSON.stringify(data);
+        console.log('Fetched contact from MongoDb and saved to localStorage.'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb, load localStorage if exists.'); 
+        if($window.localStorage.getItem('contact_' + id) === null) {
+          deferred.reject('Contact is not offline');
+        }
+        else {
+          localData = JSON.parse($window.localStorage['contact_' + id]);
+          deferred.notify(localData);
+        }
+      });
+      return deferred.promise;
+    },
+
+    create: function(contact) {
+      var deferred = $q.defer();
+      $http.post(options.api.base_url + '/contact', {'contact': contact})
+      .success(function() {
+        console.log('Created contact in MongoDb'); 
+        deferred.resolve('Created contact successfull');
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb.'); 
+        deferred.reject('Error creating contact');
+      });
+      return deferred.promise;
+    },
+
+    update: function(contact) {
+      var deferred = $q.defer();
+      $http.put(options.api.base_url + '/contact', {'contact': contact})
+      .success(function(data) {
+        $window.localStorage['contact_' + contact.id] = JSON.stringify(data);
+        console.log('Updated contact in localStorage and MongoDb'); 
+        deferred.resolve('Updated contact successfull');
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb.'); 
+        deferred.reject('Error updating contact');
+      });
+      return deferred.promise;
+    },
+
+    searchAll: function(searchKey) { 
+      return $http.get(options.api.base_url + '/contact/search', {'params': {searchKey: searchKey}});
+    },
+
+    changeStarredState: function(id, newStarredState) {
+      return $http.put(options.api.base_url + '/contact', {'contact': {_id: id, starred: newStarredState}});
+    },
+
+    delete: function(id) {
+      return $http.delete(options.api.base_url + '/contact/' + id);
+    },
+
+  };
+});
+
 appServices.factory('PostService', function($http, $q, $window) {
 
   return {

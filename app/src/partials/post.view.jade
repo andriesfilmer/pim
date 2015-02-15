@@ -8,7 +8,7 @@ form(name="postForm")
    span.divider
    a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
    span.divider
-   a.fi-save(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
+   a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
   div.column.small-3.text-right.secondary-menu
    span.divider
    a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")

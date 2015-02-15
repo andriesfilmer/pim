@@ -62,6 +62,12 @@ Create a `cron` for each 5 minutes: `*/5 * * * * export NODE_ENV=production && /
 
 - [Zurb Foundation](http://foundation.zurb.com)
 - [Adam Shaw - Fullcalendar](http://fullcalendar.io/)
+- [Showdown from Eric J Nesser](http://daringfireball.net/projects/markdown/)
+- [Markdown Toc from Eugene Datsky](https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js)
+- [NodeMailer from Andris Reinman](https://github.com/andris9/Nodemailer)
+- [D. Moraschi](https://github.com/danielemoraschi/android-addressbook)
+- [vCardParser from Wouter Vroege](https://github.com/woutervroege/node-vcardparser)
+- [vCard-JS from Eric J Nesser](https://github.com/enesser/vCards-JS)
 
 I use a lot more Packages. Look in `packages.json` and `bower.json. Many thanks for the maintainers!
 
