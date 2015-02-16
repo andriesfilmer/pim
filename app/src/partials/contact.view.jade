@@ -15,23 +15,39 @@ form(name="contactForm")
  
  div.row(ng-hide="editForm")
   div.column.small-12
-  h1(ng-class='contact.relation') {{contact.name}} 
+  h1(ng-class='contact.relation') {{contact.name}}
+  fieldset
+   legend Phone
+   div(ng-repeat="item in contact.phones", ng-class-odd="'odd'" ng-class-even="'even'")
+    div.column.small-8
+     a.success.phone-button.fi-telephone(href="unsafe:tel:{{item.value}}")  {{item.value}}
+    div.column.small-4 {{item.type}}
   div.column.small-12
    p(markdown='contact.note') 
 
- div.row(ng-show="editForm")
+ div#contact-form.row(ng-show="editForm")
   div.column.small-12(ng-class="contact.relation")
    input#title-input(type="text", required='', name="name", placeholder="Title is required", ng-model="contact.name", ng-change="isChanged()")
- div.row(ng-show="editForm")
+  div.column
+   fieldset
+    legend Phone
+    div.row(ng-repeat="item in contact.phones")
+     div.column.small-5
+      input.items(type="text", ng-model="item.value")
+     div.column.small-5
+      select(ng-model="item.type", ng-options="type for type in contactPhoneOptions")
+     div.column.small-2
+     button.tiny.reset-button(type="reset", ng-click="DiscardField('phones', $index)") &#215;
+    div.column.small-10.text-right Add phonenumber
+    div.column.small-2
+      a.fi-plus(ng-click="AddField('phones')", title="New item")
   div.column.small-12
    textarea(rows="19", ng-model="contact.note", ng-change="isChanged()", placeholder="You can use Markdown ...")
    input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="contact.tags", ng-change="isChanged()")
- div.row
   div.column.small-12.contact-meta
     ul.inline-list
      li.tag(ng-repeat='tag in contact.tags')
       a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
- div.row
   div.column.small-6.date-meta.panel
    i Created:  {{contact.created | date: 'yyyy-MM-dd HH:mm'}}
   div.column.small-6.date-meta.panel

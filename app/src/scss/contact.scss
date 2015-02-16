@@ -55,3 +55,31 @@ $color-business: #008CBA;
   color: #ddd;
 }
 
+#contact-form input[type="text"].items, #contact-form select {
+  margin-left: 0.9rem;
+  margin-bottom: 0;
+}
+#contact-form {
+  .reset-button {
+    font-size: 2.6875rem;
+    color: #AAAAAA;
+    background: transparent;
+    font-weight: bold;
+    padding: 0 0 0 15px;
+    bottom: 5px;
+  }
+  a {
+   font-size: 2rem;
+  }
+}
+
+.phone-button {
+  padding: 10px;
+  border-radius: 10px;
+  line-height: 45px;
+  background-color: green;
+  color: white;
+  &:hover {
+   color: white;
+  }
+}

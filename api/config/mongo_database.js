@@ -47,9 +47,12 @@ var Event = new Schema({
 var Contact = new Schema({
     user_id: { type: String},
     name: { type: String, required: true },
+    phones: {type: Array},
+    emails: {type: Array},
+    addresses: {type: Array},
     note: { type: String}, 
-    tags: [ {type: String} ],
     starred: { type: Boolean, default: false },
+    tags: [ {type: String} ],
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
     relation: {type: String}

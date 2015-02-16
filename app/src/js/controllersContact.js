@@ -103,6 +103,9 @@ appControllers.controller('ContactController', ['$rootScope', '$scope', '$state'
     $scope.saveForm = true;
   };
 
+  $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
+
+
   // Length of mongoDb _id = 24, so it must be a existing contact.
   if ($stateParams.id.length > 23) {
     ContactService.read(id).then(function(data) {
@@ -122,10 +125,37 @@ appControllers.controller('ContactController', ['$rootScope', '$scope', '$state'
     });
   }
 
+  $scope.AddField = function(type) {
+    $scope.contact[type] || ($scope.contact[type] = []);
+    $scope.contact[type].push({
+      type: '',
+      value: ''
+    });
+  };
+
+  $scope.DiscardField = function(type, index) {
+    if($scope.contact[type] && $scope.contact[type][index]) {
+      $scope.contact[type].splice(index, 1);
+    }
+  };
+
   $scope.save = function save(contact) {
 
+    // reset edit
     $scope.editForm = false;
     $scope.saveForm = false;
+
+    var arrays = {'phones': [], 'emails': [], 'addresses': []};
+      angular.forEach(arrays, function(v, k) {
+        angular.forEach($scope.contact[k], function(val, key) {
+          if(val.value.trim()) {
+            arrays[k].push(val);
+          }
+      });
+      $scope.contact[k] = arrays[k];
+    });
+    console.log('##### test -> phones'); 
+    console.dir(contact.phones);
 
     // String comma separated to array
     if (contact.tags !== undefined && Object.prototype.toString.call(contact.tags) !== '[object Array]') {

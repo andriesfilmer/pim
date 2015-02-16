@@ -85,7 +85,7 @@ exports.read = function(req, res) {
   }
 
   var query = db.contactModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id name tags relation note created updated starred');
+  query.select('_id name tags phones emails addresses relation note created updated starred');
   query.exec(function(err, result) {
 
     if (err) {
@@ -124,6 +124,9 @@ exports.create = function(req, res) {
   contactEntry.user_id = req.user.id;
   contactEntry.name = contact.name;
   contactEntry.starred = contact.starred;
+  contactEntry.phones = contact.phones;
+  contactEntry.emails = contact.emails;
+  contactEntry.addresses = contact.addresses;
   contactEntry.note = contact.note;
 
   // Tags are comma separated
@@ -163,6 +166,15 @@ exports.update = function(req, res) {
   if (contact.name !== null && contact.name !== "" && contact.name !== undefined) {
     updateContact.name = contact.name;
   }
+
+  console.log('##### test -> phones'); 
+  console.dir(contact.phones);
+
+  if (contact.phones != null) {
+    updateContact.phones = contact.phones;
+  }
+  updateContact.emails = contact.emails;
+  updateContact.addresses = contact.addresses;
 
   // Convert commaseparate tags to objects.
   if (contact.tags != null) {
