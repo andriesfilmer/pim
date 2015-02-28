@@ -10,8 +10,8 @@ exports.signin = function(req, res) {
   var email = req.body.email || '';
   var password = req.body.password || '';
 
-  //console.log('users -> signin -> email:' + email);
-  //console.log('users -> signin -> password:' + password);
+  console.log('users -> signin -> email:' + email);
+  console.log('users -> signin -> password:' + password);
 
   if (email == '' || password == '') { 
     return res.sendStatus(401); // Unauthorized

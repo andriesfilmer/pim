@@ -55,31 +55,45 @@ $color-business: #008CBA;
   color: #ddd;
 }
 
-#contact-form input[type="text"].items, #contact-form select {
-  margin-left: 0.9rem;
-  margin-bottom: 0;
-}
 #contact-form {
   .reset-button {
-    font-size: 2.6875rem;
     color: #AAAAAA;
     background: transparent;
+    font-size: 2.5rem;
     font-weight: bold;
     padding: 0 0 0 15px;
     bottom: 5px;
   }
-  a {
-   font-size: 2rem;
+  .fi-plus {
+    font-size:1.8rem;
+    margin-left: 5px;
   }
 }
 
-.phone-button {
-  padding: 10px;
-  border-radius: 10px;
-  line-height: 45px;
-  background-color: green;
-  color: white;
-  &:hover {
-   color: white;
+.profile-bg {
+  height: 15em;
+  margin-bottom: -15em;
+  background-size: cover;
+  -webkit-filter: opacity(0.4);
+  background-position: center;
+}
+
+.profile-row {
+  padding-top: 0.5em;
+  .profile-img {
+    border-radius: 100%;
+    max-width: 12em;
+  }
+  .contact-name {
+    text-align: center;
+    font-size: 1.5rem;
   }
 }
+
+.item-title {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: #eee 1px solid;
+  font-weight: bold;
+}
+

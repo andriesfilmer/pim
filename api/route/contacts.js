@@ -8,12 +8,8 @@ exports.list = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  console.log('##### contact req.query #####'); 
-  console.dir(req.query);
-
   var query = db.contactModel.find({user_id: req.user.id}).limit(req.query.limit);
-
-  query.select("_id name relation tags created updated starred");
+  query.select("_id name companies starred");
   query.sort('-updated');
   query.exec(function(err, results) {
 
@@ -22,12 +18,12 @@ exports.list = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    //if (results !== null) {
+    if (results !== null) {
       return res.status(200).json(results); // OK
-    //
-    //else {
-    //  return res.sendStatus(404); // Not Found
-    //
+    }
+    else {
+      return res.sendStatus(404); // Not Found
+    }
 
   });
 
@@ -42,18 +38,17 @@ exports.search = function(req, res) {
   }
 
   if (contacts.searchKey) {
-    //console.log('Contact search -> ' + contacts.searchKey); 
     var query = db.contactModel.find({ $or: [ 
                                           {name:   { $exists: true, $regex: contacts.searchKey, $options: 'i' } },
-                                          {note: { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
-                                          {tags:    { $exists: true, $regex: contacts.searchKey, $options: 'i' } } 
+                                          {"companies.name": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
+                                          {"phones.value": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
+                                          {notes: { $exists: true, $regex: contacts.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   } else {
-    //console.log('Contact empty search -> Show all'); 
     var query = db.contactModel.find({ user_id: req.user.id });
   }
 
-  query.select("_id name relation tags created updated starred");
+  query.select("_id name companies created updated starred");
   query.sort('-updated');
   query.exec(function(err, results) {
 
@@ -85,7 +80,7 @@ exports.read = function(req, res) {
   }
 
   var query = db.contactModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id name tags phones emails addresses relation note created updated starred');
+  query.select('_id name companies photo phones emails websites addresses relations notes birthdate created updated starred');
   query.exec(function(err, result) {
 
     if (err) {
@@ -107,9 +102,6 @@ exports.read = function(req, res) {
 
 exports.create = function(req, res) {
 
-  console.log('##### post req.body #####'); 
-  console.dir(req.body);
-
   if (!req.user) {
     return res.sendStatus(401); // Unauthorized
   }
@@ -123,21 +115,15 @@ exports.create = function(req, res) {
 
   contactEntry.user_id = req.user.id;
   contactEntry.name = contact.name;
+  contactEntry.companies = contact.companies;
   contactEntry.starred = contact.starred;
   contactEntry.phones = contact.phones;
   contactEntry.emails = contact.emails;
+  contactEntry.websites = contact.websites;
   contactEntry.addresses = contact.addresses;
-  contactEntry.note = contact.note;
-
-  // Tags are comma separated
-  if (contact.tags != null) {
-    if (Object.prototype.toString.call(contact.tags) === '[object Array]') {
-      contactEntry.tags = contact.tags;
-    }
-    else {
-      contactEntry.tags = contact.tags.split(',');
-    }
-  }
+  contactEntry.photo = contact.photo;
+  contactEntry.birthdate = contact.birthdate;
+  contactEntry.notes = contact.notes;
 
   contactEntry.save(function(err) {
     if (err) {
@@ -167,35 +153,44 @@ exports.update = function(req, res) {
     updateContact.name = contact.name;
   }
 
-  console.log('##### test -> phones'); 
-  console.dir(contact.phones);
+  if (contact.companies !== undefined) {
+    updateContact.companies = contact.companies;
+  }
 
-  if (contact.phones != null) {
+  if (contact.phones != undefined) {
     updateContact.phones = contact.phones;
   }
-  updateContact.emails = contact.emails;
-  updateContact.addresses = contact.addresses;
 
-  // Convert commaseparate tags to objects.
-  if (contact.tags != null) {
-    if (Object.prototype.toString.call(contact.tags) === '[object Array]') {
-      updateContact.tags = contact.tags;
-    }
-    else {
-      updateContact.tags = contact.tags.split(',');
-    }
+  if (contact.emails != undefined) {
+    updateContact.emails = contact.emails;
   }
 
-  if (contact.relation != null) {
-    updateContact.relation = contact.relation;
+  if (contact.websites != undefined) {
+    updateContact.websites = contact.websites;
   }
 
-  if (contact.starred != null) {
+  if (contact.addresses != undefined) {
+    updateContact.addresses = contact.addresses;
+  }
+
+  if (contact.relations != undefined) {
+    updateContact.relations = contact.relations;
+  }
+
+  if (contact.starred != undefined) {
     updateContact.starred = contact.starred;
   }
 
-  if (contact.note != null && contact.note != "") {
-    updateContact.note = contact.note;
+  if (contact.photo !== undefined) {
+    updateContact.photo = contact.photo;
+  }
+
+  if (contact.birthdate != undefined || contact.birthdate === null) {
+    updateContact.birthdate = contact.birthdate;
+  }
+
+  if (contact.notes != undefined) {
+    updateContact.notes = contact.notes;
   }
 
   updateContact.updated = new Date();
@@ -213,7 +208,7 @@ exports.delete = function(req, res) {
   }
 
   var id = req.params.id;
-  if (id == null || id == '') {
+  if (id == undefined || id == '') {
     res.sendStatus(400); // Bad request
   }
 
@@ -237,27 +232,4 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.listByTag = function(req, res) {
-
-  var tagName = req.params.tagName || '';
-  if (tagName == '') {
-    return res.sendStatus(400);
-  }
-
-  var query = db.contactModel.find({tags: tagName, starred: true, user_id: req.user.id });
-  query.select('_id name tags relation created updated starred');
-  query.sort('-created');
-  query.exec(function(err, results) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400);
-    }
-
-    for (var contactKey in results) {
-      results[contactKey].note = results[contactKey].note.substr(0, 400);
-    }
-
-    return res.status(200).json(result);
-  });
-}
 

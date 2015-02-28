@@ -1,7 +1,7 @@
 /* bookmark */
 
 $color-fun: orange;
-$color-media: red;
+$color-business: red;
 $color-kb: #008CBA;
 $color-other: green;
 
@@ -15,10 +15,10 @@ $color-other: green;
   margin-top: 0;
   border-left: 8px $color-kb solid; 
 }
-.media { 
+.business { 
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-media solid; 
+  border-left: 8px $color-business solid; 
 }
 .other   {
   padding-left: 6px;
@@ -31,7 +31,7 @@ $color-other: green;
 }
 
 .switch.bookmark-public input:checked + label {
-  background: $color-media;
+  background: $color-business;
 }
 .switch.bookmark-fun input:checked + label {
   background: $color-fun;
@@ -39,8 +39,8 @@ $color-other: green;
 .switch.bookmark-kb input:checked + label {
   background: $color-kb;
 }
-.switch.bookmark-media input:checked + label {
-  background: $color-media;
+.switch.bookmark-business input:checked + label {
+  background: $color-business;
 }
 .switch.bookmark-other input:checked + label {
   background: $color-other;

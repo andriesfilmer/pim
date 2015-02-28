@@ -53,6 +53,7 @@ table p {
 
 input#title-input {
   font-size: 1.5rem;
+  text-transform:capitalize;
 }
 
 .my-row {
@@ -93,9 +94,6 @@ ul.inline-list {
   }
 }
 
-#title-input {
-  margin-bottom: 0;
-}
 #search input[type="text"].search-box {
   margin-top: 1rem;
   font-size: 1.2rem;
@@ -113,6 +111,11 @@ ul.inline-list {
 }
 .even {
   background: white;
+}
+
+.icon-button {
+  font-size: 2rem;
+  color: #0078a0;
 }
 
 .date-meta {

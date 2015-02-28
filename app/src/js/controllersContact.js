@@ -3,12 +3,13 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$window
 
     $(document).foundation();
 
-    // Save general contact settings
+    // Save general post settings
     $scope.saveSettings = function saveSettings() {
       $('a.close-reveal-modal').trigger('click');
       flash('success', 'Settings saved');
       $state.go('contact', {}, {reload: true});
     };
+
 
     // Set contact limit for all contacts
     $scope.contactLimit =  $window.localStorage.contactLimit;
@@ -75,43 +76,45 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$window
 
 }]);
 
-appControllers.controller('ContactController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'ContactService', 'MarkdownToc',
-  function ContactController($rootScope, $scope, $state, $window, $stateParams, flash, ContactService, MarkdownToc) {
+appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService',
+ function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService) {
 
   $(document).foundation();
 
-  $scope.contact = {};
   var id = $stateParams.id;
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
-
-    // Creat new TOC should be working but it doesn't. Don't know why yet.
-    //$scope.toc = MarkdownToc.make($scope.contact.content);
-
     $scope.editForm = !$scope.editForm;
-
   };
 
-  // Show edit mode if we want to create a new contact.
+  // Init a new contact.
   if ($stateParams.id === "create") {
+    var initializing = true;
+    $scope.contact = {};
+    $scope.showAddBt  = true;
+    $scope.showDeleteBt  = false;
     $scope.editForm = true;
   }
 
-  // Add alert class on save icon
-  $scope.isChanged = function() {
-    $scope.saveForm = true;
-  };
-
+  // Array's for select boxes
   $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
-
+  $scope.contactEmailOptions = ['Personal','Home','Work','Other'];
+  $scope.contactWebsiteOptions = ['Personal','Work','Social','Other'];
+  $scope.contactAddressOptions = ['Home','Work','Other'];
+  $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
 
   // Length of mongoDb _id = 24, so it must be a existing contact.
   if ($stateParams.id.length > 23) {
+    console.log('Fetch contact -> _id: ' + id); 
     ContactService.read(id).then(function(data) {
       // Promise resolve
       $scope.contact = data;
-      $scope.toc = MarkdownToc.make(data);
+      if (data.birthdate !== undefined) {
+        // Angulara forms need a 'real' date.
+        $scope.contact.birthdate = new Date(data.birthdate);
+      }
+      $scope.showAddBt  = false;
     }, function(msg) {
       // Promise reject
       $scope.offline = true;
@@ -119,62 +122,57 @@ appControllers.controller('ContactController', ['$rootScope', '$scope', '$state'
     }, function(localData) {
       // Promise notify
       $scope.contact = localData;
-      $scope.toc = MarkdownToc.make(localData);
       $scope.offline = true;
       flash('warning', 'Offline: Contact from local storage');
     });
   }
 
+  // Add (push) phone, email, address or website field.
   $scope.AddField = function(type) {
-    $scope.contact[type] || ($scope.contact[type] = []);
-    $scope.contact[type].push({
-      type: '',
-      value: ''
-    });
+    if ($scope.contact[type] === undefined) {
+      $scope.contact[type] = [];
+    }
+    $scope.contact[type].push({});
+    $scope.isChanged = true;
   };
 
+  // Add (push) relation.
+  $scope.AddRelation = function(id, name) {
+    if ($scope.contact['relations'] === undefined) {
+      $scope.contact['relations'] = [];
+    }
+    $scope.contact['relations'].push({
+      id: id,
+      value: name,
+      type: 'Family'
+    });
+    $scope.isChanged = true;
+    $('a.close-reveal-modal').trigger('click');
+  };
+
+  // Remove phone, email, relation, address or website field.
   $scope.DiscardField = function(type, index) {
     if($scope.contact[type] && $scope.contact[type][index]) {
       $scope.contact[type].splice(index, 1);
     }
   };
 
-  $scope.save = function save(contact) {
+  // Update of insert a contact
+  $scope.upsertContact = function upsertContact(contact, upsert) {
 
-    // reset edit
-    $scope.editForm = false;
-    $scope.saveForm = false;
-
-    var arrays = {'phones': [], 'emails': [], 'addresses': []};
-      angular.forEach(arrays, function(v, k) {
-        angular.forEach($scope.contact[k], function(val, key) {
-          if(val.value.trim()) {
-            arrays[k].push(val);
-          }
+    // Create array's from db
+    var arrays = {'phones': [], 'emails': [], 'addresses': [], 'websites': []};
+    angular.forEach(arrays, function(v, k) {
+      angular.forEach($scope.contact[k], function(val, key) {
+        if(val.value.trim()) {
+          arrays[k].push(val);
+        }
       });
       $scope.contact[k] = arrays[k];
     });
-    console.log('##### test -> phones'); 
-    console.dir(contact.phones);
 
-    // String comma separated to array
-    if (contact.tags !== undefined && Object.prototype.toString.call(contact.tags) !== '[object Array]') {
-      contact.tags = contact.tags.split(',');
-    }
-
-    // If we have a _id we update the contact, else we create a new contact.
-    if (contact._id !== undefined) {
-
-      ContactService.update(contact).then(function(msg) {
-        // Promise reslove
-        flash('success', msg);
-      }, function(msg) {
-        // Promise reject
-        flash('alert', msg);
-      });
-
-    } else {
-
+    // If we have a _id we update the contact, else we create (insert) a new contact.
+    if (upsert === 'insert') {
       ContactService.create(contact).then(function(msg) {
         // Promise reslove
         flash('success', msg);
@@ -183,14 +181,35 @@ appControllers.controller('ContactController', ['$rootScope', '$scope', '$state'
         // Promise reject
         flash('alert', err);
       });
+    } else {
+      // upsert must be a 'update'
+      ContactService.update(contact).then(function(msg) {
+        // Promise reslove
+        flash('success', msg);
+        $scope.isChanged = false;
+      }, function(msg) {
+        // Promise reject
+        flash('alert', msg);
+      });
     }
 
-    // Close modal if its open.
-    if($("#contact-settings").is(":visible")) {
-      $('a.close-reveal-modal').trigger('click');
-    }
+    // reset (close) edit form
+    $scope.editForm = false;
+    $scope.saveForm = false;
 
   };
+
+  // Get contacts if we change the SearchKey
+  $scope.$watch('searchKey', function(searchKey) {
+    if (searchKey !== undefined && searchKey.length >= 3) {
+      ContactService.searchAll(searchKey).success(function(data) {
+        $scope.contacts = data;
+      }).error(function(data, status) {
+        console.log(status);
+        console.log('Contacts relations search error');
+      }); 
+    }
+  });
 
   $scope.deleteContact = function deleteContact(contact) {
     ContactService.delete(id).success(function(msg) {
@@ -199,6 +218,16 @@ appControllers.controller('ContactController', ['$rootScope', '$scope', '$state'
       $state.go("contact");
     });
   };
+
+  // Add class to save button/icon on change for contact.
+  $scope.$watchCollection('contact', function(oldContact, newContact) {
+    if (initializing) {
+      $timeout(function() { initializing = false; });
+    } 
+    else {
+      if (newContact !== undefined ) { $scope.isChanged = true; }
+    }
+  });
 
 }]);
 

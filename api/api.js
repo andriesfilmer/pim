@@ -84,9 +84,6 @@ app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.eve
 /* Contacts routes    */
 /*******************/
 
-// Get contacts by tag
-app.get('/tag/:tagName', routes.contacts.listByTag); 
-
 // Search contacts
 app.get('/contact/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
 

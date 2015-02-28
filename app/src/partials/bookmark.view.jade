@@ -3,7 +3,7 @@ form(name="bookmarkForm")
   div.column.small-8.text-left.secondary-menu
    i.fi-bookmark.reversed(title='Bookmarks')
    span.divider
-   a.fi-page-edit(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
+   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
    a.fi-upload(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
@@ -38,10 +38,10 @@ form(name="bookmarkForm")
   fieldset.radius
    legend Category
    div.row
-    div.column.small-6.my-row.media Media
-    div.switch.round.column.small-6.bookmark-media
-     input#bookmark-media.media(type="radio", value="media", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
-     label(for="bookmark-media")
+    div.column.small-6.my-row.business Business
+    div.switch.round.column.small-6.bookmark-business
+     input#bookmark-business.business(type="radio", value="business", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
+     label(for="bookmark-business")
    div.row
     div.column.small-6.my-row.fun Fun
     div.switch.round.column.small-6.bookmark-fun

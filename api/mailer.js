@@ -85,7 +85,7 @@ function sendReminder(event,user) {
   transporter.sendMail({
       from: config.mail_from,
       to: emailAddress,
-      subject: 'Reminder: ' + event.title,
+      subject: event.title,
       text: 'Title: ' + event.title + '\n'
         + 'Start: ' + moment(event.start).format('YYYY-MM-DD HH:mm') + '\n'
         + 'End  : ' + moment(event.end).format('YYYY-MM-DD HH:mm') + '\n'
