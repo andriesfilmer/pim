@@ -16,7 +16,7 @@ div(ng-hide="editForm")
  div.row.profile-bg(style="background: url({{contact.photo}}); background-size: cover; background-position: center;")
  div.row.profile-row
   div.column.small-12.text-center
-   img.profile-img(ng-if="contact.photo", src="{{contact.photo}}")
+   img.profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
   div.column.small-12.contact-name {{contact.name}}
  div.row
   div.column.small-12.medium-6
@@ -27,7 +27,7 @@ div(ng-hide="editForm")
     a(href="tel:{{item.value}}")
      div.column.small-8
       label {{item.type}}
-      {{item.value}}
+      | {{item.value}}
      div.column.small-4.text-right
       i.icon-button.fi-telephone
 
@@ -36,7 +36,7 @@ div(ng-hide="editForm")
    div(ng-repeat="item in contact.companies")
     div.column.small-8
      label {{item.name}}
-     {{item.title}} &nbsp;
+     | {{item.title}} &nbsp;
     div.column.small-4.text-right
      i.icon-button.fi-torso-business
 
@@ -46,7 +46,7 @@ div(ng-hide="editForm")
     a(href="/#/contact/{{item.id}}") 
      div.column.small-8
       label {{item.type}}
-      {{item.value}}
+      | {{item.value}}
      div.column.small-4.text-right
       i.icon-button.fi-torsos
 
@@ -56,7 +56,7 @@ div(ng-hide="editForm")
     a(href="mailto:{{item.value}}")
      div.column.small-8
       label {{item.type}}
-      {{item.value}}
+      | {{item.value}}
      div.column.small-4.text-right
       i.icon-button.fi-mail
 
@@ -66,7 +66,7 @@ div(ng-hide="editForm")
     a(href="{{item.value}}")
      div.column.small-8
       label {{item.type}}
-      {{item.value}}
+      | {{item.value}}
      div.column.small-4.text-right
       i.icon-button.fi-link
 
@@ -76,7 +76,7 @@ div(ng-hide="editForm")
     a(href="https://maps.google.nl/maps?q={{item.value}}")
      div.column.small-8
       label {{item.type}}
-      {{item.value}}
+      | {{item.value}}
      div.column.small-4.text-right
       i.icon-button.fi-map
 
@@ -86,7 +86,7 @@ div(ng-hide="editForm")
     div.column
      div.column.small-8
       label Birthdate
-      {{contact.birthdate | date: 'dd MMMM yyyy'}}
+      | {{contact.birthdate | date: 'dd MMMM yyyy'}}
      div.column.small-4.text-right
       i.icon-button.fi-crown
 
@@ -101,80 +101,80 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
 
   // Phones
   div.column.small-10.item-title Phonenumbers
-  div.column.small-2
+  div.column.small-2.text-center
    a.fi-plus(ng-click="AddField('phones')", title="New item")
   div.column.small-12
    div.row(ng-repeat="item in contact.phones")
-    div.column.small-5
+    div.column.small-6
      input.items(type="text", ng-model="item.value", placeholder="+31...")
-    div.column.small-5
+    div.column.small-4
      select(ng-model="item.type", ng-options="type for type in contactPhoneOptions")
-    div.column.small-2
+    div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('phones', $index)") &#215;
 
   // Companies
   div.column.small-10.item-title Companies
-  div.column.small-2
+  div.column.small-2.text-center
    a.fi-plus(ng-click="AddField('companies')", title="New item")
   div.column.small-12
    div.row(ng-repeat="item in contact.companies")
-    div.column.small-5
+    div.column.small-6
      input.items(type="text", ng-model="item.name", placeholder="Name ...")
-    div.column.small-5
+    div.column.small-4
      input.items(type="text", ng-model="item.title", placeholder="Title ...")
-    div.column.small-2
+    div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('companies', $index)") &#215;
 
   // Relations
   div.column.small-10.item-title Relations
-  div.column.small-2
+  div.column.small-2.text-center
    a.fi-plus(href="",data-reveal-id="contact-relations", data-reveal-ajax="true") 
   div.column.small-12
    div.row(ng-repeat="item in contact.relations")
-    div.column.small-5
+    div.column.small-6
      input.items(type="text", ng-model="item.value")
-    div.column.small-5
+    div.column.small-4
      select(ng-model="item.type", ng-options="type for type in contactRelationOptions")
-    div.column.small-2
+    div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('relations', $index)") &#215;
 
   // E-mails
   div.column.small-10.item-title E-mailaddresses
-  div.column.small-2
+  div.column.small-2.text-center
    a.fi-plus(ng-click="AddField('emails')", title="New item")
   div.column.small-12
    div.row(ng-repeat="item in contact.emails")
-    div.column.small-5
+    div.column.small-6
      input.items(type="email", ng-model="item.value", placeholder="name@domain.org")
-    div.column.small-5
+    div.column.small-4
      select(ng-model="item.type", ng-options="type for type in contactEmailOptions")
-    div.column.small-2
+    div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('emails', $index)") &#215;
 
   // Websites
   div.column.small-10.item-title Websites
-  div.column.small-2
+  div.column.small-2.text-center
    a.fi-plus(ng-click="AddField('websites')", title="New item")
   div.column.small-12
    div.row(ng-repeat="item in contact.websites")
-    div.column.small-5
+    div.column.small-6
      input.items(type="url", ng-model="item.value", placeholder="http://website.org")
-    div.column.small-5
+    div.column.small-4
      select(ng-model="item.type", ng-options="type for type in contactWebsiteOptions")
-    div.column.small-2
+    div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('websites', $index)") &#215;
 
   // Addresses
   div.column.small-10.item-title Addresses
-  div.column.small-2
+  div.column.small-2.text-center
    a.fi-plus(ng-click="AddField('addresses')", title="New item")
   div.column.small-12
    div.row(ng-repeat="item in contact.addresses")
-    div.column.small-5
+    div.column.small-6
      input.items(type="text", ng-model="item.value")
-    div.column.small-5
+    div.column.small-4
      select(ng-model="item.type", ng-options="type for type in contactAddressOptions")
-    div.column.small-2
+    div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('addresses', $index)") &#215;
 
  // Brithdate

@@ -138,10 +138,10 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   // Add (push) relation.
   $scope.AddRelation = function(id, name) {
-    if ($scope.contact['relations'] === undefined) {
-      $scope.contact['relations'] = [];
+    if ($scope.contact.relations === undefined) {
+      $scope.contact.relations = [];
     }
-    $scope.contact['relations'].push({
+    $scope.contact.relations.push({
       id: id,
       value: name,
       type: 'Family'
