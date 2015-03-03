@@ -1,4 +1,4 @@
-## Info about the upgrade from admin.fimer.nl (mysql) to pim.filmer.nl (mongodb)
+## Info about the upgrade from mysql to mongodb
 
 ### Query for mysql2json (zie next)
 

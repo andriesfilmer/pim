@@ -185,9 +185,15 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
 
  // Photo url
  div.row
-  div.column.small-12.item-title Photo url
+  div.column.small-12.item-title Photo url or upload a photo
   div.column.small-12
    input.items(type="text", name="contact-photo", ng-model="contact.photo", placeholder="http://path/to/photo" autocomplete="on")
+  div.column.small-6(ng-hide="uploadProcess")
+   input(type="file", file-model="contactPhoto")
+  div.column.small-6(ng-hide="uploadProcess")
+   button.small.radius(ng-click="uploadFile()") Upload
+  div.row(ng-show="uploadProcess")
+   div.column.small-12(us-spinner="{radius:8, width:3, length: 8}", spinner-key="spinner-1") &nbsp;
 
  // Notes
  div.row

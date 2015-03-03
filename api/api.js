@@ -13,6 +13,9 @@ var bodyParser = require('body-parser');
 // CORS - Access-Control-Allow-Origin
 var cors = require('cors');
 
+// Upload profile pictures
+var busboy = require('connect-busboy');
+
 /**************/
 // Config     */
 /**************/
@@ -32,6 +35,7 @@ app.listen(config.api_port);
 
 app.use(cors(corsOptions));
 app.use(bodyParser());
+app.use(busboy()); 
 
 // Enable http logging
 //var morgan  = require('morgan'); 
@@ -95,6 +99,9 @@ app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contact
 
 // Create a new contact
 app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.create); 
+
+// File upload for profile pictures
+app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
 
 // Edit the contact id
 app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 

@@ -9,7 +9,8 @@ var app = angular.module('app', [
                                  'appConfig',
                                  'appControllers',
                                  'appServices',
-                                 'appDirectives'
+                                 'appDirectives',
+                                 'angularSpinner'
 ]);
 
 var options = {};

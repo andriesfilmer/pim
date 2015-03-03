@@ -76,8 +76,8 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$window
 
 }]);
 
-appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService',
- function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService) {
+appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService', 'FileUpload', 'usSpinnerService',
+ function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, FileUpload, usSpinnerService) {
 
   $(document).foundation();
 
@@ -228,6 +228,34 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       if (newContact !== undefined ) { $scope.isChanged = true; }
     }
   });
+
+  $scope.uploadFile = function(){
+    var file = $scope.contactPhoto;
+    var uploadUrl = "/fileupload";
+    var filename = $scope.contact._id;
+
+    // Show spinner while uploading.
+    $scope.uploadProcess = true;
+    usSpinnerService.spin('spinner-1');
+    if (file.type === "image/png") {
+      filename += ".png";
+    }
+    else {
+      filename += ".jpg";
+    }
+
+    FileUpload.uploadFileToUrl(file, uploadUrl, filename);
+
+    // Wait 3 seconds for scope update.
+    $timeout( function(){ 
+      if(file) {
+        $scope.contact.photo = default_contact_photo_dir + filename;
+      }
+      $scope.uploadProcess = false;
+      usSpinnerService.stop('spinner-1');
+    }, 3000);
+
+  };
 
 }]);
 

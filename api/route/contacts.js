@@ -1,6 +1,10 @@
 
+var config = require('../config/config.js');
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
+
+// Upload profile pictures
+var fs = require('fs');
 
 exports.list = function(req, res) {
 
@@ -232,4 +236,16 @@ exports.delete = function(req, res) {
   });
 };
 
-
+exports.fileupload = function(req, res) {
+  var filename = req.query.filename;
+  var fstream;
+  req.pipe(req.busboy);
+  req.busboy.on('file', function (fieldname, file) {
+    console.log("Uploading: " + filename); 
+    fstream = fs.createWriteStream(config.default_upload_photo_dir + filename);
+    file.pipe(fstream);
+    fstream.on('close', function () {
+      res.sendStatus(200); // OK
+    });
+  });
+};

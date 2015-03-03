@@ -24,8 +24,9 @@ module.exports = function(grunt) {
         }
       }
     },
-    // We have a different api for development and production.
+    // We have a different configuration for development and production.
     // We write a new file with a module and a ENV constant.
+    // See AuthenticationService for the constants.
     ngconstant: {
       options: {
         name: 'appConfig',
@@ -47,6 +48,14 @@ module.exports = function(grunt) {
           ENV: 'production'
         }
       }
+    },
+    mkdir: {
+      all: {
+        options: {
+          mode: 0777,
+          create: ['public/upload/contact_photos/']
+        },
+      },
     },
     // JSHint, detect errors and potential problems in your JavaScript code.
     jshint: {
@@ -117,6 +126,8 @@ module.exports = function(grunt) {
             'vendor/js/fullcalendar.min.js',
             'vendor/js/foundation.min.js',
             'vendor/js/showdown.js',
+            'vendor/js/spin.min.js',
+            'vendor/js/angular-spinner.min.js',
             'vendor/js/showdown-table.js'
           ],
           'public/vendor/css/vendor.css': [
@@ -223,11 +234,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks("grunt-remove-logging");
 
 
   // Run once to compile foundation css and copy vendor files, save time on development ;)
-  grunt.registerTask('once', ['sass:foundation', 'copy']);
+  grunt.registerTask('once', ['sass:foundation', 'copy', 'mkdir']);
 
   // Default tasks for development
   grunt.registerTask('default', ['env:dev',  'preprocess', 'ngconstant:dev', 'sass:dist', 'concat:dev', 

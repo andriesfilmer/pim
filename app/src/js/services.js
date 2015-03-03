@@ -4,10 +4,12 @@ appServices.factory('AuthenticationService', ['ENV', function(ENV) {
   // But I leave it for now......
   if ( ENV === 'development' ) {
     options.api.base_url = "http://test.filmer.net:3001";
+    default_contact_photo_dir = "http://test.filmer.net:3000/upload/contact_photos/";
     console.log('ENV in Development'); 
   }
   else {
     options.api.base_url = "http://api.filmer.nl";
+    default_contact_photo_dir = "http://pim.filmer.nl/upload/contact_photos/";
     console.log('ENV in Production'); 
   }
 
@@ -483,3 +485,17 @@ appServices.service( 'MarkdownToc', function() {
 
 });
 
+appServices.service('FileUpload', ['$http', function ($http) {
+    this.uploadFileToUrl = function(file, uploadUrl, filename){
+        var fd = new FormData();
+        fd.append('file', file);
+        $http.post(options.api.base_url + uploadUrl + '?filename=' + filename , fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        })
+        .success(function(){
+        })
+        .error(function(){
+        });
+    };
+}]);

@@ -48,7 +48,7 @@ var Contact = new Schema({
     user_id: { type: String},
     name: { type: String, required: true },
     companies: {type: Array},
-    url: { type: String},
+    photo: { type: String},
     phones: {type: Array},
     emails: {type: Array},
     websites: {type: Array},

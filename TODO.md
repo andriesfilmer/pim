@@ -9,4 +9,5 @@
 # Bookmarks
 - Similar like posts but then for bookmarks
 
-
+# Posts
+- TOC refresh after update
