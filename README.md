@@ -8,9 +8,9 @@ A private PIM with:
 
 * Register/Login/Logout users
 * Posts i.o Todo/Note/Blog/Knowledge base
-* Personal calendar (appiontments, memos)
-* Contacts (not ready yet)
-* Bookmarks (not ready yet)
+* Personal calendar (Appiontments, Memos)
+* Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses)
+* Bookmarks (With tags and notes)
 
 ## Dependencies
 
@@ -55,19 +55,16 @@ Run the api in production
 
 ## Reminders for calendar events
 
-I you want reminders 24 hours before each event (that what I like).
+If you want reminders 24 hours before each event (that what I like).
 Create a `cron` for each 5 minutes: `*/5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api/mailer.js`
 
 ## Credits
 
 - [Zurb Foundation](http://foundation.zurb.com)
 - [Adam Shaw - Fullcalendar](http://fullcalendar.io/)
-- [Showdown from Eric J Nesser](http://daringfireball.net/projects/markdown/)
-- [Markdown Toc from Eugene Datsky](https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js)
-- [NodeMailer from Andris Reinman](https://github.com/andris9/Nodemailer)
-- [D. Moraschi](https://github.com/danielemoraschi/android-addressbook)
+- [Markdown from Eric J Nesser](http://daringfireball.net/projects/markdown/)
 
-I use a lot more Packages. Look in `packages.json` and `bower.json. Many thanks for the maintainers!
+And many more, look in `app/package.json` and `api/package.json`. Many thanks for the maintainers!
 
 ## Licence
 

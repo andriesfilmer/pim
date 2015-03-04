@@ -1,6 +1,11 @@
-## Info about the upgrade from mysql to mongodb
+## Info about the migrade from mysql to mongodb
 
-### Query for mysql2json (zie next)
+I had al information in a mysql database and I want to migrate this to MongoDb.
+Here are some notes you can use as a inspiration for your migration.
+
+### Query for mysql2json (see next)
+
+Create a query from the tables `naw` and `contacts`
 
     SELECT contacts.contact_id,
     naw.naw_id AS naw_id,
@@ -23,16 +28,15 @@
     naw.updated AS updated
     FROM naw INNER JOIN contacts ON (naw.naw_id=contacts.naw_id) limit 1;
 
-
-### Create a collection from the tables `naw` and `contacts`
+## Create a export (json) from the query above.
 
     mysql2json -u root -p Mtivohs10m -d andries --execute="the--above--sql--query" > contacts.json
 
-### Import the collection and overwrite the old one
+### Import the collection and drop the old collection
 
     mongoimport -c contacts -d pim --file contacts.json --type json  --jsonArray --drop
 
-### Add a user_id to these contacts
+### Add a (your) user_id to these contacts
 
     db.contacts.update({},{$set: {user_id: '54c4dee88c87fffa24dcda90'}}, {multi: true})
 

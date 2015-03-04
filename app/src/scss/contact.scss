@@ -1,46 +1,16 @@
 /* Contacts */
 
-$color-friend: orange;
-$color-family: green;
-$color-colleague: red;
-$color-business: #008CBA;
-
-.friend {
-  padding-left: 6px;
-  margin-top: 0;
-  border-left: 8px $color-friend solid; 
-}
-.family {
-  padding-left: 6px;
-  margin-top: 0;
-  border-left: 8px $color-family solid; 
-}
-.colleague { 
-  padding-left: 6px;
-  margin-top: 0;
-  border-left: 8px $color-colleague solid; 
-}
-.business   {
-  padding-left: 6px;
-  margin-top: 0;
-  border-left: 8px $color-business solid; 
+.row-starred {
+  font-size: 1.4em;
+  z-index: 9;
 }
 
-
-.switch.contact-public input:checked + label {
-  background: #f04124; // red
+.profile-row {
+  margin-top: -2em;
 }
-.switch.contact-friend input:checked + label {
-  background: $color-friend;
-}
-.switch.contact-family input:checked + label {
-  background: $color-family;
-}
-.switch.contact-colleague input:checked + label {
-  background: $color-colleague;
-}
-.switch.contact-business input:checked + label {
-  background: $color-business;
+.profile-birthdate {
+  position: inherit;
+  margin-top: -2em;
 }
 
 .starred {
@@ -71,20 +41,20 @@ $color-business: #008CBA;
 }
 
 .profile-bg {
-  height: 15em;
-  margin-bottom: -15em;
-  background-size: cover;
+  height: 12em;
+  margin-bottom: -12em;
   -webkit-filter: blur(50px);
   background-position: center;
 }
 
 .profile-row {
-  padding-top: 0.5em;
   .profile-img {
     border-radius: 100%;
     max-width: 12em;
+    margin-top: -2em;
   }
   .contact-name {
+    position: inherit;
     text-align: center;
     font-size: 1.5rem;
   }

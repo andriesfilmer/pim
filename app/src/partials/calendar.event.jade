@@ -65,9 +65,9 @@ form(name="eventForm")
 
 div.row
  div.column.small-6.date-meta.panel
-  i Created:  {{cal.created | date: 'yyyy-MM-dd HH:mm'}}
+  i Created:  {{cal.created | date: 'yyyy-MM-dd'}}
  div.column.small-6.date-meta.panel
-  i Updated:  {{cal.updated | date: 'yyyy-MM-dd HH:mm'}}
+  i Updated:  {{cal.updated | date: 'yyyy-MM-dd'}}
  div.column.small-12.post-meta
    ul.inline-list
     li.tag(ng-repeat='tag in post.tags')

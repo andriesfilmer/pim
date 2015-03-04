@@ -36,9 +36,9 @@ form(name="postForm")
       a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
  div.row
   div.column.small-6.date-meta.panel
-   i Created:  {{post.created | date: 'yyyy-MM-dd HH:mm'}}
+   i Created:  {{post.created | date: 'yyyy-MM-dd'}}
   div.column.small-6.date-meta.panel
-   i Updated:  {{post.updated | date: 'yyyy-MM-dd HH:mm'}}
+   i Updated:  {{post.updated | date: 'yyyy-MM-dd'}}
 
 div.row
  div#post-settings.reveal-modal(data-reveal='')

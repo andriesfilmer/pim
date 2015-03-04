@@ -257,5 +257,14 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   };
 
+  // Just by clicking on the starred icon we change starred.
+  $scope.updateStarredState = function updateStarredState(contact, makeStarred) {
+    if (contact !== undefined && makeStarred !== undefined) {
+      ContactService.changeStarredState(contact._id, makeStarred).success(function(data) {
+        $scope.contact.starred = makeStarred;
+      });
+    }
+  };
+
 }]);
 

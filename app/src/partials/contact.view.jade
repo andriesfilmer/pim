@@ -1,6 +1,6 @@
 div.row(ng-hide="offline")
  div.column.small-9.text-left.secondary-menu
-  i.fi-page.reversed(title='Contacts')
+  i.fi-torsos.reversed(title='Contacts')
   span.divider
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
@@ -14,6 +14,14 @@ div.row(ng-hide="offline")
 
 div(ng-hide="editForm")
  div.row.profile-bg(style="background: url({{contact.photo}}); background-size: cover; background-position: center;")
+ div.row.row-starred
+  div.column(ng-show='contact.starred', ng-click='updateStarredState(contact, false)')
+   a.starred.fi-star &nbsp;
+  div.column(ng-show='!contact.starred', ng-click='updateStarredState(contact, true)')
+   a.un-starred.fi-star &nbsp;
+ div.row
+  div.column.text-right.profile-birthdate(ng-if="contact.birthdate")
+   label.fi-crown  {{contact.birthdate | date: 'dd MMMM'}}
  div.row.profile-row
   div.column.small-12.text-center
    img.profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
@@ -93,6 +101,12 @@ div(ng-hide="editForm")
   div.column.small-12.medium-6
    div.item-title Notes
    p(markdown='contact.notes') 
+
+ div.row
+  div.column.small-6.date-meta.panel
+   i Created:  {{contact.created | date: 'yyyy-MM-dd'}}
+  div.column.small-6.date-meta.panel
+   i Updated:  {{contact.updated | date: 'yyyy-MM-dd'}}
 
 form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="editForm")
  div.row
@@ -200,11 +214,6 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12.item-title Notes
   div.column.small-12
    textarea(rows="10", ng-model="contact.notes", placeholder="You can use Markdown ...")
-
- div.column.small-6.date-meta.panel
-  i Created:  {{contact.created | date: 'yyyy-MM-dd HH:mm'}}
- div.column.small-6.date-meta.panel
-  i Updated:  {{contact.updated | date: 'yyyy-MM-dd HH:mm'}}
 
 div.row
  div#contact-relations.reveal-modal(data-reveal='')

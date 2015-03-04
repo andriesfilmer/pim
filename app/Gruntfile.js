@@ -121,14 +121,14 @@ module.exports = function(grunt) {
             'vendor/js/angular-ui-router.min.js',
             'vendor/js/angular-touch.min.js',
             'vendor/js/angular-animate.min.js',
+            'vendor/js/angular-spinner.min.js',
+            'vendor/js/spin.min.js',
             'vendor/js/moment.min.js',
             'vendor/js/calendar.js',
             'vendor/js/fullcalendar.min.js',
             'vendor/js/foundation.min.js',
-            'vendor/js/showdown.js',
-            'vendor/js/spin.min.js',
-            'vendor/js/angular-spinner.min.js',
-            'vendor/js/showdown-table.js'
+            'vendor/js/showdown.min.js',
+            'vendor/js/showdown-table.min.js'
           ],
           'public/vendor/css/vendor.css': [
              'vendor/css/normalize.css',
