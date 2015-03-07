@@ -6,15 +6,15 @@ div.row(ng-hide="offline")
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
   span(ng-hide="contactForm.name.$error.required")
-   a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact', tabindex=2)
-   a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact', tabindex=2)
+   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
+   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
  div.column.small-3.text-right.secondary-menu
   span.divider
   a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")
 
 div(ng-hide="editForm")
  div.row.profile-bg(style="background: url({{contact.photo}}); background-size: cover; background-position: center;")
- div.row.row-starred
+ div.row.starred-row
   div.column(ng-show='contact.starred', ng-click='updateStarredState(contact, false)')
    a.starred.fi-star &nbsp;
   div.column(ng-show='!contact.starred', ng-click='updateStarredState(contact, true)')
@@ -111,7 +111,7 @@ div(ng-hide="editForm")
 form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="editForm")
  div.row
   div.column.small-12
-   input#title-input(type="text", required='', name="name", placeholder="Fullname", ng-model="contact.name")
+   input#title-input(type="text", required='', name="name", placeholder="Fullname", ng-model="contact.name", ng-change="isChanged()")
 
   // Phones
   div.column.small-10.item-title Phonenumbers
@@ -120,9 +120,13 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.phones")
     div.column.small-6
-     input.items(type="text", ng-model="item.value", placeholder="+31...")
+     input.items(type="text", ng-model="item.value", ng-change="isChanged()", placeholder="+31...")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactPhoneOptions")
+     select(ng-class="{false: 'hide'}[customValue !== contact.phones[$index].type]", 
+      | ng-model="item.type", ng-options="type for type in contactPhoneOptions", ng-change="labelChanged($index, contact.phones[$index].type)")
+      option(value="") {{contact.phones[$index].type}}
+     input.items(ng-class="{false: 'hide'}[customValue === contact.phones[$index].type]",
+      | type="text", ng-model="item.type", ng-change="labelChanged($index, contact.phones[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('phones', $index)") &#215;
 
@@ -133,9 +137,9 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.companies")
     div.column.small-6
-     input.items(type="text", ng-model="item.name", placeholder="Name ...")
+     input.items(type="text", ng-model="item.name", ng-change="isChanged()", placeholder="Name ...")
     div.column.small-4
-     input.items(type="text", ng-model="item.title", placeholder="Title ...")
+     input.items(type="text", ng-model="item.title", ng-change="isChanged()", placeholder="Title ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('companies', $index)") &#215;
 
@@ -146,9 +150,9 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.relations")
     div.column.small-6
-     input.items(type="text", ng-model="item.value")
+     input.items(type="text", ng-model="item.value", ng-change="isChanged()")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactRelationOptions")
+     select(ng-model="item.type", ng-options="type for type in contactRelationOptions", ng-change="isChanged()")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('relations', $index)") &#215;
 
@@ -159,9 +163,9 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.emails")
     div.column.small-6
-     input.items(type="email", ng-model="item.value", placeholder="name@domain.org")
+     input.items(type="email", ng-model="item.value", ng-change="isChanged()", placeholder="name@domain.org")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactEmailOptions")
+     select(ng-model="item.type", ng-options="type for type in contactEmailOptions", ng-change="isChanged()")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('emails', $index)") &#215;
 
@@ -172,9 +176,9 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.websites")
     div.column.small-6
-     input.items(type="url", ng-model="item.value", placeholder="http://website.org")
+     input.items(type="url", ng-model="item.value", ng-change="isChanged()", placeholder="http://website.org")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactWebsiteOptions")
+     select(ng-model="item.type", ng-options="type for type in contactWebsiteOptions", ng-change="isChanged()")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('websites', $index)") &#215;
 
@@ -185,9 +189,9 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.addresses")
     div.column.small-6
-     input.items(type="text", ng-model="item.value")
+     input.items(type="text", ng-model="item.value", ng-change="isChanged()")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactAddressOptions")
+     select(ng-model="item.type", ng-options="type for type in contactAddressOptions", ng-change="isChanged()")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('addresses', $index)") &#215;
 
@@ -195,13 +199,13 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
  div.row
   div.column.small-12.item-title Birthdate
   div.column.small-12 &nbsp;
-   input.items(type="date", ng-model="contact.birthdate")
+   input.items(type="date", ng-model="contact.birthdate", ng-change="isChanged()")
 
  // Photo url
  div.row
   div.column.small-12.item-title Photo url or upload a photo
   div.column.small-12
-   input.items(type="text", name="contact-photo", ng-model="contact.photo", placeholder="http://path/to/photo" autocomplete="on")
+   input.items(type="text", name="contact-photo", ng-model="contact.photo", ng-change="isChanged()", placeholder="http://path/to/photo")
   div.column.small-6(ng-hide="uploadProcess")
    input(type="file", file-model="contactPhoto")
   div.column.small-6(ng-hide="uploadProcess")
@@ -213,7 +217,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
  div.row
   div.column.small-12.item-title Notes
   div.column.small-12
-   textarea(rows="10", ng-model="contact.notes", placeholder="You can use Markdown ...")
+   textarea(rows="10", ng-model="contact.notes", ng-change="isChanged()", placeholder="You can use Markdown ...")
 
 div.row
  div#contact-relations.reveal-modal(data-reveal='')

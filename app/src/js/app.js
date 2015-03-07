@@ -21,6 +21,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
 
   // For any unmatched url, redirect to /calendar/month
   $urlRouterProvider.otherwise("/calendar/month");
+  $urlRouterProvider.otherwise("/contact/:id");
   //
   // Now set up the states
   $stateProvider
@@ -99,7 +100,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/contact/:id",
       templateUrl: "partials/contact.view.html",
       controller: 'ContactController',
-      access: { requiredAuthentication: true}
+      access: { requiredAuthentication: false}
     })
 
     .state('post', {

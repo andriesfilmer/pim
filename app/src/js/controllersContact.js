@@ -88,6 +88,36 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.editForm = !$scope.editForm;
   };
 
+  // Array's for select boxes
+  $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
+  $scope.contactEmailOptions = ['Personal','Home','Work','Other'];
+  $scope.contactWebsiteOptions = ['Personal','Work','Social','Other'];
+  $scope.contactAddressOptions = ['Home','Work','Other'];
+  $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
+
+  $scope.isChanged = function() {
+    // Add alert class on save icon
+    $scope.saveForm = true;
+  };
+
+  $scope.labelChanged = function(idx, value) {
+
+    // After a selection of the default 'select boxes' (zie above),
+    // make it a 'custom' input field. So you can add more options.
+    // The magic is in the view with `ng-class`.
+    $scope.customValue = value
+
+    // Show placeholder
+    if (value === 'Other') {
+      $scope.customValue = '';
+      $scope.contact.phones[idx].type = '';
+    }
+
+    // Add alert class on save icon
+    $scope.saveForm = true;
+
+  };
+
   // Init a new contact.
   if ($stateParams.id === "create") {
     var initializing = true;
@@ -96,13 +126,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.showDeleteBt  = false;
     $scope.editForm = true;
   }
-
-  // Array's for select boxes
-  $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
-  $scope.contactEmailOptions = ['Personal','Home','Work','Other'];
-  $scope.contactWebsiteOptions = ['Personal','Work','Social','Other'];
-  $scope.contactAddressOptions = ['Home','Work','Other'];
-  $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
 
   // Length of mongoDb _id = 24, so it must be a existing contact.
   if ($stateParams.id.length > 23) {
@@ -133,10 +156,9 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       $scope.contact[type] = [];
     }
     $scope.contact[type].push({});
-    $scope.isChanged = true;
   };
 
-  // Add (push) relation.
+  // Add (push) relation with id/link to other contact.
   $scope.AddRelation = function(id, name) {
     if ($scope.contact.relations === undefined) {
       $scope.contact.relations = [];
@@ -146,7 +168,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       value: name,
       type: 'Family'
     });
-    $scope.isChanged = true;
     $('a.close-reveal-modal').trigger('click');
   };
 
@@ -155,6 +176,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     if($scope.contact[type] && $scope.contact[type][index]) {
       $scope.contact[type].splice(index, 1);
     }
+    $scope.saveForm = true;
   };
 
   // Update of insert a contact
@@ -186,7 +208,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       ContactService.update(contact).then(function(msg) {
         // Promise reslove
         flash('success', msg);
-        $scope.isChanged = false;
       }, function(msg) {
         // Promise reject
         flash('alert', msg);
@@ -218,16 +239,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       $state.go("contact");
     });
   };
-
-  // Add class to save button/icon on change for contact.
-  $scope.$watchCollection('contact', function(oldContact, newContact) {
-    if (initializing) {
-      $timeout(function() { initializing = false; });
-    } 
-    else {
-      if (newContact !== undefined ) { $scope.isChanged = true; }
-    }
-  });
 
   $scope.uploadFile = function(){
     var file = $scope.contactPhoto;

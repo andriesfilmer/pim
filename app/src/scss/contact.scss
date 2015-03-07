@@ -1,30 +1,5 @@
 /* Contacts */
 
-.row-starred {
-  font-size: 1.4em;
-  z-index: 9;
-}
-
-.profile-row {
-  margin-top: -2em;
-}
-.profile-birthdate {
-  position: inherit;
-  margin-top: -2em;
-}
-
-.starred {
-  cursor: pointer;
-  font-size: 1.2em;
-  color: orange;
-}
-
-.un-starred {
-  cursor: pointer;
-  font-size: 1.2em;
-  color: #ddd;
-}
-
 #contact-form {
   .reset-button {
     color: #AAAAAA;
@@ -40,11 +15,44 @@
   }
 }
 
+.starred {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: orange;
+}
+
+.un-starred {
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #ddd;
+}
+
+.starred-row {
+  font-size: 1.4em;
+  z-index: 9;
+}
+
+.profile-row {
+  margin-top: -2em;
+}
+.profile-birthdate {
+  position: inherit;
+  margin-top: -2em;
+}
+
 .profile-bg {
   height: 12em;
   margin-bottom: -12em;
-  -webkit-filter: blur(50px);
   background-position: center;
+  -webkit-transform: translateZ(0);
+  -webkit-transform: translate3d(0, 0, 0);
+
+  -webkit-filter: blur(50px);
+  -moz-filter: blur(50px);
+  -o-filter: blur(50px);
+  -ms-filter: blur(50px);
+  filter: blur(50px);
+  opacity: 0.8;
 }
 
 .profile-row {
