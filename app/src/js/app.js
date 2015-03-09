@@ -21,7 +21,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
 
   // For any unmatched url, redirect to /calendar/month
   $urlRouterProvider.otherwise("/calendar/month");
-  $urlRouterProvider.otherwise("/contact/:id");
   //
   // Now set up the states
   $stateProvider

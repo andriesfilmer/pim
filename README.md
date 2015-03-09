@@ -12,6 +12,9 @@ A private PIM with:
 * Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses)
 * Bookmarks (With tags and notes)
 
+[Demo site](http://pim.filmer.nl)
+
+
 ## Dependencies
 
 You need nodejs and mongodb (default install will do)

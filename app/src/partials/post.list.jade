@@ -12,7 +12,7 @@ div.row(ng-hide="offline")
 div.row.flip-in(ng-show="searchForm")
  form#search
   div.columns.small-10
-   input.radius.search-box(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey", tabindex="2" )
+   input#search-input.radius.search-box(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey", tabindex="2")
   div.columns.small-2
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 

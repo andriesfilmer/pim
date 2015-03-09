@@ -25,6 +25,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.postSearchKey;
+      angular.element("#search-input").focus();
     };
 
     $scope.posts = [];

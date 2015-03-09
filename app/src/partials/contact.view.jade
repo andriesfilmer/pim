@@ -123,10 +123,10 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
      input.items(type="text", ng-model="item.value", ng-change="isChanged()", placeholder="+31...")
     div.column.small-4
      select(ng-class="{false: 'hide'}[customValue !== contact.phones[$index].type]", 
-      | ng-model="item.type", ng-options="type for type in contactPhoneOptions", ng-change="labelChanged($index, contact.phones[$index].type)")
+      | ng-model="item.type", ng-options="type for type in contactPhoneOptions", ng-change="labelChanged('phones', $index, contact.phones[$index].type)")
       option(value="") {{contact.phones[$index].type}}
      input.items(ng-class="{false: 'hide'}[customValue === contact.phones[$index].type]",
-      | type="text", ng-model="item.type", ng-change="labelChanged($index, contact.phones[$index].type)", placeholder="Custom ...")
+      | type="text", ng-model="item.type", ng-change="labelChanged('phones', $index, contact.phones[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('phones', $index)") &#215;
 
@@ -152,7 +152,11 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
     div.column.small-6
      input.items(type="text", ng-model="item.value", ng-change="isChanged()")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactRelationOptions", ng-change="isChanged()")
+     select(ng-class="{false: 'hide'}[customValue !== contact.relations[$index].type]", 
+      | ng-model="item.type", ng-options="type for type in contactRelationOptions", ng-change="labelChanged('relations', $index, contact.relations[$index].type)")
+      option(value="") {{contact.relations[$index].type}}
+     input.items(ng-class="{false: 'hide'}[customValue === contact.relations[$index].type]",
+      | type="text", ng-model="item.type", ng-change="labelChanged('relations', $index, contact.relations[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('relations', $index)") &#215;
 
@@ -165,7 +169,11 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
     div.column.small-6
      input.items(type="email", ng-model="item.value", ng-change="isChanged()", placeholder="name@domain.org")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactEmailOptions", ng-change="isChanged()")
+     select(ng-class="{false: 'hide'}[customValue !== contact.emails[$index].type]", 
+      | ng-model="item.type", ng-options="type for type in contactEmailOptions", ng-change="labelChanged('emails', $index, contact.emails[$index].type)")
+      option(value="") {{contact.emails[$index].type}}
+     input.items(ng-class="{false: 'hide'}[customValue === contact.emails[$index].type]",
+      | type="text", ng-model="item.type", ng-change="labelChanged('emails', $index, contact.emails[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('emails', $index)") &#215;
 
@@ -178,7 +186,11 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
     div.column.small-6
      input.items(type="url", ng-model="item.value", ng-change="isChanged()", placeholder="http://website.org")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactWebsiteOptions", ng-change="isChanged()")
+     select(ng-class="{false: 'hide'}[customValue !== contact.websites[$index].type]", 
+      | ng-model="item.type", ng-options="type for type in contactWebsiteOptions", ng-change="labelChanged('websites', $index, contact.websites[$index].type)")
+      option(value="") {{contact.websites[$index].type}}
+     input.items(ng-class="{false: 'hide'}[customValue === contact.websites[$index].type]",
+      | type="text", ng-model="item.type", ng-change="labelChanged('websites', $index, contact.websites[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('websites', $index)") &#215;
 
@@ -191,7 +203,11 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
     div.column.small-6
      input.items(type="text", ng-model="item.value", ng-change="isChanged()")
     div.column.small-4
-     select(ng-model="item.type", ng-options="type for type in contactAddressOptions", ng-change="isChanged()")
+     select(ng-class="{false: 'hide'}[customValue !== contact.addresses[$index].type]", 
+      | ng-model="item.type", ng-options="type for type in contactAddressOptions", ng-change="labelChanged('addresses', $index, contact.addresses[$index].type)")
+      option(value="") {{contact.addresses[$index].type}}
+     input.items(ng-class="{false: 'hide'}[customValue === contact.addresses[$index].type]",
+      | type="text", ng-model="item.type", ng-change="labelChanged('addresses', $index, contact.addresses[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
      button.tiny.reset-button(type="reset", ng-click="DiscardField('addresses', $index)") &#215;
 

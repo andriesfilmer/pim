@@ -21,11 +21,13 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$window
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+      angular.element("#search-input").focus();
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.contactSearchKey;
+      angular.element("#search-input").focus();
     };
 
     $scope.contacts = [];
@@ -90,27 +92,31 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   // Array's for select boxes
   $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
+  $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
   $scope.contactEmailOptions = ['Personal','Home','Work','Other'];
   $scope.contactWebsiteOptions = ['Personal','Work','Social','Other'];
   $scope.contactAddressOptions = ['Home','Work','Other'];
-  $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
 
   $scope.isChanged = function() {
     // Add alert class on save icon
     $scope.saveForm = true;
   };
 
-  $scope.labelChanged = function(idx, value) {
+  $scope.labelChanged = function(type, idx, value) {
 
-    // After a selection of the default 'select boxes' (zie above),
+    // After a selection of the default 'select boxes' (zie above) we
     // make it a 'custom' input field. So you can add more options.
-    // The magic is in the view with `ng-class`.
-    $scope.customValue = value
+    // The magic is done with `ng-class` in the view (partial).
+    $scope.customValue = value;
 
     // Show placeholder
     if (value === 'Other') {
       $scope.customValue = '';
-      $scope.contact.phones[idx].type = '';
+      if (type === 'phones')   { $scope.contact.phones[idx].type = '';}
+      if (type === 'emails')    { $scope.contact.emails[idx].type = '';}
+      if (type === 'websites')  { $scope.contact.websites[idx].type = '';}
+      if (type === 'addresses') { $scope.contact.addresses[idx].type = '';}
+      if (type === 'relations') { $scope.contact.relations[idx].type = '';}
     }
 
     // Add alert class on save icon
@@ -133,7 +139,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     ContactService.read(id).then(function(data) {
       // Promise resolve
       $scope.contact = data;
-      if (data.birthdate !== undefined) {
+      if (data.birthdate !== undefined && data.birthdate !== null) {
         // Angulara forms need a 'real' date.
         $scope.contact.birthdate = new Date(data.birthdate);
       }
@@ -156,6 +162,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       $scope.contact[type] = [];
     }
     $scope.contact[type].push({});
+    $scope.customValue = '';
   };
 
   // Add (push) relation with id/link to other contact.
@@ -166,7 +173,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.contact.relations.push({
       id: id,
       value: name,
-      type: 'Family'
+      type: ''
     });
     $('a.close-reveal-modal').trigger('click');
   };
@@ -263,6 +270,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
         $scope.contact.photo = default_contact_photo_dir + filename;
       }
       $scope.uploadProcess = false;
+      $scope.saveForm = true;
       usSpinnerService.stop('spinner-1');
     }, 3000);
 
