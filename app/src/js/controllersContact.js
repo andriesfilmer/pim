@@ -1,5 +1,5 @@
-appControllers.controller('ContactListController', ['$scope', '$state', '$window', 'flash', 'ContactService', 
-  function ContactListController($scope, $state, $window, flash, ContactService) {
+appControllers.controller('ContactListController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'ContactService', 
+  function ContactListController($scope, $state, $stateParams, $window, flash, ContactService) {
 
     $(document).foundation();
 
@@ -17,12 +17,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$window
       $window.localStorage.contactLimit =  limit;
     };
 
-    // Hide searchForm, toggle first. Save search.
-    $scope.toggleSearch = function () {
-      $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
-      angular.element("#search-input").focus();
-    };
+    angular.element("#search-input").focus();
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
@@ -32,8 +27,11 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$window
 
     $scope.contacts = [];
 
+    // Find starred or all contacts.
+    var starred = $stateParams.starred || false;
+
     // Init contacts with promises and show all contacts.
-    $scope.init = ContactService.findAll($window.localStorage.contactLimit).then(function(data) {
+    $scope.init = ContactService.findAll(starred, $window.localStorage.contactLimit).then(function(data) {
       // Promise resolved
       $scope.contacts = data;
     }, function(msg) {

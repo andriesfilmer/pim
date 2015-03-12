@@ -92,9 +92,9 @@ appServices.factory('ContactService', function($http, $q, $window) {
 
   return {
 
-    findAll: function(limit) {
+    findAll: function(starred, limit) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/contact/', {'params': {limit: limit}})
+      $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, limit: limit}})
       .success(function(data) {
         $window.localStorage.contactsAll = JSON.stringify(data);
         console.log('Fetched contacts from MongoDb and saved to localStorage.'); 

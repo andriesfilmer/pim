@@ -20,7 +20,8 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /calendar/month
-  $urlRouterProvider.otherwise("/calendar/month");
+  //$urlRouterProvider.otherwise("/calendar/month");
+  $urlRouterProvider.otherwise("/contact/starred");
   //
   // Now set up the states
   $stateProvider
@@ -29,6 +30,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
        templateUrl: "partials/home.html",
        access: { requiredAuthentication: false }
      })
+    // Users views
     .state('user', {
       url: "/user",
       templateUrl: 'partials/user.html',
@@ -53,6 +55,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: true }
     })
+    // Calendar views
     .state('calendar', {
        url: "/calendar",
        templateUrl: "partials/calendar.html",
@@ -83,11 +86,24 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true }
     })
 
+    // Contact views
     .state('contact', {
       url: "/contact",
+      templateUrl: "partials/contact.html",
+      controller: 'ContactListController',
+      access: { requiredAuthentication: true}
+    })
+    .state('contact.list', {
+      url: "/list",
       templateUrl: "partials/contact.list.html",
       controller: 'ContactListController',
       access: { requiredAuthentication: true}
+    })
+    .state('contact.starred', {
+      url: "/starred/:starred",
+      templateUrl: "partials/contact.starred.html",
+      controller: 'ContactListController',
+      access: { requiredAuthentication: false}
     })
     .state('contact.create', {
       url: "/contact/create",
@@ -102,6 +118,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: false}
     })
 
+    // Post views
     .state('post', {
       url: "/post",
       templateUrl: "partials/post.list.html",
@@ -120,6 +137,8 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'PostController',
       access: { requiredAuthentication: true }
     })
+
+    // Bookmark views
     .state('bookmark', {
       url: "/bookmark",
       templateUrl: "partials/bookmark.list.html",

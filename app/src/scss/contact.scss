@@ -32,6 +32,22 @@
   z-index: 9;
 }
 
+.starred-list {
+  .photo {
+    border-radius: 100%;
+    height: 6rem;
+    width: 6rem;
+    margin-bottom: -1em;
+  }
+  .name 
+  {
+    padding: 5px;
+    p {
+      font-size: 0.7rem;
+    }
+  }
+}
+
 .profile-row {
   margin-top: -2em;
 }

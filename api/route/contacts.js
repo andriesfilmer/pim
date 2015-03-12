@@ -12,9 +12,11 @@ exports.list = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  var query = db.contactModel.find({user_id: req.user.id}).limit(req.query.limit);
-  query.select("_id name companies starred");
+  var query = db.contactModel.find({user_id: req.user.id});
+  req.query.starred === 'true' ? query.find({starred: true}) : null;
+  query.select("_id name companies starred photo");
   query.sort('-updated');
+  query.limit(req.query.limit);
   query.exec(function(err, results) {
 
     if (err) {

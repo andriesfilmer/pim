@@ -87,9 +87,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
 
-    // Creat new TOC should be working but it doesn't. Don't know why yet.
-    //$scope.toc = MarkdownToc.make($scope.post.content);
-
+    // Creat new TOC.
+    $scope.toc = MarkdownToc.make({_id: $scope.post._id, content: $scope.post.content});
     $scope.editForm = !$scope.editForm;
 
   };

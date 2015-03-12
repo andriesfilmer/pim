@@ -100,11 +100,11 @@ app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contact
 // Create a new contact
 app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.create); 
 
-// File upload for profile pictures
-app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
-
 // Edit the contact id
 app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 
+
+// File upload for profile pictures
+app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
 
 // Delete the contact id
 app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 

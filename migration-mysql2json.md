@@ -1,6 +1,6 @@
 ## Info about the migrade from mysql to mongodb
 
-I had al information in a mysql database and I want to migrate this to MongoDb.
+All my information was in a mysql database and I want to migrate this to MongoDb.
 Here are some notes you can use as a inspiration for your migration.
 
 ### Query for mysql2json (see next)

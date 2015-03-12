@@ -1,13 +1,7 @@
 # General
 - Re-login after expired jwt-token
+- https://github.com/angular-translate/angular-translate
 
-# Calendar
-- Implement full-calendar
-- Create a mongo collection 
-- etc
+# Users
+- Send lost password
 
-# Bookmarks
-- Similar like posts but then for bookmarks
-
-# Posts
-- TOC refresh after update
