@@ -20,6 +20,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
+      angular.element("#search-input").focus(); // Does not work, have to fix this ?!
     };
 
     // Remove search.

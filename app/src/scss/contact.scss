@@ -1,20 +1,5 @@
 /* Contacts */
 
-#contact-form {
-  .reset-button {
-    color: #AAAAAA;
-    background: transparent;
-    font-size: 2.5rem;
-    font-weight: bold;
-    padding: 0 0 0 15px;
-    bottom: 5px;
-  }
-  .fi-plus {
-    font-size:1.8rem;
-    margin-left: 5px;
-  }
-}
-
 .starred {
   cursor: pointer;
   font-size: 1.2em;
@@ -35,25 +20,16 @@
 .starred-list {
   .photo {
     border-radius: 100%;
-    height: 6rem;
-    width: 6rem;
-    margin-bottom: -1em;
+    max-height: 8rem;
+    width: 8rem;
   }
-  .name 
-  {
-    padding: 5px;
+  .name {
+    text-align: center;
     p {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
+      margin: 3px;
     }
   }
-}
-
-.profile-row {
-  margin-top: -2em;
-}
-.profile-birthdate {
-  position: inherit;
-  margin-top: -2em;
 }
 
 .profile-bg {
@@ -70,8 +46,8 @@
   filter: blur(50px);
   opacity: 0.8;
 }
-
 .profile-row {
+  margin-top: -2em;
   .profile-img {
     border-radius: 100%;
     max-width: 12em;
@@ -83,11 +59,31 @@
     font-size: 1.5rem;
   }
 }
+.profile-birthdate {
+  position: inherit;
+  margin-top: -2em;
+}
+
 
 .item-title {
   padding-top: 10px;
   padding-bottom: 5px;
   border-bottom: #eee 1px solid;
   font-weight: bold;
+}
+
+#contact-form {
+  .reset-button {
+    color: #AAAAAA;
+    background: transparent;
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding: 0 0 0 15px;
+    bottom: 5px;
+  }
+  .fi-plus {
+    font-size:1.8rem;
+    margin-left: 5px;
+  }
 }
 

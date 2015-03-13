@@ -3,17 +3,15 @@ div.row(ng-hide="offline")
   i.fi-torsos.reversed(title='Contacts')
   span.divider
   a.fi-magnifying-glass(ui-sref='contact.list', title='List contacts', tabindex="1")
-  span.divider
-  a.fi-widget(href="", title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
  div.column.small-4.text-right.secondary-menu
   span.divider
   a.fi-plus(href='#/contact/create',title='New item')
 
 div.row
- div.starred-list(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
-  a(href='#/contact/{{contact._id}}')
-   div.columns.small-4.medium-3.large-2.text-center.name
-    img.photo(ng-show="contact.photo == undefined", ng-src="/static/images/profile.jpg")
+ ul.small-block-grid-3.medium-block-grid-4.large-block-grid-6.starred-list
+  li.name(ng-repeat='contact in contacts')
+   a(href='#/contact/{{contact._id}}')
+    img.photo(ng-show="contact.photo == undefined || contact.photo == ''", ng-src="/static/images/profile.jpg")
     img.photo(ng-show="contact.photo != undefined", ng-src="{{contact.photo}}")
     p {{contact.name}} &nbsp; 
 

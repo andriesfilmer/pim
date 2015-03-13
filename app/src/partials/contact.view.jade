@@ -4,13 +4,13 @@ div.row(ng-hide="offline")
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  span(ng-hide="contactForm.name.$error.required")
-   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
-   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
-  span.divider
   a.fi-magnifying-glass(ui-sref='contact.list', title='List contacts', tabindex="1")
   span.divider
   a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
+  span.divider
+  span(ng-hide="contactForm.name.$error.required")
+   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
+   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
  div.column.small-3.text-right.secondary-menu
   span.divider
   a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")

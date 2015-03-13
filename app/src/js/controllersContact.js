@@ -7,7 +7,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     $scope.saveSettings = function saveSettings() {
       $('a.close-reveal-modal').trigger('click');
       flash('success', 'Settings saved');
-      $state.go('contact', {}, {reload: true});
+      $state.go('contact.list', {}, {reload: true});
     };
 
 
@@ -17,6 +17,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       $window.localStorage.contactLimit =  limit;
     };
 
+    $scope.searchKey =  $window.sessionStorage.contactSearchKey;
     angular.element("#search-input").focus();
 
     // Remove search.
@@ -203,7 +204,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       ContactService.create(contact).then(function(msg) {
         // Promise reslove
         flash('success', msg);
-        $state.go('contact');
+        $state.go('contact.list');
       }, function(err) {
         // Promise reject
         flash('alert', err);
@@ -241,7 +242,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     ContactService.delete(id).success(function(msg) {
       console.log('Deleted contact:' + contact._id + ' ' + msg); 
       flash('success', 'Contact deleted successful');
-      $state.go("contact");
+      $state.go("contact.list");
     });
   };
 
