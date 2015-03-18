@@ -54,6 +54,18 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: true }
     })
+    .state('user.change-password', {
+      url: "/change-password?token",
+      templateUrl: 'partials/user.change-password.html',
+      controller: 'UserController',
+      access: { requiredAuthentication: false }
+    })
+    .state('user.reset-password', {
+      url: "/reset-password",
+      templateUrl: 'partials/user.reset-password.html',
+      controller: 'UserController',
+      access: { requiredAuthentication: false }
+    })
     // Calendar views
     .state('calendar', {
        url: "/calendar",

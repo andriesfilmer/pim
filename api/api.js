@@ -62,6 +62,12 @@ app.post('/user/signin', routes.users.signin);
 // Logout
 app.get('/user/logout', routes.users.logout); 
 
+// Password change
+app.post('/user/password-change', expressJwt({secret: secret.secretToken, credentialsRequired: false}), routes.users.passwordChange);
+
+// Send token to emailaddress
+app.post('/user/send-token', routes.users.sendToken);
+
 /*******************/
 /* Event routes    */
 /*******************/

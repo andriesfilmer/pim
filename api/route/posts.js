@@ -169,7 +169,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Not authorized
+    return res.sendStatus(401); // Not authorized
   }
 
   var post = req.body.post;

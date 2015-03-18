@@ -1,11 +1,10 @@
-appControllers.controller('UserController', ['$scope', '$state', '$window', 'flash', 'UserService', 'AuthenticationService',
-  function UserController($scope, $state, $window, flash, UserService, AuthenticationService) {
+appControllers.controller('UserController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'UserService', 'AuthenticationService',
+  function UserController($scope, $state, $stateParams, $window, flash, UserService, AuthenticationService) {
 
     // Capitalize function for feedback in falsh messages
     String.prototype.capitalize = function() {
       return this.charAt(0).toUpperCase() + this.slice(1);
     };
-
 
     $scope.signIn = function signIn(email, password) {
       UserService.signIn(email, password).success(function(data) {
@@ -47,11 +46,8 @@ appControllers.controller('UserController', ['$scope', '$state', '$window', 'fla
       }
       else {
         UserService.register(fullname, email, password, passwordConfirm).success(function(feedback) {
-
           if (feedback.message === 'Validation failed') {
-
             console.log('UserController -> register failed');
-
             // Create a json array for feedback to the user
             var err = feedback.errors;
             var msg = [];
@@ -64,24 +60,64 @@ appControllers.controller('UserController', ['$scope', '$state', '$window', 'fla
               }
               msg.push(f);
             }
-
             flash(msg);
-
           }
           else {
             console.log('UserController -> register success');
             flash('succes', 'Thanks for registering, you can login now');
             $state.go('signin');
           }
-
         }).error(function(status, data) {
-
           flash('alert', 'Something went wrong with registration');
           console.log("Signin status: " + status);
-
         });
       }
     };
+
+
+    $scope.sendPasswordChangeToken = function sendPasswordChangeToken(email) {
+      UserService.sendToken(email).success(function(feedback) {
+        if (feedback.error) {
+          console.log('UserController -> sendToken failed');
+          $scope.tokenSend = false;
+          flash('alert', feedback.error.message);
+        }
+        else {
+          console.log('UserController -> sendtoken success');
+          // View state before/after ('ng-hide/ng-show') sending email message.
+          $scope.tokenSend = false;
+          flash('succes', 'E-mail message send');
+        }
+      }).error(function(status, data) {
+        console.log("SendToken status: " + status);
+        $scope.tokenSend = false;
+        flash('alert', 'Some error occurred.');
+      });
+      $scope.tokenSend = true;
+    };
+
+    // Set 'token' from querystring for changePassword
+    // which is send by API service token/link to users mailbox.
+    if ($stateParams.token !== undefined) {
+      $window.localStorage.token = $stateParams.token;
+    }
+
+    $scope.changePassword = function changePassword(password, passwordConfirm) {
+      UserService.changePassword(password, passwordConfirm).success(function(feedback) {
+        if (feedback.errors) {
+          console.log('UserController -> password change failed');
+          flash('alert', feedback.errors.password.message);
+        }
+        else {
+          console.log('UserController -> password change success');
+          flash('succes', 'Password has changed and logged-in');
+        }
+      }).error(function(status, data) {
+        console.log("Password change status: " + status);
+        flash('alert', 'Authorisation failed');
+      });
+    };
+
   }
 ]);
  

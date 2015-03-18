@@ -11,8 +11,6 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
     if (err) { 
         console.log('Connection refused to ' + mongodbURL);
         console.log(err);
-    } else {
-        //console.log('Mongoose connection successful ');
     }
 });
 
@@ -25,7 +23,7 @@ var User = new Schema({
     created: { type: Date, default: Date.now }
 });
 
-// mongoose-unique-validator
+// mongoose-unique-validator makes unique messages like validator messages.
 User.plugin(uniqueValidator);
 
 var Event = new Schema({
@@ -38,10 +36,7 @@ var Event = new Schema({
     status: { type: String},
     className: { type: String, default: 'appointment'},
     created: { type: Date, default: Date.now },
-    updated: { type: Date, default: Date.now },
-    actions_id: { type: String}, // deprecated
-    naw_id: { type: String},     // deprecated
-    name: { type: String}        // deprecated
+    updated: { type: Date, default: Date.now }
 });
 
 var Contact = new Schema({

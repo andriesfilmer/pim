@@ -365,7 +365,15 @@ appServices.factory('UserService', function ($http) {
     },
     register: function(fullname, email, password, passwordConfirmation) {
       return $http.post(options.api.base_url + '/user/register', 
-         {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
+        {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
+    },
+    changePassword: function(password, passwordConfirmation) {
+      return $http.post(options.api.base_url + '/user/password-change', 
+        {password: password, passwordConfirmation: passwordConfirmation});
+    },
+    sendToken: function(email) {
+      return $http.post(options.api.base_url + '/user/send-token', 
+        {email: email});
     }
   };
 });

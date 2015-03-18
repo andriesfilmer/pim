@@ -1,7 +1,9 @@
 var jwt = require('jsonwebtoken');
+var nodemailer = require('nodemailer');
 
 var db = require('../config/mongo_database');
 var config = require('../config/config.js');
+var config = config.env();
 var secret = require('../config/secret');
 
 
@@ -64,14 +66,12 @@ exports.register = function(req, res) {
   if (req.body.passwordConfirmation !== req.body.password) {
 
     console.log('PasswordConfirmation not equal with password'); 
-    err = { message: 'Validation failed',
-      name: 'ValidationError',
-      errors: 
-       { password: 
-          { message: 'Password and confirm password not equal.',
-            name: 'ValidatorError',
-            path: 'password',
-            type: 'validation' } } }
+    err = { message: 'Validation failed', name: 'ValidationError', errors: { 
+              password: { 
+                message: 'Password and confirm password not equal.',
+                name: 'ValidatorError',
+                path: 'password',
+                type: 'validation' } } }
 
     return res.send(err);
 
@@ -85,13 +85,87 @@ exports.register = function(req, res) {
 
   user.save(function(err) {
     console.log('Registered user.save -> ' + user.email);
-
     if (err) {
       console.log('Error user.save.');
       return res.send(err); // Internal Server Error
     }
-
     return res.sendStatus(200); // Success
+  });
+
+}
+
+exports.passwordChange = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Not authorized
+  }
+
+  if (req.body.passwordConfirmation !== req.body.password) {
+    console.log('PasswordConfirmation not equal with password'); 
+    err = { errors: { password: { message: 'Password and confirm password not equal.'} } }
+    return res.send(err);
+  }
+
+  var user = {};
+  db.userModel.findOne({_id: req.user.id}, function (err, user) {
+
+    user.password = req.body.password;
+    user.save(function(err) {
+      console.log('Change password user.save -> ' + user.password);
+      if (err) {
+        console.log('Error user.save.');
+        return res.send(err); // Internal Server Error
+      }
+      return res.sendStatus(200); // Success
+    });
 
   });
+
+}
+
+exports.sendToken = function(req, res) {
+
+  console.log('##### body email -> ' + req.body.email); 
+
+  var user = {};
+  db.userModel.findOne({email: req.body.email}, function (err, user) {
+
+    if (user) {
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: config.expireToken });
+      console.log('##### token -> ' + token); 
+      sendMailToken(user.fullname, user.email, token);
+      return res.sendStatus(200); // Success
+    }
+    else {
+      err = { error: { message: 'Emailaddress unknown' } }
+      return res.send(err);
+    }
+
+  });
+
+  // Function for sending a login/change-password token to emailaddress.
+  function sendMailToken(fullname, email, token) {
+
+    var transporter = nodemailer.createTransport({ 
+      port: config.mail_port,
+      ignoreTLS: true
+    });
+
+    var emailAddress = fullname + ' <' + email + '>' ; 
+    console.log('Send token to: ' + emailAddress + ' Port: ' + config.mail_port); 
+
+    transporter.sendMail({
+        from: config.mail_from,
+        to: emailAddress,
+        subject: 'PIM token to change password',
+        text: 'Hello ' + fullname + ',\n\n'
+          + 'Someone has requested a token to reset your password (probably you).\n\n'
+          + 'Just click on this link and change your password:\n'
+          + config.cors_url + '/#/user/change-password?token=' + token + '\n\n'
+          + 'Regards Andries Filmer.\n'
+          + 'http://pim.filmer.nl\n'
+    });
+
+  }
+
 }
