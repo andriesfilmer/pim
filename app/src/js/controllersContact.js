@@ -4,17 +4,23 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     $(document).foundation();
 
     // Save general post settings
-    $scope.saveSettings = function saveSettings() {
+    $scope.saveSettings = function saveSettings(stateGo) {
       $('a.close-reveal-modal').trigger('click');
       flash('success', 'Settings saved');
-      $state.go('contact.list', {}, {reload: true});
+      $state.go(stateGo, {}, {reload: true});
     };
 
 
-    // Set contact limit for all contacts
+    // Set contact limit for contacts
     $scope.contactLimit =  $window.localStorage.contactLimit;
     $scope.changeLimit = function(limit) {
       $window.localStorage.contactLimit =  limit;
+    };
+
+    // Set contact order for contacts
+    $scope.contactOrder =  $window.localStorage.contactOrder;
+    $scope.changeOrder = function(order) {
+      $window.localStorage.contactOrder =  order;
     };
 
     $scope.searchKey =  $window.sessionStorage.contactSearchKey;
@@ -32,7 +38,8 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     var starred = $stateParams.starred || false;
 
     // Init contacts with promises and show all contacts.
-    $scope.init = ContactService.findAll(starred, $window.localStorage.contactLimit).then(function(data) {
+    $scope.init = ContactService.findAll(starred, $window.localStorage.contactOrder, $window.localStorage.contactLimit)
+    .then(function(data) {
       // Promise resolved
       $scope.contacts = data;
     }, function(msg) {

@@ -26,38 +26,5 @@ div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-ev
  div(ng-show='!contact.starred', ng-click='updateStarredState(contact, true)')
   i.un-starred.fi-star
 
-div.row
- div#contact-settings.reveal-modal(data-reveal='')
-  a.close-reveal-modal &#215;
-  h2 General contact settings
-  fieldset
-   div.row
-    div.column.small-6.my-row List 20 contacts
-    div.switch.round.column.small-6
-     input#contact-20(type="radio", value="20", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(20)")
-     label(for="contact-20")
-   div.row
-    div.column.small-6.my-row List 50 contacts
-    div.switch.round.column.small-6
-     input#contact-50(type="radio", value="50", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(50)")
-     label(for="contact-50") 
-   div.row
-    div.column.small-6.my-row List 100 contacts
-    div.switch.round.column.small-6
-     input#contact-100(type="radio", value="100", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(100)")
-     label(for="contact-100") 
-   div.row
-    div.column.small-6.my-row List 1000 contacts
-    div.switch.round.column.small-6
-     input#contact-1000(type="radio", value="1000", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(1000)")
-     label(for="contact-1000")
-  fieldset
-   div.row
-    div.column.small-12 &nbsp;
-   div.row
-    div.column.small-6
-     button.radius(ng-click='saveSettings()', title='Save settings') Save
-    div.column.small-6
-     span.contact-meta 
-      i  * Settings wil be reset on logout
-
+- var stateGo = 'contact.list';
+include ./includes/contact.settings.jade

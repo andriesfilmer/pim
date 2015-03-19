@@ -14,8 +14,8 @@ exports.list = function(req, res) {
 
   var query = db.contactModel.find({user_id: req.user.id});
   req.query.starred === 'true' ? query.find({starred: true}) : null;
+  req.query.order === 'name' ? query.sort('name') : query.sort('-updated');
   query.select("_id name companies starred photo");
-  query.sort('-updated');
   query.limit(req.query.limit);
   query.exec(function(err, results) {
 

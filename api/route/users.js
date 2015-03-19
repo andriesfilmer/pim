@@ -12,9 +12,6 @@ exports.signin = function(req, res) {
   var email = req.body.email || '';
   var password = req.body.password || '';
 
-  console.log('users -> signin -> email:' + email);
-  console.log('users -> signin -> password:' + password);
-
   if (email == '' || password == '') { 
     return res.sendStatus(401); // Unauthorized
   }
@@ -34,12 +31,10 @@ exports.signin = function(req, res) {
 
     user.comparePassword(password, function(isMatch) {
       if (!isMatch) {
-        console.log("users -> password mismatch " + user.email);
         return res.sendStatus(401); // Unauthorized
       }
 
       var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: config.expireToken });
-      console.log('users -> Logged in with user id:' + user._id + ' Token expires: ' + config.expireToken );
       return res.json({token:token});
     });
 
@@ -49,9 +44,7 @@ exports.signin = function(req, res) {
 exports.logout = function(req, res) {
 
   // Angular has already destroyed the sessionStorage.token
-  // So do we need this?
   console.log("Logout -> no user from angular yet! " + req.user);
-  console.log('##### test logout -> ' + req.body.email); 
   if (req.user) {
     delete req.user;  
     return res.send(200); // OK
@@ -65,7 +58,6 @@ exports.register = function(req, res) {
 
   if (req.body.passwordConfirmation !== req.body.password) {
 
-    console.log('PasswordConfirmation not equal with password'); 
     err = { message: 'Validation failed', name: 'ValidationError', errors: { 
               password: { 
                 message: 'Password and confirm password not equal.',
@@ -101,7 +93,6 @@ exports.passwordChange = function(req, res) {
   }
 
   if (req.body.passwordConfirmation !== req.body.password) {
-    console.log('PasswordConfirmation not equal with password'); 
     err = { errors: { password: { message: 'Password and confirm password not equal.'} } }
     return res.send(err);
   }
@@ -111,7 +102,6 @@ exports.passwordChange = function(req, res) {
 
     user.password = req.body.password;
     user.save(function(err) {
-      console.log('Change password user.save -> ' + user.password);
       if (err) {
         console.log('Error user.save.');
         return res.send(err); // Internal Server Error
@@ -125,14 +115,11 @@ exports.passwordChange = function(req, res) {
 
 exports.sendToken = function(req, res) {
 
-  console.log('##### body email -> ' + req.body.email); 
-
   var user = {};
   db.userModel.findOne({email: req.body.email}, function (err, user) {
 
     if (user) {
       var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: 60 });
-      console.log('##### token -> ' + token); 
       sendMailToken(user.fullname, user.email, token);
       return res.sendStatus(200); // Success
     }
