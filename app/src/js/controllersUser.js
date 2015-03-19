@@ -85,7 +85,7 @@ appControllers.controller('UserController', ['$scope', '$state', '$stateParams',
         else {
           console.log('UserController -> sendtoken success');
           // View state before/after ('ng-hide/ng-show') sending email message.
-          $scope.tokenSend = false;
+          $scope.tokenSend = true;
           flash('succes', 'E-mail message send');
         }
       }).error(function(status, data) {
@@ -110,7 +110,8 @@ appControllers.controller('UserController', ['$scope', '$state', '$stateParams',
         }
         else {
           console.log('UserController -> password change success');
-          flash('succes', 'Password has changed and logged-in');
+          flash('succes', 'Password has changed and you are logged-in');
+          $state.go('home');
         }
       }).error(function(status, data) {
         console.log("Password change status: " + status);

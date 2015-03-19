@@ -131,7 +131,7 @@ exports.sendToken = function(req, res) {
   db.userModel.findOne({email: req.body.email}, function (err, user) {
 
     if (user) {
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: config.expireToken });
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: 60 });
       console.log('##### token -> ' + token); 
       sendMailToken(user.fullname, user.email, token);
       return res.sendStatus(200); // Success
@@ -162,8 +162,10 @@ exports.sendToken = function(req, res) {
           + 'Someone has requested a token to reset your password (probably you).\n\n'
           + 'Just click on this link and change your password:\n'
           + config.cors_url + '/#/user/change-password?token=' + token + '\n\n'
+          + 'If you didn\'t mean to reset your password, then you can just ignore this email; your password will not change.\n\n'
           + 'Regards Andries Filmer.\n'
           + 'http://pim.filmer.nl\n'
+
     });
 
   }

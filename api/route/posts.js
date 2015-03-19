@@ -145,6 +145,7 @@ exports.create = function(req, res) {
   postEntry.title = post.title;
   postEntry.public = post.public;
   postEntry.content = post.content;
+  postEntry.type = post.type;
 
   // Tags are comma separated
   if (post.tags != null) {

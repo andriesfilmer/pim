@@ -82,9 +82,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $(document).foundation();
 
-  $scope.post = {};
-  var id = $stateParams.id;
-
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
 
@@ -104,9 +101,10 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     $scope.saveForm = true;
   };
 
+
   // Length of mongoDb _id = 24, so it must be a existing post.
   if ($stateParams.id.length > 23) {
-    PostService.read(id).then(function(data) {
+    PostService.read($stateParams.id).then(function(data) {
       // Promise resolve
       $scope.post = data;
       $scope.toc = MarkdownToc.make(data);
@@ -121,6 +119,11 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.offline = true;
       flash('warning', 'Offline: Post from local storage');
     });
+  }
+  // Must be a new post so init with default params.
+  else {
+    $scope.post = {};
+    $scope.post.type = 'todo';
   }
 
   $scope.save = function save(post) {
@@ -164,7 +167,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   };
 
   $scope.deletePost = function deletePost(post) {
-    PostService.delete(id).success(function(msg) {
+    PostService.delete($stateParams.id).success(function(msg) {
       console.log('Deleted post:' + post._id + ' ' + msg); 
       flash('success', 'Post deleted successful');
       $state.go("post");

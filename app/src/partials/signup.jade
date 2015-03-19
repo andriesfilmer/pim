@@ -3,13 +3,14 @@ div.row
   h2 Sign Up as a new user
 div.row
  form
-  div.columns.small-12
-   input(type="text", placeholder="Fullname", ng-model="register.fullname")
-  div.columns.small-12
-   input(type="email", placeholder="E-mail", ng-model="register.email")
-  div.columns.small-12
-   input(type="password", placeholder="Password", ng-model="register.password")
-  div.columns.small-12
-   input(type="password", placeholder="Password confirmation", ng-model="register.passwordConfirm")
-  div.columns.small-12
-   button.radius(type="submit", ng-click="register(register.fullname, register.email, register.password, register.passwordConfirm)") Register
+  div.columns.small-12.panel.radius
+   div.columns.small-12
+    input(type="text", placeholder="Fullname", ng-model="register.fullname")
+   div.columns.small-12
+    input(type="email", placeholder="E-mail", ng-model="register.email")
+   div.columns.small-12
+    input(type="password", placeholder="Password", ng-model="register.password")
+   div.columns.small-12
+    input(type="password", placeholder="Password confirmation", ng-model="register.passwordConfirm")
+   div.columns.small-12
+    button.radius(type="submit", ng-click="register(register.fullname, register.email, register.password, register.passwordConfirm)") Register
