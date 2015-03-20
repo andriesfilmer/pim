@@ -3,11 +3,7 @@ div.row
   a.close-reveal-modal &#215;
   h2 General contact settings
   fieldset
-   div.row
-    div.column.small-6.my-row List 20 contacts
-    div.switch.round.column.small-6
-     input#contact-20(type="radio", value="20", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(20)")
-     label(for="contact-20")
+   legend Limit contacts per request
    div.row
     div.column.small-6.my-row List 50 contacts
     div.switch.round.column.small-6
@@ -19,18 +15,24 @@ div.row
      input#contact-100(type="radio", value="100", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(100)")
      label(for="contact-100") 
    div.row
+    div.column.small-6.my-row List 300 contacts
+    div.switch.round.column.small-6
+     input#contact-20(type="radio", value="300", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(300)")
+     label(for="contact-300")
+   div.row
     div.column.small-6.my-row List 1000 contacts
     div.switch.round.column.small-6
      input#contact-1000(type="radio", value="1000", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(1000)")
      label(for="contact-1000")
   fieldset
+   legend Order contacts
    div.row
-    div.column.small-6.my-row Fullname
+    div.column.small-6.my-row By Fullname
     div.switch.round.column.small-6
      input#contact-order-name(type="radio", value="name", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('name')")
      label(for="contact-order-name")
    div.row
-    div.column.small-6.my-row Order by updated
+    div.column.small-6.my-row By updated
     div.switch.round.column.small-6
      input#contact-order-updated(type="radio", value="updated", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('updated')")
      label(for="contact-order-updated")
