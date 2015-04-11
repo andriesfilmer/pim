@@ -8,8 +8,8 @@ appServices.factory('AuthenticationService', ['ENV', function(ENV) {
     console.log('ENV in Development'); 
   }
   else {
-    options.api.base_url = "http://api.filmer.nl";
-    default_contact_photo_dir = "http://pim.filmer.nl/upload/contact_photos/";
+    options.api.base_url = "https://api.filmer.net";
+    default_contact_photo_dir = "https://pim.filmer.net/upload/contact_photos/";
     console.log('ENV in Production'); 
   }
 

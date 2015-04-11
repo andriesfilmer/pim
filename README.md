@@ -12,7 +12,7 @@ A private PIM with:
 * Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses)
 * Bookmarks (With tags and notes)
 
-[Demo site](http://pim.filmer.nl)
+[Demo site](https://pim.filmer.net)
 
 
 ## Dependencies
@@ -56,10 +56,13 @@ Run the api in production
 - Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production && /path/to/your/api/starter.sh` and create a upstream proxy  
   (zie api/nginx.conf as a example).
 
-## Reminders for calendar events
+## Reminders by e-mail
 
-If you want reminders 24 hours before each event (that what I like).
-Create a `cron` for each 5 minutes: `*/5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api/mailer.js`
+If you want event reminders 24 hours before each event (that what I like).
+Create a `cron` for each 5 minutes: `*/5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api/sendEventReminder.js`
+
+If you want birhtdatereminders 1 day before each event (that what I like).
+Create a `cron` for each day: `5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api/sendBirthdayReminder.js`
 
 ## Credits
 

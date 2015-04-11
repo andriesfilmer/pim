@@ -195,6 +195,12 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Update of insert a contact
   $scope.upsertContact = function upsertContact(contact, upsert) {
 
+    // Store birthdates with the same time so we can run a crontab once a day
+    if(contact.birthdate !== undefined && contact.birthdate !== null) {
+      $scope.birthdate = contact.birthdate.toISOString().substr(0, 10) + "T00:00:00Z";
+      contact.birthdate = new Date($scope.birthdate); 
+    }
+
     // Create array's from db
     var arrays = {'phones': [], 'emails': [], 'addresses': [], 'websites': []};
     angular.forEach(arrays, function(v, k) {
@@ -251,6 +257,12 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       flash('success', 'Contact deleted successful');
       $state.go("contact.list");
     });
+  };
+
+  $scope.calculateAge = function calculateAge(birthdate) { // birthday is a date
+      var ageDifMs = Date.now() - birthdate.getTime();
+      var ageDate = new Date(ageDifMs); // miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
   $scope.uploadFile = function(){

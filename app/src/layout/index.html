@@ -1,5 +1,10 @@
 <!DOCTYPE html>
+<!-- @if NODE_ENV == 'DEVELOPMENT' -->
+<html lang="en">
+<!-- @endif -->
+<!-- @if NODE_ENV == 'PRODUCTION' -->
 <html lang="en" manifest="manifest.appcache">
+<!-- @endif -->
 <head>
   <title><!-- @echo pkgname --></title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

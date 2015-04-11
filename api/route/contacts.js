@@ -48,6 +48,7 @@ exports.search = function(req, res) {
                                           {name:   { $exists: true, $regex: contacts.searchKey, $options: 'i' } },
                                           {"companies.name": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
                                           {"phones.value": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
+                                          {"phones.type": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
                                           {notes: { $exists: true, $regex: contacts.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   } else {

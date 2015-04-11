@@ -24,7 +24,7 @@ div(ng-hide="editForm")
    a.un-starred.fi-star &nbsp;
  div.row
   div.column.text-right.profile-birthdate(ng-if="contact.birthdate")
-   label.fi-crown  {{contact.birthdate | date: 'dd MMMM'}}
+   label.fi-crown  {{contact.birthdate | date: 'dd MMM'}} | {{ calculateAge(contact.birthdate) }}
  div.row.profile-row
   div.column.small-12.text-center
    img.profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
