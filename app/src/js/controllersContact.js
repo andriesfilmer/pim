@@ -23,13 +23,11 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       $window.localStorage.contactOrder =  order;
     };
 
-    $scope.searchKey =  $window.sessionStorage.contactSearchKey;
     angular.element("#search-input").focus();
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
-      delete $window.sessionStorage.contactSearchKey;
-      angular.element("#search-input").focus();
+      $state.go('contact.list', {}, {reload: true});
     };
 
     $scope.contacts = [];
@@ -56,7 +54,6 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     // Get new contacts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
         if (searchKey !== undefined && searchKey.length >= 3) {
-          $window.sessionStorage.contactSearchKey = searchKey;
           ContactService.searchAll(searchKey).success(function(data) {
             $scope.contacts = data;
           }).error(function(data, status) {
@@ -196,10 +193,10 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   $scope.upsertContact = function upsertContact(contact, upsert) {
 
     // Store birthdates with the same time so we can run a crontab once a day
-    if(contact.birthdate !== undefined && contact.birthdate !== null) {
-      $scope.birthdate = contact.birthdate.toISOString().substr(0, 10) + "T00:00:00Z";
-      contact.birthdate = new Date($scope.birthdate); 
-    }
+    //if(contact.birthdate !== undefined && contact.birthdate !== null) {
+    //  $scope.birthdate = contact.birthdate.toISOString().substr(0, 10) + "T00:00:00Z";
+    //  contact.birthdate = new Date($scope.birthdate); 
+    //}
 
     // Create array's from db
     var arrays = {'phones': [], 'emails': [], 'addresses': [], 'websites': []};

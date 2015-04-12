@@ -6,8 +6,7 @@ var config = config.env();
 var secret = require('./config/secret');
 var db = require('./config/mongo_database');
 
-console.log('Mailer is checking for sending reminders');
-
+//console.log('Mailer is checking for sending reminders');
 
 // For the crontab that runs once each day.
 var month = moment().format("M");
@@ -17,8 +16,6 @@ var day = moment().add(1, 'days').format("DD");
 getBirthdays(month, day);
 
 function getBirthdays(m, d) {
-
-  console.log('##### month day -> ' + m + " " + d ); 
 
   var queryContact = db.contactModel.aggregate({
     $match: { birthdate: { $exists: true, $ne: null }}
@@ -47,7 +44,7 @@ function getBirthdays(m, d) {
       results.forEach(function(contact){
 
         // Debugging
-        console.log(contact.name);
+        //console.log(contact.name);
 
         getUser(contact);
 
@@ -85,14 +82,14 @@ function sendReminder(contact,user) {
   });
 
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
-  console.log('Send reminder to: ' + emailAddress); 
+  //console.log('Send reminder to: ' + emailAddress); 
 
   transporter.sendMail({
       from: config.mail_from,
       to: emailAddress,
       subject: 'Birthday reminder for: ' + contact.name,
       text: 'Birthday: ' + moment(contact.birthdate).format('YYYY-MM-DD') + '\n'
-          + 'Age: ' + moment().diff(contact.birthdate, 'years') + '\n'
+          + contact.name + ' is getting ' + (moment().diff(contact.birthdate, 'years') + 1) + ' within one day.\n'
   });
 
 }
