@@ -209,8 +209,14 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       $scope.contact[k] = arrays[k];
     });
 
+    // Remove non numeric numbers so we can search on phonenumbers.
+    angular.forEach($scope.contact.phones, function(val, key) {
+      $scope.contact.phones[key].value = val.value.replace(/[^\d\+]/g, "");
+    });
+
     // If we have a _id we update the contact, else we create (insert) a new contact.
     if (upsert === 'insert') {
+
       ContactService.create(contact).then(function(msg) {
         // Promise reslove
         flash('success', msg);

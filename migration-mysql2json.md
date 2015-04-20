@@ -175,3 +175,14 @@ Create a query from the tables `naw` and `contacts`
     db.contacts.update({ birthdate: "0000-00-00" }, { $unset : { birthdate: 1} }, {multi: true});
 
 
+### Remove non numeric characters so we can search on phonenumbers.
+db.contacts.find({phones: {$exists: true}}).forEach(function(contact) { 
+  for(var i in contact.phones) {
+    if(contact.phones[i].value !== null) {
+      print(contact.phones[i].value) ;
+      contact.phones[i].value = contact.phones[i].value.replace(/[^\d\+]/g, "") 
+      db.contacts.save(contact);
+    }
+  }
+});
+

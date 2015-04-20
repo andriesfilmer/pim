@@ -1,4 +1,5 @@
 var appServices = angular.module('appServices', []);
+var appFilters = angular.module('appFilters', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
 var app = angular.module('app', [
@@ -9,6 +10,7 @@ var app = angular.module('app', [
                                  'appConfig',
                                  'appControllers',
                                  'appServices',
+                                 'appFilters',
                                  'appDirectives',
                                  'angularSpinner'
 ]);

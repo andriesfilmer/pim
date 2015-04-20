@@ -38,7 +38,7 @@ div(ng-hide="editForm")
     a(href="tel:{{item.value}}")
      div.column.small-8
       label {{item.type}}
-      | {{item.value}} &nbsp;
+      | {{item.value | tel}} &nbsp;
      div.column.small-4.text-right
       i.icon-button.fi-telephone
 

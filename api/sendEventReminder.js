@@ -21,7 +21,7 @@ getEvents(mStart, mEnd);
 
 function getEvents(mStart, mEnd) {
 
-  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lt": mEnd}});
+  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lte": mEnd}});
   queryEvent.select("_id user_id title start end allDay description className created");
   queryEvent.sort('start');
   queryEvent.exec(function(err, results) {
