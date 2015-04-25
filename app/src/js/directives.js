@@ -98,3 +98,18 @@ appDirectives.directive('fileModel', ['$parse', function ($parse) {
     };
 }]);
 
+// Need a focus after ng-click hide/show
+appDirectives.directive('focusMe', function($timeout) {
+  return {
+    scope: { trigger: '=focusMe' },
+    link: function(scope, element) {
+      scope.$watch('trigger', function(value) {
+        if(value === true) { 
+          $timeout(function() {
+            element[0].focus();
+          });
+        }
+      });
+    }
+  };
+});

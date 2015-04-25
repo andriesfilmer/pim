@@ -176,13 +176,13 @@ Create a query from the tables `naw` and `contacts`
 
 
 ### Remove non numeric characters so we can search on phonenumbers.
-db.contacts.find({phones: {$exists: true}}).forEach(function(contact) { 
-  for(var i in contact.phones) {
-    if(contact.phones[i].value !== null) {
-      print(contact.phones[i].value) ;
-      contact.phones[i].value = contact.phones[i].value.replace(/[^\d\+]/g, "") 
-      db.contacts.save(contact);
-    }
-  }
-});
+    db.contacts.find({phones: {$exists: true}}).forEach(function(contact) { 
+      for(var i in contact.phones) {
+        if(contact.phones[i].value !== null) {
+          print(contact.phones[i].value) ;
+          contact.phones[i].value = contact.phones[i].value.replace(/[^\d\+]/g, "") 
+          db.contacts.save(contact);
+        }
+      }
+    });
 

@@ -51,6 +51,16 @@ table p {
   margin: 0px;
 }
 
+#markdown table {
+  width: 100%;
+  margin-bottom: 10px;
+  tr, td {
+    border: 1px solid #CBC1C1;
+    padding: 4px;
+  }
+}
+
+
 input#title-input {
   font-size: 1.5rem;
 }
