@@ -25,7 +25,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.bookmarkSearchKey;
-      angular.element("#search-input").focus();
+      $state.go('bookmark', {}, {reload: true});
     };
 
     $scope.bookmarks = [];

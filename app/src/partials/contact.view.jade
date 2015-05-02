@@ -33,8 +33,8 @@ div(ng-hide="editForm")
   div.column.small-12.medium-6
 
    // Phones
-   div.item-title(ng-if="contact.phones[0]") Phone numbers
-   div(ng-repeat="item in contact.phones")
+   div.row.item-title(ng-if="contact.phones[0]") Phone numbers
+   div.row(ng-repeat="item in contact.phones")
     a(href="tel:{{item.value}}")
      div.column.small-8
       label {{item.type}}
@@ -43,8 +43,8 @@ div(ng-hide="editForm")
       i.icon-button.fi-telephone
 
    // Companies
-   div.item-title(ng-if="contact.companies[0]") Companies
-   div(ng-repeat="item in contact.companies")
+   div.row.item-title(ng-if="contact.companies[0]") Companies
+   div.row(ng-repeat="item in contact.companies")
     div.column.small-8
      label {{item.name}}
      | {{item.title}} &nbsp;
@@ -52,8 +52,8 @@ div(ng-hide="editForm")
      i.icon-button.fi-torso-business
 
    // Relations
-   div.item-title(ng-if="contact.relations[0]") Relations
-   div(ng-repeat="item in contact.relations")
+   div.row.item-title(ng-if="contact.relations[0]") Relations
+   div.row(ng-repeat="item in contact.relations")
     a(href="/#/contact/{{item.id}}") 
      div.column.small-8
       label {{item.type}}
@@ -62,8 +62,8 @@ div(ng-hide="editForm")
       i.icon-button.fi-torsos
 
    // Emails
-   div.item-title(ng-if="contact.emails[0]") Emails
-   div(ng-repeat="item in contact.emails")
+   div.row.item-title(ng-if="contact.emails[0]") Emails
+   div.row(ng-repeat="item in contact.emails")
     a(href="mailto:{{item.value}}")
      div.column.small-8
       label {{item.type}}
@@ -72,8 +72,8 @@ div(ng-hide="editForm")
       i.icon-button.fi-mail
 
    // Websites
-   div.item-title(ng-if="contact.websites[0]") Websites
-   div(ng-repeat="item in contact.websites")
+   div.row.item-title(ng-if="contact.websites[0]") Websites
+   div.row(ng-repeat="item in contact.websites")
     a(href="{{item.value}}")
      div.column.small-8
       label {{item.type}}
@@ -82,8 +82,8 @@ div(ng-hide="editForm")
       i.icon-button.fi-link
 
    // Addresses
-   div.item-title(ng-if="contact.addresses[0]") Addresses
-   div(ng-repeat="item in contact.addresses")
+   div.row.item-title(ng-if="contact.addresses[0]") Addresses
+   div.row(ng-repeat="item in contact.addresses")
     a(href="https://maps.google.nl/maps?q={{item.value}}")
      div.column.small-8
       label {{item.type}}
@@ -92,18 +92,18 @@ div(ng-hide="editForm")
       i.icon-button.fi-map
 
    // Other
-   div.row(ng-if="contact.birthdate")
-    div.column.small-12.item-title Other
-    div.column
-     div.column.small-8
-      label Birthdate
-      | {{contact.birthdate | date: 'dd MMMM yyyy'}}
-     div.column.small-4.text-right
-      i.icon-button.fi-crown
+   div.row.item-title(ng-if="contact.birthdate") Other
+   div.row
+    div.column.small-8
+     label Birthdate
+     | {{contact.birthdate | date: 'dd MMMM yyyy'}}
+    div.column.small-4.text-right
+     i.icon-button.fi-crown
 
   div.column.small-12.medium-6
-   div.item-title Notes
-   p#markdown(markdown='contact.notes') 
+   div.row.item-title Notes
+   div.row
+    div.column.p#markdown(markdown='contact.notes') 
 
  div.row
   div.column.small-6.date-meta.panel

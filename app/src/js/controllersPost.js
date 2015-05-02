@@ -25,7 +25,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.postSearchKey;
-      angular.element("#search-input").focus();
+      $state.go('post', {}, {reload: true});
     };
 
     $scope.posts = [];
@@ -129,6 +129,9 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
     $scope.editForm = false;
     $scope.saveForm = false;
+
+    // Creat new TOC.
+    $scope.toc = MarkdownToc.make({_id: $scope.post._id, content: $scope.post.content});
 
     // String comma separated to array
     if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {

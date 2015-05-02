@@ -23,10 +23,15 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       $window.localStorage.contactOrder =  order;
     };
 
-    angular.element("#search-input").focus();
+    // Hide searchForm, toggle first. Save search.
+    $scope.toggleSearch = function () {
+      $scope.searchForm = !$scope.searchForm;
+      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+    };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
+      delete $window.sessionStorage.contactSearchKey;
       $state.go('contact.list', {}, {reload: true});
     };
 
@@ -54,6 +59,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     // Get new contacts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
         if (searchKey !== undefined && searchKey.length >= 3) {
+          $window.sessionStorage.contactSearchKey = searchKey;
           ContactService.searchAll(searchKey).success(function(data) {
             $scope.contacts = data;
           }).error(function(data, status) {
