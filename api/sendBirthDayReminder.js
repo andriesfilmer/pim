@@ -82,15 +82,17 @@ function sendReminder(contact,user) {
   });
 
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
-  //console.log('Send reminder to: ' + emailAddress); 
+  var mail_from = config.mail_from; 
 
   transporter.sendMail({
-      from: config.mail_from,
+      from: mail_from,
       to: emailAddress,
       subject: 'Birthday reminder for: ' + contact.name,
       text: 'Birthday: ' + moment(contact.birthdate).format('YYYY-MM-DD') + '\n'
           + contact.name + ' is getting ' + (moment().diff(contact.birthdate, 'years') + 1) + ' within one day.\n'
   });
+
+  //console.log('Send reminder to: ' + emailAddress); 
 
 }
 

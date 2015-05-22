@@ -6,22 +6,19 @@ var config = config.env();
 var secret = require('./config/secret');
 var db = require('./config/mongo_database');
 
-//console.log('Mailer is checking for sending reminders');
-
-
 // I have a cron that runs each 5 minutes. So the mEnd =+ 5 minutes.
-var mStart = moment().add(1, 'days').format("YYYY-MM-DD HH:mm");
-var mEnd   = moment().add(1, 'days').add(5, 'minutes').format("YYYY-MM-DD HH:mm");
+var mStart = moment().add(1, 'days');
+var mEnd   = moment().add(1, 'days').add(5, 'minutes');
 
 // Debugging
-//console.log('Between -> ' + mStart + ' And -> ' + mEnd); 
+//console.log('Between -> gte: ' + mStart + ' And -> lt: ' + mEnd); 
 
 // Get events from MongoDb.
 getEvents(mStart, mEnd);
 
 function getEvents(mStart, mEnd) {
 
-  var queryEvent = db.eventModel.find({"start": {"$gte": mStart, "$lte": mEnd}});
+  var queryEvent = db.eventModel.find({"start": {"$gt": new Date(mStart), "$lte": new Date(mEnd)}});
   queryEvent.select("_id user_id title start end allDay description className created");
   queryEvent.sort('start');
   queryEvent.exec(function(err, results) {
@@ -75,6 +72,8 @@ function sendReminder(event,user) {
   });
 
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
+
+  // Debugging
   //console.log('Send reminder to: ' + emailAddress); 
 
   var description = '';

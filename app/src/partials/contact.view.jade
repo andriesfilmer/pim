@@ -228,7 +228,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-6(ng-hide="uploadProcess")
    input(type="file", file-model="contactPhoto")
   div.column.small-6(ng-hide="uploadProcess")
-   button.small.radius(ng-click="uploadFile()") Upload
+   button.small.radius(ng-click="uploadContactPhotoFile()") Upload
   div.row(ng-show="uploadProcess")
    div.column.small-12(us-spinner="{radius:8, width:3, length: 8}", spinner-key="spinner-1") &nbsp;
 

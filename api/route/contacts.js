@@ -252,3 +252,60 @@ exports.fileupload = function(req, res) {
     });
   });
 };
+
+exports.download = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = db.contactModel.find({ user_id: req.user.id });
+  var vcfContent = '';
+
+  query.select("_id name phones");
+  query.sort('-name');
+  query.exec(function(err, results) {
+
+    if (err) {
+      console.log(err);
+    }
+
+    if (results !== null) {
+
+      // Create the vCard content. This is only with phonenumbers so 
+      // you have minimal information in your official mobilephone contacts
+      // and still you can see who is calling you.
+      results.forEach(function(contact){
+        vcfContent += "BEGIN:VCARD\n";
+        vcfContent += "VERSION:3.0\n";
+        vcfContent += "FN:" + contact.name + "\n";
+        if (contact.phones.length > 0 ) {
+          contact.phones.forEach(function(phone) {
+            if (phone.type) {
+             vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";
+            }
+          });
+        }
+        vcfContent += "END:VCARD\n";
+      });
+
+    }
+
+    // The name off the file is a bit cyrptic so you don't leave a obvious file to download for anonymous.
+    var vcfFile = 'contacts_' + req.user.id + '.vcf';
+    fs.writeFile("../app/public/download/" + vcfFile, vcfContent, function(err) {
+
+      if(err) {
+          return console.log(err);
+      }
+
+      console.log("The file was saved!");
+
+      // Send vcfFile as link, i.o. '/download/vcfFile'
+      res.send(vcfFile); 
+
+    }); 
+
+  });
+
+};

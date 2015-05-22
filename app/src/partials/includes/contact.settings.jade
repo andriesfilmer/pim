@@ -2,6 +2,7 @@ div.row
  div#contact-settings.reveal-modal(data-reveal='')
   a.close-reveal-modal &#215;
   h2 General contact settings
+
   fieldset
    legend Limit contacts per request
    div.row
@@ -24,6 +25,10 @@ div.row
     div.switch.round.column.small-6
      input#contact-1000(type="radio", value="1000", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(1000)")
      label(for="contact-1000")
+    div.small-12
+     span.date-meta 
+      i  * Settings wil be reset on logout
+
   fieldset
    legend Order contacts
    div.row
@@ -36,12 +41,18 @@ div.row
     div.switch.round.column.small-6
      input#contact-order-updated(type="radio", value="updated", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('updated')")
      label(for="contact-order-updated")
-  fieldset
-   div.row
-    div.column.small-12
-     button.radius(ng-click="saveSettings('#{stateGo}')", title='Save settings') Save
-   div.row
     div.small-12
      span.date-meta 
       i  * Settings wil be reset on logout
 
+  fieldset
+   legend Download contacts
+   div.row
+    div.column.small-6
+     button.radius(ng-click="downloadContacts('#{stateGo}')", title='Download contacts') Create vCard
+     div.date-meta 
+      i  At the moment only fullname and phonenumbers. 
+    div.column.small-6(ng-show="vCardShow")
+     a.fi-download(href="{{vCardLink}}")  Download contacts
+     div.date-meta 
+      i  Download contacts in vCard 3.0 format

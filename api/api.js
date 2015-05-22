@@ -109,11 +109,14 @@ app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.c
 // Edit the contact id
 app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 
 
-// File upload for profile pictures
-app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
-
 // Delete the contact id
 app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 
+
+// File download for all contact in vCard format.
+app.post('/contact/download', expressJwt({secret: secret.secretToken}), routes.contacts.download); 
+
+// File upload for profile pictures
+app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
 
 
 /*******************/

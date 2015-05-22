@@ -175,6 +175,10 @@ appServices.factory('ContactService', function($http, $q, $window) {
       return $http.delete(options.api.base_url + '/contact/' + id);
     },
 
+    downloadContacts: function() {
+      return $http.post(options.api.base_url + '/contact/download');
+    }
+
   };
 });
 

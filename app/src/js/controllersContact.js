@@ -85,6 +85,19 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       }
     };
 
+    $scope.downloadContacts = function downloadContacts(stateGo) {
+      ContactService.downloadContacts().success(function(link) {
+        $scope.vCardShow = true;
+        $scope.vCardLink = '/download/' + link;
+        console.log('##### test -> ' + link); 
+      });
+
+
+      //$('a.close-reveal-modal').trigger('click');
+      //flash('success', 'Download contacts ready');
+      //$state.go(stateGo, {}, {reload: true});
+    };
+
 }]);
 
 appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService', 'FileUpload', 'usSpinnerService',
