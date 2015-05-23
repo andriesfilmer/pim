@@ -2,11 +2,14 @@ var nodemailer = require('nodemailer');
 var moment = require('moment');
 
 var config = require('./config/config.js');
-var config = config.env();
+var config_env = config.env();
 var secret = require('./config/secret');
 var db = require('./config/mongo_database');
 
-// I have a cron that runs each 5 minutes. So the mEnd =+ 5 minutes.
+// This script is only for Event reminders.
+//-----------------------------------------
+// I have a cron that runs each 5 minutes.
+// */5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api_root/sendEventReminder.js
 var mStart = moment().add(1, 'days');
 var mEnd   = moment().add(1, 'days').add(5, 'minutes');
 
@@ -65,9 +68,9 @@ function getUser(event) {
 
 // Function for sending the email reminder.
 function sendReminder(event,user) {
- 
+
   var transporter = nodemailer.createTransport({ 
-    port: config.mail_port,
+    port: config_env.mail_port,
     ignoreTLS: true
   });
 
@@ -82,7 +85,7 @@ function sendReminder(event,user) {
   }
 
   transporter.sendMail({
-      from: config.mail_from,
+      from: config_env.mail_from,
       to: emailAddress,
       subject: event.title,
       text: 'Title: ' + event.title + '\n'

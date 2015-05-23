@@ -19,7 +19,7 @@ A private PIM with:
 
 You need nodejs and mongodb (default install will do)
 
-## Installation
+## Install
 
 ### The app part:
 
@@ -36,6 +36,8 @@ Change the `options.api.base_url` in `app.js` **for production** and run:
 After running `grunt production` copy the `public` folder to your webserver.
 
 ### The api part:
+
+    cd pim/api && npm install
 
 Create a file `api/config/secret.js`
 
@@ -58,11 +60,11 @@ Run the api in production
 
 ## Reminders by e-mail
 
-If you want event reminders 24 hours before each event (that what I like).
-Create a `cron` for each 5 minutes: `*/5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api/sendEventReminder.js`
+If you want event reminders 24 hours before each event (thats what I like).
+Take a look in `api/sendEventReminder.js` and create a crontab.
 
-If you want birhtdatereminders 1 day before each event (that what I like).
-Create a `cron` for each day: `5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api/sendBirthdayReminder.js`
+If you want birhtdatereminders 1 day before each event (thats what I like).
+Take a look in `api/sendBirthdayReminder.js` and create a crontab.
 
 ## Credits
 

@@ -293,7 +293,11 @@ exports.download = function(req, res) {
 
     // The name off the file is a bit cyrptic so you don't leave a obvious file to download for anonymous.
     var vcfFile = 'contacts_' + req.user.id + '.vcf';
-    fs.writeFile("../app/public/download/" + vcfFile, vcfContent, function(err) {
+    var downloadDir = "../app/public/download/";
+    if (!fs.existsSync(downloadDir)){
+      fs.mkdirSync(downloadDir);
+    }
+    fs.writeFile(downloadDir + vcfFile, vcfContent, function(err) {
 
       if(err) {
           return console.log(err);
@@ -301,7 +305,7 @@ exports.download = function(req, res) {
 
       console.log("The file was saved!");
 
-      // Send vcfFile as link, i.o. '/download/vcfFile'
+      // Send vcfFile as link, i.o. '/download/contacts_user_id.vcf'
       res.send(vcfFile); 
 
     }); 
