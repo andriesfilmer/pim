@@ -1,12 +1,12 @@
 div.row(ng-hide="offline")
  div.column.small-9.text-left.secondary-menu
   | &nbsp;
+  a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
+  span.divider
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  a.fi-magnifying-glass(ui-sref='contact.list', title='List contacts', tabindex="1")
-  span.divider
-  a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
+  a.fi-list(ui-sref='contact.list', title='List contacts', tabindex="1")
   span.divider
   span(ng-hide="contactForm.name.$error.required")
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')

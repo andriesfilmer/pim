@@ -2,7 +2,6 @@ var nodemailer = require('nodemailer');
 var moment = require('moment');
 
 var config = require('./config/config.js');
-var config_env = config.env();
 var secret = require('./config/secret');
 var db = require('./config/mongo_database');
 
@@ -70,7 +69,7 @@ function getUser(event) {
 function sendReminder(event,user) {
 
   var transporter = nodemailer.createTransport({ 
-    port: config_env.mail_port,
+    port: config.env().mail_port,
     ignoreTLS: true
   });
 
@@ -85,7 +84,7 @@ function sendReminder(event,user) {
   }
 
   transporter.sendMail({
-      from: config_env.mail_from,
+      from: config.env().mail_from,
       to: emailAddress,
       subject: event.title,
       text: 'Title: ' + event.title + '\n'

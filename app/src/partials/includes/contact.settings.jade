@@ -48,11 +48,43 @@ div.row
   fieldset
    legend Download contacts
    div.row
-    div.column.small-6
-     button.radius(ng-click="downloadContacts('#{stateGo}')", title='Download contacts') Create vCard
-     div.date-meta 
-      i  At the moment only fullname and phonenumbers. 
-    div.column.small-6(ng-show="vCardShow")
-     a.fi-download(href="{{vCardLink}}")  Download contacts
-     div.date-meta 
-      i  Download contacts in vCard 3.0 format
+    div.column.small-12.medium-3
+     div.download-vcard
+      nobr
+       label Phonenumbers
+        input(type="checkbox",name="phonenumbers", ng-model="dlPhones", ng-init="dlPhones=true")
+     div.download-vcard
+      nobr
+       label Companies
+        input(type="checkbox",name="companies", ng-model="dlCompanies") 
+     div.download-vcard
+      nobr
+       label E-mailaddresses
+        input(type="checkbox",name="emailadresses", ng-model="dlEmails")
+     div.download-vcard
+      nobr
+       label Websites
+        input(type="checkbox",name="websites", ng-model="dlWebsites")
+    div.column.small-12.medium-3
+     div.download-vcard
+      nobr
+       label Photo
+        input(type="checkbox",name="photo", ng-model="dlPhoto", ng-init="dlPhoto=true")
+     div.download-vcard
+      nobr
+       label Addressess
+        input(type="checkbox",name="addresses", ng-model="dlAddresses")
+     div.download-vcard
+      nobr
+       label Birthdate
+        input(type="checkbox",name="birthdate", ng-model="dlBirthdate")
+     div.download-vcard
+      nobr
+       label Notes
+        input(type="checkbox",name="notes", ng-model="dlNotes")
+    div.column.small-12.medium-3
+     p
+      button.radius(ng-click="downloadContacts('#{stateGo}')", title='Download contacts') Create vCard
+    div.column.small-12.medium-3(ng-show="vCardShow")
+     p
+      a.fi-download(href="{{vCardLink}}")  Download 

@@ -86,16 +86,13 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     };
 
     $scope.downloadContacts = function downloadContacts(stateGo) {
-      ContactService.downloadContacts().success(function(link) {
+      ContactService.downloadContacts($scope.dlPhones, $scope.dlCompanies,
+          $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
+          $scope.dlBirthdate, $scope.dlNotes).success(function(link) {
         $scope.vCardShow = true;
         $scope.vCardLink = '/download/' + link;
-        console.log('##### test -> ' + link); 
       });
 
-
-      //$('a.close-reveal-modal').trigger('click');
-      //flash('success', 'Download contacts ready');
-      //$state.go(stateGo, {}, {reload: true});
     };
 
 }]);

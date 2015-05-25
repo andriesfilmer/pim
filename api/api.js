@@ -100,6 +100,9 @@ app.get('/contact/search', expressJwt({secret: secret.secretToken}), routes.cont
 // Get all contacts
 app.get('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.list);
 
+// File download for all contact in vCard format.
+app.get('/contact/download', expressJwt({secret: secret.secretToken}), routes.contacts.download); 
+
 // Get the contact id
 app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.read); 
 
@@ -111,9 +114,6 @@ app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.up
 
 // Delete the contact id
 app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 
-
-// File download for all contact in vCard format.
-app.post('/contact/download', expressJwt({secret: secret.secretToken}), routes.contacts.download); 
 
 // File upload for profile pictures
 app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 

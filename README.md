@@ -55,8 +55,10 @@ Run the api in production
 - The api is running on http://localhost:3001
 - Change `exports.url` in config.js to your needs.
 - Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration and your enviroment.
-- Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production && /path/to/your/api/starter.sh` and create a upstream proxy  
-  (zie api/nginx.conf as a example).
+- Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production;/usr/local/bin/forever start --sourceDir /var/www/pim.filmer.net/current/api api.js` 
+  and create a upstream proxy  (zie api/nginx.conf as a example).
+
+
 
 ## Reminders by e-mail
 

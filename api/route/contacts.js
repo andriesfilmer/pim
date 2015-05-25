@@ -5,6 +5,11 @@ var db = require('../config/mongo_database');
 
 // Upload profile pictures
 var fs = require('fs');
+var moment = require('moment');
+var encodeQuotedPrintable = require('encode-quoted-printable');
+//var quotedPrintable = require('quoted-printable');
+//var utf8 = require('utf8');
+
 
 exports.list = function(req, res) {
 
@@ -259,11 +264,22 @@ exports.download = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  var query = db.contactModel.find({ user_id: req.user.id });
-  var vcfContent = '';
+  //console.log('##### req.query :'); 
+  //console.dir(req.query); 
 
-  query.select("_id name phones");
+  var vcfContent = '';
+  var dlPhones = req.query.phones;
+  var dlCompanies = req.query.companies;
+  var dlEmails = req.query.emails;
+  var dlWebsites = req.query.websites;
+  var dlPhoto = req.query.photo;
+  var dlAddresses = req.query.addresses;
+  var dlBirthdate = req.query.birthdate;
+  var dlNotes = req.query.notes;
+
+  var query = db.contactModel.find({ user_id: req.user.id });
   query.sort('-name');
+  //query.limit(10);
   query.exec(function(err, results) {
 
     if (err) {
@@ -271,24 +287,7 @@ exports.download = function(req, res) {
     }
 
     if (results !== null) {
-
-      // Create the vCard content. This is only with phonenumbers so 
-      // you have minimal information in your official mobilephone contacts
-      // and still you can see who is calling you.
-      results.forEach(function(contact){
-        vcfContent += "BEGIN:VCARD\n";
-        vcfContent += "VERSION:3.0\n";
-        vcfContent += "FN:" + contact.name + "\n";
-        if (contact.phones.length > 0 ) {
-          contact.phones.forEach(function(phone) {
-            if (phone.type) {
-             vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";
-            }
-          });
-        }
-        vcfContent += "END:VCARD\n";
-      });
-
+      create_vCards(results);
     }
 
     // The name off the file is a bit cyrptic so you don't leave a obvious file to download for anonymous.
@@ -309,6 +308,94 @@ exports.download = function(req, res) {
       res.send(vcfFile); 
 
     }); 
+
+    // Function for content in vCard.
+    function create_vCards(contacts) {
+      results.forEach(function(contact){
+
+        // Debug
+        //console.log('##### Fullname -> ' + contact.name); 
+
+        // vCard Elements
+        // http://www.iana.org/assignments/vcard-elements/vcard-elements.xhtml
+
+        vcfContent += "BEGIN:VCARD\n";
+        vcfContent += "VERSION:3.0\n";
+        vcfContent += "FN:" + contact.name + "\n";
+
+        // Phonenumbers
+        if (contact.phones.length > 0 && dlPhones ) {
+          contact.phones.forEach(function(phone) {
+            if (phone.type) {
+             vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";
+            }
+          });
+        }
+
+        // Companies
+        if (contact.companies.length > 0 && dlCompanies ) {
+          contact.companies.forEach(function(companies) {
+            if (companies.type) {
+             vcfContent += "ORG;TYPE=" + companies.type.replace(/\s/g, '_') + ":" + companies.value + "\n";
+            }
+          });
+        }
+
+        // E-mailaddresses
+        if (contact.emails.length > 0 && dlEmails ) {
+          contact.emails.forEach(function(emails) {
+            if (emails.type) {
+             vcfContent += "EMAIL;TYPE=" + emails.type.replace(/\s/g, '_') + ":" + emails.value + "\n";
+            }
+          });
+        }
+
+        // Websites
+        if (contact.websites.length > 0 && dlWebsites ) {
+          contact.websites.forEach(function(websites) {
+            if (websites.type) {
+             vcfContent += "URL;TYPE=" + websites.type.replace(/\s/g, '_') + ":" + websites.value + "\n";
+            }
+          });
+        }
+
+        // Addresses
+        if (contact.addresses.length > 0 && dlAddresses ) {
+          contact.addresses.forEach(function(addresses) {
+            if (addresses.type) {
+             vcfContent += "ADR;TYPE=" + addresses.type.replace(/\s/g, '_') + ":" + addresses.value + "\n";
+            }
+          });
+        }
+
+        // Birthdate
+        if (moment(contact.birthdate).isValid() && dlBirthdate ) {
+             vcfContent += "BDAY:" + moment(contact.birthdate).format("YYYY-MM-DD") + "\n";
+        }
+
+        // notes
+        if (contact.notes !== "" && dlNotes ) {
+            // vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + encodeQuotedPrintable(contact.notes) + "\n";
+        }
+
+        // convert image to base64 encoded string only if uploaded photo exists.
+        var photo = config.default_upload_photo_dir + contact._id + '.jpg'
+        if (fs.existsSync(photo) && dlPhoto){
+          vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
+        }
+
+
+        vcfContent += "END:VCARD\n";
+
+      });
+
+    }
+
+    // Function to encode file data to base64 encoded string.
+    function base64_encode(photo) {
+        var image = fs.readFileSync(photo);
+        return new Buffer(image).toString('base64');
+    }
 
   });
 

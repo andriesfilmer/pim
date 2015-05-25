@@ -146,6 +146,7 @@ exports.create = function(req, res) {
   bookmarkEntry.url = bookmark.url;
   bookmarkEntry.public = bookmark.public;
   bookmarkEntry.content = bookmark.content;
+  bookmarkEntry.category = bookmark.category;
 
   // Tags are comma separated
   if (bookmark.tags != null) {
