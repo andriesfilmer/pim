@@ -6,9 +6,9 @@ var db = require('../config/mongo_database');
 // Upload profile pictures
 var fs = require('fs');
 var moment = require('moment');
-var encodeQuotedPrintable = require('encode-quoted-printable');
-//var quotedPrintable = require('quoted-printable');
-//var utf8 = require('utf8');
+var mimelib = require("mimelib");
+var quotedPrintable = require('quoted-printable');
+var utf8 = require('utf8');
 
 
 exports.list = function(req, res) {
@@ -264,8 +264,8 @@ exports.download = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  //console.log('##### req.query :'); 
-  //console.dir(req.query); 
+  console.log('##### req.query :'); 
+  console.dir(req.query); 
 
   var vcfContent = '';
   var dlPhones = req.query.phones;
@@ -279,7 +279,7 @@ exports.download = function(req, res) {
 
   var query = db.contactModel.find({ user_id: req.user.id });
   query.sort('-name');
-  //query.limit(10);
+  query.limit(10);
   query.exec(function(err, results) {
 
     if (err) {
@@ -324,7 +324,7 @@ exports.download = function(req, res) {
         vcfContent += "FN:" + contact.name + "\n";
 
         // Phonenumbers
-        if (contact.phones.length > 0 && dlPhones ) {
+        if (contact.phones.length > 0 && dlPhones == 'true') {
           contact.phones.forEach(function(phone) {
             if (phone.type) {
              vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";
@@ -333,16 +333,17 @@ exports.download = function(req, res) {
         }
 
         // Companies
-        if (contact.companies.length > 0 && dlCompanies ) {
+        if (contact.companies.length > 0 && dlCompanies == 'true') {
           contact.companies.forEach(function(companies) {
-            if (companies.type) {
-             vcfContent += "ORG;TYPE=" + companies.type.replace(/\s/g, '_') + ":" + companies.value + "\n";
+            if (companies.title) {
+             console.log('##### dlCompanies -> ' + dlCompanies + " " + companies.name); 
+             vcfContent += "ORG;TYPE=" + companies.title.replace(/\s/g, '_') + ":" + companies.name + "\n";
             }
           });
         }
 
         // E-mailaddresses
-        if (contact.emails.length > 0 && dlEmails ) {
+        if (contact.emails.length > 0 && dlEmails == 'true') {
           contact.emails.forEach(function(emails) {
             if (emails.type) {
              vcfContent += "EMAIL;TYPE=" + emails.type.replace(/\s/g, '_') + ":" + emails.value + "\n";
@@ -351,7 +352,7 @@ exports.download = function(req, res) {
         }
 
         // Websites
-        if (contact.websites.length > 0 && dlWebsites ) {
+        if (contact.websites.length > 0 && dlWebsites == 'true') {
           contact.websites.forEach(function(websites) {
             if (websites.type) {
              vcfContent += "URL;TYPE=" + websites.type.replace(/\s/g, '_') + ":" + websites.value + "\n";
@@ -360,7 +361,7 @@ exports.download = function(req, res) {
         }
 
         // Addresses
-        if (contact.addresses.length > 0 && dlAddresses ) {
+        if (contact.addresses.length > 0 && dlAddresses == 'true') {
           contact.addresses.forEach(function(addresses) {
             if (addresses.type) {
              vcfContent += "ADR;TYPE=" + addresses.type.replace(/\s/g, '_') + ":" + addresses.value + "\n";
@@ -369,21 +370,20 @@ exports.download = function(req, res) {
         }
 
         // Birthdate
-        if (moment(contact.birthdate).isValid() && dlBirthdate ) {
+        if (moment(contact.birthdate).isValid() && dlBirthdate == 'true') {
              vcfContent += "BDAY:" + moment(contact.birthdate).format("YYYY-MM-DD") + "\n";
         }
 
         // notes
-        if (contact.notes !== "" && dlNotes ) {
-            // vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + encodeQuotedPrintable(contact.notes) + "\n";
+        if (contact.notes !== "" && dlNotes == 'true' ) {
+          vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + quotedPrintable.encode(utf8.encode(contact.notes)) + "\n";
         }
 
-        // convert image to base64 encoded string only if uploaded photo exists.
+        // Convert image to base64 encoded string only if uploaded photo exists.
         var photo = config.default_upload_photo_dir + contact._id + '.jpg'
-        if (fs.existsSync(photo) && dlPhoto){
+        if (fs.existsSync(photo) && dlPhoto == 'true') {
           vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
         }
-
 
         vcfContent += "END:VCARD\n";
 

@@ -4,12 +4,10 @@ appServices.factory('AuthenticationService', ['ENV', function(ENV) {
   // But I leave it for now......
   if ( ENV === 'development' ) {
     options.api.base_url = "http://test.filmer.net:3001";
-    default_contact_photo_dir = "http://test.filmer.net:3000/upload/contact_photos/";
     console.log('ENV in Development'); 
   }
   else {
     options.api.base_url = "https://api.filmer.net";
-    default_contact_photo_dir = "https://pim.filmer.net/upload/contact_photos/";
     console.log('ENV in Production'); 
   }
 

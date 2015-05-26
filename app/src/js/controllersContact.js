@@ -284,7 +284,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
-  $scope.uploadFile = function(){
+  $scope.uploadContactPhotoFile = function(){
     var file = $scope.contactPhoto;
     var uploadUrl = "/fileupload";
     var filename = $scope.contact._id;
@@ -304,7 +304,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     // Wait 3 seconds for scope update.
     $timeout( function(){ 
       if(file) {
-        $scope.contact.photo = default_contact_photo_dir + filename;
+        $scope.contact.photo = "/upload/contact_photos/" + filename;
       }
       $scope.uploadProcess = false;
       $scope.saveForm = true;
