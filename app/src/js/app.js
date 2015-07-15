@@ -116,7 +116,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/starred/:starred",
       templateUrl: "partials/contact.starred.html",
       controller: 'ContactListController',
-      access: { requiredAuthentication: false}
+      access: { requiredAuthentication: true}
     })
     .state('contact.create', {
       url: "/contact/create",
@@ -128,7 +128,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/contact/:id",
       templateUrl: "partials/contact.view.html",
       controller: 'ContactController',
-      access: { requiredAuthentication: false}
+      access: { requiredAuthentication: true}
     })
 
     // Post views
@@ -146,6 +146,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
     })
     .state('post/:id', {
       url: "/post/:id",
+      templateUrl: "partials/post.view.html",
+      controller: 'PostController',
+      access: { requiredAuthentication: true }
+    })
+    .state('post/version/:id', {
+      url: "/post/version/:id",
       templateUrl: "partials/post.view.html",
       controller: 'PostController',
       access: { requiredAuthentication: true }

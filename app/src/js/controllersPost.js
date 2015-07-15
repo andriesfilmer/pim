@@ -100,9 +100,18 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     $scope.saveForm = true;
   };
 
-
+  if ($state.$current.url == "/post/version/:id") { 
+    $('a.close-reveal-modal').trigger('click');
+    PostService.readVersion($stateParams.id).then(function(data) {
+      // Promise resolve
+      $scope.post = data;
+      $scope.post._id = data.org_id;
+      $scope.toc = MarkdownToc.make(data);
+      flash('alert', 'Original version: ' + data.org_id);
+    });
+  } 
   // Length of mongoDb _id = 24, so it must be a existing post.
-  if ($stateParams.id.length > 23) {
+  else if ($stateParams.id.length > 23) {
     PostService.read($stateParams.id).then(function(data) {
       // Promise resolve
       $scope.post = data;
@@ -117,6 +126,11 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.toc = MarkdownToc.make(localData);
       $scope.offline = true;
       flash('warning', 'Offline: Post from local storage');
+    });
+
+    // Get post versions
+    PostService.listVersions($stateParams.id).then(function(data) {
+      $scope.versions = data; // Promise resolved
     });
   }
   // Must be a new post so init with default params.

@@ -59,14 +59,13 @@ var Contact = new Schema({
 var Post = new Schema({
     user_id: { type: String},
     title: { type: String, required: true },
-    description: { type: String}, // deprecated
     content: { type: String},
     tags: [ {type: String} ],
     public: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
     type: {type: String, default: 'note'}
-});
+}, { strict: false } );
 
 
 var Bookmark = new Schema({
@@ -114,6 +113,7 @@ var userModel = mongoose.model('User', User);
 var eventModel = mongoose.model('Event', Event);
 var contactModel = mongoose.model('Contact', Contact);
 var postModel = mongoose.model('Post', Post);
+var postVersionModel = mongoose.model('PostVersion', Post);
 var bookmarkModel = mongoose.model('Bookmark', Bookmark);
 
 
@@ -122,5 +122,6 @@ exports.userModel = userModel;
 exports.eventModel = eventModel;
 exports.contactModel = contactModel;
 exports.postModel = postModel;
+exports.postVersionModel = postVersionModel;
 exports.bookmarkModel = bookmarkModel;
 

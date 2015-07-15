@@ -1,6 +1,7 @@
 
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
+var fs = require('fs');
 
 exports.listPublic = function(req, res) {
 
@@ -45,12 +46,38 @@ exports.list = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    //if (results !== null) {
+    if (results !== null) {
       return res.status(200).json(results); // OK
-    //
-    //else {
-    //  return res.sendStatus(404); // Not Found
-    //
+    } else {
+      return res.sendStatus(404); // Not Found
+    }
+
+  });
+
+};
+
+exports.listVersions = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = db.postVersionModel.find({user_id: req.user.id, org_id: req.params.id});
+
+  query.select("_id title type created");
+  query.sort('-updated');
+  query.exec(function(err, results) {
+
+    if (err) {
+      console.log(err);
+      return res.sendStatus(400); // Bad Request
+    }
+
+    if (results !== null) {
+      return res.status(200).json(results); // OK
+    } else {
+      return res.sendStatus(404); // Not Found
+    }
 
   });
 
@@ -71,9 +98,6 @@ exports.search = function(req, res) {
                                           {content: { $exists: true, $regex: posts.searchKey, $options: 'i' } }, 
                                           {tags:    { $exists: true, $regex: posts.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
-  } else {
-    //console.log('Post empty search -> Show all'); 
-    var query = db.postModel.find({ user_id: req.user.id });
   }
 
   query.select("_id title type tags created updated public");
@@ -109,6 +133,37 @@ exports.read = function(req, res) {
 
   var query = db.postModel.findOne({ _id: id, user_id: req.user.id });
   query.select('_id title tags type content created updated public');
+  query.exec(function(err, result) {
+
+    if (err) {
+        console.log(err);
+        return res.sendStatus(400); // Bad Request
+    }
+
+    if (result != null) {
+      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
+        return res.status(200).json(result);
+      });
+    }
+    else {
+      return res.sendStatus(400); // Bad Request
+    }
+
+  });
+}; 
+
+exports.readVersion = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var id = req.params.id || '';
+  if (id === '') {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  var query = db.postVersionModel.findOne({ _id: id, user_id: req.user.id });
   query.exec(function(err, result) {
 
     if (err) {
@@ -209,8 +264,21 @@ exports.update = function(req, res) {
 
   updatePost.updated = new Date();
 
-  db.postModel.update({_id: post._id, user_id: req.user.id}, updatePost, function(err, nbRows, raw) {
-    return res.status(200).end();
+  db.postModel.update({_id: post._id, user_id: req.user.id}, updatePost, function(err, nbRows, raw){});
+
+  // Make a version after each update
+  var postVersionEntry = new db.postVersionModel({org_id: true});
+  postVersionEntry.user_id = req.user.id;
+  postVersionEntry.org_id = post._id;
+  var version = Object.keys(updatePost); 
+  version.forEach(function(entry) {
+    postVersionEntry[entry] = updatePost[entry]; 
+  });
+  postVersionEntry.save(function(err) {
+    if (err) {
+      return res.sendStatus(400); // Bad Request
+    }
+    return res.sendStatus(200).end();
   });
 
 };

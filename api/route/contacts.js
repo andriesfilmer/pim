@@ -264,8 +264,8 @@ exports.download = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  console.log('##### req.query :'); 
-  console.dir(req.query); 
+  //console.log('##### req.query :'); 
+  //console.dir(req.query); 
 
   var vcfContent = '';
   var dlPhones = req.query.phones;
@@ -279,7 +279,6 @@ exports.download = function(req, res) {
 
   var query = db.contactModel.find({ user_id: req.user.id });
   query.sort('-name');
-  query.limit(10);
   query.exec(function(err, results) {
 
     if (err) {
@@ -336,7 +335,6 @@ exports.download = function(req, res) {
         if (contact.companies.length > 0 && dlCompanies == 'true') {
           contact.companies.forEach(function(companies) {
             if (companies.title) {
-             console.log('##### dlCompanies -> ' + dlCompanies + " " + companies.name); 
              vcfContent += "ORG;TYPE=" + companies.title.replace(/\s/g, '_') + ":" + companies.name + "\n";
             }
           });
@@ -375,12 +373,12 @@ exports.download = function(req, res) {
         }
 
         // notes
-        if (contact.notes !== "" && dlNotes == 'true' ) {
+        if (contact.notes !== undefined && contact.notes.length > 0 && dlNotes == 'true' ) {
           vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + quotedPrintable.encode(utf8.encode(contact.notes)) + "\n";
         }
 
         // Convert image to base64 encoded string only if uploaded photo exists.
-        var photo = config.default_upload_photo_dir + contact._id + '.jpg'
+        var photo = "../app/public" + contact.photo;
         if (fs.existsSync(photo) && dlPhoto == 'true') {
           vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
         }

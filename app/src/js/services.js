@@ -227,6 +227,32 @@ appServices.factory('PostService', function($http, $q, $window) {
       return deferred.promise;
     },
 
+    readVersion: function(id) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/post/version/' + id)
+      .success(function(data) {
+        console.log('Fetched post version from MongoDb'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb for version'); 
+      });
+      return deferred.promise;
+    },
+
+    listVersions: function(id) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/post/versions/' + id)
+      .success(function(data) {
+        console.log('Fetched post versions from MongoDb.'); 
+        deferred.resolve(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('Error connecting MongoDb for versions'); 
+      });
+      return deferred.promise;
+    },
+
     create: function(post) {
       var deferred = $q.defer();
       $http.post(options.api.base_url + '/post', {'post': post})

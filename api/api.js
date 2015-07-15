@@ -137,6 +137,8 @@ app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.list);
 
 // Get the post id
 app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 
+app.get('/post/version/:id', expressJwt({secret: secret.secretToken}), routes.posts.readVersion); 
+app.get('/post/versions/:id', expressJwt({secret: secret.secretToken}), routes.posts.listVersions); 
 
 // Create a new post
 app.post('/post', expressJwt({secret: secret.secretToken}), routes.posts.create); 

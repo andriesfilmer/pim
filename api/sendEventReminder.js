@@ -9,8 +9,8 @@ var db = require('./config/mongo_database');
 //-----------------------------------------
 // I have a cron that runs each 5 minutes.
 // */5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api_root/sendEventReminder.js
-var mStart = moment().add(1, 'days');
-var mEnd   = moment().add(1, 'days').add(5, 'minutes');
+var mStart = moment().add(1, 'days').toISOString();
+var mEnd   = moment().add(1, 'days').add(5, 'minutes').toISOString();
 
 // Debugging
 //console.log('Between -> gte: ' + mStart + ' And -> lt: ' + mEnd); 
@@ -20,7 +20,7 @@ getEvents(mStart, mEnd);
 
 function getEvents(mStart, mEnd) {
 
-  var queryEvent = db.eventModel.find({"start": {"$gt": new Date(mStart), "$lte": new Date(mEnd)}});
+  var queryEvent = db.eventModel.find({"start": {"$gt": mStart, "$lte": mEnd}});
   queryEvent.select("_id user_id title start end allDay description className created");
   queryEvent.sort('start');
   queryEvent.exec(function(err, results) {
