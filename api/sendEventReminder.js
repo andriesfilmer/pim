@@ -10,6 +10,7 @@ var db = require('./config/mongo_database');
 // I have a cron that runs each 5 minutes.
 // */5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api_root/sendEventReminder.js
 var mStart = moment().add(1, 'days').toISOString();
+//var mEnd   = moment().add(1, 'days').add(5, 'minutes');
 var mEnd   = moment().add(1, 'days').add(5, 'minutes').toISOString();
 
 // Debugging
@@ -20,6 +21,7 @@ getEvents(mStart, mEnd);
 
 function getEvents(mStart, mEnd) {
 
+  //var queryEvent = db.eventModel.find({"start": {"$gt": new Date(mStart), "$lte": new Date(mEnd)}});
   var queryEvent = db.eventModel.find({"start": {"$gt": mStart, "$lte": mEnd}});
   queryEvent.select("_id user_id title start end allDay description className created");
   queryEvent.sort('start');
@@ -68,15 +70,17 @@ function getUser(event) {
 // Function for sending the email reminder.
 function sendReminder(event,user) {
 
+  var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
+  var port = config.env().mail_port; 
+  var mail_from = config.env().mail_from; 
   var transporter = nodemailer.createTransport({ 
-    port: config.env().mail_port,
+    port: port,
     ignoreTLS: true
   });
 
-  var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
-
   // Debugging
   //console.log('Send reminder to: ' + emailAddress); 
+  //console.log('From address: ' + config.env().mail_from); 
 
   var description = '';
   if (event.description) {
@@ -84,7 +88,7 @@ function sendReminder(event,user) {
   }
 
   transporter.sendMail({
-      from: config.env().mail_from,
+      from: mail_from,
       to: emailAddress,
       subject: event.title,
       text: 'Title: ' + event.title + '\n'
