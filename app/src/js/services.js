@@ -90,9 +90,9 @@ appServices.factory('ContactService', function($http, $q, $window) {
 
   return {
 
-    findAll: function(starred, order, limit) {
+    findAll: function(starred, birthdate, order, limit) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, order: order, limit: limit}})
+      $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
       .success(function(data) {
         $window.localStorage.contactsAll = JSON.stringify(data);
         console.log('Fetched contacts from MongoDb and saved to localStorage.'); 
@@ -161,8 +161,8 @@ appServices.factory('ContactService', function($http, $q, $window) {
       return deferred.promise;
     },
 
-    searchAll: function(searchKey) { 
-      return $http.get(options.api.base_url + '/contact/search', {'params': {searchKey: searchKey}});
+    searchAll: function(birthdate, searchKey) { 
+      return $http.get(options.api.base_url + '/contact/search', {'params': {birthdate: birthdate, searchKey: searchKey}});
     },
 
     changeStarredState: function(id, newStarredState) {

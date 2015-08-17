@@ -3,32 +3,6 @@ var secret = require('../config/secret');
 var db = require('../config/mongo_database');
 var fs = require('fs');
 
-exports.listPublic = function(req, res) {
-
-  var query = db.postModel.find({public: true, user_id: req.user.id });
-  query.sort('-created');
-  query.exec(function(err, results) {
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
-
-    for (var postKey in results) {
-      // In the list view we show only the first chars from content.
-      results[postKey].content = results[postKey].content.substr(0, 400);
-    }
-
-    if (result !== null) {
-      return res.status(200).json(results); // OK
-    }
-    else {
-      return res.sendStatus(404); // Not Found
-    }
-
-  });
-
-};
-
 exports.list = function(req, res) {
 
   if (!req.user) {
@@ -49,6 +23,27 @@ exports.list = function(req, res) {
     if (results !== null) {
       return res.status(200).json(results); // OK
     } else {
+      return res.sendStatus(404); // Not Found
+    }
+
+  });
+
+};
+
+exports.listPublic = function(req, res) {
+
+  var query = db.postModel.find({public: true }).limit(req.query.limit);
+  query.sort('-created');
+  query.exec(function(err, results) {
+    if (err) {
+        console.log(err);
+        return res.sendStatus(400); // Bad Request
+    }
+
+    if (results !== null) {
+      return res.status(200).json(results); // OK
+    }
+    else {
       return res.sendStatus(404); // Not Found
     }
 
@@ -150,6 +145,34 @@ exports.read = function(req, res) {
     }
 
   });
+}; 
+
+exports.readPublic = function(req, res) {
+
+ // var id = req.params.id || '';
+ // if (id === '') {
+ //   return res.sendStatus(400); // Bad Request
+ // }
+
+ // var query = db.postModel.findOne({ _id: id });
+ // query.select('_id title tags type content created updated public');
+ // query.exec(function(err, result) {
+
+ //   if (err) {
+ //       console.log(err);
+ //       return res.sendStatus(400); // Bad Request
+ //   }
+
+ //   if (result != null) {
+ //     result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
+ //       return res.status(200).json(result);
+ //     });
+ //   }
+ //   else {
+ //     return res.sendStatus(400); // Bad Request
+ //   }
+
+ // });
 }; 
 
 exports.readVersion = function(req, res) {

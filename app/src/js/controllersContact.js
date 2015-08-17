@@ -24,9 +24,11 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     };
 
     // Hide searchForm, toggle first. Save search.
-    $scope.toggleSearch = function () {
+    $scope.toggleSearch = function toggleSearch(birthdate) {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+      // Search only contacts with a birtdate.
+      $stateParams.birthdate = birthdate;
     };
 
     // Remove search.
@@ -39,9 +41,11 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
 
     // Find starred or all contacts.
     var starred = $stateParams.starred || false;
+    // Find contacts with a birthdate.
+    var birthdate = $stateParams.birthdate || false;
 
     // Init contacts with promises and show all contacts.
-    $scope.init = ContactService.findAll(starred, $window.localStorage.contactOrder, $window.localStorage.contactLimit)
+    $scope.init = ContactService.findAll(starred, birthdate, $window.localStorage.contactOrder, $window.localStorage.contactLimit)
     .then(function(data) {
       // Promise resolved
       $scope.contacts = data;
@@ -60,7 +64,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     $scope.$watch('searchKey', function(searchKey) {
         if (searchKey !== undefined && searchKey.length >= 3) {
           $window.sessionStorage.contactSearchKey = searchKey;
-          ContactService.searchAll(searchKey).success(function(data) {
+          ContactService.searchAll(birthdate, searchKey).success(function(data) {
             $scope.contacts = data;
           }).error(function(data, status) {
             console.log(status);
@@ -94,6 +98,14 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       });
 
     };
+
+    $scope.calculateAge = function calculateAge(birthdate) { // birthday is a date
+        var birthdate = new Date(birthdate);
+        var ageDifMs = Date.now() - birthdate.getTime();
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    };
+
 
 }]);
 

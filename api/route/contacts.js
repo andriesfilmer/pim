@@ -19,8 +19,9 @@ exports.list = function(req, res) {
 
   var query = db.contactModel.find({user_id: req.user.id});
   req.query.starred === 'true' ? query.find({starred: true}) : null;
+  req.query.birthdate === 'true' ? query.find({'birthdate': {$type: 9} }).sort('-birthdate') : null;
   req.query.order === 'name' ? query.sort('name') : query.sort('-updated');
-  query.select("_id name companies starred photo");
+  query.select("_id birthdate name companies starred photo");
   query.limit(req.query.limit);
   query.exec(function(err, results) {
 
@@ -42,25 +43,24 @@ exports.list = function(req, res) {
 
 exports.search = function(req, res) {
 
-  var contacts = req.query; 
-
   if (!req.user) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  if (contacts.searchKey) {
+  if (req.query.searchKey) {
     var query = db.contactModel.find({ $or: [ 
-                                          {name:   { $exists: true, $regex: contacts.searchKey, $options: 'i' } },
-                                          {"companies.name": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
-                                          {"phones.value": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
-                                          {"phones.type": { $exists: true, $regex: contacts.searchKey, $options: 'i' } }, 
-                                          {notes: { $exists: true, $regex: contacts.searchKey, $options: 'i' } } 
+                                          {name:   { $exists: true, $regex: req.query.searchKey, $options: 'i' } },
+                                          {"companies.name": { $exists: true, $regex: req.query.searchKey, $options: 'i' } }, 
+                                          {"phones.value": { $exists: true, $regex: req.query.searchKey, $options: 'i' } }, 
+                                          {"phones.type": { $exists: true, $regex: req.query.searchKey, $options: 'i' } }, 
+                                          {notes: { $exists: true, $regex: req.query.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   } else {
     var query = db.contactModel.find({ user_id: req.user.id });
   }
 
-  query.select("_id name companies created updated starred");
+  req.query.birthdate === 'true' ? query.find({'birthdate': {$type: 9} }) : null;
+  query.select("_id name birthdate companies created updated starred");
   query.sort('-updated');
   query.exec(function(err, results) {
 

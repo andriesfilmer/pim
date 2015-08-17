@@ -3,9 +3,9 @@ div.row(ng-hide="offline")
   | &nbsp;
   a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
   span.divider
-  a.fi-crown(ui-sref="contact.birthdate({birthdate: true})", title='Contacts with birthdates', tabindex="2")
+  a.fi-torsos(ui-sref="contact.list", title='All contacts', tabindex="2")
   span.divider
-  a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search', tabindex="3")
+  a.fi-magnifying-glass(ng-click='toggleSearch(true)', title='Search', tabindex="3")
   span.divider
   a.fi-widget(href="", title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
  div.column.small-4.text-right.secondary-menu
@@ -21,8 +21,9 @@ div.row.flip-in(ng-show="searchForm")
 
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
  a(href='#/contact/{{contact._id}}')
-  div.columns.small-10.medium-5 {{contact.name}} &nbsp;
-  div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
+  div.columns.small-10.medium-4 {{contact.name}} &nbsp;
+  div.columns.hide-for-small.medium-3 {{contact.birthdate | date: 'dd MMMM yyyy'}} &nbsp;
+  div.columns.hide-for-small.medium-3 Nu {{calculateAge(contact.birthdate) }} Jaar
   div.column.small-2.medium-2
  div(ng-show='contact.starred', ng-click='updateStarredState(contact, false)')
   i.starred.fi-star

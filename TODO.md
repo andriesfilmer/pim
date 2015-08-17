@@ -10,7 +10,7 @@
 - import vCal
 
 # Contact
-- export vCard
+- List of birthdates
 - import vCard
 
 

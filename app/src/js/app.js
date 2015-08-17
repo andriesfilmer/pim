@@ -112,6 +112,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'ContactListController',
       access: { requiredAuthentication: true}
     })
+    .state('contact.birthdate', {
+      url: "/brithdate/:birthdate",
+      templateUrl: "partials/contact.birthdate.html",
+      controller: 'ContactListController',
+      access: { requiredAuthentication: true}
+    })
     .state('contact.starred', {
       url: "/starred/:starred",
       templateUrl: "partials/contact.starred.html",
