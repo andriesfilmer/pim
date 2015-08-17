@@ -2,7 +2,6 @@ var nodemailer = require('nodemailer');
 var moment = require('moment');
 
 var config = require('./config/config.js');
-var config_env = config.env();
 var secret = require('./config/secret');
 var db = require('./config/mongo_database');
 
@@ -46,7 +45,7 @@ function getBirthdays(m, d) {
       results.forEach(function(contact){
 
         // Debugging
-        console.log('found: ' + contact.name);
+        //console.log('found: ' + contact.name);
 
         getUser(contact);
 
@@ -78,22 +77,26 @@ function getUser(contact) {
 // Function for sending the email reminder.
 function sendReminder(contact,user) {
 
+  var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
+  //console.log('Send reminder to: ' + emailAddress); 
+  //console.log('Send reminder from: ' + config.env().mail_from); 
+  //console.log('Send reminder port: ' + config.env().mail_port); 
+  var port = config.env().mail_port; 
+  var mail_from = config.env().mail_from; 
+
   var transporter = nodemailer.createTransport({ 
-    port: config_env.mail_port,
+    port: port,
     ignoreTLS: true
   });
 
-  var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
-
   transporter.sendMail({
-      from: config_env.mail_from,
+      from: mail_from,
       to: emailAddress,
       subject: 'Birthday reminder for: ' + contact.name,
       text: 'Birthday: ' + moment(contact.birthdate).format('YYYY-MM-DD') + '\n'
           + contact.name + ' is getting ' + (moment().diff(contact.birthdate, 'years') + 1) + ' within one day.\n'
   });
 
-  console.log('Send reminder to: ' + emailAddress); 
 
 }
 
