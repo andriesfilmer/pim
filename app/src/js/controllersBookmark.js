@@ -58,22 +58,6 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
         }
     });
 
-    // Just by clicking on the label (in the bookmark list)  we change public/private.
-    $scope.updatePublicState = function updatePublicState(bookmark, makePublic) {
-      if (bookmark !== undefined && makePublic !== undefined) {
-
-        BookmarkService.changePublicState(bookmark._id, makePublic).success(function(data) {
-          var bookmarks = $scope.bookmarks;
-          for (var bookmarkKey in bookmarks) {
-            if (bookmarks[bookmarkKey]._id == bookmark._id) {
-              $scope.bookmarks[bookmarkKey].public = makePublic;
-              break;
-            }
-          }
-        });
-      }
-    };
-
 }]);
 
 appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'BookmarkService', 'MarkdownToc',

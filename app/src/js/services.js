@@ -286,10 +286,6 @@ appServices.factory('PostService', function($http, $q, $window) {
       return $http.get(options.api.base_url + '/post/search', {'params': {searchKey: searchKey}});
     },
 
-    changePublicState: function(id, newPublicState) {
-      return $http.put(options.api.base_url + '/post', {'post': {_id: id, public: newPublicState}});
-    },
-
     delete: function(id) {
       return $http.delete(options.api.base_url + '/post/' + id);
     },
@@ -374,10 +370,6 @@ appServices.factory('BookmarkService', function($http, $q, $window) {
 
     searchAll: function(searchKey) { 
       return $http.get(options.api.base_url + '/bookmark/search', {'params': {searchKey: searchKey}});
-    },
-
-    changePublicState: function(id, newPublicState) {
-      return $http.put(options.api.base_url + '/bookmark', {'bookmark': {_id: id, public: newPublicState}});
     },
 
     delete: function(id) {

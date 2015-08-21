@@ -10,7 +10,6 @@ var db = require('./config/mongo_database');
 // I have a cron that runs each 5 minutes.
 // */5 * * * * export NODE_ENV=production && /usr/bin/node /path/to/api_root/sendEventReminder.js
 var mStart = moment().add(1, 'days').toISOString();
-//var mEnd   = moment().add(1, 'days').add(5, 'minutes');
 var mEnd   = moment().add(1, 'days').add(5, 'minutes').toISOString();
 
 // Debugging

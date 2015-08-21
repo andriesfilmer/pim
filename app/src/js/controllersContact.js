@@ -171,7 +171,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       // Promise resolve
       $scope.contact = data;
       if (data.birthdate !== undefined && data.birthdate !== null) {
-        // Angulara forms need a 'real' date.
+        // Angular in forms need a 'real' date.
         $scope.contact.birthdate = new Date(data.birthdate);
       }
       $scope.showAddBt  = false;
@@ -270,7 +270,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   };
 
-  // Get contacts if we change the SearchKey
+  // Get contacts by relations if we change the SearchKey
   $scope.$watch('searchKey', function(searchKey) {
     if (searchKey !== undefined && searchKey.length >= 3) {
       ContactService.searchAll(searchKey).success(function(data) {

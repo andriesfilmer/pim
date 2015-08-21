@@ -26,13 +26,6 @@ $color-other: green;
   border-left: 8px $color-other solid; 
 }
 
-.public-alert {
-  color: red;
-}
-
-.switch.bookmark-public input:checked + label {
-  background: $color-business;
-}
 .switch.bookmark-fun input:checked + label {
   background: $color-fun;
 }

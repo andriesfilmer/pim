@@ -58,22 +58,6 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
         }
     });
 
-    // Just by clicking on the label (in the post list)  we change public/private.
-    $scope.updatePublicState = function updatePublicState(post, makePublic) {
-      if (post !== undefined && makePublic !== undefined) {
-
-        PostService.changePublicState(post._id, makePublic).success(function(data) {
-          var posts = $scope.posts;
-          for (var postKey in posts) {
-            if (posts[postKey]._id == post._id) {
-              $scope.posts[postKey].public = makePublic;
-              break;
-            }
-          }
-        });
-      }
-    };
-
 }]);
 
 appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 'MarkdownToc',

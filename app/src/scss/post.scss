@@ -27,9 +27,6 @@ $color-kb: #008CBA;
 }
 
 
-.switch.post-public input:checked + label {
-  background: #f04124; // red
-}
 .switch.post-note input:checked + label {
   background: $color-note;
 }
