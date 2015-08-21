@@ -1,10 +1,12 @@
 .sass-cache
+*.swp
 tags
 tmp
 app/bower_components/
 api/node_modules
 api/log/
 api/config/secret.js
+api/route/contacts.birthdate.js
 app/src/js/config.js
 app/node_modules
 api/config/snapshots

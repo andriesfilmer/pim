@@ -91,9 +91,9 @@ div(ng-hide="editForm")
      div.column.small-4.text-right
       i.icon-button.fi-map
 
-   // Other
-   div.row.item-title(ng-if="contact.birthdate") Other
-   div.row
+   // Birthdate
+   div.row.item-title(ng-if="contact.birthdate > 0") Other
+   div.row(ng-if="contact.birthdate != null")
     div.column.small-8
      label Birthdate
      | {{contact.birthdate | date: 'dd MMMM yyyy'}}

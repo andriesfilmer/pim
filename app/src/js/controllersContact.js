@@ -100,7 +100,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
     };
 
     $scope.calculateAge = function calculateAge(birthdate) { // birthday is a date
-        var birthdate = new Date(birthdate);
+        birthdate = new Date(birthdate);
         var ageDifMs = Date.now() - birthdate.getTime();
         var ageDate = new Date(ageDifMs); // miliseconds from epoch
         return Math.abs(ageDate.getUTCFullYear() - 1970);

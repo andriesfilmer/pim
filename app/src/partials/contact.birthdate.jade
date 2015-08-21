@@ -22,8 +22,8 @@ div.row.flip-in(ng-show="searchForm")
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
  a(href='#/contact/{{contact._id}}')
   div.columns.small-10.medium-4 {{contact.name}} &nbsp;
-  div.columns.hide-for-small.medium-3 {{contact.birthdate | date: 'dd MMMM yyyy'}} &nbsp;
-  div.columns.hide-for-small.medium-3 Nu {{calculateAge(contact.birthdate) }} Jaar
+  div.columns.medium-3 {{contact.birthdate | date: 'dd MMMM yyyy'}} &nbsp;
+  div.columns.medium-3 Nu {{calculateAge(contact.birthdate) }} Jaar
   div.column.small-2.medium-2
  div(ng-show='contact.starred', ng-click='updateStarredState(contact, false)')
   i.starred.fi-star
