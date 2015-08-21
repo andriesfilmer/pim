@@ -57,12 +57,6 @@ form(name="bookmarkForm")
     div.switch.round.column.small-6.bookmark-other
      input#bookmark-other(type="radio", value="other", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label(for="bookmark-other") 
-  fieldset.radius
-   div.row
-    div.column.small-6 Public switch
-    div.switch.round.column.small-6.bookmark-public
-     input#public(type="checkbox", ng-model="bookmark.public", ng-change="isChanged()")
-     label(for="public")
  div.row
   div.column.small-6.date-meta.panel
    i Created:  {{bookmark.created | date: 'yyyy-MM-dd'}}

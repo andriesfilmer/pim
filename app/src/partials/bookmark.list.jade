@@ -18,12 +18,9 @@ div.row.flip-in(ng-show="searchForm")
 
 div.row.my-row(ng-repeat='bookmark in bookmarks', ng-class="bookmark.category", ng-class-odd="'odd'" ng-class-even="'even'")
   a(href='#/bookmark/{{bookmark._id}}')
-   div.columns.medium-8 {{bookmark.title}}
+   div.columns.medium-10 {{bookmark.title}}
   div.column.medium-2.hide-for-small
    div.round.secondary.label {{bookmark.created | date: 'yyyy-MM-dd'}}
-  div.column.medium-2.hide-for-small
-   div.round.alert.label(ng-show='bookmark.public', ng-click='updatePublicState(bookmark, false)') public
-   div.round.secondary.label(ng-show='!bookmark.public', ng-click='updatePublicState(bookmark, true)') private
 
 div.row
  div#bookmark-settings.reveal-modal(data-reveal='')

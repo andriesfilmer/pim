@@ -126,9 +126,6 @@ app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contact
 // Get posts by tag
 app.get('/tag/:tagName', routes.posts.listByTag); 
 
-// Get all public posts
-app.get('/post/public', routes.posts.listPublic);
-
 // Search posts
 app.get('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.search);
 
@@ -137,7 +134,6 @@ app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.list);
 
 // Get the post id
 app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 
-app.get('/post/public/:id', routes.posts.readPublic); 
 app.get('/post/version/:id', expressJwt({secret: secret.secretToken}), routes.posts.readVersion); 
 app.get('/post/versions/:id', expressJwt({secret: secret.secretToken}), routes.posts.listVersions); 
 
@@ -156,9 +152,6 @@ app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.d
 
 // Get bookmarks by tag
 app.get('/tag/:tagName', routes.bookmarks.listByTag); 
-
-// Get all public bookmarks
-app.get('/bookmark/public', routes.bookmarks.listPublic);
 
 // Search bookmarks
 app.get('/bookmark/search', expressJwt({secret: secret.secretToken}), routes.bookmarks.search);

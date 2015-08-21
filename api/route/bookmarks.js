@@ -1,32 +1,5 @@
-
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
-
-exports.listPublic = function(req, res) {
-
-  var query = db.bookmarkModel.find({public: true, user_id: req.user.id });
-  query.sort('-created');
-  query.exec(function(err, results) {
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
-
-    for (var bookmarkKey in results) {
-      // In the list view we show only the first chars from content.
-      results[bookmarkKey].content = results[bookmarkKey].content.substr(0, 400);
-    }
-
-    if (result !== null) {
-      return res.status(200).json(results); // OK
-    }
-    else {
-      return res.sendStatus(404); // Not Found
-    }
-
-  });
-
-};
 
 exports.list = function(req, res) {
 

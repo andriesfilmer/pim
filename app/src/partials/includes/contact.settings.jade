@@ -41,6 +41,11 @@ div.row
     div.switch.round.column.small-6
      input#contact-order-updated(type="radio", value="updated", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('updated')")
      label(for="contact-order-updated")
+  fieldset
+   div.row
+    div.column.small-12
+     button.radius(ng-click="saveSettings('#{stateGo}')", title='Save settings') Save
+   div.row
     div.small-12
      span.date-meta 
       i  * Settings wil be reset on logout
