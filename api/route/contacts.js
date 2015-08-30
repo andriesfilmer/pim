@@ -6,7 +6,6 @@ var db = require('../config/mongo_database');
 // Upload profile pictures
 var fs = require('fs');
 var moment = require('moment');
-var mimelib = require("mimelib");
 var quotedPrintable = require('quoted-printable');
 var utf8 = require('utf8');
 
