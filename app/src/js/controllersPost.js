@@ -3,6 +3,12 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 
     $(document).foundation();
 
+    // Do we want a search form?
+    if ($window.sessionStorage.postSearch) {
+      $scope.searchForm = true;
+      $scope.searchKey =  $window.sessionStorage.postSearchKey;
+    }
+
     // Save general post settings
     $scope.saveSettings = function saveSettings() {
       $('a.close-reveal-modal').trigger('click');
@@ -16,15 +22,22 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       $window.localStorage.postLimit =  limit;
     };
 
-    // Hide searchForm, toggle first. Save search.
+    // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
+      if (!$scope.searchForm) {
+        delete $window.sessionStorage.postSearch;
+        $state.go('post', {}, {reload: true});
+      } else {
+        $window.sessionStorage.postSearch = true;
+      }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.postSearchKey;
+      $scope.searchForm = true;
       $state.go('post', {}, {reload: true});
     };
 

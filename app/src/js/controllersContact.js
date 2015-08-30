@@ -3,6 +3,12 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
 
     $(document).foundation();
 
+    // Do we want a search form?
+    if ($window.sessionStorage.contactSearch) {
+      $scope.searchForm = true;
+      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+    }
+
     // Save general post settings
     $scope.saveSettings = function saveSettings(stateGo) {
       $('a.close-reveal-modal').trigger('click');
@@ -29,11 +35,18 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
       // Search only contacts with a birtdate.
       $stateParams.birthdate = birthdate;
+      if (!$scope.searchForm) {
+        delete $window.sessionStorage.contactSearch;
+        $state.go('contact.list', {}, {reload: true});
+      } else {
+        $window.sessionStorage.contactSearch = true;
+      }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.contactSearchKey;
+      $scope.searchForm = true;
       $state.go('contact.list', {}, {reload: true});
     };
 
