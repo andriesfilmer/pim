@@ -3,6 +3,12 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
     $(document).foundation();
 
+    // Do we want a search form?
+    if ($window.sessionStorage.bookmarkSearch) {
+      $scope.searchForm = true;
+      $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
+    }
+
     // Save general bookmark settings
     $scope.saveSettings = function saveSettings() {
       $('a.close-reveal-modal').trigger('click');
@@ -16,15 +22,21 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
       $window.localStorage.bookmarkLimit =  limit;
     };
 
-    // Hide searchForm, toggle first. Save search.
+    // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
+      if (!$scope.searchForm) {
+        delete $window.sessionStorage.bookmarkSearch;
+      } else {
+        $window.sessionStorage.bookmarkSearch = true;
+      }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.bookmarkSearchKey;
+      $scope.searchForm = true;
       $state.go('bookmark', {}, {reload: true});
     };
 
@@ -47,7 +59,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
     // Get new bookmarks if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
-        if (searchKey !== undefined && searchKey.length >= 3) {
+        if (searchKey !== undefined) {
           $window.sessionStorage.bookmarkSearchKey = searchKey;
           BookmarkService.searchAll(searchKey).success(function(data) {
             $scope.bookmarks = data;

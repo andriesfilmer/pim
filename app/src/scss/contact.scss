@@ -2,20 +2,12 @@
 
 .starred {
   cursor: pointer;
-  font-size: 1.2em;
   color: orange;
 }
 
 .un-starred {
   cursor: pointer;
-  font-size: 1.2em;
   color: #ddd;
-}
-
-.starred-row {
-  position: inherit;
-  font-size: 1.4em;
-  z-index: 9;
 }
 
 ul.starred-list {
@@ -60,11 +52,6 @@ ul.starred-list {
     font-size: 1.5rem;
   }
 }
-.profile-birthdate {
-  position: inherit;
-  margin-top: -2em;
-}
-
 
 .item-title {
   padding-top: 10px;

@@ -9,8 +9,8 @@ exports.env = function() {
 // Development and productions vars·
 // ---------------------------------
 
-// Time in minutes (10080 = week, 302400 = 30 days)
-exports.expireToken = 302400; 
+// Time in minutes (10080 = week, 524160 = 52 weeks)
+exports.expireToken = 524160;
 
 // Default location to store the uploaded photos.
 exports.default_upload_photo_dir = '../app/public/upload/contact_photos/';

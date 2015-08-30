@@ -1,12 +1,11 @@
 div.row(ng-hide="offline")
  div.column.small-9.text-left.secondary-menu
   | &nbsp;
-  a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
+  a.fi-star.starred(ng-show='contact.starred', ng-click='updateStarredState(contact, false)', title='Starred contact', tabindex="1")
+  a.fi-star.un-starred(ng-show='!contact.starred', ng-click='updateStarredState(contact, true)', title='Starred contact', tabindex="1")
   span.divider
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
-  span.divider
-  a.fi-list(ui-sref='contact.list', title='List contacts', tabindex="1")
   span.divider
   span(ng-hide="contactForm.name.$error.required")
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
@@ -17,13 +16,8 @@ div.row(ng-hide="offline")
 
 div(ng-hide="editForm")
  div.row.profile-bg(style="background: url({{contact.photo}}); background-size: cover; background-position: center;")
- div.row.starred-row
-  div.column(ng-show='contact.starred', ng-click='updateStarredState(contact, false)')
-   a.starred.fi-star &nbsp;
-  div.column(ng-show='!contact.starred', ng-click='updateStarredState(contact, true)')
-   a.un-starred.fi-star &nbsp;
  div.row
-  div.column.text-right.profile-birthdate(ng-if="contact.birthdate")
+  div.column.text-right(ng-if="contact.birthdate")
    label.fi-crown  {{contact.birthdate | date: 'dd MMM'}} | {{ calculateAge(contact.birthdate) }}
  div.row.profile-row
   div.column.small-12.text-center
