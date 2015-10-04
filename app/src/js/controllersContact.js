@@ -219,6 +219,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       value: name,
       type: ''
     });
+    $scope.saveForm = true;
     $('a.close-reveal-modal').trigger('click');
   };
 
@@ -286,7 +287,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Get contacts by relations if we change the SearchKey
   $scope.$watch('searchKey', function(searchKey) {
     if (searchKey !== undefined && searchKey.length >= 3) {
-      ContactService.searchAll(searchKey).success(function(data) {
+      ContactService.searchAll(false, searchKey).success(function(data) {
         $scope.contacts = data;
       }).error(function(data, status) {
         console.log(status);
