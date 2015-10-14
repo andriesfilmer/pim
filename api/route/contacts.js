@@ -249,7 +249,7 @@ exports.fileupload = function(req, res) {
   req.pipe(req.busboy);
   req.busboy.on('file', function (fieldname, file) {
     console.log("Uploading: " + filename); 
-    fstream = fs.createWriteStream(config.default_upload_photo_dir + filename);
+    fstream = fs.createWriteStream(config.env().upload_dir + "contact_photos/" + filename);
     file.pipe(fstream);
     fstream.on('close', function () {
       res.sendStatus(200); // OK
