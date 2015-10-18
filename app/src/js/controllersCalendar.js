@@ -198,11 +198,12 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   if (id.length === 24) {
     console.log('Fetch -> _id: ' + id); 
     CalendarService.read(id).success(function(cal) {
+      $scope.share = shareEvent(cal);
       $scope.cal = cal;
       console.log("Event id: " + cal._id);
+      $scope.cal.allDay = JSON.parse(cal.allDay);
       $scope.cal.start = new Date(cal.start);
       $scope.cal.end = new Date(cal.end);
-      $scope.cal.allDay = JSON.parse(cal.allDay);
       $scope.showAddBt  = false;
       $scope.showDeleteBt  = true;
       $window.localStorage['event_' + id] = JSON.stringify(cal);
@@ -241,7 +242,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.cal.end = new Date(start);
     $scope.cal.allDay = true;
     $scope.showAddBt  = true;
-    $scope.showDeleteBt  = false;
     $scope.editForm = true;
   }
 
@@ -319,6 +319,33 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       }
     }
   });
+
+  function shareEvent(cal) {
+    if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){
+      $scope.whatsappEnabled = true;
+      $scope.telegramEnabled = true;
+      $scope.smsEnabled = true;
+    }
+    share = {};
+    // http://stackoverflow.com/questions/75980/best-practice-escape-or-encodeuri-encodeuricomponent
+    share.caption = encodeURI('Event');
+    share.title = encodeURI(cal.title);
+    share.body  = 'Event: ' + cal.title + '\n';
+
+    if (!JSON.parse(cal.allDay)) {
+      share.body += 'Start: ' + cal.start.toString().substring(0,16).replace('T',' ') + '\n';
+      share.body += 'End: ' + cal.end.toString().substring(0,16).replace('T',' ') + '\n\n';
+    }
+    else {
+      share.body += 'Start: ' + cal.start.toString().substring(0,10).replace('T',' ') + '\n';
+      share.body += 'End: ' + cal.end.toString().substring(0,10).replace('T',' ') + '\n\n';
+    }
+    share.body += cal.description;
+    share.body = encodeURIComponent(share.body);
+    console.log('##### Share -> ' + share.title); 
+    console.dir(share);
+    return share;
+  }
 
 }]);
 

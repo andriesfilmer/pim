@@ -34,12 +34,8 @@ var app = express();
 app.listen(config.api_port);
 
 app.use(cors(corsOptions));
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.use(busboy()); 
-
-// Enable http logging
-//var morgan  = require('morgan'); 
-//app.use(morgan());
 
 console.log('API (' + config.name + ') is starting on port ' + config.api_port);
 

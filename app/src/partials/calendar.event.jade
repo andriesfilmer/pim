@@ -1,17 +1,19 @@
 form(name="eventForm")
  div.row(ng-hide="offline")
-  div.column.small-6.text-left.secondary-menu
+  div.column.small-9.text-left.secondary-menu
    i.fi-calendar.reversed(title='Calendar')
    span.divider
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
+   a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+   span.divider
    span(ng-hide="eventForm.title.$error.required")
     a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
     a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
-  div.column.small-6.text-right.secondary-menu
+  div.column.small-3.text-right.secondary-menu(ng-show="showDeleteBt")
    span.divider
-   a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?", ng-show="showDeleteBt")
+   a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
 
  div.row(ng-hide="editForm", ng-class="cal.className")
   div.column.small-12 {{cal.title}} {{editFrom}}
@@ -28,7 +30,7 @@ form(name="eventForm")
  div.row(ng-show="editForm")
   div.row(ng-class="cal.className")
    div.column.small-12(ng-class="cal.className")
-   input#title-input(type="text", name="title", ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
+   input#title(type="text", name="title", ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
   div.row 
    div.column.small-12 &nbsp; 
   div.row
@@ -73,3 +75,4 @@ div.row
     li.tag(ng-repeat='tag in post.tags')
      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
 
+include ./includes/share.jade

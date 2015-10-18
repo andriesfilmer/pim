@@ -1,0 +1,34 @@
+div.row
+ div#share.reveal-modal(data-reveal='')
+  a.close-reveal-modal &#215;
+  h2.fi-share.icon-button  Share with
+  div.row
+   div.small-12.columns(ng-show="whatsappEnabled")
+    a(href="whatsapp://send?text={{share.body}}")
+     img(src="/static/images/icon-whatsapp-128.png")
+     span Whatsapp 
+   div.small-12.columns(ng-show="telegramEnabled")
+    a(href="tg://msg?text={{share.body}}")
+     img(src="/static/images/icon-telegram-128.png")
+     span Telegram
+   div.small-12.columns(ng-show="smsEnabled")
+    a(href="sms://msg?&body={{share.body}}")
+     img.share(src="/static/images/icon-sms-128.png")
+     span.share SMS 
+   div.small-12.columns 
+    a(href="mailto:?subject={{share.title}}&body={{share.body}}")
+     img.share(src="/static/images/icon-email-128.png")
+     span.share E-mail
+   div.small-12.columns 
+    a(href="https://www.facebook.com/dialog/feed?app_id=629785377142012&link=http://pim.filmer.nl&name={{share.title}}&caption={{share.caption}}&description={{share.body}}&redirect_uri=https://www.facebook.com", target="_blank")
+     img(src="/static/images/icon-facebook-128.png")
+     span.share Facebook 
+   div.small-12.columns 
+    a(href="https://twitter.com/intent/tweet?text={{share.body}}", target="_blank")
+     img.share(src="/static/images/icon-twitter-128.png")
+     span.share Twitter
+   div.small-12.columns 
+    a(href="https://www.linkedin.com/shareArticle?mini=true&url=http://pim.filmer.nl&title={{share.title}}&summary={{share.body}}", target="_blank")
+     img.share(src="/static/images/icon-linkedin-128.png")
+     span.share LinkeIn
+

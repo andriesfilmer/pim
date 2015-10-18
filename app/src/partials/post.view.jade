@@ -9,7 +9,7 @@ form(name="postForm")
    a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
    span.divider
    a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
-  div.column.small-3.text-right.secondary-menu
+  div.column.small-3.text-right.secondary-menu(ng-hide="showDeleteBt")
    span.divider
    a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
  
@@ -24,11 +24,11 @@ form(name="postForm")
 
  div.row(ng-show="editForm")
   div.column.small-12(ng-class="post.type")
-   input#title-input(type="text", required='', name="title", placeholder="Title is required", ng-model="post.title", ng-change="isChanged()")
+   input#title(type="text", required='', name="title", placeholder="Title is required", ng-model="post.title", ng-change="isChanged()")
  div.row(ng-show="editForm")
   div.column.small-12
-   textarea#post-content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
-   input#inputTags(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
+   textarea#content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
+   input(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
  div.row
   div.column.small-12.post-meta
     ul.inline-list

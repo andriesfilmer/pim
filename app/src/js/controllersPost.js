@@ -134,6 +134,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   else {
     $scope.post = {};
     $scope.post.type = 'todo';
+    $scope.showDeleteBt = true;
   }
 
   $scope.save = function save(post) {

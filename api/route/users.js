@@ -34,7 +34,7 @@ exports.signin = function(req, res) {
         return res.sendStatus(401); // Unauthorized
       }
 
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: config.expireToken });
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expireIn });
       return res.json({token:token});
     });
 
@@ -119,7 +119,7 @@ exports.sendToken = function(req, res) {
   db.userModel.findOne({email: req.body.email}, function (err, user) {
 
     if (user) {
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresInMinutes: 60 });
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: "5m" });
       sendMailToken(user.fullname, user.email, token);
       return res.sendStatus(200); // Success
     }

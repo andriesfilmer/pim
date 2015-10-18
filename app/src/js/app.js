@@ -72,7 +72,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
     .state('calendar', {
        url: "/calendar",
        templateUrl: "partials/calendar.html",
-       access: { requiredAuthentication: true }
+       access: { requiredAuthentication: false }
      })
     .state('calendar.search', {
       url: "/search",
@@ -187,6 +187,14 @@ app.config(['$stateProvider', '$urlRouterProvider',
       templateUrl: 'partials/sitemap.html',
       access: { requiredAuthentication: false }
     });
+  }
+]);
+
+app.config( [
+  '$compileProvider',
+  function( $compileProvider )
+  {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|whatsapp|tg|mailto|sms|tel):/);
   }
 ]);
 
