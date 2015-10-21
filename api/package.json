@@ -17,6 +17,7 @@
     "mongoose-unique-validator": "latest",
     "connect-busboy": "latest",
     "quoted-printable": "latest",
-    "utf8": "latest"
+    "utf8": "latest",
+    "markdown-pdf": "latest"
   }
 }

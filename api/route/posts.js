@@ -1,6 +1,7 @@
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
 var fs = require('fs');
+var markdownpdf = require("markdown-pdf");
 
 exports.list = function(req, res) {
 
@@ -11,33 +12,6 @@ exports.list = function(req, res) {
   var query = db.postModel.find({user_id: req.user.id}).limit(req.query.limit);
 
   query.select("_id title type tags created updated public");
-  query.sort('-updated');
-  query.exec(function(err, results) {
-
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
-
-    if (results !== null) {
-      return res.status(200).json(results); // OK
-    } else {
-      return res.sendStatus(404); // Not Found
-    }
-
-  });
-
-};
-
-exports.listVersions = function(req, res) {
-
-  if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
-  }
-
-  var query = db.postVersionModel.find({user_id: req.user.id, org_id: req.params.id});
-
-  query.select("_id title type created");
   query.sort('-updated');
   query.exec(function(err, results) {
 
@@ -125,18 +99,18 @@ exports.read = function(req, res) {
   });
 }; 
 
-exports.readVersion = function(req, res) {
+exports.pdf = function(req, res) {
 
   if (!req.user) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  var id = req.params.id || '';
-  if (id === '') {
+  if (!req.params.id) {
     return res.sendStatus(400); // Bad Request
   }
 
-  var query = db.postVersionModel.findOne({ _id: id, user_id: req.user.id });
+  var query = db.postModel.findOne({ _id: req.params.id, user_id: req.user.id });
+  query.select('_id title tags type content created updated public');
   query.exec(function(err, result) {
 
     if (err) {
@@ -145,12 +119,17 @@ exports.readVersion = function(req, res) {
     }
 
     if (result != null) {
-      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
-        return res.status(200).json(result);
-      });
-    }
-    else {
-      return res.sendStatus(400); // Bad Request
+
+      var options = { 
+        cssPath: './config/pdf.css',
+      }
+
+      var pathToPdf = './tmp/pdf/' + result._id;
+      markdownpdf(options).from.string(result.content).to(pathToPdf, function () {
+        console.log("Created -> ", pathToPdf)
+        res.download(pathToPdf); 
+      })
+
     }
 
   });
@@ -310,4 +289,61 @@ exports.listByTag = function(req, res) {
     return res.status(200).json(result);
   });
 }
+
+exports.listVersions = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = db.postVersionModel.find({user_id: req.user.id, org_id: req.params.id});
+
+  query.select("_id title type created");
+  query.sort('-updated');
+  query.exec(function(err, results) {
+
+    if (err) {
+      console.log(err);
+      return res.sendStatus(400); // Bad Request
+    }
+
+    if (results !== null) {
+      return res.status(200).json(results); // OK
+    } else {
+      return res.sendStatus(404); // Not Found
+    }
+
+  });
+
+};
+
+exports.readVersion = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  if (!req.params.id === '') {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  var query = db.postVersionModel.findOne({ _id: id, user_id: req.user.id });
+  query.exec(function(err, result) {
+
+    if (err) {
+        console.log(err);
+        return res.sendStatus(400); // Bad Request
+    }
+
+    if (result != null) {
+      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
+        return res.status(200).json(result);
+      });
+    }
+    else {
+      return res.sendStatus(400); // Bad Request
+    }
+
+  });
+}; 
 

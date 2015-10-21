@@ -183,6 +183,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     ContactService.read(id).then(function(data) {
       // Promise resolve
       $scope.contact = data;
+      $scope.share = shareContact(data);
       if (data.birthdate !== undefined && data.birthdate !== null) {
         // Angular in forms need a 'real' date.
         $scope.contact.birthdate = new Date(data.birthdate);
@@ -283,6 +284,25 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.saveForm = false;
 
   };
+
+  function shareContact(contact) {
+    if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){
+      $scope.whatsappEnabled = true;
+      $scope.telegramEnabled = true;
+      $scope.smsEnabled = true;
+    }
+    share = {};
+    share.caption = encodeURI('Contact');
+    share.title = encodeURI(contact.name);
+    share.body  = 'Contact: ' + contact.name + '\n';
+    share.body += 'See vCard as attachment.';
+    share.body = encodeURIComponent(share.body);
+    console.log('##### Contact'); 
+    console.dir(contact);
+    console.log('##### Share'); 
+    console.dir(share);
+    return share;
+  }
 
   // Get contacts by relations if we change the SearchKey
   $scope.$watch('searchKey', function(searchKey) {

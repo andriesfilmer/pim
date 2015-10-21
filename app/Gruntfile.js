@@ -67,8 +67,8 @@ module.exports = function(grunt) {
       all: ['Gruntfile.js', 'src/js/*.js']
     },
     copy: {
-      static:   { src: 'static/**/*', dest: 'public/' },
-      vendor:   { src: 'vendor/**/*', dest: 'public/' },
+      static:   { expand: true, src: 'static/**/*', dest: 'public/' },
+      vendor:   { expand: true, src: 'vendor/**/*', dest: 'public/' },
       manifest: { src: 'manifest.appcache', dest: 'public/' }
     },
     sass: {
@@ -122,6 +122,7 @@ module.exports = function(grunt) {
             'vendor/js/angular-touch.min.js',
             'vendor/js/angular-animate.min.js',
             'vendor/js/angular-spinner.min.js',
+            'vendor/js/FileSaver.min.js',
             'vendor/js/spin.min.js',
             'vendor/js/moment.min.js',
             'vendor/js/calendar.js',

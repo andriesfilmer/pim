@@ -1,15 +1,17 @@
 form(name="postForm")
  div.row(ng-hide="offline")
-  div.column.small-9.text-left.secondary-menu
+  div.column.small-10.text-left.secondary-menu
    i.fi-page.reversed(title='Posts')
    span.divider
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
+   a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+   span.divider
    a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
    span.divider
    a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
-  div.column.small-3.text-right.secondary-menu(ng-hide="showDeleteBt")
+  div.column.small-2.text-right.secondary-menu(ng-hide="showDeleteBt")
    span.divider
    a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
  
@@ -44,6 +46,7 @@ div.row
  div#post-settings.reveal-modal(data-reveal='')
   a.close-reveal-modal &#215;
   fieldset
+   legend Type
    div.row
     div.column.small-6.my-row.todo Todo
     div.switch.round.column.small-6.post-todo
@@ -64,12 +67,6 @@ div.row
     div.switch.round.column.small-6.post-kb
      input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="isChanged()")
      label(for="post-kb") 
-  fieldset
-   div.row
-    div.column.small-12 &nbsp;
-   div.row
-    div.column.small-12
-     button.radius(ng-click='save(post)', title='Save item') Save settings
 
   fieldset
    legend Versions
@@ -77,4 +74,21 @@ div.row
     a(href='#/post/version/{{version._id}}')
      div.columns.medium-9 {{version.title}}
      div.column.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
+
+div.row
+  div#share.reveal-modal(data-reveal='')
+   a.close-reveal-modal &#215;
+   div.row
+    div.small-12.columns
+     fieldset
+      legend.fi-share  Share with
+      include ./includes/share.jade
+     fieldset
+      legend.fi-page-pdf  Download
+      div.row
+       div.small-12.columns
+        a(ng-click='downloadPdf(post, toc)', title='Download contacts', target='_blank')
+         img#downloadPdf.share.grayscale(src='/static/images/icon-pdf-128.png')
+         span.share  PDF {{ downloadPdfLabel }}
+          a(ng-href='{{url}}', title='Download contacts', target="_blank")
 

@@ -340,7 +340,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       share.body += 'Start: ' + cal.start.toString().substring(0,10).replace('T',' ') + '\n';
       share.body += 'End: ' + cal.end.toString().substring(0,10).replace('T',' ') + '\n\n';
     }
-    share.body += cal.description;
+    if (cal.description !== undefined) share.body += cal.description;
     share.body = encodeURIComponent(share.body);
     console.log('##### Share -> ' + share.title); 
     console.dir(share);

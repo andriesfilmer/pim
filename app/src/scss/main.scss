@@ -103,7 +103,7 @@ input#title {
   font-size: 2rem;
   .divider {
     border-left: 1px #eee solid;
-    margin: 0.7rem;
+    margin: 0.6rem;
   }
   a.alert {color: #f04124};
 }
@@ -119,6 +119,11 @@ input#title {
   }
 }
 
+.grayscale {
+    filter: gray; /* IE6-9 */
+    filter: grayscale(1); /* W3C */
+    -webkit-filter: grayscale(1); /* Webkit */
+}
 
 ul.inline-list {
   margin-left: 0rem;
@@ -142,6 +147,9 @@ ul.inline-list {
 }
 
 #share {
+  legend {
+    font-size: 1.4rem;
+  }
   img {
     width: 3rem;
     margin-bottom: 1rem;

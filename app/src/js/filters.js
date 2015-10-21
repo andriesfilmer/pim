@@ -4,6 +4,13 @@ appFilters.filter('tel', function () {
         var p1, p2, p3, p4;
 
         switch (tel.length) {
+            case 8: // #### ### ###
+                p1 = tel.slice(0, 4);
+                p2 = tel.slice(4, 8);
+                p3 = "";
+                p4 = "";
+                break;
+
             case 10: // #### ### ###
                 p1 = tel.slice(0, 4);
                 p2 = tel.slice(4, 7);

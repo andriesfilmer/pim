@@ -104,13 +104,16 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.post = data;
       $scope.post._id = data.org_id;
       $scope.toc = MarkdownToc.make(data);
-      flash('alert', 'Original version: ' + data.org_id);
+      $scope.saveForm = true;
+      console.log('Original version: ' + data.org_id);
+      flash('alert', 'Click save to restore');
     });
   } 
   // Length of mongoDb _id = 24, so it must be a existing post.
   else if ($stateParams.id.length > 23) {
     PostService.read($stateParams.id).then(function(data) {
       // Promise resolve
+      $scope.share = sharePost(data);
       $scope.post = data;
       $scope.toc = MarkdownToc.make(data);
     }, function(msg) {
@@ -180,6 +183,16 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   };
 
+  $scope.downloadPdf = function downloadPdf(post) {
+    PostService.pdf(post._id).success(function(pdfStream) {
+      var file = new Blob([pdfStream], {type: 'application/pdf'});
+      var title = post.title.replace(/[^\w]/gi, '');
+      saveAs(file, title + ".pdf");
+      $scope.downloadPdfLabel = 'has been downloaded';
+      $("#downloadPdf").removeClass( "grayscale");
+   });
+  };
+
   $scope.deletePost = function deletePost(post) {
     PostService.delete($stateParams.id).success(function(msg) {
       console.log('Deleted post:' + post._id + ' ' + msg); 
@@ -187,6 +200,21 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $state.go("post");
     });
   };
+
+  function sharePost(post) {
+    if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){
+      $scope.whatsappEnabled = true;
+      $scope.telegramEnabled = true;
+      $scope.smsEnabled = true;
+    }
+    share = {};
+    share.caption = encodeURI('Post');
+    share.title = encodeURI(post.title);
+    share.body  = 'Post: ' + post.title + '\n';
+    if (post.content !== undefined) share.body += post.content;
+    share.body = encodeURIComponent(share.body);
+    return share;
+  }
 
 }]);
 

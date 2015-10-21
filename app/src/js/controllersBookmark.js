@@ -165,7 +165,7 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
     share.title = encodeURI(bookmark.title);
     share.body  = 'Bookmark: ' + bookmark.title + '\n';
     share.body += 'Url: ' + bookmark.url + '\n\n';
-    share.body += bookmark.content;
+    if (bookmark.content !== undefined) share.body += bookmark.content;
     share.body = encodeURIComponent(share.body);
     console.log('##### Share -> ' + share.title); 
     console.dir(share);

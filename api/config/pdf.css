@@ -1,0 +1,11 @@
+/* https://github.com/alanshaw/markdown-pdf/blob/master/html5bp/css/main.css#L242-L244 */
+
+table {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+table tr, table td {
+    border: 1px solid #CBC1C1;
+    padding: 4px;
+}

@@ -65,4 +65,11 @@ form(name="bookmarkForm")
   div.column.small-6.date-meta.panel
    i Updated:  {{bookmark.updated | date: 'yyyy-MM-dd'}}
 
-include ./includes/share.jade
+div.row
+  div#share.reveal-modal(data-reveal='')
+   a.close-reveal-modal &#215;
+   div.row
+    div.small-12.columns
+     fieldset
+      legend.fi-share  Share with
+      include ./includes/share.jade

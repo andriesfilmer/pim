@@ -115,7 +115,15 @@ exports.create = function(req, res) {
   var bookmarkEntry = new db.bookmarkModel();
 
   bookmarkEntry.user_id = req.user.id;
-  bookmarkEntry.title = bookmark.title;
+
+  // Title required
+  if (bookmark.title !== undefined && bookmark.title !== null && bookmark.title !== "") {
+    bookmarkEntry.title = bookmark.title;
+  }
+  else {
+    return res.sendStatus(400); // Bad Request
+  }
+
   bookmarkEntry.url = bookmark.url;
   bookmarkEntry.public = bookmark.public;
   bookmarkEntry.content = bookmark.content;
@@ -169,19 +177,19 @@ exports.update = function(req, res) {
     }
   }
 
-  if (bookmark.url !== null && bookmark.url !== "" && bookmark.url !== undefined) {
+  if (bookmark.url !== undefined) {
     updateBookmark.url = bookmark.url;
   }
 
-  if (bookmark.category != null) {
+  if (bookmark.category !== undefined) {
     updateBookmark.category = bookmark.category;
   }
 
-  if (bookmark.public != null) {
+  if (bookmark.public !== undefined) {
     updateBookmark.public = bookmark.public;
   }
 
-  if (bookmark.content != null && bookmark.content != "") {
+  if (bookmark.content !== undefined) {
     updateBookmark.content = bookmark.content;
   }
 

@@ -286,6 +286,13 @@ appServices.factory('PostService', function($http, $q, $window) {
       return $http.get(options.api.base_url + '/post/search', {'params': {searchKey: searchKey}});
     },
 
+    pdf: function(id, toc) {
+      return $http.post(options.api.base_url + '/post/pdf/' + id, {}, {responseType: 'arraybuffer'})
+      .error(function(data, status, headers, config) {
+        console.log('Error: Something wrong with service download pdf');
+      });
+    },
+
     delete: function(id) {
       return $http.delete(options.api.base_url + '/post/' + id);
     },
@@ -457,7 +464,7 @@ appServices.provider('markdownConverter', function () {
     };
 });
 
-appServices.service( 'MarkdownToc', function() {
+appServices.service('MarkdownToc', function() {
 
   var service = {
 

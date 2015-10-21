@@ -12,5 +12,7 @@
 # Contact
 - List of birthdates
 - import vCard
+- download/share vCard
 
-
+# Issues
+- Share PDF with bullet list does not work correct with <ul><li>

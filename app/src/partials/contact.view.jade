@@ -7,6 +7,8 @@ div.row(ng-hide="offline")
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
+  a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+  span.divider
   span(ng-hide="contactForm.name.$error.required")
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
@@ -245,3 +247,18 @@ div.row
     div.columns.small-12.medium-6 {{contact.name}} 
     div.columns.hide-for-small.medium-6 &nbsp; {{contact.companies[0].name}}
 
+div.row
+  div#share.reveal-modal(data-reveal='')
+   a.close-reveal-modal &#215;
+   div.row
+    div.small-12.columns
+     fieldset
+      legend.fi-share  Share with
+      include ./includes/share.jade
+     fieldset
+      legend.fi-download  Download 
+      div.row
+       div.small-12.columns
+        a(ng-click="downloadvCard('55a62354e5e0706f308794f2')", title='Download contact')
+         img.share(src="/static/images/icon-vcard-128.png")
+         span.share vCard

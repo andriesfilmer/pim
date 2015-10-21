@@ -75,4 +75,11 @@ div.row
     li.tag(ng-repeat='tag in post.tags')
      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
 
-include ./includes/share.jade
+div.row
+  div#share.reveal-modal(data-reveal='')
+   a.close-reveal-modal &#215;
+   div.row
+    div.small-12.columns
+     fieldset
+      legend.fi-share  Share with
+      include ./includes/share.jade
