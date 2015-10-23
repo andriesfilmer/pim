@@ -27,7 +27,7 @@ div.row
      label(for="contact-1000")
     div.small-12
      span.date-meta 
-      i  * Settings wil be reset on logout
+      i  * Settings only for this device
 
   fieldset
    legend Order contacts
@@ -41,55 +41,7 @@ div.row
     div.switch.round.column.small-6
      input#contact-order-updated(type="radio", value="updated", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('updated')")
      label(for="contact-order-updated")
-  fieldset
-   div.row
-    div.column.small-12
-     button.radius(ng-click="saveSettings('#{stateGo}')", title='Save settings') Save
-   div.row
-    div.small-12
-     span.date-meta 
-      i  * Settings wil be reset on logout
 
   fieldset
-   legend Download contacts
-   div.row
-    div.column.small-12.medium-3
-     div.download-vcard
-      nobr
-       label Phonenumbers
-        input(type="checkbox",name="phonenumbers", ng-model="dlPhones", ng-init="dlPhones=true")
-     div.download-vcard
-      nobr
-       label Companies
-        input(type="checkbox",name="companies", ng-model="dlCompanies") 
-     div.download-vcard
-      nobr
-       label E-mailaddresses
-        input(type="checkbox",name="emailadresses", ng-model="dlEmails")
-     div.download-vcard
-      nobr
-       label Websites
-        input(type="checkbox",name="websites", ng-model="dlWebsites")
-    div.column.small-12.medium-3
-     div.download-vcard
-      nobr
-       label Photo
-        input(type="checkbox",name="photo", ng-model="dlPhoto", ng-init="dlPhoto=true")
-     div.download-vcard
-      nobr
-       label Addressess
-        input(type="checkbox",name="addresses", ng-model="dlAddresses")
-     div.download-vcard
-      nobr
-       label Birthdate
-        input(type="checkbox",name="birthdate", ng-model="dlBirthdate")
-     div.download-vcard
-      nobr
-       label Notes
-        input(type="checkbox",name="notes", ng-model="dlNotes")
-    div.column.small-12.medium-3
-     p
-      button.radius(ng-click="downloadContacts('#{stateGo}')", title='Download contacts') Create vCard
-    div.column.small-12.medium-3(ng-show="vCardShow")
-     p
-      a.fi-download(href="{{vCardLink}}", download='')  Download 
+   legend.fi-download  Contacts as vCard
+   include ./contact.vcard.jade

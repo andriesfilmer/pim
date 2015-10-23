@@ -256,9 +256,5 @@ div.row
       legend.fi-share  Share with
       include ./includes/share.jade
      fieldset
-      legend.fi-download  Download 
-      div.row
-       div.small-12.columns
-        a(ng-click="downloadvCard('55a62354e5e0706f308794f2')", title='Download contact')
-         img.share(src="/static/images/icon-vcard-128.png")
-         span.share vCard
+      legend.fi-download  Contact as vCard
+      include ./includes/contact.vcard.jade

@@ -188,7 +188,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       var file = new Blob([pdfStream], {type: 'application/pdf'});
       var title = post.title.replace(/[^\w]/gi, '');
       saveAs(file, title + ".pdf");
-      $scope.downloadPdfLabel = 'has been downloaded';
+      $scope.downloadLabel = 'has been downloaded';
       $("#downloadPdf").removeClass( "grayscale");
    });
   };

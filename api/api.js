@@ -90,14 +90,11 @@ app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.eve
 /* Contacts routes    */
 /*******************/
 
-// Search contacts
-app.get('/contact/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
-
 // Get all contacts
 app.get('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.list);
 
-// File download for all contact in vCard format.
-app.get('/contact/download', expressJwt({secret: secret.secretToken}), routes.contacts.download); 
+// Search contacts
+app.get('/contact/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
 
 // Get the contact id
 app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.read); 
@@ -108,11 +105,15 @@ app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.c
 // Edit the contact id
 app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 
 
-// Delete the contact id
-app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 
+// File download for contact(s) in vCard format.
+app.post('/contact/download/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vcards); 
+app.post('/contact/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcard); 
 
 // File upload for profile pictures
 app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
+
+// Delete the contact id
+app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 
 
 
 /*******************/

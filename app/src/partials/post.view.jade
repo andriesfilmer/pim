@@ -87,8 +87,7 @@ div.row
       legend.fi-page-pdf  Download
       div.row
        div.small-12.columns
-        a(ng-click='downloadPdf(post, toc)', title='Download contacts', target='_blank')
+        a(ng-click='downloadPdf(post)', title='Download contacts', target='_blank')
          img#downloadPdf.share.grayscale(src='/static/images/icon-pdf-128.png')
-         span.share  PDF {{ downloadPdfLabel }}
-          a(ng-href='{{url}}', title='Download contacts', target="_blank")
+         span.share  PDF {{ downloadLabel }}
 

@@ -257,24 +257,11 @@ exports.fileupload = function(req, res) {
   });
 };
 
-exports.download = function(req, res) {
+exports.vcards = function(req, res) {
 
   if (!req.user) {
     return res.sendStatus(401); // Unauthorized
   }
-
-  //console.log('##### req.query :'); 
-  //console.dir(req.query); 
-
-  var vcfContent = '';
-  var dlPhones = req.query.phones;
-  var dlCompanies = req.query.companies;
-  var dlEmails = req.query.emails;
-  var dlWebsites = req.query.websites;
-  var dlPhoto = req.query.photo;
-  var dlAddresses = req.query.addresses;
-  var dlBirthdate = req.query.birthdate;
-  var dlNotes = req.query.notes;
 
   var query = db.contactModel.find({ user_id: req.user.id });
   query.sort('-name');
@@ -284,116 +271,153 @@ exports.download = function(req, res) {
       console.log(err);
     }
 
+    var vcfContent;
     if (results !== null) {
-      create_vCards(results);
-    }
 
-    // The name off the file is a bit cyrptic so you don't leave a obvious file to download for anonymous.
-    var vcfFile = 'contacts_' + req.user.id + '.vcf';
-    var downloadDir = "../app/public/download/";
-    if (!fs.existsSync(downloadDir)){
-      fs.mkdirSync(downloadDir);
-    }
-    fs.writeFile(downloadDir + vcfFile, vcfContent, function(err) {
-
-      if(err) {
-          return console.log(err);
-      }
-
-      console.log("The file was saved!");
-
-      // Send vcfFile as link, i.o. '/download/contacts_user_id.vcf'
-      res.send(vcfFile); 
-
-    }); 
-
-    // Function for content in vCard.
-    function create_vCards(contacts) {
+      // Concat vCards
       results.forEach(function(contact){
-
-        // Debug
-        //console.log('##### Fullname -> ' + contact.name); 
-
-        // vCard Elements
-        // http://www.iana.org/assignments/vcard-elements/vcard-elements.xhtml
-
-        vcfContent += "BEGIN:VCARD\n";
-        vcfContent += "VERSION:3.0\n";
-        vcfContent += "FN:" + contact.name + "\n";
-
-        // Phonenumbers
-        if (contact.phones.length > 0 && dlPhones == 'true') {
-          contact.phones.forEach(function(phone) {
-            if (phone.type) {
-             vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";
-            }
-          });
-        }
-
-        // Companies
-        if (contact.companies.length > 0 && dlCompanies == 'true') {
-          contact.companies.forEach(function(companies) {
-            if (companies.title) {
-             vcfContent += "ORG;TYPE=" + companies.title.replace(/\s/g, '_') + ":" + companies.name + "\n";
-            }
-          });
-        }
-
-        // E-mailaddresses
-        if (contact.emails.length > 0 && dlEmails == 'true') {
-          contact.emails.forEach(function(emails) {
-            if (emails.type) {
-             vcfContent += "EMAIL;TYPE=" + emails.type.replace(/\s/g, '_') + ":" + emails.value + "\n";
-            }
-          });
-        }
-
-        // Websites
-        if (contact.websites.length > 0 && dlWebsites == 'true') {
-          contact.websites.forEach(function(websites) {
-            if (websites.type) {
-             vcfContent += "URL;TYPE=" + websites.type.replace(/\s/g, '_') + ":" + websites.value + "\n";
-            }
-          });
-        }
-
-        // Addresses
-        if (contact.addresses.length > 0 && dlAddresses == 'true') {
-          contact.addresses.forEach(function(addresses) {
-            if (addresses.type) {
-             vcfContent += "ADR;TYPE=" + addresses.type.replace(/\s/g, '_') + ":" + addresses.value + "\n";
-            }
-          });
-        }
-
-        // Birthdate
-        if (moment(contact.birthdate).isValid() && dlBirthdate == 'true') {
-             vcfContent += "BDAY:" + moment(contact.birthdate).format("YYYY-MM-DD") + "\n";
-        }
-
-        // notes
-        if (contact.notes !== undefined && contact.notes.length > 0 && dlNotes == 'true' ) {
-          vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + quotedPrintable.encode(utf8.encode(contact.notes)) + "\n";
-        }
-
-        // Convert image to base64 encoded string only if uploaded photo exists.
-        var photo = "../app/public" + contact.photo;
-        if (fs.existsSync(photo) && dlPhoto == 'true') {
-          vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
-        }
-
-        vcfContent += "END:VCARD\n";
-
+        vcfContent += create_vCard(req, contact);
       });
 
-    }
+      // The name off the file is a bit cyrptic so you don't leave a obvious file to download for anonymous.
+      var vcfFile = 'contacts_' + req.user.id + '.vcf';
+      var downloadDir = "../app/public/download/";
+      if (!fs.existsSync(downloadDir)){
+        fs.mkdirSync(downloadDir);
+      }
 
-    // Function to encode file data to base64 encoded string.
-    function base64_encode(photo) {
-        var image = fs.readFileSync(photo);
-        return new Buffer(image).toString('base64');
-    }
+      fs.writeFile(downloadDir + vcfFile, vcfContent, function(err) {
 
+        if(err) {
+            return console.log(err);
+        }
+
+        console.log('The file ' + vcfFile + ' has been saved!');
+
+        // Send vcfFile as link, i.o. '/download/contacts_user_id.vcf'
+        res.send(vcfFile); 
+
+      }); 
+    }
   });
-
 };
+
+exports.vcard = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  console.log('##### vCard for contact_id -> ' + req.body.params.contact_id); 
+
+  var query = db.contactModel.findOne({ user_id: req.user.id, _id: req.body.params.contact_id });
+  query.exec(function(err, result) {
+
+    if (err) {
+      console.log(err);
+    }
+
+    if (result !== null) {
+        vcfContent = create_vCard(req, result);
+        res.send(vcfContent); 
+    }
+  });
+};
+
+// Function for content in vCard.
+function create_vCard(req, contact) {
+
+
+  var dlPhones = req.body.params.phones;
+  var dlCompanies = req.body.params.companies;
+  var dlEmails = req.body.params.emails;
+  var dlWebsites = req.body.params.websites;
+  var dlPhoto = req.body.params.photo;
+  var dlAddresses = req.body.params.addresses;
+  var dlBirthdate = req.body.params.birthdate;
+  var dlNotes = req.body.params.notes;
+
+  console.log('##### dlPhones -> ' + dlPhones); 
+
+  // vCard Elements
+  // http://www.iana.org/assignments/vcard-elements/vcard-elements.xhtml
+
+  //var vcfContent = vcfContent || '';
+  vcfContent  = "BEGIN:VCARD\n";
+  vcfContent += "VERSION:3.0\n";
+  vcfContent += "FN:" + contact.name + "\n";
+
+  // Phonenumbers
+  if (contact.phones.length > 0 && dlPhones) {
+    console.log('##### test in phones -> '); 
+    contact.phones.forEach(function(phone) {
+      if (phone.type) {
+        vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";
+      }
+    });
+  }
+
+  // Companies
+  if (contact.companies.length > 0 && dlCompanies) {
+    contact.companies.forEach(function(company) {
+      if (company.title) {
+        vcfContent += "ORG;TYPE=" + company.title.replace(/\s/g, '_') + ":" + company.name + "\n";
+      }
+    });
+  }
+
+  // E-mailaddresses
+  if (contact.emails.length > 0 && dlEmails) {
+    contact.emails.forEach(function(email) {
+      if (email.type) {
+        vcfContent += "EMAIL;TYPE=" + email.type.replace(/\s/g, '_') + ":" + email.value + "\n";
+      }
+    });
+  }
+
+  // Websites
+  if (contact.websites.length > 0 && dlWebsites) {
+    contact.websites.forEach(function(website) {
+      if (website.type) {
+        vcfContent += "URL;TYPE=" + website.type.replace(/\s/g, '_') + ":" + website.value + "\n";
+      }
+    });
+  }
+
+  // Addresses
+  if (contact.addresses.length > 0 && dlAddresses) {
+    contact.addresses.forEach(function(address) {
+      if (address.type) {
+        vcfContent += "ADR;TYPE=" + address.type.replace(/\s/g, '_') + ":" + address.value + "\n";
+      }
+    });
+  }
+
+  // Birthdate
+  if (moment(contact.birthdate).isValid() && dlBirthdate) {
+    vcfContent += "BDAY:" + moment(contact.birthdate).format("YYYY-MM-DD") + "\n";
+  }
+
+  // notes
+  if (contact.notes !== undefined && contact.notes.length > 0 && dlNotes) {
+    vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + quotedPrintable.encode(utf8.encode(contact.notes)) + "\n";
+  }
+
+  // Convert image to base64 encoded string only if uploaded photo exists.
+  var photo = "../app/public" + contact.photo;
+  if (contact.photo !== '' && fs.existsSync(photo) && dlPhoto) {
+    vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
+  }
+
+  vcfContent += "END:VCARD\n";
+
+  return vcfContent;
+}
+
+
+// Function to encode file data to base64 encoded string.
+function base64_encode(photo) {
+    var image = fs.readFileSync(photo);
+    return new Buffer(image).toString('base64');
+}
+

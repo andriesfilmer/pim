@@ -9,14 +9,6 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
     }
 
-    // Save general post settings
-    $scope.saveSettings = function saveSettings(stateGo) {
-      $('a.close-reveal-modal').trigger('click');
-      flash('success', 'Settings saved');
-      $state.go(stateGo, {}, {reload: true});
-    };
-
-
     // Set contact limit for contacts
     $scope.contactLimit =  $window.localStorage.contactLimit;
     $scope.changeLimit = function(limit) {
@@ -102,11 +94,12 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
       }
     };
 
-    $scope.downloadContacts = function downloadContacts(stateGo) {
-      ContactService.downloadContacts($scope.dlPhones, $scope.dlCompanies,
+    $scope.downloadContact = function downloadContacts() {
+      ContactService.vCards($scope.dlPhones, $scope.dlCompanies,
           $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
           $scope.dlBirthdate, $scope.dlNotes).success(function(link) {
         $scope.vCardShow = true;
+        $scope.downloadLabel = 'File has been created.';
         $scope.vCardLink = '/download/' + link;
       });
 
@@ -123,7 +116,7 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
 }]);
 
 appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService', 'FileUpload', 'usSpinnerService',
- function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, FileUpload, usSpinnerService) {
+  function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, FileUpload, usSpinnerService) {
 
   $(document).foundation();
 
@@ -134,7 +127,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.editForm = !$scope.editForm;
   };
 
-  // Array's for select boxes
+  // Array's for labels on select boxes
   $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
   $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
   $scope.contactEmailOptions = ['Personal','Home','Work','Other'];
@@ -201,7 +194,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     });
   }
 
-  // Add (push) phone, email, address or website field.
+  // Add/push (+) phone, compagy, email, address or website field.
   $scope.AddField = function(type) {
     if ($scope.contact[type] === undefined) {
       $scope.contact[type] = [];
@@ -224,7 +217,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $('a.close-reveal-modal').trigger('click');
   };
 
-  // Remove phone, email, relation, address or website field.
+  // Remove (X) phone, email, relation, address or website field.
   $scope.DiscardField = function(type, index) {
     if($scope.contact[type] && $scope.contact[type][index]) {
       $scope.contact[type].splice(index, 1);
@@ -236,10 +229,10 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   $scope.upsertContact = function upsertContact(contact, upsert) {
 
     // Store birthdates with the same time so we can run a crontab once a day
-    //if(contact.birthdate !== undefined && contact.birthdate !== null) {
+    //if(contact.birthdate !== undefined && contact.birthdate !== null) 
     //  $scope.birthdate = contact.birthdate.toISOString().substr(0, 10) + "T00:00:00Z";
     //  contact.birthdate = new Date($scope.birthdate); 
-    //}
+    //
 
     // Create array's from db
     var arrays = {'phones': [], 'emails': [], 'addresses': [], 'websites': []};
@@ -252,14 +245,13 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       $scope.contact[k] = arrays[k];
     });
 
-    // Remove non numeric numbers so we can search on phonenumbers.
+    // Remove non numeric numbers to store in db, so we can search on phonenumbers.
     angular.forEach($scope.contact.phones, function(val, key) {
       $scope.contact.phones[key].value = val.value.replace(/[^\d\+]/g, "");
     });
 
     // If we have a _id we update the contact, else we create (insert) a new contact.
     if (upsert === 'insert') {
-
       ContactService.create(contact).then(function(msg) {
         // Promise reslove
         flash('success', msg);
@@ -268,7 +260,8 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
         // Promise reject
         flash('alert', err);
       });
-    } else {
+    }
+    else {
       // upsert must be a 'update'
       ContactService.update(contact).then(function(msg) {
         // Promise reslove
@@ -284,25 +277,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.saveForm = false;
 
   };
-
-  function shareContact(contact) {
-    if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){
-      $scope.whatsappEnabled = true;
-      $scope.telegramEnabled = true;
-      $scope.smsEnabled = true;
-    }
-    share = {};
-    share.caption = encodeURI('Contact');
-    share.title = encodeURI(contact.name);
-    share.body  = 'Contact: ' + contact.name + '\n';
-    share.body += 'See vCard as attachment.';
-    share.body = encodeURIComponent(share.body);
-    console.log('##### Contact'); 
-    console.dir(contact);
-    console.log('##### Share'); 
-    console.dir(share);
-    return share;
-  }
 
   // Get contacts by relations if we change the SearchKey
   $scope.$watch('searchKey', function(searchKey) {
@@ -367,6 +341,55 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       });
     }
   };
+
+  $scope.downloadContact = function downloadContact(contact) {
+    console.log('##### contact._id -> ' + contact._id); 
+    ContactService.vCard(contact._id, $scope.dlPhones, $scope.dlCompanies,
+      $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
+      $scope.dlBirthdate, $scope.dlNotes).success(function(vCardStream) {
+        var file = new Blob([vCardStream], {type: 'text/x-vcard'});
+        var fileName = contact.name.replace(/[^\w]/gi, '') + '.vcf';
+        saveAs(file, fileName);
+        $scope.downloadLabel = 'File has been downloaded!';
+    });
+
+  };
+
+  function shareContact(contact) {
+    if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){
+      $scope.whatsappEnabled = true;
+      $scope.telegramEnabled = true;
+      $scope.smsEnabled = true;
+    }
+    share = {};
+    share.caption = encodeURI('Contact');
+    share.title = encodeURI(contact.name);
+    share.body  = 'Contact: ' + contact.name + '\n\n';
+    if (contact.phones.length > 0) {
+      contact.phones.forEach(function(phone) {
+        share.body += 'Phone ' + phone.type + ': ' + phone.value + "\n";
+      });
+    }
+    if (contact.companies.length > 0) {
+      contact.companies.forEach(function(company) {
+        share.body += 'Company ' + company.title + ': ' + company.name + "\n";
+      });
+    }
+    if (contact.emails.length > 0) {
+      contact.emails.forEach(function(email) {
+        share.body += 'Email ' + email.type + ': ' + email.value + "\n";
+      });
+    }
+    if (contact.addresses.length > 0) {
+      contact.addresses.forEach(function(address) {
+        share.body += 'Address ' + address.type + ': ' + address.value + "\n";
+      });
+    }
+    if (contact.notes !== undefined ) share.body += '\n\n' + contact.notes;
+
+    share.body = encodeURIComponent(share.body);
+    return share;
+  }
 
 }]);
 

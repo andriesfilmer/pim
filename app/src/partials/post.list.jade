@@ -47,12 +47,7 @@ div.row
     div.switch.round.column.small-6
      input#post-1000(type="radio", value="1000", name="postLimit", ng-model="postLimit", ng-change="changeLimit(1000)")
      label(for="post-1000")
-
-  fieldset
-   div.row
-    div.column.small-12
-     button.radius(ng-click='saveSettings()', title='Save settings') Save
    div.row
     div.small-12
      span.date-meta 
-      i  * Settings wil be reset on logout
+      i  * Settings only for this device.

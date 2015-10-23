@@ -30,20 +30,15 @@ module.exports = function(grunt) {
     ngconstant: {
       options: {
         name: 'appConfig',
+        dest: 'src/js/config.js',
         wrap: '// Module created by Gruntfile.js. Don\'t edit here!.\n{%= __ngModule %}\n\n'
       },
       dev: {
-        options: {
-          dest: 'src/js/config.js',
-        },
         constants: {
           ENV: 'development'
         }
       },
       prod: {
-        options: {
-          dest: 'src/js/config.js',
-        },
         constants: {
           ENV: 'production'
         }
