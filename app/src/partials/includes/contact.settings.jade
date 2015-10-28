@@ -37,10 +37,10 @@ div.row
      input#contact-order-name(type="radio", value="name", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('name')")
      label(for="contact-order-name")
    div.row
-    div.column.small-6.my-row By updated
+    div.column.small-6.my-row By last-read
     div.switch.round.column.small-6
-     input#contact-order-updated(type="radio", value="updated", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('updated')")
-     label(for="contact-order-updated")
+     input#contact-order-last-read(type="radio", value="last_read", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('last_read')")
+     label(for="contact-order-last-read")
 
   fieldset
    legend.fi-download  Contacts as vCard

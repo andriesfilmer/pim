@@ -33,51 +33,53 @@ var Event = new Schema({
     end: {type: Date},
     allDay: { type: String},
     description: { type: String},
-    status: { type: String},
+    status: { type: String },
     className: { type: String, default: 'appointment'},
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now }
 });
 
 var Contact = new Schema({
-    user_id: { type: String},
+    user_id: { type: String },
     name: { type: String, required: true },
-    companies: {type: Array},
-    photo: { type: String},
-    phones: {type: Array},
-    emails: {type: Array},
-    websites: {type: Array},
-    addresses: {type: Array},
-    relations: {type: Array},
-    birthdate: { type: Date}, 
+    companies: {type: Array },
+    photo: { type: String },
+    phones: { type: Array },
+    emails: { type: Array },
+    websites: {type: Array },
+    addresses: {type: Array },
+    relations: {type: Array },
+    birthdate: { type: Date }, 
     notes: { type: String}, 
     starred: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
-    updated: { type: Date, default: Date.now }
+    updated: { type: Date, default: Date.now },
+    read: { type: Number },
+    last_read: { type: Date, default: Date.now }
 });
 
 var Post = new Schema({
-    user_id: { type: String},
+    user_id: { type: String },
     title: { type: String, required: true },
-    content: { type: String},
-    tags: [ {type: String} ],
+    content: { type: String },
+    tags: [ { type: String } ],
     public: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    type: {type: String, default: 'note'}
+    type: { type: String, default: 'note' }
 }, { strict: false } );
 
 
 var Bookmark = new Schema({
-    user_id: { type: String},
+    user_id: { type: String },
     title: { type: String, required: true },
     url: { type: String },
-    content: { type: String},
-    tags: [ {type: String} ],
+    content: { type: String },
+    tags: [ { type: String } ],
     public: { type: Boolean, default: false },
     created: { type: Date, default: Date.now },
     updated: { type: Date, default: Date.now },
-    category: {type: String}
+    category: { type: String }
 });
 
 

@@ -118,7 +118,8 @@ module.exports = function(grunt) {
             'vendor/js/angular-animate.min.js',
             'vendor/js/angular-spinner.min.js',
             'vendor/js/FileSaver.min.js',
-            'vendor/js/spin.min.js',
+            'vendor/js/cropper.js',
+            'vendor/js/ngCropper.js',
             'vendor/js/moment.min.js',
             'vendor/js/calendar.js',
             'vendor/js/fullcalendar.min.js',
@@ -129,6 +130,7 @@ module.exports = function(grunt) {
           'public/vendor/css/vendor.css': [
              'vendor/css/normalize.css',
              'public/vendor/css/foundation.css',
+             'vendor/css/ngCropper.all.css',
              'vendor/css/fullcalendar.css',
              'vendor/css/foundation-icons.css'],
         },
@@ -242,7 +244,7 @@ module.exports = function(grunt) {
                                  'uglify', 'jade', 'jshint', 'connect','watch']);
 
   // grunt for production (minified files, remove logging, clean-up)
-  grunt.registerTask('production', ['once', 'env:prod', 'preprocess', 'ngconstant:prod', 'sass', 
+  grunt.registerTask('production', ['once', 'env:prod','preprocess', 'ngconstant:prod', 'sass', 
                                     'concat:prod', 'removelogging', 'cssmin', 'uglify', 
                                     'jade', 'appcache', 'clean']);
 

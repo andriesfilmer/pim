@@ -182,6 +182,10 @@ appServices.factory('ContactService', function($http, $q, $window) {
       return $http.post(options.api.base_url + '/contact/download/vcard', {'params': {contact_id: contact_id, 
         phones: phones, companies: companies, emails: emails, websites: websites, addresses: addresses, 
         birthdate: birthdate, photo: photo, notes: notes}}, {responseType: 'arraybuffer'});
+    },
+
+    upload: function(filename, file) {
+      return $http.post(options.api.base_url + '/fileupload', {'params': {filename: filename, file: file}});
     }
 
   };
@@ -527,17 +531,23 @@ appServices.service('MarkdownToc', function() {
 
 });
 
-appServices.service('FileUpload', ['$http', function ($http) {
-    this.uploadFileToUrl = function(file, uploadUrl, filename){
-        var fd = new FormData();
-        fd.append('file', file);
-        $http.post(options.api.base_url + uploadUrl + '?filename=' + filename , fd, {
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        })
-        .success(function(){
-        })
-        .error(function(){
-        });
-    };
-}]);
+appServices.factory('Utils', function($q) {
+
+  return {
+
+    isImage: function(src) {
+      var deferred = $q.defer();
+      var image = new Image();
+      image.onerror = function() {
+          deferred.resolve(false);
+      };
+      image.onload = function() {
+          deferred.resolve(true);
+      };
+      image.src = src;
+      return deferred.promise;
+    }
+
+  };
+
+});

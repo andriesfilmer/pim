@@ -24,9 +24,7 @@ div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-ev
   div.columns.small-10.medium-5 {{contact.name}} &nbsp;
   div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2
- div(ng-show='contact.starred', ng-click='updateStarredState(contact, false)')
-  i.starred.fi-star
- div(ng-show='!contact.starred', ng-click='updateStarredState(contact, true)')
-  i.un-starred.fi-star
+   img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
+
 
 include ./includes/contact.settings.jade

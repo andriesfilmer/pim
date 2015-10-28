@@ -12,7 +12,7 @@ var app = angular.module('app', [
                                  'appServices',
                                  'appFilters',
                                  'appDirectives',
-                                 'angularSpinner'
+                                 'ngCropper'
 ]);
 
 var options = {};

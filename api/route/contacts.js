@@ -19,7 +19,7 @@ exports.list = function(req, res) {
   var query = db.contactModel.find({user_id: req.user.id});
   req.query.starred === 'true' ? query.find({starred: true}) : null;
   req.query.birthdate === 'true' ? query.find({'birthdate': {$type: 9} }).sort('-birthdate') : null;
-  req.query.order === 'name' ? query.sort('name') : query.sort('-updated');
+  req.query.order === 'name' ? query.sort('name') : query.sort('-last_read');
   query.select("_id birthdate name companies starred photo");
   query.limit(req.query.limit);
   query.exec(function(err, results) {
@@ -100,9 +100,15 @@ exports.read = function(req, res) {
     }
 
     if (result != null) {
+
+      // update contact so we can make stats on how many time read.
       result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
         return res.status(200).json(result);
       });
+
+      // update contact so we can sort contacts on last_read.
+      db.contactModel.update({_id: id, user_id: req.user.id}, {last_read: new Date()} , function(err, nbRows, raw) {});
+
     }
     else {
       return res.sendStatus(400); // Bad Request
@@ -243,17 +249,28 @@ exports.delete = function(req, res) {
   });
 };
 
+//exports.fileupload = function(req, res) {
+//  console.log('##### test -> upload'); 
+//  var filename = req.query.filename;
+//  var fstream;
+//  req.pipe(req.busboy);
+//  req.busboy.on('file', function (fieldname, file) {
+//    console.log("Uploading: " + filename); 
+//    fstream = fs.createWriteStream(config.env().upload_dir + "contact_photos/" + filename);
+//    file.pipe(fstream);
+//    fstream.on('close', function () {
+//      res.sendStatus(200); // OK
+//    });
+//  });
+//};
+
 exports.fileupload = function(req, res) {
-  var filename = req.query.filename;
-  var fstream;
-  req.pipe(req.busboy);
-  req.busboy.on('file', function (fieldname, file) {
-    console.log("Uploading: " + filename); 
-    fstream = fs.createWriteStream(config.env().upload_dir + "contact_photos/" + filename);
-    file.pipe(fstream);
-    fstream.on('close', function () {
-      res.sendStatus(200); // OK
-    });
+
+  var imgPath = config.env().upload_dir + "contact_photos/" + req.body.params.filename;
+  var base64Data = req.body.params.file.replace(/^data:image\/jpeg;base64,/, "");
+
+  fs.writeFile(imgPath, base64Data, 'base64', function(err) {
+    console.log('##### contactPhoto -> upload -> ' + req.body.params.filename); 
   });
 };
 
@@ -308,7 +325,7 @@ exports.vcard = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  console.log('##### vCard for contact_id -> ' + req.body.params.contact_id); 
+  console.log('Create vCard for contact_id -> ' + req.body.params.contact_id); 
 
   var query = db.contactModel.findOne({ user_id: req.user.id, _id: req.body.params.contact_id });
   query.exec(function(err, result) {
@@ -337,8 +354,6 @@ function create_vCard(req, contact) {
   var dlBirthdate = req.body.params.birthdate;
   var dlNotes = req.body.params.notes;
 
-  console.log('##### dlPhones -> ' + dlPhones); 
-
   // vCard Elements
   // http://www.iana.org/assignments/vcard-elements/vcard-elements.xhtml
 
@@ -349,7 +364,6 @@ function create_vCard(req, contact) {
 
   // Phonenumbers
   if (contact.phones.length > 0 && dlPhones) {
-    console.log('##### test in phones -> '); 
     contact.phones.forEach(function(phone) {
       if (phone.type) {
         vcfContent += "TEL;TYPE=" + phone.type.replace(/\s/g, '_') + ":" + phone.value + "\n";

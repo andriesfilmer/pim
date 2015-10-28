@@ -109,8 +109,10 @@ div(ng-hide="editForm")
 
 form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="editForm")
  div.row
-  div.column.small-12
+  div.column.small-10
    input#title-input(type="text", required='', name="name", placeholder="Fullname", ng-model="contact.name", ng-change="isChanged()")
+  div.column.small-2.text-center
+   a.fi-photo(title="Add photo", data-reveal-id="photo", data-reveal-ajax="true")
 
   // Phones
   div.column.small-10.item-title Phonenumbers
@@ -216,18 +218,6 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12 &nbsp;
    input.items(type="date", ng-model="contact.birthdate", ng-change="isChanged()")
 
- // Photo url
- div.row
-  div.column.small-12.item-title Photo url or upload a photo
-  div.column.small-12
-   input.items(type="text", name="contact-photo", ng-model="contact.photo", ng-change="isChanged()", placeholder="http://path/to/photo")
-  div.column.small-6(ng-hide="uploadProcess")
-   input(type="file", file-model="contactPhoto")
-  div.column.small-6(ng-hide="uploadProcess")
-   button.small.radius(ng-click="uploadContactPhotoFile()") Upload
-  div.row(ng-show="uploadProcess")
-   div.column.small-12(us-spinner="{radius:8, width:3, length: 8}", spinner-key="spinner-1") &nbsp;
-
  // Notes
  div.row
   div.column.small-12.item-title Notes
@@ -258,3 +248,21 @@ div.row
      fieldset
       legend.fi-download  Contact as vCard
       include ./includes/contact.vcard.jade
+
+div#photo.reveal-modal(data-reveal='')
+ a.close-reveal-modal &#215;
+ div.row
+  div.column.small-12
+   h2 New profile photo
+  div.columns.small-8
+   input(type="file", onchange="angular.element(this).scope().onFile(this.files[0])")
+  div.columns.small-4
+    button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(preview.dataUrl)")  Upload
+  div.columns.small-12.medium-3
+  div.columns.small-12(ng-if="dataUrl" class="img-container")
+   p
+    img(ng-if="dataUrl" ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="options")
+  div.column.small-12
+   h2 Remove profile photo
+   button.notice.radius.small(ng-if="contact.photo", ng-click="removePhoto()")  Remove
+

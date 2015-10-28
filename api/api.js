@@ -34,6 +34,7 @@ var app = express();
 app.listen(config.api_port);
 
 app.use(cors(corsOptions));
+//app.use(bodyParser.json({limit: '50mb'})); // for big photo's upload via DataUrl.
 app.use(bodyParser.json());
 app.use(busboy()); 
 

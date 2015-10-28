@@ -1,5 +1,5 @@
-appControllers.controller('ContactListController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'ContactService', 
-  function ContactListController($scope, $state, $stateParams, $window, flash, ContactService) {
+appControllers.controller('ContactListController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'ContactService', 'Utils',
+  function ContactListController($scope, $state, $stateParams, $window, flash, ContactService, Utils) {
 
     $(document).foundation();
 
@@ -51,9 +51,22 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
 
     // Init contacts with promises and show all contacts.
     $scope.init = ContactService.findAll(starred, birthdate, $window.localStorage.contactOrder, $window.localStorage.contactLimit)
-    .then(function(data) {
+    .then(function(contacts) {
+
+      contacts.forEach(function(contact) {
+        // Add image element to array
+        if (contact.photo) {
+          var source = "/upload/contact_photos/" + contact._id + ".jpg";
+          Utils.isImage(source).then(function(result) {
+            if(!result) {
+              contact.photo = '/static/images/profile.jpg';
+            }
+          });
+        }
+      });
+
       // Promise resolved
-      $scope.contacts = data;
+      $scope.contacts = contacts;
     }, function(msg) {
       // Promise reject
       $scope.offline = true;
@@ -115,8 +128,8 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
 
 }]);
 
-appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService', 'FileUpload', 'usSpinnerService',
-  function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, FileUpload, usSpinnerService) {
+appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService','Cropper',
+  function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, Cropper) {
 
   $(document).foundation();
 
@@ -137,6 +150,12 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   $scope.isChanged = function() {
     // Add alert class on save icon
     $scope.saveForm = true;
+  };
+
+  $scope.deletePhoto = function() {
+    $scope.contact.photo = undefined;
+    $scope.saveForm = true;
+    // Todo -> remove file from server.
   };
 
   $scope.labelChanged = function(type, idx, value) {
@@ -228,12 +247,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Update of insert a contact
   $scope.upsertContact = function upsertContact(contact, upsert) {
 
-    // Store birthdates with the same time so we can run a crontab once a day
-    //if(contact.birthdate !== undefined && contact.birthdate !== null) 
-    //  $scope.birthdate = contact.birthdate.toISOString().substr(0, 10) + "T00:00:00Z";
-    //  contact.birthdate = new Date($scope.birthdate); 
-    //
-
     // Create array's from db
     var arrays = {'phones': [], 'emails': [], 'addresses': [], 'websites': []};
     angular.forEach(arrays, function(v, k) {
@@ -304,34 +317,49 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
-  $scope.uploadContactPhotoFile = function(){
-    var file = $scope.contactPhoto;
-    var uploadUrl = "/fileupload";
-    var filename = $scope.contact._id;
-
-    // Show spinner while uploading.
-    $scope.uploadProcess = true;
-    usSpinnerService.spin('spinner-1');
-    if (file.type === "image/png") {
-      filename += ".png";
-    }
-    else {
-      filename += ".jpg";
-    }
-
-    FileUpload.uploadFileToUrl(file, uploadUrl, filename);
-
-    // Wait 3 seconds for scope update.
-    $timeout( function(){ 
-      if(file) {
-        $scope.contact.photo = "/upload/contact_photos/" + filename;
-      }
-      $scope.uploadProcess = false;
-      $scope.saveForm = true;
-      usSpinnerService.stop('spinner-1');
-    }, 3000);
-
+  // Cropper for profile photos
+  $scope.onFile = function(blob) {
+    Cropper.encode((file = blob)).then(function(dataUrl) {
+      $scope.dataUrl = dataUrl;
+      $timeout(showCropper);  // wait for $digest to set image's src
+    });
   };
+
+  function showCropper() { $scope.$broadcast($scope.showEvent); }
+
+  $scope.options = {
+    maximize: true,
+    aspectRatio: 1 / 1,
+    autoCropArea: 0.6,
+    crop: function(dataNew) {
+      data = dataNew;
+    }
+  };
+
+  $scope.removePhoto = function() {
+    $scope.contact.photo = '';
+    $scope.saveForm = true;
+    $('a.close-reveal-modal').trigger('click');
+    flash('success', 'Don\'t forget to save and to reload!');
+  };
+
+  $scope.uploadContactPhotoFile = function(dataUrl){
+    Cropper.crop(file, data)
+    .then(function(blob) {
+      return Cropper.scale(blob, {width: 250});
+    })
+    .then(Cropper.encode).then(function(dataUrl) {
+      filename = $scope.contact._id + ".jpg";
+      $scope.contact.photo = "/upload/contact_photos/" + filename;
+      $scope.saveForm = true;
+      $('a.close-reveal-modal').trigger('click');
+      flash('success', 'Don\'t forget to save and to reload!');
+      ContactService.upload(filename, dataUrl).success(function(data) {
+         console.log('##### contact controller uploaded -> ' + filename ); 
+      });
+    });
+  };
+
 
   // Just by clicking on the starred icon we change starred.
   $scope.updateStarredState = function updateStarredState(contact, makeStarred) {

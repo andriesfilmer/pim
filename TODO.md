@@ -8,6 +8,7 @@
 - New event does not show immediately
 - export vCal
 - import vCal
+- install angular-ui-calendar minified
 
 # Contact
 - List of birthdates
