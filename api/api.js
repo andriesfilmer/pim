@@ -34,8 +34,7 @@ var app = express();
 app.listen(config.api_port);
 
 app.use(cors(corsOptions));
-//app.use(bodyParser.json({limit: '50mb'})); // for big photo's upload via DataUrl.
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '1mb'})); // limit for PNG photo's upload via DataUrl.
 app.use(busboy()); 
 
 console.log('API (' + config.name + ') is starting on port ' + config.api_port);

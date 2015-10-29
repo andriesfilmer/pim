@@ -60,6 +60,8 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
           Utils.isImage(source).then(function(result) {
             if(!result) {
               contact.photo = '/static/images/profile.jpg';
+            } else {
+              contact.photo = source + '?' + contact.updated; // to prevent caching.
             }
           });
         }
@@ -320,20 +322,51 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Cropper for profile photos
   $scope.onFile = function(blob) {
     Cropper.encode((file = blob)).then(function(dataUrl) {
-      $scope.dataUrl = dataUrl;
-      $timeout(showCropper);  // wait for $digest to set image's src
+      // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+      // HTMLCanvasElement.toDataURL() with only PNG and JPEG.
+      fileTypeRegex = /^data:image\/(png|jpeg);base64/;
+      if (!fileTypeRegex.test(dataUrl)){
+        $('a.close-reveal-modal').trigger('click');
+        flash('alert', 'File type not supported!');
+      } else {
+        $scope.dataUrl = dataUrl;
+        $timeout(showCropper);  // wait for $digest to set image's src
+      }
     });
   };
 
   function showCropper() { $scope.$broadcast($scope.showEvent); }
 
   $scope.options = {
-    maximize: true,
     aspectRatio: 1 / 1,
-    autoCropArea: 0.6,
     crop: function(dataNew) {
       data = dataNew;
     }
+  };
+
+  $scope.uploadContactPhotoFile = function(dataUrl) {
+
+    fileTypeRegex = /^data:image\/(png|jpeg);base64/;
+    if (!fileTypeRegex.test(dataUrl)){
+      filename = $scope.contact._id + ".png";
+    } else{
+      filename = $scope.contact._id + ".jpg";
+    }
+    $scope.contact.photo = "/upload/contact_photos/" + filename;
+    $scope.saveForm = true;
+    $('a.close-reveal-modal').trigger('click');
+    flash('success', 'Don\'t forget to save and to reload!');
+
+    Cropper.crop(file, data)
+    .then(function(blob) {
+      return Cropper.scale(blob, {width: 250});
+    })
+    .then(Cropper.encode).then(function(dataUrl) {
+      ContactService.upload(filename, dataUrl).success(function(data, status) {
+      }).error(function(data, status) {
+        flash('alert', 'Image too large (error ' + status + ')');
+      }); 
+    });
   };
 
   $scope.removePhoto = function() {
@@ -341,23 +374,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.saveForm = true;
     $('a.close-reveal-modal').trigger('click');
     flash('success', 'Don\'t forget to save and to reload!');
-  };
-
-  $scope.uploadContactPhotoFile = function(dataUrl){
-    Cropper.crop(file, data)
-    .then(function(blob) {
-      return Cropper.scale(blob, {width: 250});
-    })
-    .then(Cropper.encode).then(function(dataUrl) {
-      filename = $scope.contact._id + ".jpg";
-      $scope.contact.photo = "/upload/contact_photos/" + filename;
-      $scope.saveForm = true;
-      $('a.close-reveal-modal').trigger('click');
-      flash('success', 'Don\'t forget to save and to reload!');
-      ContactService.upload(filename, dataUrl).success(function(data) {
-         console.log('##### contact controller uploaded -> ' + filename ); 
-      });
-    });
   };
 
 

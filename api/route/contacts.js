@@ -249,28 +249,16 @@ exports.delete = function(req, res) {
   });
 };
 
-//exports.fileupload = function(req, res) {
-//  console.log('##### test -> upload'); 
-//  var filename = req.query.filename;
-//  var fstream;
-//  req.pipe(req.busboy);
-//  req.busboy.on('file', function (fieldname, file) {
-//    console.log("Uploading: " + filename); 
-//    fstream = fs.createWriteStream(config.env().upload_dir + "contact_photos/" + filename);
-//    file.pipe(fstream);
-//    fstream.on('close', function () {
-//      res.sendStatus(200); // OK
-//    });
-//  });
-//};
-
 exports.fileupload = function(req, res) {
 
   var imgPath = config.env().upload_dir + "contact_photos/" + req.body.params.filename;
-  var base64Data = req.body.params.file.replace(/^data:image\/jpeg;base64,/, "");
+
+  // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
+  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+  var base64Data = req.body.params.file.replace(/^data:image\/(jpeg|png);base64,/, "");
 
   fs.writeFile(imgPath, base64Data, 'base64', function(err) {
-    console.log('##### contactPhoto -> upload -> ' + req.body.params.filename); 
+    console.log('Contact photo -> upload -> ' + req.body.params.filename); 
   });
 };
 

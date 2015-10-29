@@ -17,13 +17,13 @@ div.row(ng-hide="offline")
   a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")
 
 div(ng-hide="editForm")
- div.row.profile-bg(style="background: url({{contact.photo}}); background-size: cover; background-position: center;")
+ div.row.profile-bg(style="background: url({{contact.photo}}?{{contact.updated}}); background-size: cover; background-position: center;")
  div.row
   div.column.text-right(ng-if="contact.birthdate")
    label.fi-crown  {{contact.birthdate | date: 'dd MMM'}} | {{ calculateAge(contact.birthdate) }}
  div.row.profile-row
   div.column.small-12.text-center
-   img.profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
+   img.profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}?{{contact.updated}}")
   div.column.small-12.contact-name {{contact.name}}
  div.row
   div.column.small-12.medium-6
@@ -257,12 +257,11 @@ div#photo.reveal-modal(data-reveal='')
   div.columns.small-8
    input(type="file", onchange="angular.element(this).scope().onFile(this.files[0])")
   div.columns.small-4
-    button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(preview.dataUrl)")  Upload
-  div.columns.small-12.medium-3
+    button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(dataUrl)")  Upload
   div.columns.small-12(ng-if="dataUrl" class="img-container")
    p
-    img(ng-if="dataUrl" ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="options")
-  div.column.small-12
+    img(ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="options")
+  div.column.small-12(ng-if="contact.photo") 
    h2 Remove profile photo
-   button.notice.radius.small(ng-if="contact.photo", ng-click="removePhoto()")  Remove
+   button.alert.radius.small(ng-click="removePhoto()", title="{{contact.photo}}")  Remove
 
