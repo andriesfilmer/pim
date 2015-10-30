@@ -337,7 +337,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   function showCropper() { $scope.$broadcast($scope.showEvent); }
 
-  $scope.options = {
+  $scope.cropperOptions = {
     aspectRatio: 1 / 1,
     crop: function(dataNew) {
       data = dataNew;
@@ -346,13 +346,14 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   $scope.uploadContactPhotoFile = function(dataUrl) {
 
+    // Check if the dataUrl is a PNG of JPG.
     fileTypeRegex = /^data:image\/(png|jpeg);base64/;
     if (!fileTypeRegex.test(dataUrl)){
       filename = $scope.contact._id + ".png";
     } else{
       filename = $scope.contact._id + ".jpg";
     }
-    $scope.contact.photo = "/upload/contact_photos/" + filename;
+
     $scope.saveForm = true;
     $('a.close-reveal-modal').trigger('click');
     flash('success', 'Don\'t forget to save and to reload!');
@@ -367,6 +368,13 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
         flash('alert', 'Image too large (error ' + status + ')');
       }); 
     });
+
+    // Wait for upload 3 seconds.
+    $timeout(showPhoto,3000);
+    function showPhoto() { 
+      $scope.contact.photo = "/upload/contact_photos/" + filename;
+    }
+
   };
 
   $scope.removePhoto = function() {

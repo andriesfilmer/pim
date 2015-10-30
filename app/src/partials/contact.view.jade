@@ -260,7 +260,7 @@ div#photo.reveal-modal(data-reveal='')
     button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(dataUrl)")  Upload
   div.columns.small-12(ng-if="dataUrl" class="img-container")
    p
-    img(ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="options")
+    img(ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="cropperOptions")
   div.column.small-12(ng-if="contact.photo") 
    h2 Remove profile photo
    button.alert.radius.small(ng-click="removePhoto()", title="{{contact.photo}}")  Remove

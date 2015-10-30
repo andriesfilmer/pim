@@ -276,10 +276,10 @@ exports.vcards = function(req, res) {
       console.log(err);
     }
 
-    var vcfContent;
     if (results !== null) {
 
       // Concat vCards
+      var vcfContent = '';
       results.forEach(function(contact){
         vcfContent += create_vCard(req, contact);
       });
