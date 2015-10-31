@@ -347,8 +347,8 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   $scope.uploadContactPhotoFile = function(dataUrl) {
 
     // Check if the dataUrl is a PNG of JPG.
-    fileTypeRegex = /^data:image\/(png|jpeg);base64/;
-    if (!fileTypeRegex.test(dataUrl)){
+    fileTypeRegex = /^data:image\/png;base64/;
+    if (fileTypeRegex.test(dataUrl)){
       filename = $scope.contact._id + ".png";
     } else{
       filename = $scope.contact._id + ".jpg";
@@ -395,7 +395,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   };
 
   $scope.downloadContact = function downloadContact(contact) {
-    console.log('##### contact._id -> ' + contact._id); 
+    console.log('Download contact -> ' + contact._id); 
     ContactService.vCard(contact._id, $scope.dlPhones, $scope.dlCompanies,
       $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
       $scope.dlBirthdate, $scope.dlNotes).success(function(vCardStream) {

@@ -16,12 +16,34 @@ exports.list = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
+  // list all contacts or starred contacts.
   var query = db.contactModel.find({user_id: req.user.id});
   req.query.starred === 'true' ? query.find({starred: true}) : null;
-  req.query.birthdate === 'true' ? query.find({'birthdate': {$type: 9} }).sort('-birthdate') : null;
   req.query.order === 'name' ? query.sort('name') : query.sort('-last_read');
   query.select("_id birthdate name companies starred photo");
   query.limit(req.query.limit);
+
+  // List only contacts with birthdates order by month,dayOfMonth.
+  var queryBirthdates = db.contactModel.aggregate([
+    { "$match": {
+        "birthdate": {$type: 9}
+      }
+    },
+    {"$project": {
+        "name": 1,
+        "birthdate": 1,
+        "month": { "$month": "$birthdate" },
+        "dayOfMonth": { "$dayOfMonth": "$birthdate" }
+      }
+    },
+    {"$sort": {
+        "month": 1,
+        "dayOfMonth": 1
+      }
+    }
+  ]);
+  if (req.query.birthdate === 'true') { query = queryBirthdates };
+
   query.exec(function(err, results) {
 
     if (err) {
