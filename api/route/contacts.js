@@ -32,6 +32,8 @@ exports.list = function(req, res) {
     {"$project": {
         "name": 1,
         "birthdate": 1,
+        "photo": 1,
+        "updated": 1,
         "month": { "$month": "$birthdate" },
         "dayOfMonth": { "$dayOfMonth": "$birthdate" }
       }

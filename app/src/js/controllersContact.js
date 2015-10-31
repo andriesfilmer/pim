@@ -1,5 +1,5 @@
-appControllers.controller('ContactListController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'ContactService', 'Utils',
-  function ContactListController($scope, $state, $stateParams, $window, flash, ContactService, Utils) {
+appControllers.controller('ContactListController', ['$scope', '$location', '$state', '$stateParams', '$window', 'flash', 'ContactService', 'Utils',
+  function ContactListController($scope, $location, $state, $stateParams, $window, flash, ContactService, Utils) {
 
     $(document).foundation();
 
@@ -69,6 +69,11 @@ appControllers.controller('ContactListController', ['$scope', '$state', '$stateP
 
       // Promise resolved
       $scope.contacts = contacts;
+
+      // On birthdate view scrollTo current month
+      var scrollToThisMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
+      $location.hash(scrollToThisMonth);
+
     }, function(msg) {
       // Promise reject
       $scope.offline = true;

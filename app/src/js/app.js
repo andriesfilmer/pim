@@ -22,7 +22,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /calendar/month
-  $urlRouterProvider.otherwise("/calendar/month");
+  $urlRouterProvider.otherwise("/home");
   //
   // Now set up the states
   $stateProvider
@@ -84,7 +84,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/month?start",
       templateUrl: "partials/calendar.month.html",
       controller: "CalendarController",
-      access: { requiredAuthentication: false }
+      access: { requiredAuthentication: true }
     })
     .state('calendar.event/:id', {
       url: "/event/:id",
