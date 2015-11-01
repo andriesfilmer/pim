@@ -1,12 +1,12 @@
 div.row
  div.column.small-10.text-left.secondary-menu
   | &nbsp;
-  //a.fi-thumbnails(ng-click="changeView('month')", title='Month view')
-  //span.divider
-  //a.fi-list-thumbnails(ng-click="changeView('basicWeek')", title='Week view')
-  //span.divider
-  //a.fi-list(ng-click="changeView('basicDay')", title='Day view')
-  //span.divider
+  a(ng-click="changeView('month')", title='Month view')  M
+  span.divider
+  a(ng-click="changeView('basicWeek')", title='Week view') W
+  span.divider
+  a(ng-click="changeView('basicDay')", title='Day view') D
+  span.divider
   a.fi-target-two(ng-click='gotoToday()', title='Today', tabindex="1")
   span.divider
   a.fi-magnifying-glass(ng-click='searchCalendar()', title='Search', tabindex="1")

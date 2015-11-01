@@ -127,14 +127,14 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
     $state.go('calendar.search');
   };
 
-  // Save searchKey for this session. Handy feature ;)
-  $scope.searchKey =  $window.sessionStorage.calendarSearchKey;
+  // Remove search
   $scope.resetSearchKey = function resetSearchKey() {
     $window.sessionStorage.clear('calendarSearchKey');
     $state.go('calendar.search', {}, {reload: true});
   };
 
   // Only load searched events if searchKey is defined and we are on the search page.
+  $scope.searchKey =  $window.sessionStorage.calendarSearchKey;
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
     CalendarService.find(startDate, '3000-01-01').success(function(events) {
       $scope.events = events;

@@ -3,16 +3,20 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
     $(document).foundation();
 
-    // Do we want a search form?
+    // Restore a search key
     if ($window.sessionStorage.bookmarkSearch) {
-      $scope.searchForm = true;
       $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
     }
 
-    // Save general bookmark settings
-    $scope.saveSettings = function saveSettings() {
-      $('a.close-reveal-modal').trigger('click');
-      flash('success', 'Settings saved');
+    // Hide searchForm, toggle first. Get saved search.
+    $scope.toggleSearch = function () {
+      $scope.searchForm = !$scope.searchForm;
+      $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
+    };
+
+    // Remove search.
+    $scope.resetSearch = function resetSearch() {
+      delete $window.sessionStorage.bookmarkSearchKey;
       $state.go('bookmark', {}, {reload: true});
     };
 
@@ -20,24 +24,6 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     $scope.bookmarkLimit =  $window.localStorage.bookmarkLimit;
     $scope.changeLimit = function(limit) {
       $window.localStorage.bookmarkLimit =  limit;
-    };
-
-    // Hide searchForm, toggle first. Get saved search.
-    $scope.toggleSearch = function () {
-      $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
-      if (!$scope.searchForm) {
-        delete $window.sessionStorage.bookmarkSearch;
-      } else {
-        $window.sessionStorage.bookmarkSearch = true;
-      }
-    };
-
-    // Remove search.
-    $scope.resetSearch = function resetSearch() {
-      delete $window.sessionStorage.bookmarkSearchKey;
-      $scope.searchForm = true;
-      $state.go('bookmark', {}, {reload: true});
     };
 
     $scope.bookmarks = [];
