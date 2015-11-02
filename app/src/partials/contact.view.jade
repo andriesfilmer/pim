@@ -102,9 +102,11 @@ div(ng-hide="editForm")
     div.column.p#markdown(markdown='contact.notes') 
 
  div.row
-  div.column.small-6.date-meta.panel
+  div.column.small-12
+   hr
+  div.column.small-6.meta-data
    i Created:  {{contact.created | date: 'yyyy-MM-dd'}}
-  div.column.small-6.date-meta.panel
+  div.column.small-6.meta-data
    i Updated:  {{contact.updated | date: 'yyyy-MM-dd'}}
 
 form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="editForm")

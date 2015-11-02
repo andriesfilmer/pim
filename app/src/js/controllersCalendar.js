@@ -138,22 +138,13 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
     CalendarService.find(startDate, '3000-01-01').success(function(events) {
       $scope.events = events;
-      // Store events in LocalStorage with year+day io 'yyyy-dd'.
-      $window.localStorage.eventsList = JSON.stringify(events);
     }).error(function(events, status) {
       console.log('Status error search events: ' + status);
+      $scope.offline = true;
       if(status === 0) {
-        if($window.localStorage.getItem('eventsList') !== null) {
-          $scope.offline = true;
-          flash('warning', 'Offline: Events from local storage');
-          $scope.events = JSON.parse($window.localStorage.eventsList);
-        }
-        else {
-          flash('alert', 'No events offline');
-        }
+        flash('alert', 'No events offline');
       }
       else {
-        $scope.offline = true;
         flash('alert', 'Error finding events');
       }
     }); 

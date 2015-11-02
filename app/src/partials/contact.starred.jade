@@ -16,8 +16,7 @@ div.row
    a(href='#/contact/{{contact._id}}')
     img.photo(ng-show="contact.photo == undefined || contact.photo == ''", ng-src="/static/images/profile.jpg")
     img.photo(ng-show="contact.photo != undefined", ng-src="{{contact.photo}}")
-    p {{contact.name}} &nbsp; 
+    p {{contact.name}}
 
-- var stateGo = 'contact.starred';
 include ./includes/contact.settings.jade
 

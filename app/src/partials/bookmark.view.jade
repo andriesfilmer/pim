@@ -60,9 +60,9 @@ form(name="bookmarkForm")
      input#bookmark-other(type="radio", value="other", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label(for="bookmark-other") 
  div.row
-  div.column.small-6.date-meta.panel
+  div.column.small-6.meta-data
    i Created:  {{bookmark.created | date: 'yyyy-MM-dd'}}
-  div.column.small-6.date-meta.panel
+  div.column.small-6.meta-data
    i Updated:  {{bookmark.updated | date: 'yyyy-MM-dd'}}
 
 div.row

@@ -19,17 +19,14 @@ div.row.flip-in(ng-show="searchForm")
   div.columns.small-2
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
-div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
- a(name="{{contact.birthdate | date: 'MM'}}")
- a(href='#/contact/{{contact._id}}')
-  div.column.small-9
-   div.columns.small-12.medium-4 {{contact.name}} &nbsp;
-   div.columns.small-12.medium-4 {{contact.birthdate | date: 'dd MMMM yyyy'}} &nbsp;
-   div.columns.small-12.medium-4 Nu {{calculateAge(contact.birthdate) }} Jaar
-  div.column.small-3.hide-for-medium-up
-   img.list-birthdate-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
-  div.column.medium-3.hide-for-small
-   img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
+div.row
+ ul.small-block-grid-3.medium-block-grid-4.large-block-grid-6.starred-list
+  li.name(ng-repeat='contact in contacts')
+   a(name="{{contact.birthdate | date: 'MM'}}")
+   a(href='#/contact/{{contact._id}}')
+    img.photo(ng-show="contact.photo == undefined || contact.photo == ''", ng-src="/static/images/profile.jpg")
+    img.photo(ng-show="contact.photo != undefined", ng-src="{{contact.photo}}")
+    p {{contact.name}}
+    p.meta-data {{contact.birthdate | date: 'dd MMMM yyyy'}} ({{calculateAge(contact.birthdate) }})
 
-- var stateGo = 'contact.list';
 include ./includes/contact.settings.jade

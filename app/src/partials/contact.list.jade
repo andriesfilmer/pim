@@ -21,7 +21,7 @@ div.row.flip-in(ng-show="searchForm")
 
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
  a(href='#/contact/{{contact._id}}')
-  div.columns.small-10.medium-5 {{contact.name}} &nbsp;
+  div.columns.small-10.medium-5 {{contact.name}}
   div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2
    img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")

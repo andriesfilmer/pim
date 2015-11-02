@@ -1,5 +1,5 @@
 # General
-- SearchKey for all (calendar, posts and bookmarks) must be same.
+- jwt token feedback must be better form the api
 - FastClick https://github.com/ftlabs/fastclick
 - Sync-it https://www.npmjs.com/package/sync-it
 - https://github.com/angular-translate/angular-translate
@@ -11,7 +11,6 @@
 - install angular-ui-calendar minified
 
 # Contact
-- List of birthdates
 - import vCard
 - download/share vCard
 

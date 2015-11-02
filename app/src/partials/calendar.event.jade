@@ -66,9 +66,11 @@ form(name="eventForm")
     label(for="cal-memo") 
 
 div.row
- div.column.small-6.date-meta.panel
+ div.column.small-12
+  hr
+ div.column.small-6.meta-data
   i Created:  {{cal.created | date: 'yyyy-MM-dd'}}
- div.column.small-6.date-meta.panel
+ div.column.small-6.meta-data
   i Updated:  {{cal.updated | date: 'yyyy-MM-dd'}}
  div.column.small-12.post-meta
    ul.inline-list

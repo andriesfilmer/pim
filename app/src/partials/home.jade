@@ -2,69 +2,36 @@ div.row
  div.columns.small-3
   h1.home PIM
  div.columns.small-9.text-right
-  button.small.fi-unlock(ui-sref="signin", ng-if="!isAuthenticated", title="Sign in")  Sign in
-  button.small.secondary.fi-torso(ui-sref="signup", ng-if="!isAuthenticated", title="Sign up")   Sign up
-  button.small.fi-lock(ui-sref="user.logout", ng-if="isAuthenticated")  Logout
-div.row
+  button.small.radius.fi-lock(ui-sref="user.logout", ng-if="isAuthenticated")  Logout
+div.row.home
  div.column.small-12
-  h2.strong Personal Information Manager 
+  i.fi-calendar  Next 7 days events
+div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
+ a(href='#/calendar/event/{{event._id}}')
+  div.columns.medium-9 {{event.title}}
+  div.column.medium-3
+   div.round.secondary.label {{event.start | date: 'yyyy-MM-dd'}}
+   div.round.secondary.label(ng-show='event.allDay==="true"') all day
+   div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
+   div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}}
 div.row
+ div.columns.meta-data(ng-if="!events") No events yet
+
+div.row.home
  div.column.small-12
-  ul(style="list-style-type: none;")
-   li.fi-calendar
-    a(ui-sref="calendar.month")  Calendar
-   li.fi-torsos
-    a(ui-sref="contact.list")  Concacts
-   li.fi-page
-    a(ui-sref="post")  Posts
-   li.fi-bookmark
-    a(ui-sref="bookmark")  Bookmarks
-div.row
- div.column.small-12
-  h2.fi-lock  Access to your data
-  p Keep your personal information private. Access your data wherever you are, whenever you need it, all under your control. 
-   |Independent of Google, Facebook or other installed app/provider who can peek into your data.
-  p Share items with Whatsapp, Telegram, SMS, Email, Facebook, Twitter, LinkedIn 
-    | via a sharelink and therefore completely independent of these providers.
-  h2.fi-star  General features
-  ul 
-   li This 'Web App' has a responsive design so you can use it on your mobile, tablet or desktop. 
-   li All data is (read only) available offline.
-   li 
-    a(href="http://daringfireball.net/projects/markdown/") Markdown is integrated 
-    | so you can style your text easily.
-div.row
- div.column.small-12
-  h2.fi-calendar  Calendar
-  ul
-   li You can create events with the flag: <code>appointment</code> or <code>memo</code>. 
-   li The calendar has month, week and day view. 
-   li You can search events and swipe the calendar (left/right). 
-   li Get reminders by e-mail.
-  h2.fi-torsos  Contacts
-  ul
-   li Create contacts and add unlimited phonenumbers, companies, relations, e-mailaddresses, websites, addresses.  
-   li Add birthdate and get a reminder by e-mail.
-   li Add profile photos (crop and scale before upload)
-   li Birthdate calendar view for contacts.
-   li Download all contacts to vCard 3.0.
-   li Download individual contacts to vCard 3.0.
-  h2.fi-page  Posts
-  ul
-   li Create a post with the flag: <code>todo</code>, <code>note</code>, <code>blog</code> or <code>knowledge base</code>. 
-   li Make a small note or a big article with Markdown. 
-   li Auto-generate a table of contents (TOC) on a large articles. 
-   li Search on keywords (title, content and tags).
-   li Creat a pdf for sharing large posts created with Markdown.
-  h2.fi-bookmark  Bookmarks
-  ul
-   li You can create a bookmarks with the flag: <code>media</code>, <code>fun</code>, <code>knowledge base</code>, <code>other</code>. 
-   li Search on keywords (title, content and url).
+  i.fi-torsos  Last viewed contacts
+
+div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
+ a(href='#/contact/{{contact._id}}')
+  div.columns.small-10.medium-5 {{contact.name}}
+  div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
+  div.column.small-2.medium-2
+   img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
 
 div.row
  div.column.small-12
   hr
-  p #{package} Version: #{version}. See full source code on 
+  p.meta-data #{package} Version: #{version}. See full source code on 
    a.fi-social-github(href="https://github.com/andriesfilmer/pim")  Github. 
    | The code has a 
    a(href="http://opensource.org/licenses/MIT") MIT License.

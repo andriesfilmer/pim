@@ -22,14 +22,15 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /calendar/month
-  $urlRouterProvider.otherwise("/home");
+  $urlRouterProvider.otherwise("/start");
   //
   // Now set up the states
   $stateProvider
     .state('home', {
-       url: "/home",
-       templateUrl: "partials/home.html",
-       access: { requiredAuthentication: false }
+      url: "/home?start",
+      templateUrl: "partials/home.html",
+      controller: "HomeController",
+      access: { requiredAuthentication: true }
      })
     // Users views
     .state('user', {
@@ -182,9 +183,9 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'BookmarkController',
       access: { requiredAuthentication: true }
     })
-    .state('sitemap', {
-      url: "/sitemap",
-      templateUrl: 'partials/sitemap.html',
+    .state('start', {
+      url: "/start",
+      templateUrl: 'partials/start.html',
       access: { requiredAuthentication: false }
     });
   }
@@ -210,19 +211,21 @@ app.run(function ($rootScope,$window, $state, $location, flash, AuthenticationSe
     console.log('AuthenticationService.isAuthenticated: ' + AuthenticationService.isAuthenticated); 
     console.log('StateChange -> ' + toState.name); 
 
-    // Do we have a token in localStorage i.o. do we show sign-in or logout?.
-    if($window.localStorage.getItem('token')) {
-      $rootScope.isAuthenticated = true;
-    }
-    else {
-      $rootScope.isAuthenticated = false;
-    }
-
     // Redirect only if both isAuthenticated is false and no token is set
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
-      flash('alert', 'Sign-in first');
+
+      // Do we have a token in localStorage i.o. do we show sign-in or logout?.
+      // On reload/refresh don't show flash if the user has a access token.
+      if($window.localStorage.getItem('token')) {
+        $rootScope.isAuthenticated = true;
+      }
+      else {
+        console.log('##### test -> flash'); 
+        $rootScope.isAuthenticated = false;
+        flash('alert', 'Sign-in first');
+      }
       event.preventDefault();
-      $state.go('home');
+      $state.go('start');
     }
   });
 
