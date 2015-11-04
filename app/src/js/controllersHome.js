@@ -2,11 +2,11 @@
 appControllers.controller('HomeController', ['$scope', '$state', '$window', 'CalendarService', 'ContactService', 'flash',
   function CalendarController($scope, $state, $window, CalendarService, ContactService, flash) {
 
-    var startDate = new Date();
-    var endDate = moment(startDate).add(2, 'weeks');
+    $scope.today = new Date();
+    var endDate = moment($scope.today).add(2, 'weeks');
     var eventsLocalStorage = 'events_' + new Date().toISOString().substr(0,7);
 
-    CalendarService.find(startDate, endDate).success(function(events) {
+    CalendarService.find($scope.today, endDate).success(function(events) {
 
       // To show 'no events yet' in home view.
       if (events.length === 0) { events = undefined; }
@@ -27,7 +27,7 @@ appControllers.controller('HomeController', ['$scope', '$state', '$window', 'Cal
       }
     }); 
 
-    ContactService.findAll(false, false ,'last_read' , 7)
+    ContactService.findAll(false, false ,'last_read' , 10)
     .then(function(contacts) {
       $scope.contacts = contacts;
     }, function(msg) {
@@ -38,7 +38,7 @@ appControllers.controller('HomeController', ['$scope', '$state', '$window', 'Cal
       // Promise notify
       $scope.offline = true;
       flash('warning', 'Offline: Data from local storage');
-      $scope.contacts =  JSON.parse($window.localStorage['contactsAll']);
+      $scope.contacts =  JSON.parse($window.localStorage.contactsAll);
     });
 
 }]);

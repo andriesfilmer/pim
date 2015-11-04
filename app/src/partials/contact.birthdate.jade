@@ -12,13 +12,6 @@ div.row(ng-hide="offline")
   span.divider
   a.fi-plus(href='#/contact/create',title='New item')
 
-div.row.flip-in(ng-show="searchForm")
- form#search
-  div.columns.small-10
-   input#search-input.radius.search-box(focus-me="searchForm", type="text", placeholder="Enter search ...", ng-model="searchKey")
-  div.columns.small-2
-   button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
-
 div.row
  ul.small-block-grid-3.medium-block-grid-4.large-block-grid-6.starred-list
   li.name(ng-repeat='contact in contacts')

@@ -4,14 +4,15 @@ $color-appointment: #008CBA;
 $color-memo: orange;
 
 .appointment { 
-  border-left: 8px $color-appointment solid; 
+  border-right: 8px $color-appointment solid; 
   padding-left: 0;
   &.fc-event { 
     background-color: $color-appointment; 
     border-left: 2px; 
   }
 }
-.memo { border-left: 8px $color-memo solid;
+.memo { 
+  border-right: 8px $color-memo solid;
   padding-left: 0;
   &.fc-event { 
     background-color: $color-memo; 

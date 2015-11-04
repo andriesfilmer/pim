@@ -8,22 +8,22 @@ $color-other: green;
 .fun {
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-fun solid; 
+  border-right: 8px $color-fun solid; 
 }
 .kb {
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-kb solid; 
+  border-right: 8px $color-kb solid; 
 }
 .business { 
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-business solid; 
+  border-right: 8px $color-business solid; 
 }
 .other   {
   padding-left: 6px;
   margin-top: 0;
-  border-left: 8px $color-other solid; 
+  border-right: 8px $color-other solid; 
 }
 
 .switch.bookmark-fun input:checked + label {

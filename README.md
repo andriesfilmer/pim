@@ -8,11 +8,11 @@ A private PIM with:
 
 * Register/Login/Logout users
 * Posts i.o Todo/Note/Blog/Knowledge base
-* Personal calendar (Appiontments, Memos)
+* Personal calendar (Appointments, Memos)
 * Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses)
 * Bookmarks (With tags and notes)
 
-[Demo site](https://pim.filmer.net)
+Take a look on the [demo site](https://pim.filmer.net/#/start) for more features.
 
 
 ## Dependencies
@@ -29,7 +29,7 @@ You need nodejs and mongodb (default install will do)
     grunt         # For development with 'connect' to run a server
 
 The app is running on http://localhost:3000  
-Change the `options.api.base_url` in `app.js` **for production** and run: 
+Change the `options.api.base_url` in `services.js` -> `AuthenticationService` **for production** and run: 
 
     grunt production
 
@@ -53,26 +53,26 @@ Run the api in production
     cd api && NODE_ENV=production node api.js
 
 - The api is running on http://localhost:3001
-- Change `exports.url` in config.js to your needs.
+- Change `api/config/env.json` to your needs.
 - Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration and your enviroment.
-- Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production;/usr/local/bin/forever start --sourceDir /var/www/pim.filmer.net/current/api api.js` 
-  and create a upstream proxy  (zie api/nginx.conf as a example).
+- Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production;/usr/local/bin/forever start --sourceDir /var/www/pim.filmer.net/current/api api.js` and create a upstream proxy  (zie api/nginx.conf as a example).
 
 
 
 ## Reminders by e-mail
 
-If you want event reminders 24 hours before each event (thats what I like).
+If you want event reminders 24 hours before each event (default).
 Take a look in `api/sendEventReminder.js` and create a crontab.
 
-If you want birhtdatereminders 1 day before each event (thats what I like).
+If you want birhtdatereminders 1 day before each event (default).
 Take a look in `api/sendBirthdayReminder.js` and create a crontab.
 
 ## Credits
 
 - [Zurb Foundation](http://foundation.zurb.com)
 - [Adam Shaw - Fullcalendar](http://fullcalendar.io/)
-- [Markdown from Eric J Nesser](http://daringfireball.net/projects/markdown/)
+- [Markdown - Eric J Nesser](http://daringfireball.net/projects/markdown/)
+- [Cropper - Fengyuan Chen](https://github.com/fengyuanchen/cropper)
 
 And many more, look in `app/package.json` and `api/package.json`. Many thanks for the maintainers!
 

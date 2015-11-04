@@ -6,9 +6,14 @@ h1.home {
   text-shadow: -2px 2px 3px #B8B2B5;
 }
 
+#logout {
+  margin-top: 8px;
+}
 div.home {
-    background-color: #008CBA;
-    color: white;
-    font-style: normal;
-    margin-top: 2em;
+  margin-top: 1em;
+  border-bottom: 2px solid #eee;
+  font-size: 1.2rem;
+  i {
+    color: #008CBA;
+  }
 }
