@@ -26,6 +26,7 @@ exports.list = function(req, res) {
   // List only contacts with birthdates order by month,dayOfMonth.
   var queryBirthdates = db.contactModel.aggregate([
     { "$match": {
+        "user_id": req.user.id,
         "birthdate": {$type: 9}
       }
     },
@@ -44,20 +45,22 @@ exports.list = function(req, res) {
       }
     }
   ]);
+
+  // use default query or aggregate query 
   if (req.query.birthdate === 'true') { query = queryBirthdates };
 
   query.exec(function(err, results) {
 
     if (err) {
       console.log(err);
-      return res.sendStatus(400); // Bad Request
+      return res.status(500).send('Internal Server error');
     }
 
     if (results !== null) {
       return res.status(200).json(results); // OK
     }
     else {
-      return res.sendStatus(404); // Not Found
+      return res.status(404).send('Not found'); 
     }
 
   });
@@ -67,7 +70,7 @@ exports.list = function(req, res) {
 exports.search = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    res.sendStatus(401); // Unauthorized
   }
 
   if (req.query.searchKey) {
@@ -89,15 +92,10 @@ exports.search = function(req, res) {
 
     if (err) {
       console.log(err);
-      return res.sendStatus(400); // Bad Request
+      res.status(500).send('Internal Server Error');
     }
 
-    if (results !== null) {
-      return res.status(200).json(results); // OK
-    }
-    else {
-      return res.sendStatus(404); // Not Found
-    }
+    res.status(200).json(results);
 
   });
 
@@ -106,12 +104,12 @@ exports.search = function(req, res) {
 exports.read = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id || '';
   if (id === '') {
-    return res.sendStatus(400); // Bad Request
+    res.status(400).send('Bad Request');
   }
 
   var query = db.contactModel.findOne({ _id: id, user_id: req.user.id });
@@ -119,23 +117,23 @@ exports.read = function(req, res) {
   query.exec(function(err, result) {
 
     if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
+        console.log(err); 
+        res.status(500).send('Internal Server Error'); 
     }
 
-    if (result != null) {
+    if (result === null) {
+      res.status(400).send('Contact does not exists'); // Bad Request
+    }
+    else {
 
       // update contact so we can make stats on how many time read.
-      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
-        return res.status(200).json(result);
-      });
+      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {});
 
       // update contact so we can sort contacts on last_read.
       db.contactModel.update({_id: id, user_id: req.user.id}, {last_read: new Date()} , function(err, nbRows, raw) {});
 
-    }
-    else {
-      return res.sendStatus(400); // Bad Request
+      res.status(200).json(result);
+
     }
 
   });
@@ -144,12 +142,12 @@ exports.read = function(req, res) {
 exports.create = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    res.sendStatus(401); // Unauthorized
   }
 
   var contact = req.body.contact;
-  if (contact == null) {
-    return res.sendStatus(400); // Bad Request
+  if (contact === null) {
+    res.status(400).send('Bad Request'); 
   }
 
   var contactEntry = new db.contactModel();
@@ -168,10 +166,11 @@ exports.create = function(req, res) {
 
   contactEntry.save(function(err) {
     if (err) {
-      return res.sendStatus(400); // Bad Request
+      console.log(err); 
+      res.status(400).send('Bad Request'); 
     }
 
-    return res.sendStatus(200).end();
+    res.status(200).send('Contact created successful');
 
   });
 }
@@ -179,12 +178,12 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Not authorized
+    res.send(401); // Not authorized
   }
 
   var contact = req.body.contact;
   if (contact == null) {
-    res.sendStatus(400); // Bad request
+    res.status(400).send('Bad Request');
   }
 
   var updateContact = {};
@@ -198,27 +197,27 @@ exports.update = function(req, res) {
     updateContact.companies = contact.companies;
   }
 
-  if (contact.phones != undefined) {
+  if (contact.phones !== undefined) {
     updateContact.phones = contact.phones;
   }
 
-  if (contact.emails != undefined) {
+  if (contact.emails !== undefined) {
     updateContact.emails = contact.emails;
   }
 
-  if (contact.websites != undefined) {
+  if (contact.websites !== undefined) {
     updateContact.websites = contact.websites;
   }
 
-  if (contact.addresses != undefined) {
+  if (contact.addresses !== undefined) {
     updateContact.addresses = contact.addresses;
   }
 
-  if (contact.relations != undefined) {
+  if (contact.relations !== undefined) {
     updateContact.relations = contact.relations;
   }
 
-  if (contact.starred != undefined) {
+  if (contact.starred !== undefined) {
     updateContact.starred = contact.starred;
   }
 
@@ -226,18 +225,25 @@ exports.update = function(req, res) {
     updateContact.photo = contact.photo;
   }
 
-  if (contact.birthdate != undefined || contact.birthdate === null) {
+  if (contact.birthdate !== undefined || contact.birthdate === null) {
     updateContact.birthdate = contact.birthdate;
   }
 
-  if (contact.notes != undefined) {
+  if (contact.notes !== undefined) {
     updateContact.notes = contact.notes;
   }
 
   updateContact.updated = new Date();
 
   db.contactModel.update({_id: contact._id, user_id: req.user.id}, updateContact, function(err, nbRows, raw) {
-    return res.status(200).end();
+
+    if (err) {
+      console.log(err); 
+      res.status(400).send('Bad Request'); 
+    }
+
+    res.status(200).send('Update contact successfull');
+
   });
 
 };
@@ -245,29 +251,29 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id;
-  if (id == undefined || id == '') {
-    res.sendStatus(400); // Bad request
+  if (id === undefined || id === '') {
+    res.status(400).send('Undefined id'); // Bad request
   }
 
-  var query = db.contactModel.findOne({_id:id});
+  var query = db.contactModel.findOne({_id: id});
 
   query.exec(function(err, result) {
+
     if (err) {
       console.log(err);
-      return res.sendStatus(400); // Bad request
+      res.status(400).send('Bad Request');
     }
 
-    if (result != null) {
+    if (result !== null) {
       result.remove();
-      return res.sendStatus(200).end();
-      console.log('Contact -> delete'); 
+      res.status(200).send('contact ' + id + ' deleted').end();
     }
     else {
-      return res.sendStatus(404); // Not Found
+      res.status(404).send('Not Found'); 
     }
 
   });
@@ -275,21 +281,48 @@ exports.delete = function(req, res) {
 
 exports.fileupload = function(req, res) {
 
-  var imgPath = config.env().upload_dir + "contact_photos/" + req.body.params.filename;
+  // Check if the filetype is supported.
+  fileTypeCheckRegex = /^data:image\/(png|jpeg);base64/;
+  if (fileTypeCheckRegex.test(req.body.params.dataUrl)){
+
+    fileTypeRegex = /^data:image\/png;base64/;
+    if (fileTypeRegex.test(req.body.params.dataUrl)){
+      filename = req.body.params.contact_id + ".png";
+    } else{
+      filename = req.body.params.contact_id + ".jpg";
+    } 
+  }
+  else {
+    res.status(400).send('FileType not supported'); // Bad Request
+  }
+
+  var imgDir = config.env().upload_dir + req.user.id + "/contacts/";
+  if (!fs.existsSync(imgDir)){ mkdir(imgDir); }
+  var imgPath = imgDir + filename;
 
   // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-  var base64Data = req.body.params.file.replace(/^data:image\/(jpeg|png);base64,/, "");
+  var base64Data = req.body.params.dataUrl.replace(/^data:image\/(jpeg|png);base64,/, "");
 
   fs.writeFile(imgPath, base64Data, 'base64', function(err) {
-    console.log('Contact photo -> upload -> ' + req.body.params.filename); 
+
+    if(err) {
+      console.log(err); 
+      res.status(500).send('Internal Server Error');
+    }
+    else {
+      console.log('Contact photo -> upload -> ' + req.body.params.contact_id); 
+      var photo = '/upload/' + req.user.id + "/contacts/" + filename;
+      res.status(200).json({contact: {photo: photo}});
+    }
+
   });
 };
 
 exports.vcards = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    res.sendStatus(401); // Unauthorized
   }
 
   var query = db.contactModel.find({ user_id: req.user.id });
@@ -298,6 +331,7 @@ exports.vcards = function(req, res) {
 
     if (err) {
       console.log(err);
+      res.status(500).send(err);
     }
 
     if (results !== null) {
@@ -308,23 +342,25 @@ exports.vcards = function(req, res) {
         vcfContent += create_vCard(req, contact);
       });
 
-      // The name off the file is a bit cyrptic so you don't leave a obvious file to download for anonymous.
-      var vcfFile = 'contacts_' + req.user.id + '.vcf';
-      var downloadDir = "../app/public/download/";
-      if (!fs.existsSync(downloadDir)){
-        fs.mkdirSync(downloadDir);
+      // Create a crontab to remove old files from public download.
+      var downloadDir = '../app/public/download/' + req.user.id + '/';
+      if (!fs.existsSync(downloadDir)){ 
+        mkdir(downloadDir); 
       }
+      var vcfFile = 'contacts.vcf';
 
+      // vcfContent can be to big for sendFile so we create a local file to download.
       fs.writeFile(downloadDir + vcfFile, vcfContent, function(err) {
 
         if(err) {
-            return console.log(err);
+          console.log(err); 
+          res.status(500).send('Internal Server Error');
         }
 
         console.log('The file ' + vcfFile + ' has been saved!');
 
-        // Send vcfFile as link, i.o. '/download/contacts_user_id.vcf'
-        res.send(vcfFile); 
+        // Send vcfFile as link
+        res.status(200).send('/download/' + req.user.id + '/' + vcfFile);
 
       }); 
     }
@@ -334,7 +370,7 @@ exports.vcards = function(req, res) {
 exports.vcard = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    res.sendStatus(401); // Unauthorized
   }
 
   console.log('Create vCard for contact_id -> ' + req.body.params.contact_id); 
@@ -344,16 +380,31 @@ exports.vcard = function(req, res) {
 
     if (err) {
       console.log(err);
+      res.status(500).send('Internal Server Error');
     }
 
     if (result !== null) {
         vcfContent = create_vCard(req, result);
-        res.send(vcfContent); 
+        res.status(200).send(vcfContent);
     }
   });
 };
 
-// Function for content in vCard.
+// Recursive creation of dirs.
+function mkdir(path, root) {
+
+    var dirs = path.split('/'), dir = dirs.shift(), root = (root || '') + dir + '/';
+
+    try { fs.mkdirSync(root); }
+    catch (e) {
+        //dir wasn't made, something went wrong
+        if(!fs.statSync(root).isDirectory()) throw new Error(e);
+    }
+
+    return !dirs.length || mkdir(dirs.join('/'), root);
+}
+
+// Content for one vCard.
 function create_vCard(req, contact) {
 
 
@@ -430,7 +481,7 @@ function create_vCard(req, contact) {
   }
 
   // Convert image to base64 encoded string only if uploaded photo exists.
-  var photo = "../app/public" + contact.photo;
+  var photo = "../app/pubic" + contact.photo;
   if (contact.photo !== '' && fs.existsSync(photo) && dlPhoto) {
     vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
   }
@@ -439,7 +490,6 @@ function create_vCard(req, contact) {
 
   return vcfContent;
 }
-
 
 // Function to encode file data to base64 encoded string.
 function base64_encode(photo) {

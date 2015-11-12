@@ -1,44 +1,36 @@
 // Controller for calendar or request for more events
-appControllers.controller('HomeController', ['$scope', '$state', '$window', 'CalendarService', 'ContactService', 'flash',
-  function CalendarController($scope, $state, $window, CalendarService, ContactService, flash) {
+appControllers.controller('HomeController', ['$scope', '$state', '$window', 'CalendarService', 'ContactService', 'flash', 'Utils',
+  function CalendarController($scope, $state, $window, CalendarService, ContactService, flash, Utils) {
 
     $scope.today = new Date();
     var endDate = moment($scope.today).add(2, 'weeks');
     var eventsLocalStorage = 'events_' + new Date().toISOString().substr(0,7);
 
-    CalendarService.find($scope.today, endDate).success(function(events) {
-
+    CalendarService.find($scope.today, endDate)
+    .then(function(response) {
+      console.log('Promise resolve');
       // To show 'no events yet' in home view.
-      if (events.length === 0) { events = undefined; }
-
-      $scope.events = events;
-
-    }).error(function(events, status) {
+      if (response.data.length === 0) { response.data = undefined; }
+      $scope.events = response.data;
+    }, function(response) {
+      console.log('Promise reject');
       $scope.offline = true;
-      console.log('Status error events service: ' + status);
-      if(status === 0) {
-        if($window.localStorage.getItem(eventsLocalStorage) !== null) {
-          flash('warning', 'Offline: Data from local storage');
-          $scope.events =  JSON.parse($window.localStorage[eventsLocalStorage]);
-        }
-        else {
-          flash('alert', 'No data offline.');
-        }
-      }
-    }); 
+      flash('warning', response.statusText);
+      $scope.events = response.data;
+    });
 
     ContactService.findAll(false, false ,'last_read' , 10)
-    .then(function(contacts) {
-      $scope.contacts = contacts;
-    }, function(msg) {
-      // Promise reject
+    .then(function(response) {
+      console.log('Promise resolve'); 
+      $scope.contacts = response.data;
+    }, function(response) {
+      console.log('Promise reject'); 
       $scope.offline = true;
-      flash('alert', msg);
-    }, function() {
-      // Promise notify
-      $scope.offline = true;
-      flash('warning', 'Offline: Data from local storage');
-      $scope.contacts =  JSON.parse($window.localStorage.contactsAll);
+      $scope.contacts = response.data;
+      flash('warning', response.statusText);
+    }, function(data) {
+      console.log('Promise notify'); 
+      $scope.contacts = data;
     });
 
 }]);

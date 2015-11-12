@@ -15,7 +15,7 @@ form(name="eventForm")
    span.divider
    a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
 
- div.row(ng-hide="editForm", ng-class="cal.className")
+ div.row(ng-hide="editForm",ng-if="cal.title", ng-class="cal.className")
   div.column.small-12 {{cal.title}} {{editFrom}}
   span &nbsp;
   div.round.secondary.label {{cal.start | date: 'yyyy-MM-dd'}}
@@ -30,7 +30,7 @@ form(name="eventForm")
  div.row(ng-show="editForm")
   div.row(ng-class="cal.className")
    div.column.small-12(ng-class="cal.className")
-   input#title(type="text", name="title", ng-model="cal.title", required="", placeholder="Title for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
+   input#title(type="text", name="title", ng-model="cal.title", required="", placeholder="Title required for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
   div.row 
    div.column.small-12 &nbsp; 
   div.row
@@ -65,7 +65,7 @@ form(name="eventForm")
     input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
     label(for="cal-memo") 
 
-div.row
+div.row(ng-if="cal.created")
  div.column.small-12
   hr
  div.column.small-6.meta-data

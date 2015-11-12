@@ -99,42 +99,6 @@ exports.read = function(req, res) {
   });
 }; 
 
-exports.pdf = function(req, res) {
-
-  if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
-  }
-
-  if (!req.params.id) {
-    return res.sendStatus(400); // Bad Request
-  }
-
-  var query = db.postModel.findOne({ _id: req.params.id, user_id: req.user.id });
-  query.select('_id title tags type content created updated public');
-  query.exec(function(err, result) {
-
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
-
-    if (result != null) {
-
-      var options = { 
-        cssPath: './config/pdf.css',
-      }
-
-      var pathToPdf = './tmp/pdf/' + result._id;
-      markdownpdf(options).from.string(result.content).to(pathToPdf, function () {
-        console.log("Created -> ", pathToPdf)
-        res.download(pathToPdf); 
-      })
-
-    }
-
-  });
-}; 
-
 exports.create = function(req, res) {
 
   if (!req.user) {
@@ -169,7 +133,7 @@ exports.create = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    return res.sendStatus(200).end();
+    return res.status(200).send('Created post successfull');
 
   });
 }
@@ -230,7 +194,7 @@ exports.update = function(req, res) {
     if (err) {
       return res.sendStatus(400); // Bad Request
     }
-    return res.sendStatus(200).end();
+    return res.status(200).send('Updated post successfull'); 
   });
 
 };
@@ -256,7 +220,7 @@ exports.delete = function(req, res) {
 
     if (result != null) {
       result.remove();
-      return res.sendStatus(200).end();
+      return res.status(200).send('Deleted post successfull');
       console.log('Post -> delete'); 
     }
     else {
@@ -265,6 +229,43 @@ exports.delete = function(req, res) {
 
   });
 };
+
+exports.pdf = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  if (!req.params.id) {
+    return res.sendStatus(400); // Bad Request
+  }
+
+  var query = db.postModel.findOne({ _id: req.params.id, user_id: req.user.id });
+  query.select('_id title tags type content created updated public');
+  query.exec(function(err, result) {
+
+    if (err) {
+        console.log(err);
+        return res.sendStatus(400); // Bad Request
+    }
+
+    if (result != null) {
+
+      var options = { 
+        cssPath: './config/pdf.css',
+      }
+
+      var pathToPdf = './tmp/pdf/' + result._id;
+      var body = '# ' + result.title + '\n\n' + result.content;
+      markdownpdf(options).from.string(body).to(pathToPdf, function () {
+        console.log("Created -> ", pathToPdf)
+        res.download(pathToPdf); 
+      })
+
+    }
+
+  });
+}; 
 
 exports.listByTag = function(req, res) {
 
@@ -327,7 +328,7 @@ exports.readVersion = function(req, res) {
     return res.sendStatus(400); // Bad Request
   }
 
-  var query = db.postVersionModel.findOne({ _id: id, user_id: req.user.id });
+  var query = db.postVersionModel.findOne({ _id: req.params.id, user_id: req.user.id });
   query.exec(function(err, result) {
 
     if (err) {

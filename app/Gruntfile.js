@@ -44,14 +44,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    mkdir: {
-      all: {
-        options: {
-          mode: 0777,
-          create: ['public/upload/contact_photos/']
-        },
-      },
-    },
     // JSHint, detect errors and potential problems in your JavaScript code.
     jshint: {
       options: {
@@ -232,12 +224,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-ng-constant');
-  grunt.loadNpmTasks('grunt-mkdir');
   grunt.loadNpmTasks("grunt-remove-logging");
 
 
   // Run once to compile foundation css and copy vendor files, save time on development ;)
-  grunt.registerTask('once', ['sass:foundation', 'copy', 'mkdir']);
+  grunt.registerTask('once', ['sass:foundation', 'copy']);
 
   // Default tasks for development
   grunt.registerTask('default', ['env:dev',  'preprocess', 'ngconstant:dev', 'sass:dist', 'concat:dev', 

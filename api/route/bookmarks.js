@@ -18,11 +18,11 @@ exports.list = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    if (results !== null) {
-      return res.status(200).json(results); // OK
+    if (results === null) {
+      return res.sendStatus(404); // Not Found
     }
     else {
-      return res.sendStatus(404); // Not Found
+      return res.status(200).json(results); // OK
     } 
 
   });
@@ -58,11 +58,11 @@ exports.search = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    if (results !== null) {
-      return res.status(200).json(results); // OK
+    if (results === null) {
+      return res.sendStatus(404); // Not Found
     }
     else {
-      return res.sendStatus(404); // Not Found
+      return res.status(200).json(results); // OK
     }
 
   });
@@ -89,14 +89,11 @@ exports.read = function(req, res) {
         return res.sendStatus(400); // Bad Request
     }
 
-    if (result != null) {
-      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
-        return res.status(200).json(result);
-      });
-    }
-    else {
+    if (result === null) {
       return res.sendStatus(400); // Bad Request
     }
+
+    return res.status(200).json(result);
 
   });
 }; 
@@ -144,7 +141,7 @@ exports.create = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    return res.sendStatus(200).end();
+    return res.status(200).send('Updated bookmark successfull');
 
   });
 }
@@ -196,7 +193,7 @@ exports.update = function(req, res) {
   updateBookmark.updated = new Date();
 
   db.bookmarkModel.update({_id: bookmark._id, user_id: req.user.id}, updateBookmark, function(err, nbRows, raw) {
-    return res.status(200).end();
+    return res.status(200).send('Updated bookmark successfull');
   });
 
 };
@@ -220,13 +217,11 @@ exports.delete = function(req, res) {
       return res.sendStatus(400); // Bad request
     }
 
-    if (result != null) {
-      result.remove();
-      return res.sendStatus(200).end();
-      console.log('Bookmark -> delete'); 
-    }
-    else {
+    if (result === undefined) {
       return res.sendStatus(404); // Not Found
+    } else {
+      result.remove();
+      return res.status(200).send('Deleted bookmark successfull');
     }
 
   });

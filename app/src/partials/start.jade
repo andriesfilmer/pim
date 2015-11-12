@@ -1,9 +1,9 @@
 div.row
- div.columns.small-3
-  h1.home PIM
- div.columns.small-9.text-right
-  button.small.fi-unlock(ui-sref="signin", ng-if="!isAuthenticated", title="Sign in")  Sign in
-  button.small.secondary.fi-torso(ui-sref="signup", ng-if="!isAuthenticated", title="Sign up")   Sign up
+ div.columns.small-12.medium-8
+  h1.home PIM.center
+ div.columns.small-12.medium-4.text-center
+  button.topBt.small.fi-unlock(ui-sref="signin", ng-hide="showBts", title="Sign in")  Sign in
+  button.topBt.small.secondary.fi-torso(ui-sref="signup", ng-hide="showBts", title="Sign up")   Sign up
 div.row
  div.column.small-12
   h2.strong Personal Information Manager 
@@ -27,20 +27,25 @@ div.row
   h2.fi-like  Pros
   p Independent of Google, Facebook or other installed app/provider who can peek into your data.
   P Share items with Whatsapp, Telegram, SMS, Email, Facebook, Twitter, LinkedIn 
-   | via a sharelink so these providers cani't access your personal data.
+   | via a sharelink so these providers can't access your personal data.
  div.column.small-12.medium-6
   h2.fi-dislike  Cons
-  p This web-app is not installed and therefore not link to incomming calls.
-  p You need to export the contacts to vCard (only phonenumbers) and import your contacts in your smartphone if you want to see who is calling.
+  p This web-app is not installed and therefore not link to incomming calls on your smartphone.
+  p You can export the contacts to vCard (only phonenumbers and photo) and import your contacts in your smartphone if you want to see who is calling.
 div.row
  div.column.small-12
   h2.fi-star  General features
   ul 
    li This 'Web App' has a responsive design so you can use it on your mobile, tablet or desktop. 
-   li All data is (read only) available offline.
+   li User-friendly and interactive searches
+   li All data is (read only) available offline (viewed items are in localstorage).
    li 
-    a(href="http://daringfireball.net/projects/markdown/") Markdown is integrated 
+    a(href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet") Markdown is integrated 
     | so you can style your text easily.
+   li The code has 
+    a(href="http://opensource.org/licenses/MIT") MIT License
+    |, see full source code on 
+    a.fi-social-github(href="https://github.com/andriesfilmer/pim")  Github.
 div.row
  div.column.small-12
   h2.fi-calendar  Calendar
@@ -64,10 +69,10 @@ div.row
    li Make a small note or a big article with Markdown. 
    li Auto-generate a table of contents (TOC) on a large articles. 
    li Search on keywords (title, content and tags).
-   li Creat a pdf for sharing large posts created with Markdown.
+   li Create a pdf for sharing large posts.
   h2.fi-bookmark  Bookmarks
   ul
-   li You can create a bookmarks with the flag: <code>media</code>, <code>fun</code>, <code>knowledge base</code>, <code>other</code>. 
+   li You can create a bookmarks with the flag: <code>business</code>, <code>fun</code>, <code>knowledge base</code>, <code>other</code>. 
    li Search on keywords (title, content and url).
 
 div.row

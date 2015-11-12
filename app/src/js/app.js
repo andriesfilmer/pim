@@ -58,7 +58,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true }
     })
     .state('user.change-password', {
-      url: "/change-password?token",
+      url: '/change-password/:token/:user_id',
       templateUrl: 'partials/user.change-password.html',
       controller: 'UserController',
       access: { requiredAuthentication: false }
@@ -104,7 +104,6 @@ app.config(['$stateProvider', '$urlRouterProvider',
     .state('contact', {
       url: "/contact",
       templateUrl: "partials/contact.html",
-      controller: 'ContactListController',
       access: { requiredAuthentication: true}
     })
     .state('contact.list', {
@@ -203,7 +202,7 @@ app.config(function ($httpProvider) {
   $httpProvider.interceptors.push('TokenInterceptor');
 });
 
-app.run(function ($rootScope,$window, $state, $location, flash, AuthenticationService) {
+app.run(function ($rootScope, $window, $state, $location, flash, AuthenticationService) {
 
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
@@ -211,17 +210,27 @@ app.run(function ($rootScope,$window, $state, $location, flash, AuthenticationSe
     console.log('AuthenticationService.isAuthenticated: ' + AuthenticationService.isAuthenticated); 
     console.log('StateChange -> ' + toState.name); 
 
-    // Redirect only if both isAuthenticated is false and no token is set
+    // RootScope.showBts is only for show/hide Signup, Signin buttons.
+    if($window.localStorage.token) {
+      $rootScope.showBts = true;
+    }
+    // Only for show/hide Logout button.
+    else {
+      $rootScope.showBts = false;
+    }
+
+    if ($window.localStorage.token && (toState.name === 'signup' || toState.name === 'signin')) {
+      flash('waring', 'You are already logged in');
+      event.preventDefault();
+      $state.go('home');
+    }
+
+    // Redirect only if both required authentication in rout  and isAuthenticated is false.
     if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
 
       // Do we have a token in localStorage i.o. do we show sign-in or logout?.
       // On reload/refresh don't show flash if the user has a access token.
-      if($window.localStorage.getItem('token')) {
-        $rootScope.isAuthenticated = true;
-      }
-      else {
-        console.log('##### test -> flash'); 
-        $rootScope.isAuthenticated = false;
+      if(!$window.localStorage.getItem('token')) {
         flash('alert', 'Sign-in first');
       }
       event.preventDefault();

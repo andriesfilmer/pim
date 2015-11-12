@@ -19,9 +19,8 @@ exports.signin = function(req, res) {
   db.userModel.findOne({email: email}, function (err, user) {
 
     if (err) {
-      console.log('users -> signin err:' + email);
       console.log(err);
-      return res.sendStatus(401);
+      return res.sendStatus(500); // Internal server error
     }
 
     if (user == undefined) {
@@ -35,7 +34,7 @@ exports.signin = function(req, res) {
       }
 
       var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expireIn });
-      return res.json({token:token});
+      return res.json({token: token, user_id: user._id});
     });
 
   });
@@ -56,17 +55,22 @@ exports.logout = function(req, res) {
 
 exports.register = function(req, res) {
 
+  if (req.body.fullname === undefined) {
+    return res.status(400).send('Fullname required');
+  }
+
+  var emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  if (!emailRegex.test(req.body.email)){
+    return res.status(400).send('Not a valid emailaddress');
+  }
+
+  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+  if (!passwordRegex.test(req.body.password)){
+    return res.status(400).send('Password must have 8 characters with numbers, lower- and uppercase');
+  }
+
   if (req.body.passwordConfirmation !== req.body.password) {
-
-    err = { message: 'Validation failed', name: 'ValidationError', errors: { 
-              password: { 
-                message: 'Password and confirm password not equal.',
-                name: 'ValidatorError',
-                path: 'password',
-                type: 'validation' } } }
-
-    return res.send(err);
-
+    return res.status(400).send('Password and confirm password not equal');
   }
 
   var user = new db.userModel();
@@ -78,8 +82,8 @@ exports.register = function(req, res) {
   user.save(function(err) {
     console.log('Registered user.save -> ' + user.email);
     if (err) {
-      console.log('Error user.save.');
-      return res.send(err); // Internal Server Error
+      console.log(err);
+      return res.sendStatus(500); // Internal Server Error
     }
     return res.sendStatus(200); // Success
   });
@@ -92,9 +96,13 @@ exports.passwordChange = function(req, res) {
     return res.sendStatus(401); // Not authorized
   }
 
+  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+  if (!passwordRegex.test(req.body.password)){
+    return res.status(400).send('Password must have 8 characters with numbers, lower- and uppercase');
+  }
+
   if (req.body.passwordConfirmation !== req.body.password) {
-    err = { errors: { password: { message: 'Password and confirm password not equal.'} } }
-    return res.send(err);
+    return res.status(400).send('Password and confirm password not equal');
   }
 
   var user = {};
@@ -103,10 +111,15 @@ exports.passwordChange = function(req, res) {
     user.password = req.body.password;
     user.save(function(err) {
       if (err) {
-        console.log('Error user.save.');
-        return res.send(err); // Internal Server Error
+        console.log(err);
+        return res.sendStatus(500); // Internal Server Error
       }
-      return res.sendStatus(200); // Success
+
+      // return user_id and new token with longer expire date.
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expireIn });
+
+      return res.json({token: token, user_id: user._id});
+
     });
 
   });
@@ -119,36 +132,35 @@ exports.sendToken = function(req, res) {
   db.userModel.findOne({email: req.body.email}, function (err, user) {
 
     if (user) {
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: "5m" });
-      sendMailToken(user.fullname, user.email, token);
-      return res.sendStatus(200); // Success
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: "2h" });
+      sendMailToken(user, token);
+      return res.status(200).send('Email has been send'); // Success
     }
     else {
-      err = { error: { message: 'Emailaddress unknown' } }
-      return res.send(err);
+      return res.status(400).send('E-mail does not exists'); // Bad Request
     }
 
   });
 
   // Function for sending a login/change-password token to emailaddress.
-  function sendMailToken(fullname, email, token) {
+  function sendMailToken(user, token) {
 
     var transporter = nodemailer.createTransport({ 
       port: config.mail_port,
       ignoreTLS: true
     });
 
-    var emailAddress = fullname + ' <' + email + '>' ; 
+    var emailAddress = user.fullname + ' <' + user.email + '>' ; 
     console.log('Send token to: ' + emailAddress + ' Port: ' + config.mail_port); 
 
     transporter.sendMail({
         from: config.mail_from,
         to: emailAddress,
         subject: 'PIM token to change password',
-        text: 'Hello ' + fullname + ',\n\n'
+        text: 'Hello ' + user.fullname + ',\n\n'
           + 'Someone has requested a token to reset your password (probably you).\n\n'
           + 'Just click on this link and change your password:\n'
-          + config.cors_url + '/#/user/change-password?token=' + token + '\n\n'
+          + config.cors_url + '/#/user/change-password/' + token + '/' + user._id + '\n\n'
           + 'If you didn\'t mean to reset your password, then you can just ignore this email; your password will not change.\n\n'
           + 'Regards Andries Filmer.\n'
           + 'http://pim.filmer.nl\n'

@@ -29,28 +29,28 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.posts = [];
 
     // Init posts with promises and show all posts.
-    $scope.init = PostService.findAll($window.localStorage.postLimit).then(function(data) {
-      // Promise resolved
+    PostService.findAll($window.localStorage.postLimit)
+    .then(function(response) {
+      console.log('Promise resolve'); 
+      $scope.posts = response.data;
+    }, function(response) {
+      console.log('Promise reject'); 
+      $scope.offline = true;
+      $scope.posts = response.data;
+      flash('warning', response.statusText);
+    }, function(data) {
+      console.log('Promise notify'); 
       $scope.posts = data;
-    }, function(msg) {
-      // Promise reject
-      $scope.offline = true;
-      flash('alert', msg);
-    }, function(localData) {
-      // Promise notify
-      $scope.posts = localData;
-      $scope.offline = true;
-      flash('warning', 'Offline: Posts from local storage');
     });
 
     // Get new posts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
         if (searchKey !== undefined && searchKey.length >= 3) {
           $window.sessionStorage.postSearchKey = searchKey;
-          PostService.searchAll(searchKey).success(function(data) {
-            $scope.posts = data;
-          }).error(function(data, status) {
-            console.log(status);
+          PostService.searchAll(searchKey).then(function(response) {
+            $scope.posts = response.data;
+          }).error(function(response) {
+            console.log(response.data);
             console.log('Posts search error');
           }); 
         }
@@ -82,40 +82,32 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     $scope.saveForm = true;
   };
 
-  if ($state.$current.url == "/post/version/:id") { 
+  if ($state.$current.url == "/post/version/:id") {
     $('a.close-reveal-modal').trigger('click');
-    PostService.readVersion($stateParams.id).then(function(data) {
-      // Promise resolve
-      $scope.post = data;
-      $scope.post._id = data.org_id;
-      $scope.toc = MarkdownToc.make(data);
+    PostService.readVersion($stateParams.id).then(function(response) {
+      console.log('Original version: ' + response.data.org_id);
+      $scope.post = response.data;
+      $scope.post._id = response.data.org_id;
+      $scope.toc = MarkdownToc.make(response.data);
       $scope.saveForm = true;
-      console.log('Original version: ' + data.org_id);
       flash('alert', 'Click save to restore');
     });
-  } 
+  }
   // Length of mongoDb _id = 24, so it must be a existing post.
   else if ($stateParams.id.length > 23) {
-    PostService.read($stateParams.id).then(function(data) {
-      // Promise resolve
-      $scope.share = sharePost(data);
-      $scope.post = data;
-      $scope.toc = MarkdownToc.make(data);
-    }, function(msg) {
-      // Promise reject
+    PostService.read($stateParams.id).then(function(response) {
+      $scope.share = sharePost(response.data);
+      $scope.post = response.data;
+      $scope.toc = MarkdownToc.make(response.data);
+    }, function(response) {
+      console.log('Promise reject'); 
       $scope.offline = true;
-      flash('alert', msg);
-    }, function(localData) {
-      // Promise notify
-      $scope.post = localData;
-      $scope.toc = MarkdownToc.make(localData);
-      $scope.offline = true;
-      flash('warning', 'Offline: Post from local storage');
+      flash('alert', response.statusText);
     });
 
     // Get post versions
-    PostService.listVersions($stateParams.id).then(function(data) {
-      $scope.versions = data; // Promise resolved
+    PostService.listVersions($stateParams.id).then(function(response) {
+      $scope.versions = response.data; 
     });
   }
   // Must be a new post so init with default params.
@@ -141,23 +133,22 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     // If we have a _id we update the post, else we create a new post.
     if (post._id !== undefined) {
 
-      PostService.update(post).then(function(msg) {
-        // Promise reslove
-        flash('success', msg);
-      }, function(msg) {
-        // Promise reject
-        flash('alert', msg);
+      PostService.update(post).then(function(response) {
+        console.log('Update post'); 
+        console.dir(response);
+        flash('success', response.data);
+      }, function(response) {
+        flash('alert', response.statusText);
       });
 
     } else {
 
-      PostService.create(post).then(function(msg) {
-        // Promise reslove
-        flash('success', msg);
+      PostService.create(post).then(function(response) {
+        console.log('Create post'); 
+        flash('success', response.data);
         $state.go('post');
-      }, function(err) {
-        // Promise reject
-        flash('alert', err);
+      }, function(response) {
+        flash('alert', response.statusText);
       });
     }
 
@@ -169,8 +160,10 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   };
 
   $scope.downloadPdf = function downloadPdf(post) {
-    PostService.pdf(post._id).success(function(pdfStream) {
-      var file = new Blob([pdfStream], {type: 'application/pdf'});
+    PostService.pdf(post._id).then(function(response) {
+      console.log('##### test -> '); 
+      console.dir(response.data);
+      var file = new Blob([response.data], {type: 'application/pdf'});
       var title = post.title.replace(/[^\w]/gi, '');
       saveAs(file, title + ".pdf");
       $scope.downloadLabel = 'has been downloaded';
@@ -179,8 +172,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   };
 
   $scope.deletePost = function deletePost(post) {
-    PostService.delete($stateParams.id).success(function(msg) {
-      console.log('Deleted post:' + post._id + ' ' + msg); 
+    PostService.delete($stateParams.id).then(function(response) {
+      console.log('Deleted post:' + post._id + ' ' + respomse.statusText); 
       flash('success', 'Post deleted successful');
       $state.go("post");
     });

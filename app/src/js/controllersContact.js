@@ -1,6 +1,7 @@
-appControllers.controller('ContactListController', ['$scope', '$location', '$state', '$stateParams', '$window', 'flash', 'ContactService', 'Utils',
-  function ContactListController($scope, $location, $state, $stateParams, $window, flash, ContactService, Utils) {
+appControllers.controller('ContactListController', ['$scope', '$location', '$state', '$stateParams', '$window', 'flash', 'ContactService',
+  function ContactListController($scope, $location, $state, $stateParams, $window, flash, ContactService) {
 
+    // Needed for reveal dialogs. 
     $(document).foundation();
 
     // Do we want a search form?
@@ -21,12 +22,10 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       $window.localStorage.contactOrder =  order;
     };
 
-    // Hide searchForm, toggle first. Save search.
+    // Hide searchForm, toggle first. Save search in session.
     $scope.toggleSearch = function toggleSearch(birthdate) {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
-      // Search only contacts with a birtdate.
-      $stateParams.birthdate = birthdate;
       if (!$scope.searchForm) {
         delete $window.sessionStorage.contactSearch;
         $state.go('contact.list', {}, {reload: true});
@@ -42,90 +41,57 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       $state.go('contact.list', {}, {reload: true});
     };
 
-    $scope.contacts = [];
-
     // Find starred or all contacts.
     var starred = $stateParams.starred || false;
     // Find contacts with a birthdate.
     var birthdate = $stateParams.birthdate || false;
 
-    // Init contacts with promises and show all contacts.
-    $scope.init = ContactService.findAll(starred, birthdate, $window.localStorage.contactOrder, $window.localStorage.contactLimit)
-    .then(function(contacts) {
+    // Order en limit vars for ContactService.
+    var order = $window.localStorage.contactOrder;
+    var limit = $window.localStorage.contactLimit;
 
-      contacts.forEach(function(contact) {
-        // Add image element to array
-        if (contact.photo) {
-          var source = "/upload/contact_photos/" + contact._id + ".jpg";
-          Utils.isImage(source).then(function(result) {
-            if(!result) {
-              contact.photo = '/static/images/profile.jpg';
-            } else {
-              contact.photo = source + '?' + contact.updated; // to prevent caching.
-            }
-          });
-        }
-      });
-
-      // Promise resolved
-      $scope.contacts = contacts;
-
+    // Init starred or birthdate or limited contacts with promise.
+    ContactService.findAll(starred, birthdate, order, limit)
+    .then(function(response) {
+      console.log('Promise resolve'); 
+      $scope.contacts = response.data;
       // On birthdate view scrollTo current month
       var scrollToThisMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
       $location.hash(scrollToThisMonth);
-
-    }, function(msg) {
-      // Promise reject
+    }, function(response) {
+      console.log('Promise reject'); 
       $scope.offline = true;
-      flash('alert', msg);
-    }, function(localData) {
-      // Promise notify
-      $scope.contacts = localData;
-      $scope.offline = true;
-      flash('warning', 'Offline: Contacts from local storage');
+      $scope.contacts = response.data;
+      flash('warning', response.statusText);
+    }, function(data) {
+      console.log('Promise notify'); 
+      $scope.contacts = data;
     });
 
     // Get new contacts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
-        if (searchKey !== undefined && searchKey.length >= 3) {
-          $window.sessionStorage.contactSearchKey = searchKey;
-          ContactService.searchAll(birthdate, searchKey).success(function(data) {
-            $scope.contacts = data;
-          }).error(function(data, status) {
-            console.log(status);
-            console.log('Contacts search error');
-          }); 
-        }
+      if (searchKey !== undefined && searchKey.length >= 3) {
+        $window.sessionStorage.contactSearchKey = searchKey;
+        ContactService.searchAll(birthdate, searchKey).then(function(response) {
+          $scope.contacts = response.data;
+        }); 
+      }
     });
 
-    // Just by clicking on the label (in the contact list)  we change starred.
-    $scope.updateStarredState = function updateStarredState(contact, makeStarred) {
-      if (contact !== undefined && makeStarred !== undefined) {
-
-        ContactService.changeStarredState(contact._id, makeStarred).success(function(data) {
-          var contacts = $scope.contacts;
-          for (var contactKey in contacts) {
-            if (contacts[contactKey]._id == contact._id) {
-              $scope.contacts[contactKey].starred = makeStarred;
-              break;
-            }
-          }
-        });
-      }
-    };
-
     $scope.downloadContact = function downloadContacts() {
-      ContactService.vCards($scope.dlPhones, $scope.dlCompanies,
-          $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
-          $scope.dlBirthdate, $scope.dlNotes).success(function(link) {
+      ContactService.vCards($scope.dlPhones, $scope.dlCompanies, 
+        $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses, 
+        $scope.dlBirthdate, $scope.dlNotes)
+      .then(function(response) {
         $scope.vCardShow = true;
         $scope.downloadLabel = 'File has been created.';
-        $scope.vCardLink = '/download/' + link;
+        $scope.vCardLink = response.data;
       });
 
     };
 
-    $scope.calculateAge = function calculateAge(birthdate) { // birthday is a date
+    $scope.calculateAge = function calculateAge(birthdate) { 
+        // Birthday must be a real date
         birthdate = new Date(birthdate);
         var ageDifMs = Date.now() - birthdate.getTime();
         var ageDate = new Date(ageDifMs); // miliseconds from epoch
@@ -138,6 +104,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService','Cropper',
   function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, Cropper) {
 
+  // Needed for reveal dialogs. 
   $(document).foundation();
 
   var id = $stateParams.id;
@@ -199,25 +166,28 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Length of mongoDb _id = 24, so it must be a existing contact.
   if ($stateParams.id.length > 23) {
     console.log('Fetch contact -> _id: ' + id); 
-    ContactService.read(id).then(function(data) {
-      // Promise resolve
+    $scope.showAddBt  = false;
+    ContactService.read(id).then(function(response) {
+      console.log('Response contact and save to localStorage.'); 
+      $scope.contact = response.data;
+      $scope.share = shareContact(response.data);
+      realBirthdate(response.data);
+    }, function(response) {
+      $scope.offline = true;
+      $scope.contact = response.data;
+      realBirthdate(response.data);
+      flash('warning', response.statusText);
+    }, function(data) {
+      console.log('Promise notify'); 
       $scope.contact = data;
-      $scope.share = shareContact(data);
-      if (data.birthdate !== undefined && data.birthdate !== null) {
-        // Angular in forms need a 'real' date.
-        $scope.contact.birthdate = new Date(data.birthdate);
-      }
-      $scope.showAddBt  = false;
-    }, function(msg) {
-      // Promise reject
-      $scope.offline = true;
-      flash('alert', msg);
-    }, function(localData) {
-      // Promise notify
-      $scope.contact = localData;
-      $scope.offline = true;
-      flash('warning', 'Offline: Contact from local storage');
     });
+  }
+
+  // Angular in forms need a 'real' date.
+  function realBirthdate(contact) {
+    if (contact.birthdate !== undefined && contact.birthdate !== null) {
+      $scope.contact.birthdate = new Date(contact.birthdate);
+    }
   }
 
   // Add/push (+) phone, compagy, email, address or website field.
@@ -272,23 +242,19 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
     // If we have a _id we update the contact, else we create (insert) a new contact.
     if (upsert === 'insert') {
-      ContactService.create(contact).then(function(msg) {
-        // Promise reslove
-        flash('success', msg);
+      ContactService.create(contact).then(function(response) {
+        flash('success', response.data);
         $state.go('contact.list');
-      }, function(err) {
-        // Promise reject
-        flash('alert', err);
+      }, function(response) {
+        flash('alert', 'Create contact failure');
       });
     }
     else {
       // upsert must be a 'update'
-      ContactService.update(contact).then(function(msg) {
-        // Promise reslove
-        flash('success', msg);
-      }, function(msg) {
-        // Promise reject
-        flash('alert', msg);
+      ContactService.update(contact).then(function(response) {
+        flash('success', response.data);
+      }, function(response) {
+        flash('alert', 'Update contact failure');
       });
     }
 
@@ -301,20 +267,18 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Get contacts by relations if we change the SearchKey
   $scope.$watch('searchKey', function(searchKey) {
     if (searchKey !== undefined && searchKey.length >= 3) {
-      ContactService.searchAll(false, searchKey).success(function(data) {
-        $scope.contacts = data;
-      }).error(function(data, status) {
-        console.log(status);
-        console.log('Contacts relations search error');
+      ContactService.searchAll(false, searchKey).then(function(response) {
+        $scope.contacts = response.data;
       }); 
     }
   });
 
   $scope.deleteContact = function deleteContact(contact) {
-    ContactService.delete(id).success(function(msg) {
-      console.log('Deleted contact:' + contact._id + ' ' + msg); 
-      flash('success', 'Contact deleted successful');
-      $state.go("contact.list");
+    ContactService.delete(id).then(function(response) {
+      flash('success', response.data);
+      $timeout(function() {
+        $state.go("contact.list");
+      }, 2000);
     });
   };
 
@@ -349,36 +313,25 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     }
   };
 
-  $scope.uploadContactPhotoFile = function(dataUrl) {
+  $scope.uploadContactPhotoFile = function(contact,dataUrl) {
 
-    // Check if the dataUrl is a PNG of JPG.
-    fileTypeRegex = /^data:image\/png;base64/;
-    if (fileTypeRegex.test(dataUrl)){
-      filename = $scope.contact._id + ".png";
-    } else{
-      filename = $scope.contact._id + ".jpg";
-    }
-
-    $scope.saveForm = true;
     $('a.close-reveal-modal').trigger('click');
-    flash('success', 'Don\'t forget to save and to reload!');
 
-    Cropper.crop(file, data)
-    .then(function(blob) {
+    Cropper.crop(file, data).then(function(blob) {
       return Cropper.scale(blob, {width: 250});
-    })
-    .then(Cropper.encode).then(function(dataUrl) {
-      ContactService.upload(filename, dataUrl).success(function(data, status) {
-      }).error(function(data, status) {
-        flash('alert', 'Image too large (error ' + status + ')');
+    }).then(Cropper.encode).then(function(dataUrl) {
+      ContactService.upload(contact._id, dataUrl).then(function(response) {
+        $scope.saveForm = true;
+        $scope.contact.photo = response.data.contact.photo;
+        $scope.upsertContact(contact, 'update');
+      }, function(response) {
+        flash('alert', response.data);
+        $scope.contact.photo = "/static/images/profile.jpg";
+      }, function(data) {
+        $scope.contact.photo = data;
+        $scope.editForm = false;
       }); 
     });
-
-    // Wait for upload 3 seconds.
-    $timeout(showPhoto,3000);
-    function showPhoto() { 
-      $scope.contact.photo = "/upload/contact_photos/" + filename;
-    }
 
   };
 
@@ -393,8 +346,10 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Just by clicking on the starred icon we change starred.
   $scope.updateStarredState = function updateStarredState(contact, makeStarred) {
     if (contact !== undefined && makeStarred !== undefined) {
-      ContactService.changeStarredState(contact._id, makeStarred).success(function(data) {
+      ContactService.changeStarredState(contact._id, makeStarred)
+      .then(function(response) {
         $scope.contact.starred = makeStarred;
+        flash('success', response.data);
       });
     }
   };
@@ -403,8 +358,8 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     console.log('Download contact -> ' + contact._id); 
     ContactService.vCard(contact._id, $scope.dlPhones, $scope.dlCompanies,
       $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
-      $scope.dlBirthdate, $scope.dlNotes).success(function(vCardStream) {
-        var file = new Blob([vCardStream], {type: 'text/x-vcard'});
+      $scope.dlBirthdate, $scope.dlNotes).then(function(response) {
+        var file = new Blob([response.data], {type: 'text/x-vcard'});
         var fileName = contact.name.replace(/[^\w]/gi, '') + '.vcf';
         saveAs(file, fileName);
         $scope.downloadLabel = 'File has been downloaded!';

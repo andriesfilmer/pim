@@ -1,7 +1,7 @@
 {
   "name": "PIM",
   "description": "Personal Information Manager (PIM)",
-  "version": "0.6.3",
+  "version": "0.7.0",
   "private": true,
   "devDependencies": {
     "grunt-appcache": "latest",
@@ -16,7 +16,6 @@
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-jade": "latest",
     "grunt-env": "latest",
-    "grunt-mkdir": "latest",
     "grunt-ng-constant": "latest",
     "grunt-preprocess": "latest",
     "grunt-remove-logging": "latest",

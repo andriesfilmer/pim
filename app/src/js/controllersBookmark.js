@@ -28,29 +28,31 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
     $scope.bookmarks = [];
 
-    // Init bookmarks with promises and show all bookmarks.
-    $scope.init = BookmarkService.findAll($window.localStorage.bookmarkLimit).then(function(data) {
-      // Promise resolved
+
+    // Init limited bookmarks with promise.
+    BookmarkService.findAll($window.localStorage.bookmarkLimit)
+    .then(function(response) {
+      console.log('Promise resolve'); 
+      $scope.bookmarks = response.data;
+    }, function(response) {
+      console.log('Promise reject'); 
+      $scope.offline = true;
+      $scope.bookmarks = response.data;
+      flash('warning', response.statusText);
+    }, function(data) {
+      console.log('Promise notify'); 
       $scope.bookmarks = data;
-    }, function(msg) {
-      // Promise reject
-      $scope.offline = true;
-      flash('alert', msg);
-    }, function(localData) {
-      // Promise notify
-      $scope.bookmarks = localData;
-      $scope.offline = true;
-      flash('warning', 'Offline: Bookmarks from local storage');
     });
 
     // Get new bookmarks if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
         if (searchKey !== undefined) {
           $window.sessionStorage.bookmarkSearchKey = searchKey;
-          BookmarkService.searchAll(searchKey).success(function(data) {
-            $scope.bookmarks = data;
-          }).error(function(data, status) {
-            console.log(status);
+          BookmarkService.searchAll(searchKey)
+          .then(function(response) {
+            $scope.bookmarks = response.data;
+          }, function(response) {
+            console.log(response.data);
             console.log('Bookmarks search error');
           }); 
         }
@@ -82,20 +84,17 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
 
   // Length of mongoDb _id = 24, so it must be a existing bookmark.
   if ($stateParams.id.length > 23) {
-    BookmarkService.read(id).then(function(data) {
+    BookmarkService.read(id)
+    .then(function(response) {
       // Promise resolve
-      $scope.share = shareBookmark(data);
-      $scope.bookmark = data;
       $scope.showDeleteBt  = true;
-    }, function(msg) {
-      // Promise reject
+      $scope.bookmark = response.data;
+      $scope.share = shareBookmark(response.data);
+    }, function(response) {
+      console.log('Promise reject'); 
       $scope.offline = true;
-      flash('alert', msg);
-    }, function(localData) {
-      // Promise notify
-      $scope.bookmark = localData;
-      $scope.offline = true;
-      flash('warning', 'Offline: Bookmark from local storage');
+      $scope.bookmark = response.data;
+      flash('warning', response.statusText);
     });
   }
 
@@ -111,24 +110,20 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
 
     // If we have a _id we update the bookmark, else we create a new bookmark.
     if (bookmark._id !== undefined) {
-
-      BookmarkService.update(bookmark).then(function(msg) {
-        // Promise reslove
-        flash('success', msg);
-      }, function(msg) {
-        // Promise reject
-        flash('alert', msg);
+      BookmarkService.update(bookmark).then(function(response) {
+        flash('success', response.data);
+      }, function(response) {
+        flash('alert', 'Update bookmark failure');
       });
-
-    } else {
-
-      BookmarkService.create(bookmark).then(function(msg) {
+    }
+    else {
+      BookmarkService.create(bookmark).then(function(response) {
         // Promise reslove
-        flash('success', msg);
+        flash('success', response.data);
         $state.go('bookmark');
-      }, function(err) {
-        // Promise reject
-        flash('alert', err);
+      }, function(response) {
+        console.log(response.data);
+        flash('alert', 'Create bookmark failure');
       });
     }
 
@@ -137,6 +132,16 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
       $('a.close-reveal-modal').trigger('click');
     }
 
+  };
+
+  $scope.deleteBookmark = function deleteBookmark(bookmark) {
+    BookmarkService.delete(id).then(function(response) {
+      flash('success', response.data);
+      $state.go("bookmark");
+    }, function(response) {
+      console.log(response.data);
+      flash('alert', 'Delete bookmark failure');
+    });
   };
 
   function shareBookmark(bookmark) {
@@ -153,18 +158,8 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
     share.body += 'Url: ' + bookmark.url + '\n\n';
     if (bookmark.content !== undefined) share.body += bookmark.content;
     share.body = encodeURIComponent(share.body);
-    console.log('##### Share -> ' + share.title); 
-    console.dir(share);
     return share;
   }
-
-  $scope.deleteBookmark = function deleteBookmark(bookmark) {
-    BookmarkService.delete(id).success(function(msg) {
-      console.log('Deleted bookmark:' + bookmark._id + ' ' + msg); 
-      flash('success', 'Bookmark deleted successful');
-      $state.go("bookmark");
-    });
-  };
 
 }]);
 

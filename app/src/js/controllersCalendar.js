@@ -7,21 +7,19 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   // Load events (json) from CalendarService.
   $scope.events = function(start, end, timezone, callback) {
 
-    // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
-    var eventsLocalStorage = 'events_' + new Date(start).toISOString().substr(0,7);
-
-    CalendarService.find(start, end).success(function(events) {
-
-      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(events));
+    CalendarService.find(start, end)
+    .then(function(response) {
+      console.log('Promise resolve');
+      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(response.data));
 
       // We get a allDay false/true as string, convert it to a boolean.
-      events.forEach(function(event) {
+      response.data.forEach(function(event) {
         event.allDay = JSON.parse(event.allDay);
 
         // 00:00:00 is exclusieve it don't show on the next day!
         // If allDay is true it even don't show if it is the next day !?!
         // So we have a hack for displaying multiple days in the fullcalendar
-        // There must be a simpler way, but I don't get is. Is this a bug?
+        // There must be a simpler way, but I don't get it. Is this a bug?
         var sDate = new Date(event.start);
         var eDate = new Date(event.end);
         var sm = sDate.getMonth();
@@ -35,32 +33,13 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
       });
 
-      // Store events in LocalStorage with year+day io 'yyyy-dd'.
-      $window.localStorage[eventsLocalStorage] = JSON.stringify(events);
+      callback(response.data);
 
-      callback(events);
-
-    }).error(function(data, status) {
-
+    }, function(response) {
+      console.log('Promise reject');
       $scope.offline = true;
-      console.log('Status error events service: ' + status);
-      if(status === 0) {
-        if($window.localStorage.getItem(eventsLocalStorage) !== null) {
-          flash('warning', 'Offline: Events from local storage');
-          callback(JSON.parse($window.localStorage[eventsLocalStorage]));
-        }
-        else {
-          flash('alert', 'No events offline, are you logged in?');
-        }
-      }
-      else if(status === 401) {
-        flash('alert', 'Sign-in first');
-        $state.go('signin');
-      }
-      else {
-        flash('alert', 'Error finding events, are you logged in?');
-      }
-
+      flash('warning', response.statusText);
+      callback(response.data);
     });
 
   };
@@ -136,17 +115,8 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   // Only load searched events if searchKey is defined and we are on the search page.
   $scope.searchKey =  $window.sessionStorage.calendarSearchKey;
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
-    CalendarService.find(startDate, '3000-01-01').success(function(events) {
-      $scope.events = events;
-    }).error(function(events, status) {
-      console.log('Status error search events: ' + status);
-      $scope.offline = true;
-      if(status === 0) {
-        flash('alert', 'No events offline');
-      }
-      else {
-        flash('alert', 'Error finding events');
-      }
+    CalendarService.find(startDate).then(function(response) {
+      $scope.events = response.data;
     }); 
   }
 
@@ -154,11 +124,8 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   $scope.$watch('searchKey', function(searchKey) {
     if (searchKey !== undefined && searchKey.length >= 3 && $state.$current.name === 'calendar.search') {
       $window.sessionStorage.calendarSearchKey = searchKey;
-      CalendarService.search(searchKey).success(function(events) {
-        $scope.events = events;
-      }).error(function(events, status) {
-        console.log(status);
-        console.log('Calendar search error');
+      CalendarService.search(searchKey).then(function(response) {
+        $scope.events = response.data;
       }); 
     }
   });
@@ -188,32 +155,33 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   // Length of (MongoDb) _id = 24, so it must be a existing event.
   if (id.length === 24) {
     console.log('Fetch -> _id: ' + id); 
-    CalendarService.read(id).success(function(cal) {
-      $scope.share = shareEvent(cal);
-      $scope.cal = cal;
-      console.log("Event id: " + cal._id);
-      $scope.cal.allDay = JSON.parse(cal.allDay);
-      $scope.cal.start = new Date(cal.start);
-      $scope.cal.end = new Date(cal.end);
+    CalendarService.read(id)
+    .then(function(response) {
+      console.log('Promise resolve id: ' + response.data._id);
       $scope.showAddBt  = false;
       $scope.showDeleteBt  = true;
-      $window.localStorage['event_' + id] = JSON.stringify(cal);
-    }).error(function(cal, status) {
-      console.log('Status: ' + status);
+      $scope.share = shareEvent(response.data);
+      $scope.cal = response.data;
+      $scope.cal.start = new Date(response.data.start);
+      $scope.cal.end = new Date(response.data.end);
+      $scope.cal.allDay = JSON.parse(response.data.allDay);
+    }, function(response) {
+      console.log('Promise reject');
       $scope.offline = true;
-      if(status === 0 && $window.localStorage.getItem('event_' + id) !== null) {
-        flash('warning', 'Offline: Event from local storage');
-        var lcal = JSON.parse($window.localStorage['event_' + id]);
-        $scope.cal = lcal;
-        $scope.cal.start = new Date(lcal.start);
-        $scope.cal.end = new Date(lcal.end);
-        $scope.cal.allDay = JSON.parse(lcal.allDay);
-      } 
-      else if(status === 0) {
-        flash('alert', 'This event is not offline');
-      } else {
-        flash('alert', 'Error event service');
+      $scope.cal = response.data;
+
+      // Check if we have a real event with start,end and allday values.
+      if(response.data.start) {
+        $scope.cal.start = new Date(response.data.start);
+        $scope.cal.end = new Date(response.data.end);
+        $scope.cal.allDay = JSON.parse(response.data.allDay);
       }
+
+      flash('warning', response.statusText);
+
+    }, function(data) {
+      console.log('Promise notify'); 
+      $scope.calcontact = data;
     });
   }
 
@@ -223,11 +191,9 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     var initializing = true;
     if ($stateParams.start === 'new') {
       start = new Date();
-    }
-    else {
+    } else {
       start = $stateParams.start;
     }
-    console.log('##### test -> ' + start); 
     $scope.cal = {};
     $scope.cal.start = new Date(start);
     $scope.cal.end = new Date(start);
@@ -264,39 +230,39 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
 
   // Add or Insert a event.
   $scope.upsertEvent = function upsertEvent(cal, upsert) {
-    console.log('upsertEvent: ' + upsert); 
-    console.log('upsertEvent title: ' + cal.title); 
-    console.log('upsertEvent start: ' + cal.start); 
-    console.log('upsertEvent end: ' + cal.end); 
-    console.log('upsertEvent allDay: ' + cal.allDay); 
+
     // Insert a event
     if (upsert === 'insert') {
-      CalendarService.create(cal).success(function(cal) {
-      }).success(function(status, cal) {
-        flash('success', 'Event created successful');
-      }).error(function(status, cal) {
-        flash('alert', 'Event create failure');
+      CalendarService.create(cal).then(function(response) {
+        $scope.editForm = false;
+        flash('success', response.data);
+      }, function(response) {
+        flash('alert', 'Event insert failure');
       });
     } 
+
     // Update a event
-    else { 
-      CalendarService.update(cal).success(function(cal) {
-      }).success(function(status, cal) {
-        flash('success', 'Event updated successful');
-      }).error(function(status, cal) {
+    else {
+      CalendarService.update(cal).then(function(response) {
+        $scope.editForm = false;
+        flash('success', response.data);
+        //$state.go('calendar.month',{start: cal.start.toISOString()});
+      }, function(status, cal) {
         flash('alert', 'Event update failure');
       });
     }
-    $state.go('calendar.month',{start: cal.start.toISOString()});
+
   };
 
   $scope.deleteEvent = function deleteEvent(cal) {
     if (id !== undefined && id !== 0) {
-      CalendarService.delete(id).success(function(cal) {
-        console.log('Deleted event:' + cal._id); 
-        flash('success', 'Event deleted successful');
+      CalendarService.delete(id).then(function(response) {
+        console.log('Deleted event:' + cal._id);
+        flash('success', response.data);
+        //$state.go('calendar.month',{start: cal.start.toISOString()});
+      }, function(response) {
+        flash('alert', 'Event delete failure');
       });
-      $state.go('calendar.month',{start: cal.start.toISOString()});
     }
   };
 
@@ -322,7 +288,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     share.caption = encodeURI('Event');
     share.title = encodeURI(cal.title);
     share.body  = 'Event: ' + cal.title + '\n';
-
     if (!JSON.parse(cal.allDay)) {
       share.body += 'Start: ' + cal.start.toString().substring(0,16).replace('T',' ') + '\n';
       share.body += 'End: ' + cal.end.toString().substring(0,16).replace('T',' ') + '\n\n';
@@ -333,8 +298,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     }
     if (cal.description !== undefined) share.body += cal.description;
     share.body = encodeURIComponent(share.body);
-    console.log('##### Share -> ' + share.title); 
-    console.dir(share);
     return share;
   }
 

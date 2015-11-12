@@ -1,26 +1,26 @@
-form(name="bookmarkForm")
- div.row(ng-hide="offline")
-  div.column.small-8.text-left.secondary-menu
-   i.fi-bookmark.reversed(title='Bookmarks')
-   span.divider
-   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
-   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
-   span.divider
-   a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
-   span.divider
-   a.fi-upload(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
-  div.column.small-4.text-right.secondary-menu(ng-show="showDeleteBt")
-   span.divider
-   a.fi-trash(ng-click='deleteBookmark(bookmark)', title='Delete item', confirmation-needed="Really Delete?")
- 
- div.row(ng-hide="editForm")
-  div.column.small-12
-  h1(ng-class='bookmark.category') {{bookmark.title}} 
-  div.column.small-12
-   a.fi-link(href="{{bookmark.url}}")  {{bookmark.url}} 
-  div.column.small-12
-   p#markdown(markdown='bookmark.content') 
+div.row(ng-hide="offline")
+ div.column.small-8.text-left.secondary-menu
+  i.fi-bookmark.reversed(title='Bookmarks')
+  span.divider
+  a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
+  a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
+  span.divider
+  a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+  span.divider
+  a.fi-upload(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
+ div.column.small-4.text-right.secondary-menu(ng-show="showDeleteBt")
+  span.divider
+  a.fi-trash(ng-click='deleteBookmark(bookmark)', title='Delete item', confirmation-needed="Really Delete?")
 
+div.row(ng-hide="editForm", ng-if="bookmark")
+ div.column.small-12
+ h1(ng-class='bookmark.category') {{bookmark.title}} 
+ div.column.small-12
+  a.fi-link(href="{{bookmark.url}}")  {{bookmark.url}} 
+ div.column.small-12
+  p#markdown(markdown='bookmark.content') 
+
+form(name="bookmarkForm")
  div.row(ng-show="editForm")
   div.column.small-12(ng-class="bookmark.category")
    input#title(type="text", required='', name="title", placeholder="Title is required", ng-model="bookmark.title", ng-change="isChanged()")
@@ -36,7 +36,7 @@ form(name="bookmarkForm")
    ul.inline-list
     li.tag(ng-repeat='tag in bookmark.tags')
      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
- div.row
+ div.row(ng-if="bookmark")
   fieldset.radius
    legend Category
    div.row
@@ -59,7 +59,7 @@ form(name="bookmarkForm")
     div.switch.round.column.small-6.bookmark-other
      input#bookmark-other(type="radio", value="other", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label(for="bookmark-other") 
- div.row
+ div.row(ng-if="bookmark")
   div.column.small-6.meta-data
    i Created:  {{bookmark.created | date: 'yyyy-MM-dd'}}
   div.column.small-6.meta-data

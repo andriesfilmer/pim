@@ -2,18 +2,19 @@ div.row
  div.columns.small-3
   h1.home PIM
  div.columns.small-9.text-right
-  button#logout.tiny.radius.fi-lock(ui-sref="user.logout", ng-if="isAuthenticated")  Logout
+  button.topBt.tiny.radius.fi-lock(ui-sref="user.logout", ng-show="showBts")  Logout
  div.column.small-12
-  span.fi-target-two.meta-data  {{today | date: 'EEEE d MMMM  HH:mm'}}
+  span.meta-data  {{today | date: 'EEEE d MMMM  HH:mm'}}
 div.row
  div.column.small-12.home
   i.fi-calendar
   span  This week events
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
  a(href='#/calendar/event/{{event._id}}')
-  div.columns.medium-9 {{event.title}}
-  div.column.medium-3
-   div.round.secondary.label {{event.start | date: 'EEE d MMM'}}
+  div.columns.medium-8 {{event.title}}
+  div.column.medium-2
+   div.round.secondary.label {{event.start | date: 'EEEE d MMMM'}}
+  div.column.medium-2
    div.round.secondary.label(ng-show='event.allDay==="true"') all day
    div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
    div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}}

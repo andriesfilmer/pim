@@ -1,4 +1,3 @@
-
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
 
@@ -7,6 +6,8 @@ exports.list = function(req, res) {
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
+
+  if (req.query.end === undefined) { req.query.end = '3000-01-01' };
 
   // Remove quotes and use only date (YYYY-mm-dd)
   var start = req.query.start.replace(/"/g,"").substr(0,10);
@@ -65,8 +66,6 @@ exports.search = function(req, res) {
 
 exports.read = function(req, res) {
 
-  //console.log('Event get id: ' + req.params.id); 
-
   if (!req.user) {
     return res.send(401); // Unauthorized
   }
@@ -94,8 +93,6 @@ exports.read = function(req, res) {
 }; 
 
 exports.create = function(req, res) {
-
-  //console.log('Event create -> with user_id -> ' + req.user.id); 
 
   if (!req.user) {
     return res.send(401); // Unauthorized
@@ -147,13 +144,11 @@ exports.create = function(req, res) {
       console.log(err);
       return res.sendStatus(400); // Bad Request
     }
-    return res.sendStatus(200).end();
+    return res.status(200).send('Created event successfull');
   });
 }
 
 exports.update = function(req, res) {
-
-  //console.dir(req.body.calendar);
 
   if (!req.user) {
     return res.send(401); // Unauthorized
@@ -208,8 +203,11 @@ exports.update = function(req, res) {
       return res.sendStatus(400);
       //console.log('Event update error -> id: ' + event._id); 
     }
-    return res.sendStatus(200).end();
+
+    return res.status(200).send('Updeted event successfull');
+
   });
+
 };
 
 exports.delete = function(req, res) {
@@ -232,13 +230,11 @@ exports.delete = function(req, res) {
       return res.send(400); // Bad request
     }
 
-    if (result !== null) {
-      result.remove();
-      //console.log('Event -> deleted -> id: ' + id); 
-      return res.sendStatus(200).end();
-    }
-    else {
+    if (result === null) {
       return res.sendStatus(400); // Bad request
+    } else {
+      result.remove();
+      return res.status(200).send('Deleted event successfull');
     }
 
   });

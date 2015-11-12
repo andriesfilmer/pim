@@ -97,11 +97,11 @@ div(ng-hide="editForm")
      i.icon-button.fi-crown
 
   div.column.small-12.medium-6
-   div.row.item-title Notes
+   div.row.item-title(ng-if="contact.note") Notes
    div.row
     div.column.p#markdown(markdown='contact.notes') 
 
- div.row
+ div.row(ng-if="contact.created")
   div.column.small-12
    hr
   div.column.small-6.meta-data
@@ -253,17 +253,19 @@ div.row
 
 div#photo.reveal-modal(data-reveal='')
  a.close-reveal-modal &#215;
- div.row
+ div.row(ng-if="contact._id")
   div.column.small-12
    h2 New profile photo
   div.columns.small-8
    input(type="file", onchange="angular.element(this).scope().onFile(this.files[0])")
   div.columns.small-4
-    button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(dataUrl)")  Upload
+    button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(contact,dataUrl)")  Upload
   div.columns.small-12(ng-if="dataUrl" class="img-container")
    p
     img(ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="cropperOptions")
   div.column.small-12(ng-if="contact.photo") 
    h2 Remove profile photo
    button.alert.radius.small(ng-click="removePhoto()", title="{{contact.photo}}")  Remove
-
+ div.row(ng-if="!contact._id")
+  div.column.small-12
+   p Please add contact first before you upload a photo.

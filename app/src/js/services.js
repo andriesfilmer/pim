@@ -1,6 +1,6 @@
 appServices.factory('AuthenticationService', ['ENV', function(ENV) {
 
-  // AuthenticationService is maybe not a good place for ENV.
+  // AuthenticationService is probably not a good place for ENV.
   // But I leave it for now......
   if ( ENV === 'development' ) {
     options.api.base_url = "http://dev.filmer.net:3001";
@@ -52,27 +52,66 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
   };
 });
 
-appServices.factory('CalendarService',['$http', function($http) {
+appServices.factory('CalendarService',['$http', '$q', '$window', function($http, $q, $window) {
   return {
 
-    read: function(id) {
-      return $http.get(options.api.base_url + '/calendar/' + id)
-      .error(function(data, status, headers, config) {
+    find: function(start, end) {
+      var deferred = $q.defer();
+
+      // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
+      var eventsLocalStorage = 'events_' + new Date(start).toISOString().substr(0,7);
+
+      $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
+      .then(function(response) {
+
+        // Notify on slow connections
+        msg = [{"title": "Loading..."}];
+        deferred.notify(msg);
+
+        // Store events in LocalStorage with year+day io 'yyyy-dd'.
+        $window.localStorage[eventsLocalStorage] = JSON.stringify(response.data);
+        deferred.resolve(response);
+
+      }, function(response) {
+        console.log(response.data); 
+        if($window.localStorage[eventsLocalStorage]) {
+          response.statusText = 'Offline: Events from localstorage';
+          response.data = JSON.parse($window.localStorage[eventsLocalStorage]);
+        } else {
+          response.statusText = 'Offline: Events not in localstorage';
+          response.data = {};
+        }
+        deferred.reject(response);
       });
+      return deferred.promise;
     },
 
-    find: function(start, end) {
-      return $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
-      .error(function(data, status, headers, config) {
+    read: function(id) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/calendar/' + id).then(function(response) {
+
+       // Notify on slow connections
+        msg = [{"title": "Loading..."}];
+        deferred.notify(msg);
+
+        $window.localStorage['event_' + id] = JSON.stringify(response.data);
+        deferred.resolve(response);
+
+     }, function(response) {
+        if($window.localStorage['event_' +id]) {
+          response.statusText = 'Offline: Event from localstorage';
+          response.data = JSON.parse($window.localStorage['event_' + id]);
+        } else {
+          response.statusText = 'Offline: Event not in localstorage';
+          response.data = {};
+        }
+        deferred.reject(response);
       });
+      return deferred.promise;
     },
 
     search: function(searchKey) { 
       return $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}});
-    },
-
-    delete: function(id) {
-      return $http.delete(options.api.base_url + '/calendar/' + id);
     },
 
     create: function(calendar) {
@@ -83,86 +122,79 @@ appServices.factory('CalendarService',['$http', function($http) {
       return $http.put(options.api.base_url + '/calendar', {'calendar': calendar});
     },
 
+    delete: function(id) {
+      return $http.delete(options.api.base_url + '/calendar/' + id);
+    },
+
   };
 }]);
 
-appServices.factory('ContactService', function($http, $q, $window) {
+appServices.factory('ContactService', function($http, $timeout, $q, $window) {
 
   return {
 
     findAll: function(starred, birthdate, order, limit) {
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
-      .success(function(data) {
-        $window.localStorage.contactsAll = JSON.stringify(data);
-        console.log('Fetched contacts from MongoDb and saved to localStorage.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb, load localStorage if exists.'); 
-        if($window.localStorage.getItem('contactsAll') === null) {
-          deferred.reject('Contacts are not offline');
+      .then(function(response) {
+
+        // Notify on slow connections
+        msg = [{"title": "Loading..."}];
+        deferred.notify(msg);
+
+        $window.localStorage.contactsAll = JSON.stringify(response.data);
+        deferred.resolve(response);
+
+      }, function(response) {
+        console.log(response.data); 
+        if($window.localStorage.contactsAll) {
+          response.data = JSON.parse($window.localStorage.contactsAll);
+          response.statusText = "Offline: Contacts from localstorage";
+        } else {
+          response.statusText = "Offline: Contacts not in localstorage";
         }
-        else {
-          localData = JSON.parse($window.localStorage.contactsAll);
-          deferred.notify(localData);
-        }
+        deferred.reject(response);
       });
       return deferred.promise;
     },
 
     read: function(id) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/contact/' + id)
-      .success(function(data) {
-        $window.localStorage['contact_' + id] = JSON.stringify(data);
-        console.log('Fetched contact from MongoDb and saved to localStorage.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb, load localStorage if exists.'); 
-        if($window.localStorage.getItem('contact_' + id) === null) {
-          deferred.reject('Contact is not offline');
+      $http.get(options.api.base_url + '/contact/' + id).then(function(response) {
+
+        // Notify on slow connections
+        msg = {"name": "Loading..."};
+        deferred.notify(msg);
+
+        deferred.resolve(response);
+        $window.localStorage['contact_' + id] = JSON.stringify(response.data);
+
+      }, function(response) {
+        console.log(response.data); 
+        if($window.localStorage.getItem('contact_' + id)) {
+          response.data = JSON.parse($window.localStorage.getItem('contact_' + id));
+          response.statusText = 'Offline: Contact from localstorage';
         }
         else {
-          localData = JSON.parse($window.localStorage['contact_' + id]);
-          deferred.notify(localData);
+          response.statusText = 'Offline: Contact not in localstorage';
+          response.data = {};
         }
-      });
-      return deferred.promise;
-    },
-
-    create: function(contact) {
-      var deferred = $q.defer();
-      $http.post(options.api.base_url + '/contact', {'contact': contact})
-      .success(function() {
-        console.log('Created contact in MongoDb'); 
-        deferred.resolve('Created contact successfull');
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb.'); 
-        deferred.reject('Error creating contact');
-      });
-      return deferred.promise;
-    },
-
-    update: function(contact) {
-      var deferred = $q.defer();
-      $http.put(options.api.base_url + '/contact', {'contact': contact})
-      .success(function(data) {
-        $window.localStorage['contact_' + contact.id] = JSON.stringify(data);
-        console.log('Updated contact in localStorage and MongoDb'); 
-        deferred.resolve('Updated contact successfull');
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb.'); 
-        deferred.reject('Error updating contact');
+        deferred.reject(response);
       });
       return deferred.promise;
     },
 
     searchAll: function(birthdate, searchKey) { 
-      return $http.get(options.api.base_url + '/contact/search', {'params': {birthdate: birthdate, searchKey: searchKey}});
+      params = {'params': {birthdate: birthdate, searchKey: searchKey}};
+      return $http.get(options.api.base_url + '/contact/search', params);
+    },
+
+    create: function(contact) {
+      return $http.post(options.api.base_url + '/contact', {'contact': contact});
+    },
+
+    update: function(contact) {
+      return $http.put(options.api.base_url + '/contact', {'contact': contact});
     },
 
     changeStarredState: function(id, newStarredState) {
@@ -184,10 +216,22 @@ appServices.factory('ContactService', function($http, $q, $window) {
         birthdate: birthdate, photo: photo, notes: notes}}, {responseType: 'arraybuffer'});
     },
 
-    upload: function(filename, file) {
-      return $http.post(options.api.base_url + '/fileupload', {'params': {filename: filename, file: file}});
-    }
+    upload: function(contact_id, dataUrl) {
+      var deferred = $q.defer();
+      $http.post(options.api.base_url + '/fileupload', {'params': {contact_id: contact_id, dataUrl: dataUrl}})
+      .then(function(response) {
 
+        // Notify on slow connections
+        data = "/static/images/profile.jpg";
+        deferred.notify(data);
+
+        deferred.resolve(response);
+
+      }, function (response) {
+        deferred.reject(response); 
+      });
+      return deferred.promise;
+    }
   };
 });
 
@@ -198,98 +242,62 @@ appServices.factory('PostService', function($http, $q, $window) {
     findAll: function(limit) {
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/post/', {'params': {limit: limit}})
-      .success(function(data) {
-        $window.localStorage.postsAll = JSON.stringify(data);
-        console.log('Fetched posts from MongoDb and saved to localStorage.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb, load localStorage if exists.'); 
-        if($window.localStorage.getItem('postsAll') === null) {
-          deferred.reject('Posts are not offline');
+      .then(function(response) {
+
+        // Notify on slow connections
+        msg = [{"title": "Loading..."}];
+        deferred.notify(msg);
+
+        $window.localStorage.postsAll = JSON.stringify(response.data);
+        deferred.resolve(response);
+
+     }, function(response) {
+        console.log(response.statusText); 
+        if($window.localStorage.postsAll) {
+          response.statusText = 'Offline: Posts from localstorage';
+          response.data = JSON.parse($window.localStorage.postsAll);
+        } else {
+          response.statusText = 'Offline: Posts not in localstorage';
+          deferred.reject(response);
         }
-        else {
-          localData = JSON.parse($window.localStorage.postsAll);
-          deferred.notify(localData);
-        }
+        deferred.reject(response);
       });
       return deferred.promise;
     },
 
     read: function(id) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/post/' + id)
-      .success(function(data) {
-        $window.localStorage['post_' + id] = JSON.stringify(data);
-        console.log('Fetched post from MongoDb and saved to localStorage.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb, load localStorage if exists.'); 
-        if($window.localStorage.getItem('post_' + id) === null) {
-          deferred.reject('Post is not offline');
-        }
-        else {
-          localData = JSON.parse($window.localStorage['post_' + id]);
-          deferred.notify(localData);
+      $http.get(options.api.base_url + '/post/' + id).then(function(response) {
+        $window.localStorage['post_' + id] = JSON.stringify(response.data);
+        deferred.resolve(response);
+      }, function(response) {
+        console.log(response.statusText); 
+        if($window.localStorage['post_' + id]) {
+          response.statusText = 'Offline: Posts from localstorage';
+          deferred.reject(response);
+        } else {
+          response.data = JSON.parse($window.localStorage['post_' + id]);
+          response.statusText = 'Offline: Post not in localstorage';
+          deferred.reject(response);
         }
       });
       return deferred.promise;
     },
 
     readVersion: function(id) {
-      var deferred = $q.defer();
-      $http.get(options.api.base_url + '/post/version/' + id)
-      .success(function(data) {
-        console.log('Fetched post version from MongoDb'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb for version'); 
-      });
-      return deferred.promise;
+      return $http.get(options.api.base_url + '/post/version/' + id);
     },
 
     listVersions: function(id) {
-      var deferred = $q.defer();
-      $http.get(options.api.base_url + '/post/versions/' + id)
-      .success(function(data) {
-        console.log('Fetched post versions from MongoDb.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb for versions'); 
-      });
-      return deferred.promise;
+      return $http.get(options.api.base_url + '/post/versions/' + id);
     },
 
     create: function(post) {
-      var deferred = $q.defer();
-      $http.post(options.api.base_url + '/post', {'post': post})
-      .success(function() {
-        console.log('Created post in MongoDb'); 
-        deferred.resolve('Created post successfull');
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb.'); 
-        deferred.reject('Error creating post');
-      });
-      return deferred.promise;
+      return $http.post(options.api.base_url + '/post', {'post': post});
     },
 
     update: function(post) {
-      var deferred = $q.defer();
-      $http.put(options.api.base_url + '/post', {'post': post})
-      .success(function(data) {
-        $window.localStorage['post_' + post.id] = JSON.stringify(data);
-        console.log('Updated post in localStorage and MongoDb'); 
-        deferred.resolve('Updated post successfull');
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb.'); 
-        deferred.reject('Error updating post');
-      });
-      return deferred.promise;
+      return $http.put(options.api.base_url + '/post', {'post': post});
     },
 
     searchAll: function(searchKey) { 
@@ -297,10 +305,7 @@ appServices.factory('PostService', function($http, $q, $window) {
     },
 
     pdf: function(id, toc) {
-      return $http.post(options.api.base_url + '/post/pdf/' + id, {}, {responseType: 'arraybuffer'})
-      .error(function(data, status, headers, config) {
-        console.log('Error: Something wrong with service download pdf');
-      });
+      return $http.post(options.api.base_url + '/post/pdf/' + id, {}, {responseType: 'arraybuffer'});
     },
 
     delete: function(id) {
@@ -310,48 +315,52 @@ appServices.factory('PostService', function($http, $q, $window) {
   };
 });
 
-appServices.factory('BookmarkService', function($http, $q, $window) {
+appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
 
   return {
 
     findAll: function(limit) {
+
       var deferred = $q.defer();
+
       $http.get(options.api.base_url + '/bookmark/', {'params': {limit: limit}})
-      .success(function(data) {
-        $window.localStorage.bookmarksAll = JSON.stringify(data);
+      .then(function(response) {
+
+        // Notify on slow connections
+        var msg = [{"title": "Loading..."}];
+        deferred.notify(msg);
+
         console.log('Fetched bookmarks from MongoDb and saved to localStorage.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb, load localStorage if exists.'); 
-        if($window.localStorage.getItem('bookmarksAll') === null) {
-          deferred.reject('Bookmarks are not offline');
+        $window.localStorage.bookmarksAll = JSON.stringify(response.data);
+        deferred.resolve(response);
+
+      }, function(response) {
+        console.log(response.data); 
+        if($window.localStorage.bookmarksAll) {
+          response.data = JSON.parse($window.localStorage.bookmarksAll);
+          response.statusText = "Offline: Bookmarks in localstorage";
+        } else {
+          response.statusText = "Offline: Bookmarks not in localstorage";
         }
-        else {
-          localData = JSON.parse($window.localStorage.bookmarksAll);
-          deferred.notify(localData);
-        }
+        deferred.reject(response);
       });
       return deferred.promise;
     },
 
     read: function(id) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/bookmark/' + id)
-      .success(function(data) {
-        $window.localStorage['bookmark_' + id] = JSON.stringify(data);
-        console.log('Fetched bookmark from MongoDb and saved to localStorage.'); 
-        deferred.resolve(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb, load localStorage if exists.'); 
-        if($window.localStorage.getItem('bookmark_' + id) === null) {
-          deferred.reject('Bookmark is not offline');
+      $http.get(options.api.base_url + '/bookmark/' + id).then(function(response) {
+        $window.localStorage['bookmark_' + id] = JSON.stringify(response.data);
+        deferred.resolve(response);
+      }, function(response) {
+        console.log(response.data); 
+        if($window.localStorage['bookmark_' + id]) {
+          response.statusText = 'Bookmark from localstorage';
+          response.data = JSON.parse($window.localStorage['bookmark_' + id]);
+        } else {
+          response.statusText = 'Bookmark is not localstorage';
         }
-        else {
-          localData = JSON.parse($window.localStorage['bookmark_' + id]);
-          deferred.notify(localData);
-        }
+        deferred.reject(response);
       });
       return deferred.promise;
     },
@@ -359,13 +368,11 @@ appServices.factory('BookmarkService', function($http, $q, $window) {
     create: function(bookmark) {
       var deferred = $q.defer();
       $http.post(options.api.base_url + '/bookmark', {'bookmark': bookmark})
-      .success(function() {
-        console.log('Created bookmark in MongoDb'); 
-        deferred.resolve('Created bookmark successfull');
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb.'); 
-        deferred.reject('Error creating bookmark');
+      .then(function(response) {
+        deferred.resolve(response);
+      }, function(response) {
+        console.log(reponse.data); 
+        deferred.reject(response);
       });
       return deferred.promise;
     },
@@ -373,14 +380,12 @@ appServices.factory('BookmarkService', function($http, $q, $window) {
     update: function(bookmark) {
       var deferred = $q.defer();
       $http.put(options.api.base_url + '/bookmark', {'bookmark': bookmark})
-      .success(function(data) {
-        $window.localStorage['bookmark_' + bookmark.id] = JSON.stringify(data);
-        console.log('Updated bookmark in localStorage and MongoDb'); 
-        deferred.resolve('Updated bookmark successfull');
-      })
-      .error(function(data, status, headers, config) {
-        console.log('Error connecting MongoDb.'); 
-        deferred.reject('Error updating bookmark');
+      .then(function(response) {
+        $window.localStorage['bookmark_' + bookmark.id] = JSON.stringify(response.data);
+        deferred.resolve(response);
+      }, function(response) {
+        console.log(response.data); 
+        deferred.reject(response);
       });
       return deferred.promise;
     },
@@ -396,7 +401,7 @@ appServices.factory('BookmarkService', function($http, $q, $window) {
   };
 });
 
-appServices.factory('UserService', function ($http) {
+appServices.factory('UserService', function ($q, $window, $http) {
   return {
     signIn: function(email, password) {
       return $http.post(options.api.base_url + '/user/signin', {email: email, password: password});
@@ -406,8 +411,15 @@ appServices.factory('UserService', function ($http) {
         {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
     },
     changePassword: function(password, passwordConfirmation) {
-      return $http.post(options.api.base_url + '/user/password-change', 
-        {password: password, passwordConfirmation: passwordConfirmation});
+      var deferred = $q.defer();
+      $http.post(options.api.base_url + '/user/password-change', {password: password, passwordConfirmation: passwordConfirmation})
+      .then(function(response) {
+          $window.localStorage.token = response.data.token;
+          deferred.resolve(response);
+      }, function(response) {
+          deferred.reject(response);
+      });
+      return deferred.promise;
     },
     sendToken: function(email) {
       return $http.post(options.api.base_url + '/user/send-token', 
@@ -417,7 +429,7 @@ appServices.factory('UserService', function ($http) {
 });
 
 appServices.factory('flash', ['$rootScope', '$timeout', function($rootScope, $timeout) {
- 
+
   // Thanks to: https://github.com/gtramontina/angular-flash
 
   var messages = [];

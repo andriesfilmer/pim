@@ -68,7 +68,7 @@ div.row
      input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="isChanged()")
      label(for="post-kb") 
 
-  fieldset
+  fieldset(ng-if="versions")
    legend Versions
    div.row.my-row(ng-repeat='version in versions', ng-class="version.type", ng-class-odd="'odd'" ng-class-even="'even'")
     a(href='#/post/version/{{version._id}}')
