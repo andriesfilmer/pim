@@ -81,12 +81,9 @@ exports.search = function(req, res) {
                                           {"phones.type": { $exists: true, $regex: req.query.searchKey, $options: 'i' } }, 
                                           {notes: { $exists: true, $regex: req.query.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
-  } else {
-    var query = db.contactModel.find({ user_id: req.user.id });
   }
 
-  req.query.birthdate === 'true' ? query.find({'birthdate': {$type: 9} }) : null;
-  query.select("_id name birthdate companies created updated starred");
+  query.select("_id name birthdate companies photo created updated starred");
   query.sort('-updated');
   query.exec(function(err, results) {
 
@@ -270,7 +267,7 @@ exports.delete = function(req, res) {
 
     if (result !== null) {
       result.remove();
-      res.status(200).send('contact ' + id + ' deleted').end();
+      res.status(200).send('contact deleted successfull').end();
     }
     else {
       res.status(404).send('Not Found'); 

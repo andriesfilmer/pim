@@ -4,12 +4,6 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     // Needed for reveal dialogs. 
     $(document).foundation();
 
-    // Do we want a search form?
-    if ($window.sessionStorage.contactSearch) {
-      $scope.searchForm = true;
-      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
-    }
-
     // Set contact limit for contacts
     $scope.contactLimit =  $window.localStorage.contactLimit;
     $scope.changeLimit = function(limit) {
@@ -22,58 +16,79 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       $window.localStorage.contactOrder =  order;
     };
 
-    // Hide searchForm, toggle first. Save search in session.
-    $scope.toggleSearch = function toggleSearch(birthdate) {
-      $scope.searchForm = !$scope.searchForm;
+    // Find starred or all contacts.
+    var starred = $stateParams.starred || false;
+    // Find contacts with a birthdate.
+    var birthdate = $stateParams.birthdate || false;
+
+    // Order en limit vars for ContactService.findAll.
+    var order = $window.localStorage.contactOrder;
+    var limit = $window.localStorage.contactLimit;
+
+    // Init starred or birthdate or limited contacts with promise.
+    $scope.getContacts = function() {
+      ContactService.findAll(starred, birthdate, order, limit)
+      .then(function(response) {
+        console.log('Promise resolve'); 
+        $scope.contacts = response.data;
+        // On birthdate view scrollTo current month
+        var scrollToThisMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
+        $location.hash(scrollToThisMonth);
+      }, function(response) {
+        console.log('Promise reject'); 
+        $scope.offline = true;
+        $scope.contacts = response.data;
+        flash('warning', response.statusText);
+      }, function(data) {
+        console.log('Promise notify'); 
+        $scope.contacts = data;
+      });
+    };
+
+    // Do we want a search form on list all contacts page.
+    if ($window.sessionStorage.contactSearchKey && $state.current.name === 'contact.list') {
+      $scope.searchForm = true;
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
-      if (!$scope.searchForm) {
-        delete $window.sessionStorage.contactSearch;
-        $state.go('contact.list', {}, {reload: true});
-      } else {
-        $window.sessionStorage.contactSearch = true;
+    }
+    else {
+      $scope.getContacts();
+    }
+
+    // Hide searchForm, toggle first. Save/delete search in session.
+    $scope.toggleSearch = function toggleSearch() {
+      $scope.searchForm = !$scope.searchForm;
+      if ($scope.searchForm) {
+        $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+      }
+      else {
+        delete $window.sessionStorage.contactSearchKey;
+        $scope.getContacts();
       }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.contactSearchKey;
-      $scope.searchForm = true;
-      $state.go('contact.list', {}, {reload: true});
+      $scope.getContacts();
     };
-
-    // Find starred or all contacts.
-    var starred = $stateParams.starred || false;
-    // Find contacts with a birthdate.
-    var birthdate = $stateParams.birthdate || false;
-
-    // Order en limit vars for ContactService.
-    var order = $window.localStorage.contactOrder;
-    var limit = $window.localStorage.contactLimit;
-
-    // Init starred or birthdate or limited contacts with promise.
-    ContactService.findAll(starred, birthdate, order, limit)
-    .then(function(response) {
-      console.log('Promise resolve'); 
-      $scope.contacts = response.data;
-      // On birthdate view scrollTo current month
-      var scrollToThisMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
-      $location.hash(scrollToThisMonth);
-    }, function(response) {
-      console.log('Promise reject'); 
-      $scope.offline = true;
-      $scope.contacts = response.data;
-      flash('warning', response.statusText);
-    }, function(data) {
-      console.log('Promise notify'); 
-      $scope.contacts = data;
-    });
 
     // Get new contacts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
       if (searchKey !== undefined && searchKey.length >= 3) {
         $window.sessionStorage.contactSearchKey = searchKey;
-        ContactService.searchAll(birthdate, searchKey).then(function(response) {
+        ContactService.searchAll(birthdate, searchKey)
+        .then(function(response) {
           $scope.contacts = response.data;
+        }, function(response) {
+          if (response.status === 0) {
+            $scope.searchForm = false;
+            $scope.getContacts();
+          }
+          else {
+            $scope.offline = true;
+            $scope.searchForm = false;
+            flash('warning', 'Offline: Search not available');
+          }
         }); 
       }
     });
@@ -275,10 +290,10 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   $scope.deleteContact = function deleteContact(contact) {
     ContactService.delete(id).then(function(response) {
-      flash('success', response.data);
       $timeout(function() {
         $state.go("contact.list");
       }, 2000);
+      flash('success', response.data);
     });
   };
 

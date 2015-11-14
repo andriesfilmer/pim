@@ -49,7 +49,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
           $window.sessionStorage.postSearchKey = searchKey;
           PostService.searchAll(searchKey).then(function(response) {
             $scope.posts = response.data;
-          }).error(function(response) {
+          }, function(response) {
             console.log(response.data);
             console.log('Posts search error');
           }); 
@@ -102,7 +102,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     }, function(response) {
       console.log('Promise reject'); 
       $scope.offline = true;
-      flash('alert', response.statusText);
+      $scope.post = response.data;
+      flash('warning', response.statusText);
     });
 
     // Get post versions
@@ -134,21 +135,19 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     if (post._id !== undefined) {
 
       PostService.update(post).then(function(response) {
-        console.log('Update post'); 
-        console.dir(response);
         flash('success', response.data);
+        $state.go('post');
       }, function(response) {
-        flash('alert', response.statusText);
+        flash('alert', 'Updata post failure!');
       });
 
     } else {
 
       PostService.create(post).then(function(response) {
-        console.log('Create post'); 
         flash('success', response.data);
         $state.go('post');
       }, function(response) {
-        flash('alert', response.statusText);
+        flash('alert', 'Create post failure!');
       });
     }
 

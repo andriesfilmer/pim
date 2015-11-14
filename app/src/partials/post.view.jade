@@ -36,7 +36,7 @@ form(name="postForm")
     ul.inline-list
      li.tag(ng-repeat='tag in post.tags')
       a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
- div.row
+ div.row(ng-if="post")
   div.column.small-6.meta-data
    i Created:  {{post.created | date: 'yyyy-MM-dd'}}
   div.column.small-6.meta-data

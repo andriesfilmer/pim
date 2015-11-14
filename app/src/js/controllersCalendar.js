@@ -235,6 +235,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     if (upsert === 'insert') {
       CalendarService.create(cal).then(function(response) {
         $scope.editForm = false;
+        $state.go('calendar.month',{start: cal.start.toISOString()});
         flash('success', response.data);
       }, function(response) {
         flash('alert', 'Event insert failure');
@@ -246,7 +247,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       CalendarService.update(cal).then(function(response) {
         $scope.editForm = false;
         flash('success', response.data);
-        //$state.go('calendar.month',{start: cal.start.toISOString()});
+        $state.go('calendar.month',{start: cal.start.toISOString()});
       }, function(status, cal) {
         flash('alert', 'Event update failure');
       });
@@ -259,7 +260,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       CalendarService.delete(id).then(function(response) {
         console.log('Deleted event:' + cal._id);
         flash('success', response.data);
-        //$state.go('calendar.month',{start: cal.start.toISOString()});
+        $state.go('calendar.month',{start: cal.start.toISOString()});
       }, function(response) {
         flash('alert', 'Event delete failure');
       });

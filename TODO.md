@@ -16,3 +16,10 @@
 
 # Issues
 - Share PDF with bullet list does not work correct with <ul><li>
+
+
+db.contacts.find({ photo: {$exists: true}}).forEach(function(contact) {
+   db.contacts.update({_id: contact._id}, {
+     $set: { "photo": '/upload/' + contact.user_id + '/contacts/' + contact._id + '.jpg'  }
+    })
+});

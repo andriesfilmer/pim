@@ -274,9 +274,9 @@ appServices.factory('PostService', function($http, $q, $window) {
         console.log(response.statusText); 
         if($window.localStorage['post_' + id]) {
           response.statusText = 'Offline: Posts from localstorage';
+          response.data = JSON.parse($window.localStorage['post_' + id]);
           deferred.reject(response);
         } else {
-          response.data = JSON.parse($window.localStorage['post_' + id]);
           response.statusText = 'Offline: Post not in localstorage';
           deferred.reject(response);
         }
@@ -355,10 +355,10 @@ appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
       }, function(response) {
         console.log(response.data); 
         if($window.localStorage['bookmark_' + id]) {
-          response.statusText = 'Bookmark from localstorage';
+          response.statusText = 'Offline: Bookmark from localstorage';
           response.data = JSON.parse($window.localStorage['bookmark_' + id]);
         } else {
-          response.statusText = 'Bookmark is not localstorage';
+          response.statusText = 'Offline: Bookmark is not localstorage';
         }
         deferred.reject(response);
       });
@@ -371,7 +371,7 @@ appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
       .then(function(response) {
         deferred.resolve(response);
       }, function(response) {
-        console.log(reponse.data); 
+        console.log(response.data); 
         deferred.reject(response);
       });
       return deferred.promise;

@@ -15,8 +15,8 @@ div.row
   li.name(ng-repeat='contact in contacts')
    a(name="{{contact.birthdate | date: 'MM'}}")
    a(href='#/contact/{{contact._id}}')
-    img.photo(ng-show="contact.photo == undefined || contact.photo == ''", ng-src="/static/images/profile.jpg")
-    img.photo(ng-show="contact.photo != undefined", ng-src="{{contact.photo}}")
+    img.photo(ng-show="!contact.photo || contact.photo === ''", ng-src="/static/images/profile.jpg")
+    img.photo(ng-show="contact.photo", ng-src="{{contact.photo}}")
     p {{contact.name}}
     p.meta-data {{contact.birthdate | date: 'dd MMMM yyyy'}} ({{calculateAge(contact.birthdate) }})
 

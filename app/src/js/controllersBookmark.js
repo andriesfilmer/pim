@@ -113,7 +113,7 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
       BookmarkService.update(bookmark).then(function(response) {
         flash('success', response.data);
       }, function(response) {
-        flash('alert', 'Update bookmark failure');
+        flash('alert', 'Update bookmark failure!');
       });
     }
     else {
@@ -123,7 +123,7 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
         $state.go('bookmark');
       }, function(response) {
         console.log(response.data);
-        flash('alert', 'Create bookmark failure');
+        flash('alert', 'Create bookmark failure!');
       });
     }
 
