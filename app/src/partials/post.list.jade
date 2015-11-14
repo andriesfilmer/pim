@@ -1,14 +1,14 @@
 div.row(ng-hide="offline")
  span(ng-hide="searchForm")
-  div.column.small-8.text-left.secondary-menu
+  div.column.small-12.secondary-menu
    i.fi-page.reversed(title='Posts')
    span.divider
    a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search', tabindex="1")
    span.divider
    a.fi-widget(title="Settings", data-reveal-id="post-settings", data-reveal-ajax="true") 
-  div.column.small-4.text-right.secondary-menu
-   span.divider
-   a.fi-plus(href='#/post/create',title='New item')
+   span.right
+    span.divider
+    a.fi-plus(href='#/post/create',title='New item')
 
 div.row.flip-in(ng-show="searchForm")
  form#search
@@ -28,23 +28,26 @@ div.row
   a.close-reveal-modal &#215;
   h2 General post settings
   fieldset
+   legend Limit posts per request
    div.row
-    div.column.small-6.my-row List 20 posts
+    div.column.small-6.my-row List 20
+     span.meta-data fast
     div.switch.round.column.small-6
      input#post-20(type="radio", value="20", name="postLimit", ng-model="postLimit", ng-change="changeLimit(20)")
      label(for="post-20")
    div.row
-    div.column.small-6.my-row List 50 posts
+    div.column.small-6.my-row List 50
     div.switch.round.column.small-6
      input#post-50(type="radio", value="50", name="postLimit", ng-model="postLimit", ng-change="changeLimit(50)")
      label(for="post-50") 
    div.row
-    div.column.small-6.my-row List 100 posts
+    div.column.small-6.my-row List 100
     div.switch.round.column.small-6
      input#post-100(type="radio", value="100", name="postLimit", ng-model="postLimit", ng-change="changeLimit(100)")
      label(for="post-100") 
    div.row
-    div.column.small-6.my-row List 1000 posts
+    div.column.small-6.my-row List 1000
+     span.meta-data slow
     div.switch.round.column.small-6
      input#post-1000(type="radio", value="1000", name="postLimit", ng-model="postLimit", ng-change="changeLimit(1000)")
      label(for="post-1000")

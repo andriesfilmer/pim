@@ -1,6 +1,6 @@
 form(name="postForm")
  div.row(ng-hide="offline")
-  div.column.small-10.text-left.secondary-menu
+  div.column.small-12.secondary-menu
    i.fi-page.reversed(title='Posts')
    span.divider
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
@@ -11,9 +11,9 @@ form(name="postForm")
    a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
    span.divider
    a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
-  div.column.small-2.text-right.secondary-menu(ng-hide="showDeleteBt")
-   span.divider
-   a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
+   span.right(ng-hide="showDeleteBt")
+    span.divider
+    a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
  
  div.row(ng-hide="editForm")
   div.column.small-12

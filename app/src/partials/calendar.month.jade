@@ -1,5 +1,5 @@
 div.row(ng-hide="offline")
- div.column.small-10.text-left.secondary-menu
+ div.column.small-12.secondary-menu
   | &nbsp;
   a(ng-click="changeView('month')", title='Month view')  M
   //-span.divider
@@ -8,8 +8,8 @@ div.row(ng-hide="offline")
   a(ng-click="changeView('basicDay')", title='Day view') D
   span.divider
   a.fi-magnifying-glass(ng-click='searchCalendar()', title='Search', tabindex="1")
- div.column.small-2.text-right.secondary-menu
-  a.fi-plus(ui-sref="calendar.event({start: 'new'})", title='New event')
+  span.right
+   a.fi-plus(ui-sref="calendar.event({start: 'new'})", title='New event')
 
 div.row
  div#myCalendar.calendar.scale-fade(ui-calendar="uiConfig.calendar" ng-model="eventSources", 

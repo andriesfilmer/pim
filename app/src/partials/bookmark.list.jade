@@ -1,14 +1,14 @@
 div.row(ng-hide="offline")
  span(ng-hide="searchForm")
-  div.column.small-8.text-left.secondary-menu
+  div.column.small-12.secondary-menu
    i.fi-bookmark.reversed(title='Bookmarks')
    span.divider
    a.fi-magnifying-glass(ng-click='toggleSearch()', title='Show/Hide Search', tabindex="1")
    span.divider
    a.fi-widget(href="", title="Settings", data-reveal-id="bookmark-settings", data-reveal-ajax="true") 
-  div.column.small-4.text-right.secondary-menu
-   span.divider
-   a.fi-plus(href='#/bookmark/create',title='New item')
+   span.right
+    span.divider
+    a.fi-plus(href='#/bookmark/create',title='New item')
 
 div.row.flip-in(ng-show="searchForm")
  form#search
@@ -28,23 +28,27 @@ div.row
   a.close-reveal-modal &#215;
   h2 General bookmark settings
   fieldset
+   legend Limit bookmarks per request
    div.row
-    div.column.small-6.my-row List 20 bookmarks
+    div.column.small-6.my-row List 20
+     span.meta-data fast
     div.switch.round.column.small-6
      input#bookmark-20(type="radio", value="20", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(20)")
-     label(for="bookmark-20")
+     label(for="bookmark-50") 
    div.row
-    div.column.small-6.my-row List 50 bookmarks
+    div.column.small-6.my-row List 50
+     span.meta-data
     div.switch.round.column.small-6
      input#bookmark-50(type="radio", value="50", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(50)")
      label(for="bookmark-50") 
    div.row
-    div.column.small-6.my-row List 100 bookmarks
+    div.column.small-6.my-row List 250
     div.switch.round.column.small-6
-     input#bookmark-100(type="radio", value="100", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(100)")
-     label(for="bookmark-100") 
+     input#bookmark-250(type="radio", value="200", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(250)")
+     label(for="bookmark-250") 
    div.row
-    div.column.small-6.my-row List 1000 bookmarks
+    div.column.small-6.my-row List 1000
+     span.meta-data slow
     div.switch.round.column.small-6
      input#bookmark-1000(type="radio", value="1000", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(1000)")
      label(for="bookmark-1000")

@@ -25,9 +25,6 @@ div.row
     div.switch.round.column.small-6
      input#contact-1000(type="radio", value="1000", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(1000)")
      label(for="contact-1000")
-    div.small-12
-     span.meta-data
-      i  * Settings only for this device
 
   fieldset
    legend Order contacts
@@ -41,6 +38,12 @@ div.row
     div.switch.round.column.small-6
      input#contact-order-last-read(type="radio", value="last_read", name="contactOrder", ng-model="contactOrder", ng-change="changeOrder('last_read')")
      label(for="contact-order-last-read")
+
+  div.small-12
+   span.meta-data
+    i  * Settings only for this device
+
+  h2 Contacts donwload
 
   fieldset
    legend.fi-download  Contacts as vCard

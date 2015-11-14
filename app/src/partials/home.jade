@@ -11,13 +11,13 @@ div.row
   span  This week events
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
  a(href='#/calendar/event/{{event._id}}')
-  div.columns.medium-8 {{event.title}}
-  div.column.medium-2
-   div.round.secondary.label {{event.start | date: 'EEEE d MMMM'}}
-  div.column.medium-2
+  div.columns.small-12.medium-6 {{event.title}}
+  div.column.small-6.medium-3
+   div.round.secondary.label {{event.start | date: 'EEEE d MMMM'}} 
+  div.column.small-6.medium-3
    div.round.secondary.label(ng-show='event.allDay==="true"') all day
-   div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
-   div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}}
+   div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}} 
+   div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}} 
 div.row
  div.columns.meta-data(ng-if="!events") No events yet
 
