@@ -1,5 +1,7 @@
-appControllers.controller('UserController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'UserService', 'AuthenticationService',
-  function UserController($scope, $state, $stateParams, $window, flash, UserService, AuthenticationService) {
+appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$stateParams', '$window', 'UserService',
+                          'AuthenticationService', 'CalendarService', 'ContactService', 'PostService', 'BookmarkService', 'flash',
+  function UserController($scope, $timeout, $state, $stateParams, $window, UserService,
+                          AuthenticationService, CalendarService, ContactService, PostService, BookmarkService, flash) {
 
     // Capitalize function for feedback in falsh messages
     String.prototype.capitalize = function() {
@@ -8,19 +10,79 @@ appControllers.controller('UserController', ['$scope', '$state', '$stateParams',
 
     $scope.signIn = function signIn(email, password) {
       UserService.signIn(email, password).then(function(response) {
-          AuthenticationService.isAuthenticated = true;
+        AuthenticationService.isAuthenticated = true;
 
-          // We choose localStorage i.o. sessionStorage so that 
-          // we keep the token after clossing the browser.
-          flash('succes', 'Signed in');
-          $window.localStorage.token = response.data.token;
-          $window.localStorage.user_id = response.data.user_id;
+        // We choose localStorage i.o. sessionStorage so that 
+        // we keep the token after clossing the browser.
+        $window.localStorage.token = response.data.token;
+        $window.localStorage.user_id = response.data.user_id;
 
+        //---------------------------------------------------------------------
+        // After successfull login load some data for offline usage.
+        //---------------------------------------------------------------------
+
+        // Load next 6 months to localStorage.
+        var m = ["0","1", "2", "3","4","5"];
+        m.forEach(function(m) {
+          var start = moment().startOf('month').add(m, 'M').format('YYYY-MM-DD');
+          var end = moment().endOf('month').add(m, 'M').format('YYYY-MM-DD');
+          var storeMonth = moment(start).format('YYYY-MM');
+          CalendarService.find(start, end)
+          .then(function(response) {
+            $window.localStorage['events_' + storeMonth] = JSON.stringify(response.data);
+            response.data.forEach(function(event) {
+              CalendarService.read(event._id).then(function(event) {
+                $window.localStorage['event_' + event._id] = JSON.stringify(event.data);
+              });
+            });
+          });
+        });
+
+        ContactService.findAll(false, false ,'last_read' , 100)
+        .then(function(response) {
+          console.log('Loading last read contacts into localStorage'); 
+          $window.localStorage.contactsAll = JSON.stringify(response.data);
+          response.data.forEach(function(contact) {
+            ContactService.read(contact._id).then(function(contact) {
+              $window.localStorage['contact_' + contact._id] = JSON.stringify(contact.data);
+            });
+          });
+        });
+
+        PostService.findAll(100)
+        .then(function(response) {
+          console.log('Loading last updated posts into localStorage'); 
+          $window.localStorage.postsAll = JSON.stringify(response.data);
+          response.data.forEach(function(post) {
+            PostService.read(post._id).then(function(post) {
+              $window.localStorage['post_' + post._id] = JSON.stringify(post.data);
+            });
+          });
+        });
+
+        BookmarkService.findAll(100)
+        .then(function(response) {
+          console.log('Loading last updated bookmarkt into localStorage'); 
+          $window.localStorage.bookmarksAll = JSON.stringify(response.data);
+          response.data.forEach(function(bookmark) {
+            BookmarkService.read(bookmark._id).then(function(bookmark) {
+              $window.localStorage['bookmark_' + bookmark._id] = JSON.stringify(bookmark.data);
+            });
+          });
+        });
+
+        flash('succes', 'Success: Loading some data for offline usage...');
+        $timeout(function(){
           $state.go('home');
+          flash('succes', 'Signed in');
+        }, 3000);
 
-      }, function(reponse) {
-        if(status === 0 && status === null) {
-          flash('alert', 'Not online');
+        //---------------------------------------------------------------------
+
+
+      }, function(response) {
+        if(response.status === 0) {
+          flash('warning', 'Not online');
         }
         else {
           flash('alert', 'Wrong credentials');

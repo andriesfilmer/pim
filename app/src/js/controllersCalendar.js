@@ -62,19 +62,15 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
       weekNumbers: true,
       draggable: false,
       dayClick: function(date, jsEvent, view) {
-
         // Prevent add events if offline
         if(!$scope.offline) {
           console.log('DayClick date -> ' + date); 
           $state.go('calendar.event', {start: date});
         }
-
       },
       eventClick: function(calEvent, jsEvent, view) {
-
         $scope.cal = calEvent;
         $state.go('calendar.event', {id: calEvent._id});
-
       }
     }
   };
@@ -131,6 +127,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   });
 
 }]);
+
 
 // Controller for the single events
 appControllers.controller('EventController', ['$scope','$timeout', '$state', '$stateParams', '$window', 'flash', 'CalendarService',

@@ -52,14 +52,51 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
   };
 });
 
+appServices.factory('UserService', function ($q, $window, $http) {
+  return {
+    signIn: function(email, password) {
+      return $http.post(options.api.base_url + '/user/signin', {email: email, password: password});
+    },
+    register: function(fullname, email, password, passwordConfirmation) {
+      return $http.post(options.api.base_url + '/user/register', 
+        {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
+    },
+    changePassword: function(password, passwordConfirmation) {
+      var deferred = $q.defer();
+      $http.post(options.api.base_url + '/user/password-change', {password: password, passwordConfirmation: passwordConfirmation})
+      .then(function(response) {
+          $window.localStorage.token = response.data.token;
+          deferred.resolve(response);
+      }, function(response) {
+          deferred.reject(response);
+      });
+      return deferred.promise;
+    },
+    sendToken: function(email) {
+      return $http.post(options.api.base_url + '/user/send-token', 
+        {email: email});
+    }
+  };
+});
+
 appServices.factory('CalendarService',['$http', '$q', '$window', function($http, $q, $window) {
   return {
 
-    find: function(start, end) {
-      var deferred = $q.defer();
+    find: function(start, end, saveLocal) {
+
+      // Do we want this action to be stored in localStorage?
+      if (typeof saveLocal === 'undefined') { saveLocal = true }
 
       // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
-      var eventsLocalStorage = 'events_' + new Date(start).toISOString().substr(0,7);
+      // Save by the month view of the calender view io. this can span 3 months.
+      if (moment(start).format('MM') === moment(start).add(10,'Days').format('MM')) {
+        var thisMonth = moment(start).format('YYYY-MM');
+      }
+      else {
+        var thisMonth = moment(start).add(1,'M').format('YYYY-MM');
+      }
+
+      var deferred = $q.defer();
 
       $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
       .then(function(response) {
@@ -69,14 +106,17 @@ appServices.factory('CalendarService',['$http', '$q', '$window', function($http,
         deferred.notify(msg);
 
         // Store events in LocalStorage with year+day io 'yyyy-dd'.
-        $window.localStorage[eventsLocalStorage] = JSON.stringify(response.data);
+        if (saveLocal) {
+          $window.localStorage['events_' + thisMonth] = JSON.stringify(response.data);
+        }
+
         deferred.resolve(response);
 
       }, function(response) {
         console.log(response.data); 
-        if($window.localStorage[eventsLocalStorage]) {
+        if($window.localStorage['events_' + thisMonth]) {
           response.statusText = 'Offline: Events from localstorage';
-          response.data = JSON.parse($window.localStorage[eventsLocalStorage]);
+          response.data = JSON.parse($window.localStorage['events_' + thisMonth]);
         } else {
           response.statusText = 'Offline: Events not in localstorage';
           response.data = {};
@@ -133,7 +173,11 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
 
   return {
 
-    findAll: function(starred, birthdate, order, limit) {
+    findAll: function(starred, birthdate, order, limit, saveLocal) {
+
+      // Do we want this action to be stored in localStorage?
+      if (typeof saveLocal === 'undefined') { saveLocal = true }
+
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
       .then(function(response) {
@@ -142,7 +186,10 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
         msg = [{"title": "Loading..."}];
         deferred.notify(msg);
 
-        $window.localStorage.contactsAll = JSON.stringify(response.data);
+        if (saveLocal) {
+          $window.localStorage.contactsAll = JSON.stringify(response.data);
+        }
+
         deferred.resolve(response);
 
       }, function(response) {
@@ -273,7 +320,7 @@ appServices.factory('PostService', function($http, $q, $window) {
       }, function(response) {
         console.log(response.statusText); 
         if($window.localStorage['post_' + id]) {
-          response.statusText = 'Offline: Posts from localstorage';
+          response.statusText = 'Offline: Post from localstorage';
           response.data = JSON.parse($window.localStorage['post_' + id]);
           deferred.reject(response);
         } else {
@@ -398,33 +445,6 @@ appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
       return $http.delete(options.api.base_url + '/bookmark/' + id);
     },
 
-  };
-});
-
-appServices.factory('UserService', function ($q, $window, $http) {
-  return {
-    signIn: function(email, password) {
-      return $http.post(options.api.base_url + '/user/signin', {email: email, password: password});
-    },
-    register: function(fullname, email, password, passwordConfirmation) {
-      return $http.post(options.api.base_url + '/user/register', 
-        {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
-    },
-    changePassword: function(password, passwordConfirmation) {
-      var deferred = $q.defer();
-      $http.post(options.api.base_url + '/user/password-change', {password: password, passwordConfirmation: passwordConfirmation})
-      .then(function(response) {
-          $window.localStorage.token = response.data.token;
-          deferred.resolve(response);
-      }, function(response) {
-          deferred.reject(response);
-      });
-      return deferred.promise;
-    },
-    sendToken: function(email) {
-      return $http.post(options.api.base_url + '/user/send-token', 
-        {email: email});
-    }
   };
 });
 
