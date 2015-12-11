@@ -13,7 +13,10 @@ exports.list = function(req, res) {
   var start = req.query.start.replace(/"/g,"").substr(0,10);
   var end = req.query.end.replace(/"/g,"").substr(0,10);
 
-  var query = db.eventModel.find({"start": {"$gte": start, "$lte": end}, user_id: req.user.id }).limit(500);
+  var query = db.eventModel.find({ $or: [
+                                   {"start": {"$gte": start, "$lte": end }},
+                                   {  "end": {"$gte": start, "$lte": end }}
+                                   ], user_id: req.user.id }).limit(500);
   query.select("_id title start end allDay className");
   query.sort('start');
   query.exec(function(err, results) {
@@ -38,8 +41,8 @@ exports.search = function(req, res) {
   if (calendar.searchKey) {
     var query = db.eventModel.find({ $or: [ 
                                           {title:   { $exists: true, $regex: calendar.searchKey, $options: 'i' } },
-                                          {description: { $exists: true, $regex: calendar.searchKey, $options: 'i' } }, 
-                                         ],user_id: req.user.id } ).limit(100);
+                                          {description: { $exists: true, $regex: calendar.searchKey, $options: 'i' } }
+                                         ], user_id: req.user.id } ).limit(100);
   } else {
     var query = db.eventModel.find({ user_id: req.user.id });
   }

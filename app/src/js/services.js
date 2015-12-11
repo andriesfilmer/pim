@@ -85,15 +85,15 @@ appServices.factory('CalendarService',['$http', '$q', '$window', function($http,
     find: function(start, end, saveLocal) {
 
       // Do we want this action to be stored in localStorage?
-      if (typeof saveLocal === 'undefined') { saveLocal = true }
+      if (typeof saveLocal === 'undefined') { saveLocal = true; }
 
       // Var to store events in LocalStorage with year+day io 'yyyy-dd'.
       // Save by the month view of the calender view io. this can span 3 months.
       if (moment(start).format('MM') === moment(start).add(10,'Days').format('MM')) {
-        var thisMonth = moment(start).format('YYYY-MM');
+        thisMonth = moment(start).format('YYYY-MM');
       }
       else {
-        var thisMonth = moment(start).add(1,'M').format('YYYY-MM');
+        thisMonth = moment(start).add(1,'M').format('YYYY-MM');
       }
 
       var deferred = $q.defer();
@@ -176,7 +176,7 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
     findAll: function(starred, birthdate, order, limit, saveLocal) {
 
       // Do we want this action to be stored in localStorage?
-      if (typeof saveLocal === 'undefined') { saveLocal = true }
+      if (typeof saveLocal === 'undefined') { saveLocal = true; }
 
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
