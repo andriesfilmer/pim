@@ -6,7 +6,7 @@ appControllers.controller('HomeController', ['$scope', '$state', '$window', 'Cal
     var startDate = moment().format('YYYY-MM-DD');
     var endDate = moment().add(2, 'weeks').format('YYYY-MM-DD');
 
-    CalendarService.find(startDate, endDate, false)
+    CalendarService.find(startDate, endDate, false) // start, end, saveLocal
     .then(function(response) {
       console.log('Promise resolve');
       // To show 'no events yet' in home view.
@@ -16,6 +16,9 @@ appControllers.controller('HomeController', ['$scope', '$state', '$window', 'Cal
       console.log('Promise reject');
       $scope.offline = true;
       $scope.events = response.data;
+    }, function(data) {
+      console.log('Promise notify'); 
+      $scope.events = data;
     });
 
     ContactService.findAll(false, false ,'last_read' , 10, false)
@@ -26,7 +29,7 @@ appControllers.controller('HomeController', ['$scope', '$state', '$window', 'Cal
       console.log('Promise reject'); 
       $scope.offline = true;
       $scope.contacts = response.data;
-      flash('warning', 'Your are offline, read only!');
+      flash('warning', 'Offline: data from localstorage');
     }, function(data) {
       console.log('Promise notify'); 
       $scope.contacts = data;

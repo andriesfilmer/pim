@@ -79,7 +79,8 @@ appServices.factory('UserService', function ($q, $window, $http) {
   };
 });
 
-appServices.factory('CalendarService',['$http', '$q', '$window', function($http, $q, $window) {
+appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
+
   return {
 
     find: function(start, end, saveLocal) {
@@ -100,18 +101,11 @@ appServices.factory('CalendarService',['$http', '$q', '$window', function($http,
 
       $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
       .then(function(response) {
-
-        // Notify on slow connections
-        msg = [{"title": "Loading..."}];
-        deferred.notify(msg);
-
         // Store events in LocalStorage with year+day io 'yyyy-dd'.
         if (saveLocal) {
           $window.localStorage['events_' + thisMonth] = JSON.stringify(response.data);
         }
-
         deferred.resolve(response);
-
       }, function(response) {
         console.log(response.data); 
         if($window.localStorage['events_' + thisMonth]) {
@@ -123,16 +117,19 @@ appServices.factory('CalendarService',['$http', '$q', '$window', function($http,
         }
         deferred.reject(response);
       });
+
+      // Notify on slow connections
+      var msg = [{"title": "Loading..."}];
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
     },
 
     read: function(id) {
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/calendar/' + id).then(function(response) {
-
-       // Notify on slow connections
-        msg = [{"title": "Loading..."}];
-        deferred.notify(msg);
 
         $window.localStorage['event_' + id] = JSON.stringify(response.data);
         deferred.resolve(response);
@@ -147,11 +144,33 @@ appServices.factory('CalendarService',['$http', '$q', '$window', function($http,
         }
         deferred.reject(response);
       });
+
+      // Notify on slow connections
+      var msg = {"title": "Loading..."};
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
     },
 
-    search: function(searchKey) { 
-      return $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}});
+    search: function(searchKey) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}})
+      .then(function(response) {
+        deferred.resolve(response);
+      }, function(response) {
+        response.statusText = 'Error: can\'t search events';
+        deferred.reject(response);
+      });
+
+      // Notify on slow connections
+      var msg = [{"title": "Loading..."}];
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
+      return deferred.promise;
     },
 
     create: function(calendar) {
@@ -167,9 +186,9 @@ appServices.factory('CalendarService',['$http', '$q', '$window', function($http,
     },
 
   };
-}]);
+});
 
-appServices.factory('ContactService', function($http, $timeout, $q, $window) {
+appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
   return {
 
@@ -179,19 +198,13 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
       if (typeof saveLocal === 'undefined') { saveLocal = true; }
 
       var deferred = $q.defer();
+
       $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
       .then(function(response) {
-
-        // Notify on slow connections
-        msg = [{"title": "Loading..."}];
-        deferred.notify(msg);
-
         if (saveLocal) {
           $window.localStorage.contactsAll = JSON.stringify(response.data);
         }
-
         deferred.resolve(response);
-
       }, function(response) {
         console.log(response.data); 
         if($window.localStorage.contactsAll) {
@@ -202,20 +215,22 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
         }
         deferred.reject(response);
       });
+
+      // Notify on slow connections
+      var msg = [{"name": "Loading..."}];
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
+
     },
 
     read: function(id) {
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/contact/' + id).then(function(response) {
-
-        // Notify on slow connections
-        msg = {"name": "Loading..."};
-        deferred.notify(msg);
-
         deferred.resolve(response);
         $window.localStorage['contact_' + id] = JSON.stringify(response.data);
-
       }, function(response) {
         console.log(response.data); 
         if($window.localStorage.getItem('contact_' + id)) {
@@ -228,7 +243,15 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
         }
         deferred.reject(response);
       });
+
+      // Notify on slow connections
+      var msg = {"name": "Loading..."};
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
+
     },
 
     searchAll: function(birthdate, searchKey) { 
@@ -282,7 +305,7 @@ appServices.factory('ContactService', function($http, $timeout, $q, $window) {
   };
 });
 
-appServices.factory('PostService', function($http, $q, $window) {
+appServices.factory('PostService', function($http, $q, $timeout, $window) {
 
   return {
 
@@ -290,14 +313,8 @@ appServices.factory('PostService', function($http, $q, $window) {
       var deferred = $q.defer();
       $http.get(options.api.base_url + '/post/', {'params': {limit: limit}})
       .then(function(response) {
-
-        // Notify on slow connections
-        msg = [{"title": "Loading..."}];
-        deferred.notify(msg);
-
         $window.localStorage.postsAll = JSON.stringify(response.data);
         deferred.resolve(response);
-
      }, function(response) {
         console.log(response.statusText); 
         if($window.localStorage.postsAll) {
@@ -309,6 +326,13 @@ appServices.factory('PostService', function($http, $q, $window) {
         }
         deferred.reject(response);
       });
+
+      // Notify on slow connections
+      var msg = [{"title": "Loading..."}];
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
     },
 
@@ -328,6 +352,13 @@ appServices.factory('PostService', function($http, $q, $window) {
           deferred.reject(response);
         }
       });
+
+      // Notify on slow connections
+      var msg = {"title": "Loading..."};
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
     },
 
@@ -362,7 +393,7 @@ appServices.factory('PostService', function($http, $q, $window) {
   };
 });
 
-appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
+appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
 
   return {
 
@@ -372,15 +403,9 @@ appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
 
       $http.get(options.api.base_url + '/bookmark/', {'params': {limit: limit}})
       .then(function(response) {
-
-        // Notify on slow connections
-        var msg = [{"title": "Loading..."}];
-        deferred.notify(msg);
-
         console.log('Fetched bookmarks from MongoDb and saved to localStorage.'); 
         $window.localStorage.bookmarksAll = JSON.stringify(response.data);
         deferred.resolve(response);
-
       }, function(response) {
         console.log(response.data); 
         if($window.localStorage.bookmarksAll) {
@@ -391,6 +416,13 @@ appServices.factory('BookmarkService', function($http, $q, $window, $timeout) {
         }
         deferred.reject(response);
       });
+
+      // Notify on slow connections
+      var msg = [{"title": "Loading..."}];
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
       return deferred.promise;
     },
 

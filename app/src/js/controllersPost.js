@@ -90,7 +90,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.post._id = response.data.org_id;
       $scope.toc = MarkdownToc.make(response.data);
       $scope.saveForm = true;
-      flash('alert', 'Click save to restore');
+      flash('warning', 'Click save to restore');
     });
   }
   // Length of mongoDb _id = 24, so it must be a existing post.
@@ -104,6 +104,10 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       $scope.offline = true;
       $scope.post = response.data;
       flash('warning', response.statusText);
+    }, function(data) {
+      console.log('Promise notify'); 
+      console.dir(data);
+      $scope.post = data;
     });
 
     // Get post versions

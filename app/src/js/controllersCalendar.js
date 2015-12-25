@@ -113,6 +113,13 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
     CalendarService.find(startDate).then(function(response) {
       $scope.events = response.data;
+    }, function(response) {
+      console.log('Promise reject'); 
+      flash('warning', response.statusText);
+      $scope.events = response.data;
+    }, function(data) {
+      console.log('Promise notify search init'); 
+      $scope.events = data;
     }); 
   }
 
@@ -122,6 +129,13 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
       $window.sessionStorage.calendarSearchKey = searchKey;
       CalendarService.search(searchKey).then(function(response) {
         $scope.events = response.data;
+      }, function(response) {
+        console.log('Promise reject'); 
+        $scope.offline = true;
+        flash('warning', response.statusText);
+      }, function(data) {
+        console.log('Promise notify search'); 
+        $scope.events = data;
       }); 
     }
   });
@@ -178,7 +192,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
 
     }, function(data) {
       console.log('Promise notify'); 
-      $scope.calcontact = data;
+      $scope.cal = data;
     });
   }
 
