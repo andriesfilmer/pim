@@ -6,22 +6,19 @@ div.row
   fieldset
    legend Limit contacts per request
    div.row
-    div.column.small-6.my-row List 50 contacts
-    div.switch.round.column.small-6
-     input#contact-50(type="radio", value="50", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(50)")
-     label(for="contact-50") 
-   div.row
-    div.column.small-6.my-row List 100 contacts
+    div.column.small-6.my-row List 100
+     span.meta-data fast
     div.switch.round.column.small-6
      input#contact-100(type="radio", value="100", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(100)")
      label(for="contact-100") 
    div.row
-    div.column.small-6.my-row List 300 contacts
+    div.column.small-6.my-row List 300
     div.switch.round.column.small-6
      input#contact-300(type="radio", value="300", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(300)")
      label(for="contact-300")
    div.row
-    div.column.small-6.my-row List 1000 contacts
+    div.column.small-6.my-row List 1000
+     span.meta-data slow
     div.switch.round.column.small-6
      input#contact-1000(type="radio", value="1000", name="contactLimit", ng-model="contactLimit", ng-change="changeLimit(1000)")
      label(for="contact-1000")

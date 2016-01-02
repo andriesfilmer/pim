@@ -9,7 +9,7 @@ var secret = require('../config/secret');
 
 exports.signin = function(req, res) {
 
-  var email = req.body.email || '';
+  var email = req.body.email.toLowerCase() || '';
   var password = req.body.password || '';
 
   if (email == '' || password == '') { 
@@ -76,7 +76,7 @@ exports.register = function(req, res) {
   var user = new db.userModel();
 
   user.fullname = req.body.fullname;
-  user.email = req.body.email;
+  user.email = req.body.email.toLowerCase();
   user.password = req.body.password;
 
   user.save(function(err) {
