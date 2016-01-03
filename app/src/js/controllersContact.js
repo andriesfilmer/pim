@@ -332,21 +332,28 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
     $('a.close-reveal-modal').trigger('click');
 
-    Cropper.crop(file, data).then(function(blob) {
-      return Cropper.scale(blob, {width: 250});
-    }).then(Cropper.encode).then(function(dataUrl) {
-      ContactService.upload(contact._id, dataUrl).then(function(response) {
-        $scope.saveForm = true;
-        $scope.contact.photo = response.data.contact.photo;
-        $scope.upsertContact(contact, 'update');
-      }, function(response) {
-        flash('alert', response.data);
-        $scope.contact.photo = "/static/images/profile.jpg";
-      }, function(data) {
-        $scope.contact.photo = data;
-        $scope.editForm = false;
-      }); 
-    });
+    if ( (/iP(hone|od|ad)/).test(window.navigator.platform) && ($(window).width < 768 && ($(image).height() > 1000 || $(image).width() > 1000)) ) {
+      flash('alert', 'Sorry, image to large (max 1000px width, 1000px heigth)');
+    }
+    else {
+
+      Cropper.crop(file, data).then(function(blob) {
+        return Cropper.scale(blob, {width: 250});
+      }).then(Cropper.encode).then(function(dataUrl) {
+        ContactService.upload(contact._id, dataUrl).then(function(response) {
+          $scope.saveForm = true;
+          $scope.contact.photo = response.data.contact.photo;
+          $scope.upsertContact(contact, 'update');
+        }, function(response) {
+          flash('alert', response.data);
+          $scope.contact.photo = "/static/images/profile.jpg";
+        }, function(data) {
+          $scope.contact.photo = data;
+          $scope.editForm = false;
+        }); 
+      });
+
+    }
 
   };
 

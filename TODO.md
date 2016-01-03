@@ -1,25 +1,22 @@
 # General
-- jwt token feedback must be better form the api
-- FastClick https://github.com/ftlabs/fastclick
-- Sync-it https://www.npmjs.com/package/sync-it
+- After login, show processbar for loading localdata
+- jwt token expire feedback must be better from the api
+- https://sroze.github.io/ngInfiniteScroll/
 - https://github.com/angular-translate/angular-translate
 
 # Calendar
-- New event does not show immediately
 - export vCal
 - import vCal
-- install angular-ui-calendar minified
 
 # Contact
 - import vCard
-- download/share vCard
 
 # Issues
+- Upload contact photo on ipad does not work correct.
+  https://github.com/fengyuanchen/cropper/issues/294
+
 - Share PDF with bullet list does not work correct with <ul><li>
 
+# Other
 
-db.contacts.find({ photo: {$exists: true}}).forEach(function(contact) {
-   db.contacts.update({_id: contact._id}, {
-     $set: { "photo": '/upload/' + contact.user_id + '/contacts/' + contact._id + '.jpg'  }
-    })
-});
+- Sync-it https://www.npmjs.com/package/sync-it

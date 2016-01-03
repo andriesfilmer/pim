@@ -16,7 +16,8 @@ form(name="eventForm")
     a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
 
  div.row(ng-hide="editForm",ng-if="cal.title", ng-class="cal.className")
-  div.column.small-12 {{cal.title}} {{editFrom}}
+  div.column.small-12 
+   h2 {{cal.title}} {{editFrom}}
   span &nbsp;
   div.round.secondary.label {{cal.start | date: 'yyyy-MM-dd'}}
   div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}

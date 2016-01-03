@@ -48,7 +48,7 @@ exports.search = function(req, res) {
   }
 
   query.select("_id title start end allDay className created updated");
-  query.sort('-updated');
+  query.sort('-start');
   query.exec(function(err, results) {
 
     if (err) {
