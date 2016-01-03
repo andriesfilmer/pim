@@ -3,6 +3,7 @@
 tags
 tmp
 app/bower_components/
+app/upload/
 api/node_modules
 api/log/
 api/config/secret.js

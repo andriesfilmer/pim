@@ -10,7 +10,7 @@ var db = require('./config/mongo_database');
 // For the crontab that runs once each day at 5am.
 // 0 5 * * * export NODE_ENV=production /usr/bin/node /path/to/api_root/sendBirthDayReminder.js
 
-var month = moment().format("M");
+var month = moment().format("MM");
 var day = moment().add(1, 'days').format("DD");
 
 // Iterate contacts from MongoDb.
@@ -80,7 +80,7 @@ function sendReminder(contact,user) {
   var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
   //console.log('Send reminder for: ' + contact.name); 
   //console.log('Send reminder to: ' + emailAddress); 
-  //console.log('Send reminder from: ' + mail_from); 
+  //console.log('Send reminder from: ' + config.env().mail_from); 
   //console.log('Send reminder port: ' + config.env().mail_port); 
 
   var transporter = nodemailer.createTransport({ 
