@@ -72,17 +72,12 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   };
 
-  // Show edit mode if we want to create a new post.
-  if ($stateParams.id === "create") {
-    $scope.editForm = true;
-  }
-
   // Add alert class on save icon
   $scope.isChanged = function() {
     $scope.saveForm = true;
   };
 
-  if ($state.$current.url == "/post/version/:id") {
+  if ($state.$current.name === 'post.version') {
     $('a.close-reveal-modal').trigger('click');
     PostService.readVersion($stateParams.id).then(function(response) {
       console.log('Original version: ' + response.data.org_id);
@@ -93,8 +88,8 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       flash('warning', 'Click save to restore');
     });
   }
-  // Length of mongoDb _id = 24, so it must be a existing post.
-  else if ($stateParams.id.length > 23) {
+  // ID is present so it must be a existing post.
+  else if ($state.$current.name == 'post.view') {
     PostService.read($stateParams.id).then(function(response) {
       $scope.share = sharePost(response.data);
       $scope.post = response.data;
@@ -114,13 +109,16 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
     PostService.listVersions($stateParams.id).then(function(response) {
       $scope.versions = response.data; 
     });
+
   }
-  // Must be a new post so init with default params.
-  else {
+  // Must be a new post so init with default values.
+  else  {
     $scope.post = {};
     $scope.post.type = 'todo';
     $scope.showDeleteBt = true;
+    $scope.editForm = true;
   }
+
 
   $scope.save = function save(post) {
 
@@ -140,7 +138,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
       PostService.update(post).then(function(response) {
         flash('success', response.data);
-        $state.go('post');
       }, function(response) {
         flash('alert', 'Updata post failure!');
       });
@@ -149,7 +146,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
       PostService.create(post).then(function(response) {
         flash('success', response.data);
-        $state.go('post');
       }, function(response) {
         flash('alert', 'Create post failure!');
       });
@@ -164,7 +160,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $scope.downloadPdf = function downloadPdf(post) {
     PostService.pdf(post._id).then(function(response) {
-      console.log('##### test -> '); 
       console.dir(response.data);
       var file = new Blob([response.data], {type: 'application/pdf'});
       var title = post.title.replace(/[^\w]/gi, '');
@@ -175,10 +170,10 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   };
 
   $scope.deletePost = function deletePost(post) {
-    PostService.delete($stateParams.id).then(function(response) {
-      console.log('Deleted post:' + post._id + ' ' + respomse.statusText); 
+    PostService.delete(post._id).then(function(response) {
+      console.log('Deleted post:' + post._id + ' ' + response.statusText); 
       flash('success', 'Post deleted successful');
-      $state.go("post");
+      $state.go("post.list");
     });
   };
 

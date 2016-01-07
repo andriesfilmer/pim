@@ -35,7 +35,7 @@ form(name="bookmarkForm")
   div.column.small-12
    ul.inline-list
     li.tag(ng-repeat='tag in bookmark.tags')
-     a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
+     a.label.radius.success {{tag}}
  div.row(ng-if="bookmark")
   fieldset.radius
    legend Category

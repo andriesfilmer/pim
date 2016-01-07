@@ -5,10 +5,10 @@ div.row(ng-hide="offline")
    span.divider
    a.fi-magnifying-glass(ng-click='toggleSearch()', title='Show/Hide Search', tabindex="1")
    span.divider
-   a.fi-widget(href="", title="Settings", data-reveal-id="bookmark-settings", data-reveal-ajax="true") 
+   a.fi-widget(title="Settings", data-reveal-id="bookmark-settings", data-reveal-ajax="true") 
    span.right
     span.divider
-    a.fi-plus(href='#/bookmark/create',title='New item')
+    a.fi-plus(ui-sref='bookmark.create',title='New item')
 
 div.row.flip-in(ng-show="searchForm")
  form#search
@@ -18,7 +18,7 @@ div.row.flip-in(ng-show="searchForm")
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
 div.row.my-row(ng-repeat='bookmark in bookmarks', ng-class="bookmark.category", ng-class-odd="'odd'" ng-class-even="'even'")
-  a(href='#/bookmark/{{bookmark._id}}')
+  a(ui-sref='bookmark.view({id: bookmark._id})')
    div.columns.medium-10 {{bookmark.title}}
   div.column.medium-2.hide-for-small
    div.round.secondary.label {{bookmark.created | date: 'yyyy-MM-dd'}}

@@ -76,7 +76,7 @@ div.row(ng-if="cal.created")
  div.column.small-12.post-meta
    ul.inline-list
     li.tag(ng-repeat='tag in post.tags')
-     a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
+     a.label.radius.success {{tag}}
 
 div.row
   div#share.reveal-modal(data-reveal='')

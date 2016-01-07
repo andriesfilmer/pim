@@ -170,7 +170,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   };
 
   // Init a new contact.
-  if ($stateParams.id === "create") {
+  if ($state.$current.name === 'contact.create') {
     var initializing = true;
     $scope.contact = {};
     $scope.showAddBt  = true;
@@ -179,7 +179,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   }
 
   // Length of mongoDb _id = 24, so it must be a existing contact.
-  if ($stateParams.id.length > 23) {
+  if ($state.$current.name == 'contact.view') {
     console.log('Fetch contact -> _id: ' + id); 
     $scope.showAddBt  = false;
     ContactService.read(id).then(function(response) {

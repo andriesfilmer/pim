@@ -8,7 +8,7 @@ form(name="postForm")
    span.divider
    a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
    span.divider
-   a.fi-widget(href="",data-reveal-id="post-settings", data-reveal-ajax="true") 
+   a.fi-widget(data-reveal-id="post-settings", data-reveal-ajax="true") 
    span.divider
    a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
    span.right(ng-hide="showDeleteBt")
@@ -35,7 +35,7 @@ form(name="postForm")
   div.column.small-12.post-meta
     ul.inline-list
      li.tag(ng-repeat='tag in post.tags')
-      a.label.radius.success(href='#/tag/{{tag}}') {{tag}}
+      a.label.radius.success {{tag}}
  div.row(ng-if="post")
   div.column.small-6.meta-data
    i Created:  {{post.created | date: 'yyyy-MM-dd'}}
@@ -71,7 +71,7 @@ div.row
   fieldset(ng-if="versions")
    legend Versions
    div.row.my-row(ng-repeat='version in versions', ng-class="version.type", ng-class-odd="'odd'" ng-class-even="'even'")
-    a(href='#/post/version/{{version._id}}')
+    a(ui-sref='post.version({id: version._id})')
      div.columns.medium-9 {{version.title}}
      div.column.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
 

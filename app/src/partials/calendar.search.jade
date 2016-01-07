@@ -5,7 +5,7 @@ div.row(ng-hide="offline")
    div.columns.small-2
     button.tiny.reset-button(ng-click="resetSearchKey()",type="reset") &#215;
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
- a(href='#/calendar/event/{{event._id}}')
+ a(ui-sref='calendar.event({id: event._id})')
   div.columns.medium-8 {{event.title}}
   div.column.medium-4
    div.round.secondary.label {{event.start | date: 'yyyy-MM-dd'}}

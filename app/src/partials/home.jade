@@ -10,7 +10,7 @@ div.row
   i.fi-calendar
   span  This week events
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
- a(href='#/calendar/event/{{event._id}}')
+ a(href='#/calendar/event/{{event._id}}', target='_blank')
   div.columns.small-12.medium-6 {{event.title}}
   div.column.small-6.medium-3
    div.round.secondary.label {{event.start | date: 'EEEE d MMMM'}} 
@@ -28,7 +28,7 @@ div.row
   span  Last viewed contacts
 
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
- a(href='#/contact/{{contact._id}}')
+ a(href='#/contact/{{contact._id}}', target='_blank')
   div.columns.small-10.medium-5 {{contact.name}}
   div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2.text-center
@@ -37,6 +37,6 @@ div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-ev
 div.row
  div.column.small-12
   p.meta-data #{package} Version: #{version}. See full source code on 
-   a.fi-social-github(href="https://github.com/andriesfilmer/pim")  Github. 
+   a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github. 
    | The code has a 
-   a(href="http://opensource.org/licenses/MIT") MIT License.
+   a(href="http://opensource.org/licenses/MIT", target='_blank') MIT License.

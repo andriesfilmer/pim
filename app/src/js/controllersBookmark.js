@@ -64,8 +64,6 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
   function BookmarkController($rootScope, $scope, $state, $window, $stateParams, flash, BookmarkService) {
   $(document).foundation();
 
-  $scope.bookmark = {};
-  var id = $stateParams.id;
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
@@ -73,7 +71,8 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
   };
 
   // Show edit mode if we want to create a new bookmark.
-  if ($stateParams.id === "create") {
+  if ($state.$current.name === 'bookmark.create') {
+    $scope.bookmark = {category: 'other'};
     $scope.editForm = true;
   }
 
@@ -82,9 +81,8 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
     $scope.saveForm = true;
   };
 
-  // Length of mongoDb _id = 24, so it must be a existing bookmark.
-  if ($stateParams.id.length > 23) {
-    BookmarkService.read(id)
+  if ($state.$current.name === 'bookmark.view') {
+    BookmarkService.read($stateParams.id)
     .then(function(response) {
       // Promise resolve
       $scope.showDeleteBt  = true;
@@ -120,7 +118,7 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
       BookmarkService.create(bookmark).then(function(response) {
         // Promise reslove
         flash('success', response.data);
-        $state.go('bookmark');
+        $state.go('bookmark.list');
       }, function(response) {
         console.log(response.data);
         flash('alert', 'Create bookmark failure!');
@@ -135,9 +133,9 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
   };
 
   $scope.deleteBookmark = function deleteBookmark(bookmark) {
-    BookmarkService.delete(id).then(function(response) {
+    BookmarkService.delete(bookmark._id).then(function(response) {
       flash('success', response.data);
-      $state.go("bookmark");
+      $state.go("bookmark.list");
     }, function(response) {
       console.log(response.data);
       flash('alert', 'Delete bookmark failure');

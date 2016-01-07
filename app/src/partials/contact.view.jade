@@ -17,7 +17,7 @@ div.row(ng-hide="offline")
    a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")
 
 div(ng-hide="editForm")
- div.row.profile-bg(style="background: url({{contact.photo}}?{{contact.updated}}); background-size: cover; background-position: center;")
+ div.profile-bg(style="background: url({{contact.photo}}?{{contact.updated}}); background-size: cover; background-position: center;")
  div.row
   div.column.text-right(ng-if="contact.birthdate")
    label.fi-crown  {{contact.birthdate | date: 'dd MMM'}} | {{ calculateAge(contact.birthdate) }}
@@ -50,7 +50,7 @@ div(ng-hide="editForm")
    // Relations
    div.row.item-title(ng-if="contact.relations[0]") Relations
    div.row(ng-repeat="item in contact.relations")
-    a(href="/#/contact/{{item.id}}") 
+    a(ui-sref="contact.view({id: item.id})") 
      div.column.small-8
       label {{item.type}}
       | {{item.value}} &nbsp;
@@ -149,7 +149,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   // Relations
   div.column.small-10.item-title Relations
   div.column.small-2.text-center
-   a.fi-plus(href="",data-reveal-id="contact-relations", data-reveal-ajax="true") 
+   a.fi-plus(data-reveal-id="contact-relations", data-reveal-ajax="true") 
   div.column.small-12
    div.row(ng-repeat="item in contact.relations")
     div.column.small-6

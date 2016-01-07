@@ -93,3 +93,17 @@ appDirectives.directive('focusMe', function($timeout) {
     }
   };
 });
+
+// Add Target _blank to href
+appDirectives.directive('href', function() {
+  return {
+    compile: function(element) {
+      // Add target _blank if its a http url.
+      var patt = new RegExp(/^http:*/i);
+      if (patt.test(element[0].href)) {
+        console.log('Added element -> target=_blank: ' + element[0].href); 
+        element.attr('target', '_blank');
+      }
+    }
+  };
+});

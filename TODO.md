@@ -5,6 +5,7 @@
 - https://github.com/angular-translate/angular-translate
 
 # Calendar
+- Share event time not corret. UTC?
 - export vCal
 - import vCal
 

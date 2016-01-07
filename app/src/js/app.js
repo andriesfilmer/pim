@@ -113,7 +113,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true}
     })
     .state('contact.birthdate', {
-      url: "/brithdate/:birthdate",
+      url: "/birthdate/:birthdate",
       templateUrl: "partials/contact.birthdate.html",
       controller: 'ContactListController',
       access: { requiredAuthentication: true}
@@ -125,13 +125,13 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true}
     })
     .state('contact.create', {
-      url: "/contact/create",
+      url: "/create",
       templateUrl: "partials/contact.view.html",
       controller: 'ContactController',
       access: { requiredAuthentication: true}
     })
-    .state('contact/:id', {
-      url: "/contact/:id",
+    .state('contact.view', {
+      url: "/:id",
       templateUrl: "partials/contact.view.html",
       controller: 'ContactController',
       access: { requiredAuthentication: true }
@@ -140,24 +140,30 @@ app.config(['$stateProvider', '$urlRouterProvider',
     // Post views
     .state('post', {
       url: "/post",
+      templateUrl: "partials/post.html",
+      controller: 'PostListController',
+      access: { requiredAuthentication: true }
+    })
+    .state('post.list', {
+      url: "/list",
       templateUrl: "partials/post.list.html",
       controller: 'PostListController',
       access: { requiredAuthentication: true }
     })
     .state('post.create', {
-      url: "/post/create",
+      url: "/create",
       templateUrl: "partials/post.view.html",
       controller: 'PostController',
       access: { requiredAuthentication: true }
     })
-    .state('post/:id', {
-      url: "/post/:id",
+    .state('post.view', {
+      url: "/:id",
       templateUrl: "partials/post.view.html",
       controller: 'PostController',
       access: { requiredAuthentication: true }
     })
-    .state('post/version/:id', {
-      url: "/post/version/:id",
+    .state('post.version', {
+      url: "/version/:id",
       templateUrl: "partials/post.view.html",
       controller: 'PostController',
       access: { requiredAuthentication: true }
@@ -165,6 +171,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
 
     // Bookmark views
     .state('bookmark', {
+      url: "/bookmark",
+      templateUrl: "partials/bookmark.html",
+      controller: 'BookmarkListController',
+      access: { requiredAuthentication: true }
+    })
+    .state('bookmark.list', {
       url: "/bookmark",
       templateUrl: "partials/bookmark.list.html",
       controller: 'BookmarkListController',
@@ -176,12 +188,13 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'BookmarkController',
       access: { requiredAuthentication: true }
     })
-    .state('bookmark/:id', {
-      url: "/bookmark/:id",
+    .state('bookmark.view', {
+      url: "/:id",
       templateUrl: "partials/bookmark.view.html",
       controller: 'BookmarkController',
       access: { requiredAuthentication: true }
     })
+    // Startpage
     .state('start', {
       url: "/start",
       templateUrl: 'partials/start.html',

@@ -7,10 +7,10 @@ div.row(ng-hide="offline")
   span.divider
   a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search contacts', tabindex="3")
   span.divider
-  a.fi-widget(href="", title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
+  a.fi-widget(title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
   span.right
    span.divider
-   a.fi-plus(href='#/contact/create',title='New item')
+   a.fi-plus(ui-sref='contact.create', title='New item')
 
 div.row.flip-in(ng-show="searchForm")
  form#search
@@ -20,7 +20,7 @@ div.row.flip-in(ng-show="searchForm")
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
- a(href='#/contact/{{contact._id}}')
+ a(ui-sref='contact.view({id: contact._id})')
   div.columns.small-10.medium-5 {{contact.name}}
   div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2
