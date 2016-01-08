@@ -117,6 +117,7 @@ module.exports = function(grunt) {
             'vendor/js/fullcalendar.min.js',
             'vendor/js/foundation.min.js',
             'vendor/js/showdown.min.js',
+            'vendor/js/showdown-target-blank.min.js',
             'vendor/js/showdown-table.min.js'
           ],
           'public/vendor/css/vendor.css': [

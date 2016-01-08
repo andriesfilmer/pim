@@ -527,13 +527,13 @@ appServices.provider('markdownConverter', function () {
 
     // Showdown.js required
 
-    var opts = { extensions: ['table'] };
+    var opts = { extensions: ['table', 'targetblank'] };
     return {
       config: function (newOpts) {
         opts = newOpts;
       },
       $get: function () {
-        return new Showdown.converter(opts);
+        return new showdown.Converter(opts);
       }
     };
 });
