@@ -5,19 +5,21 @@ div.row
   button.topBt.small.fi-unlock(ui-sref="signin", ng-hide="showBts", title="Sign in")  Sign in
   button.topBt.small.secondary.fi-torso(ui-sref="signup", ng-hide="showBts", title="Sign up")   Sign up
 div.row
+ div.columns &nbsp;
+div.row
  div.column.small-12
   h2.strong Personal Information Manager 
 div.row
  div.column.small-12
-  ul(style="list-style-type: none;")
+  ul.start
    li.fi-calendar
-    a(ui-sref="calendar.month")  Calendar
+    a(ui-sref="calendar.month") &nbsp; Calendar
    li.fi-torsos
     a(ui-sref="contact.list")  Concacts
    li.fi-page
-    a(ui-sref="post")  Posts
+    a(ui-sref="post.list")  &nbsp;Posts
    li.fi-bookmark
-    a(ui-sref="bookmark")  Bookmarks
+    a(ui-sref="bookmark.list")  &nbsp;Bookmarks
 div.row
  div.column.small-12
   h2.fi-lock  Access to your data
@@ -81,7 +83,7 @@ div.row
 div.row
  div.column.small-12.medium-12
   h2.fi-plus  Install this web app
-  p If you want a icon on you homescreen like a real App.
+  p If you want a icon on your tablet or smartphone homescreen like a real App.
  div.column.small-12.medium-6
   p For iPhone Safari: Tap 
    img(src='/static/images/add-to-homescreen-iphone-icon.png') 

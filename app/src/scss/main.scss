@@ -40,6 +40,17 @@ p {
   margin-top: 1.25rem;
 }
 
+ul.start {
+  margin: 0;
+  padding-left: 0;
+  margin-bottom: 1em;
+  li {
+    list-style-type: none;
+    font-size: 1.5em;
+    line-height: 2em;
+  }
+}
+
 table p {
   margin: 0px;
 }

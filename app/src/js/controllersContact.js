@@ -3,6 +3,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 
     // Needed for reveal dialogs. 
     $(document).foundation();
+    $scope.contacts = {}; // hide 'no contacts yet' in view.
 
     // Set contact limit for contacts
     $scope.contactLimit =  $window.localStorage.contactLimit;
@@ -38,6 +39,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
         // On birthdate view scrollTo current month
         var scrollToThisMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
         $location.hash(scrollToThisMonth);
+
       }, function(response) {
         console.log('Promise reject'); 
         $scope.offline = true;
@@ -48,6 +50,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
         $scope.contacts = data;
       });
     };
+
 
     // Do we want a search form on list all contacts page.
     if ($window.sessionStorage.contactSearchKey && $state.current.name === 'contact.list') {

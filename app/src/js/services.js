@@ -201,10 +201,10 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
       $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
       .then(function(response) {
+        deferred.resolve(response);
         if (saveLocal) {
           $window.localStorage.contactsAll = JSON.stringify(response.data);
         }
-        deferred.resolve(response);
       }, function(response) {
         console.log(response.data); 
         if($window.localStorage.contactsAll) {
@@ -578,7 +578,9 @@ appServices.service('MarkdownToc', function() {
         }
 
         for(var l = 0; l < depths.length; l++) {
-          toc.push(indents[depths[l]] + "- [" + titles[l].title + "](/#/post/" + data._id + "#" + titles[l].uri + ")");
+          //toc.push(indents[depths[l]] + "- [" + titles[l].title + "](/#/post/" + data._id + "#" + titles[l].uri + ")");
+          //toc.push(indents[depths[l]] + '- <a ng-click="scrollTo(\'' + titles[l].uri + '\')">' + titles[l].title + '</a>');
+          toc.push(indents[depths[l]] + '- <a href="/#/post/' + data._id + '#' + titles[l].uri + '">' + titles[l].title + '</a>');
         }
 
         // Show TOC if we have more then 3 titles.

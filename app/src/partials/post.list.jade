@@ -22,7 +22,7 @@ div.row.my-row(ng-repeat='post in posts', ng-class="post.type", ng-class-odd="'o
    div.columns.medium-10 {{post.title}}
   div.column.medium-2.hide-for-small
    div.round.secondary.label {{post.created | date: 'yyyy-MM-dd'}}
-div.columns.meta-data(ng-if="!posts") No posts yet (todo's, notes or articles)
+div.columns.meta-data(ng-if="!posts") No posts, todos, notes or articles yet
 
 div.row
  div#post-settings.reveal-modal(data-reveal='')
