@@ -1,5 +1,5 @@
 div.row
- div.column.small-12.medium-3
+ div.column.small-12.medium-4
   div.download-vcard
    nobr
     label Phonenumbers
@@ -16,7 +16,7 @@ div.row
    nobr
     label Websites
      input(type="checkbox",name="websites", ng-model="dlWebsites")
- div.column.small-12.medium-3
+ div.column.small-12.medium-4
   div.download-vcard
    nobr
     label Photo
@@ -33,7 +33,7 @@ div.row
    nobr
     label Notes
      input(type="checkbox",name="notes", ng-model="dlNotes")
- div.column.small-12.medium-6
+ div.column.small-12.medium-4
   p(ng-show="!vCardShow")
    button.radius(ng-click="downloadContact(contact)", title='Download contact') Create vCard
   p(ng-show="vCardShow")

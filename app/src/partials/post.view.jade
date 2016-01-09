@@ -25,7 +25,7 @@ form(name="postForm")
    p#markdown(markdown='post.content') 
 
  div.row(ng-show="editForm")
-  div.column.small-12(ng-class="post.type")
+  div.column.small-12
    input#title(type="text", required='', name="title", placeholder="Title is required", ng-model="post.title", ng-change="isChanged()")
  div.row(ng-show="editForm")
   div.column.small-12

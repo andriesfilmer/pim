@@ -33,6 +33,8 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     BookmarkService.findAll($window.localStorage.bookmarkLimit)
     .then(function(response) {
       console.log('Promise resolve'); 
+      // To show 'no bookmarks yet' in the view.
+      if (response.data.length === 0) { response.data = undefined; }
       $scope.bookmarks = response.data;
     }, function(response) {
       console.log('Promise reject'); 

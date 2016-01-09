@@ -11,6 +11,7 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
     $scope.signIn = function signIn(email, password) {
       UserService.signIn(email, password).then(function(response) {
         AuthenticationService.isAuthenticated = true;
+        $scope.loginForm = true;
 
         // We choose localStorage i.o. sessionStorage so that 
         // we keep the token after clossing the browser.
@@ -97,7 +98,7 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
       AuthenticationService.isAuthenticated = false;
 
       // We have logout so we delete localstore for security.
-      flash('success', 'Logged out and deleted local information');
+      flash('success', 'Logged out successfull');
       $window.localStorage.clear();
       $state.go('start');
     };

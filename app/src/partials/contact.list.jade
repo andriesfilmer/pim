@@ -25,6 +25,7 @@ div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-ev
   div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2
    img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
+div.columns.meta-data(ng-if="!contacts") No contacts yet
 
 
 include ./includes/contact.settings.jade

@@ -17,6 +17,8 @@ div.row
     img.photo(ng-show="contact.photo == undefined || contact.photo == ''", ng-src="/static/images/profile.jpg")
     img.photo(ng-show="contact.photo != undefined", ng-src="{{contact.photo}}")
     p {{contact.name}}
+ div.columns.meta-data(ng-if="!contacts") No starred 
+  i.fi-star  contacts yet
 
 include ./includes/contact.settings.jade
 

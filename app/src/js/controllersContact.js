@@ -30,7 +30,11 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       ContactService.findAll(starred, birthdate, order, limit)
       .then(function(response) {
         console.log('Promise resolve'); 
+
+        // To show 'no contacts yet' in the view.
+        if (response.data.length === 0) { response.data = undefined; }
         $scope.contacts = response.data;
+
         // On birthdate view scrollTo current month
         var scrollToThisMonth = ("0" + (new Date().getMonth() + 1)).slice(-2);
         $location.hash(scrollToThisMonth);

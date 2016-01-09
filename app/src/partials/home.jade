@@ -8,13 +8,12 @@ div.row
 div.row
  div.column.small-12.home
   i.fi-calendar
-  span  This week events
+  span  Upcomming events
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
- a(href='#/calendar/event/{{event._id}}', target='_blank')
+ a(ui-sref='calendar.event({id: event._id})')
   div.columns.small-12.medium-6 {{event.title}}
-  div.column.small-6.medium-3
-   div.round.secondary.label {{event.start | date: 'EEEE d MMMM'}} 
-  div.column.small-6.medium-3
+  div.column.small-6.medium-3.meta-data {{event.start | date: 'EEEE d MMMM'}} 
+  div.column.small-6.medium-3.text-right
    div.round.secondary.label(ng-show='event.allDay==="true"') all day
    div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}} 
    div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}} 
@@ -28,9 +27,9 @@ div.row
   span  Last viewed contacts
 
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
- a(href='#/contact/{{contact._id}}', target='_blank')
-  div.columns.small-10.medium-5 {{contact.name}}
-  div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
+ a(ui-sref='contact.view({id: contact._id})')
+  div.columns.small-10.medium-6 {{contact.name}}
+  div.columns.hide-for-small.medium-4.meta-data {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2.text-center
    img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
 

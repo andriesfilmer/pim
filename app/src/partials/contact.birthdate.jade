@@ -19,5 +19,7 @@ div.row
     img.photo(ng-show="contact.photo", ng-src="{{contact.photo}}")
     p {{contact.name}}
     p.meta-data {{contact.birthdate | date: 'dd MMMM yyyy'}} ({{calculateAge(contact.birthdate) }})
+ div.columns.meta-data(ng-if="!contacts") No contacts with birthdate 
+  i.fi-crown  yet
 
 include ./includes/contact.settings.jade

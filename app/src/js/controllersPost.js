@@ -32,6 +32,8 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     PostService.findAll($window.localStorage.postLimit)
     .then(function(response) {
       console.log('Promise resolve'); 
+      // To show 'no posts yet' in the view.
+      if (response.data.length === 0) { response.data = undefined; }
       $scope.posts = response.data;
     }, function(response) {
       console.log('Promise reject'); 
