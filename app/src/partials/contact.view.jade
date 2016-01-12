@@ -97,13 +97,13 @@ div(ng-hide="editForm")
      i.icon-button.fi-crown
 
   div.column.small-12.medium-6
-   div.row.item-title(ng-if="contact.note") Notes
+   div.row.item-title(ng-if="contact.notes") Notes
    div.row
     div.column.p#markdown(markdown='contact.notes') 
 
  div.row(ng-if="contact.created")
   div.column.small-12
-   hr
+   div.row.item-title
   div.column.small-6.meta-data
    i Created:  {{contact.created | date: 'yyyy-MM-dd'}}
   div.column.small-6.meta-data
