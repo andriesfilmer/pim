@@ -1,13 +1,14 @@
-
-var config = require('../config/config.js');
-var secret = require('../config/secret');
-var db = require('../config/mongo_database');
-
-// Upload profile pictures
 var fs = require('fs');
 var moment = require('moment');
 var quotedPrintable = require('quoted-printable');
 var utf8 = require('utf8');
+var util = require('util');
+
+var config = require('../config/config.js');
+var secret = require('../config/secret');
+var db = require('../config/mongo_database');
+var vcard = require('../vcard-json');
+
 
 
 exports.list = function(req, res) {
@@ -276,47 +277,101 @@ exports.delete = function(req, res) {
   });
 };
 
-exports.fileupload = function(req, res) {
+exports.photoUpload = function(req, res) {
 
-  // Check if the filetype is supported.
-  fileTypeCheckRegex = /^data:image\/(png|jpeg);base64/;
-  if (fileTypeCheckRegex.test(req.body.params.dataUrl)){
-
-    fileTypeRegex = /^data:image\/png;base64/;
-    if (fileTypeRegex.test(req.body.params.dataUrl)){
-      filename = req.body.params.contact_id + ".png";
-    } else{
-      filename = req.body.params.contact_id + ".jpg";
-    } 
-  }
-  else {
-    res.status(400).send('FileType not supported'); // Bad Request
+  if (!req.user) {
+    res.sendStatus(401); // Unauthorized
   }
 
-  var imgDir = config.env().upload_dir + req.user.id + "/contacts/";
-  if (!fs.existsSync(imgDir)){ mkdir(imgDir); }
-  var imgPath = imgDir + filename;
+  var filename = savePhotoUri(req.user.id, req.body.params.contact_id, req.body.params.dataUrl);
+  var photo = '/upload/' + req.user.id + "/contacts/" + filename;
+  res.status(200).json({contact: {photo: photo}});
 
-  // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
-  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
-  var base64Data = req.body.params.dataUrl.replace(/^data:image\/(jpeg|png);base64,/, "");
-
-  fs.writeFile(imgPath, base64Data, 'base64', function(err) {
-
-    if(err) {
-      console.log(err); 
-      res.status(500).send('Internal Server Error');
-    }
-    else {
-      console.log('Contact photo -> upload -> ' + req.body.params.contact_id); 
-      var photo = '/upload/' + req.user.id + "/contacts/" + filename;
-      res.status(200).json({contact: {photo: photo}});
-    }
-
-  });
 };
 
-exports.vcards = function(req, res) {
+exports.vCardsUpload = function(req, res) {
+
+  if (!req.user) {
+    res.sendStatus(401); // Unauthorized
+  }
+
+  var contactDir = config.env().upload_dir + req.user.id + "/contacts/";
+  if (!fs.existsSync(contactDir)){ mkdir(contactDir); }
+
+  // First save upload file to disk
+  req.pipe(req.busboy);
+  req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+    console.log('##### vCardUpload -> busboy filename ' + filename + ' ' + mimetype); 
+    if (mimetype.toString() === 'text/vcard' || mimetype.toString() === 'text/x-vcard') {
+
+      var vCardPath = contactDir + filename;
+
+      fstream = fs.createWriteStream(vCardPath);
+      file.pipe(fstream);
+      fstream.on('close', function() {
+        console.log("Upload Finished of " + vCardPath);
+        importContacts(vCardPath);
+      });
+    }
+    else {
+      return res.status(400).send('File type must be text/vcard');
+    }
+  });
+
+  // Function to import contacts from file
+  function importContacts(vCards) {
+    console.log('Import contacts from file -> ' + vCards); 
+    vcard.parseVcardFile(vCards, function(err, data){
+      if(err) {
+        return res.status(400).send('Bad Request parseVcardFile');
+      }
+      else {
+        //console.log(util.inspect(data, false, null));
+        data.forEach(function(contact) {
+          console.log("contactEntry name: " + contact.name);
+
+          var contactEntry = new db.contactModel();
+          contactEntry.user_id = req.user.id;
+          contactEntry.name = contact.name;
+          contactEntry.companies = contact.companies;
+          contactEntry.starred = contact.starred;
+          contactEntry.phones = contact.phones;
+          contactEntry.emails = contact.emails;
+          contactEntry.websites = contact.websites;
+          contactEntry.addresses = contact.addresses;
+          contactEntry.birthdate = contact.birthdate;
+          contactEntry.notes = contact.notes;
+
+          // Save contact to db.
+          contactEntry.save(function(err, new_contact) {
+            if (err) { console.log(err); }
+
+            // If it has a photo we want to save the picture on file with _id.
+            if (contact.photo_uri !== undefined) {
+              console.log('##### contact.name -> ' + contact.name); 
+              console.log('Save photo_uri with lastInsertedId -> ' + new_contact._id); 
+              var filename = savePhotoUri(req.user.id, new_contact._id, contact.photo_uri);
+
+              // Save photo path to db
+              photoPath = '/upload/' + req.user.id + '/contacts/' + filename;
+              db.contactModel.findOneAndUpdate({_id: new_contact._id}, {photo: photoPath}, '', function(err, nbRows, raw) {
+                if (err) { console.log(err); }
+              });
+            }
+
+          });
+
+        });
+
+        res.status(200).send('Contact(s) created successful');
+      }
+    });
+  } // End function importContacts
+
+};
+
+exports.vcardsDownload = function(req, res) {
 
   if (!req.user) {
     res.sendStatus(401); // Unauthorized
@@ -364,7 +419,7 @@ exports.vcards = function(req, res) {
   });
 };
 
-exports.vcard = function(req, res) {
+exports.vcardDownload = function(req, res) {
 
   if (!req.user) {
     res.sendStatus(401); // Unauthorized
@@ -403,7 +458,6 @@ function mkdir(path, root) {
 
 // Content for one vCard.
 function create_vCard(req, contact) {
-
 
   var dlPhones = req.body.params.phones;
   var dlCompanies = req.body.params.companies;
@@ -492,5 +546,41 @@ function create_vCard(req, contact) {
 function base64_encode(photo) {
     var image = fs.readFileSync(photo);
     return new Buffer(image).toString('base64');
+}
+
+function savePhotoUri(user_id, contact_id, dataUrl) {
+
+  // Check if the filetype is supported.
+  fileTypeCheckRegex = /^data:image\/(png|jpeg);base64/;
+  if (fileTypeCheckRegex.test(dataUrl)){
+
+    fileTypeRegex = /^data:image\/png;base64/;
+    if (fileTypeRegex.test(dataUrl)){
+      filename = contact_id + ".png";
+    } else{
+      filename = contact_id + ".jpg";
+    } 
+  }
+  else {
+    console.log('User_id: ' + user_id + ' contact_id: ' + contact_id + ' -> FileType not supported'); 
+    filename = '.unknown';
+  }
+
+  var imgDir = config.env().upload_dir + user_id + "/contacts/";
+  if (!fs.existsSync(imgDir)){ mkdir(imgDir); }
+  var imgPath = imgDir + filename;
+
+  // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
+  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
+  var base64Data = dataUrl.replace(/^data:image\/(jpeg|png);base64,/, "");
+  console.log('base64Data -> ' + base64Data.substring(0,50)); 
+  console.log('imgPath -> ' + imgPath); 
+
+  fs.writeFile(imgPath, base64Data, 'base64', function(err) {
+    if(err) {console.log(err);}
+  });
+
+  return filename;
+
 }
 

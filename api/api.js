@@ -37,6 +37,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json({limit: '1mb'})); // limit for PNG photo's upload via DataUrl.
 app.use(busboy()); 
 
+
 console.log('API (' + config.name + ') is starting on port ' + config.api_port);
 
 // Routes
@@ -106,11 +107,14 @@ app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.c
 app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 
 
 // File download for contact(s) in vCard format.
-app.post('/contact/download/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vcards); 
-app.post('/contact/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcard); 
+app.post('/contact/download/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vcardsDownload); 
+app.post('/contact/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcardDownload); 
 
 // File upload for profile pictures
-app.post('/fileupload', expressJwt({secret: secret.secretToken}), routes.contacts.fileupload); 
+app.post('/contact/upload/photo', expressJwt({secret: secret.secretToken}), routes.contacts.photoUpload); 
+
+// File upload for vCards
+app.post('/contact/upload/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vCardsUpload); 
 
 // Delete the contact id
 app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete); 
@@ -168,4 +172,3 @@ app.put('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.
 
 // Delete the bookmark id
 app.delete('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.delete); 
-

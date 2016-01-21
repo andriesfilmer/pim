@@ -100,6 +100,19 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       }
     });
 
+    $scope.uploadvCardFile = function(){
+      var file = $scope.vCardFile;
+      $('a.close-reveal-modal').trigger('click');
+      console.log('Upload vCardFile');
+      console.dir(file);
+      ContactService.uploadContactVcf(file)
+      .then(function(response) {
+        flash('notice', response.data);
+      }, function(response) {
+        flash('warning', response.data);
+      });
+    };
+
     $scope.downloadContact = function downloadContacts() {
       ContactService.vCards($scope.dlPhones, $scope.dlCompanies, 
         $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses, 
@@ -347,7 +360,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       Cropper.crop(file, data).then(function(blob) {
         return Cropper.scale(blob, {width: 250});
       }).then(Cropper.encode).then(function(dataUrl) {
-        ContactService.upload(contact._id, dataUrl).then(function(response) {
+        ContactService.uploadContactPhoto(contact._id, dataUrl).then(function(response) {
           $scope.saveForm = true;
           $scope.contact.photo = response.data.contact.photo;
           $scope.upsertContact(contact, 'update');

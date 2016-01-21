@@ -94,16 +94,18 @@ appDirectives.directive('focusMe', function($timeout) {
   };
 });
 
-// Add Target _blank to href
-appDirectives.directive('href', function() {
-  return {
-    compile: function(element) {
-      // Add target _blank if its a http url.
-      var patt = new RegExp(/^http:*/i);
-      if (patt.test(element[0].href)) {
-        console.log('Added element -> target=_blank: ' + element[0].href); 
-        element.attr('target', '_blank');
-      }
-    }
-  };
-});
+// Need for binding file to upload to scope
+appDirectives.directive('bindOnChange', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.bindOnChange);
+            var modelSetter = model.assign;
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}]);

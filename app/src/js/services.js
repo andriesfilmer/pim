@@ -286,9 +286,9 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
         birthdate: birthdate, photo: photo, notes: notes}}, {responseType: 'arraybuffer'});
     },
 
-    upload: function(contact_id, dataUrl) {
+    uploadContactPhoto: function(contact_id, dataUrl) {
       var deferred = $q.defer();
-      $http.post(options.api.base_url + '/fileupload', {'params': {contact_id: contact_id, dataUrl: dataUrl}})
+      $http.post(options.api.base_url + '/contact/upload/photo', {'params': {contact_id: contact_id, dataUrl: dataUrl}})
       .then(function(response) {
 
         // Notify on slow connections
@@ -301,7 +301,23 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
         deferred.reject(response); 
       });
       return deferred.promise;
+    },
+
+    uploadContactVcf: function(file) {
+      var deferred = $q.defer();
+      var fd = new FormData();
+      fd.append('file', file);
+      $http.post(options.api.base_url + '/contact/upload/vcards', fd, {
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}})
+      .then(function(response) {
+        deferred.resolve(response);
+      }, function (response) {
+        deferred.reject(response); 
+      });
+      return deferred.promise;
     }
+
   };
 });
 
