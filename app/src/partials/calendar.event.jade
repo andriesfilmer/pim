@@ -37,50 +37,51 @@ form(name="eventForm")
  div.row(ng-hide="editForm")
   div.column.small-12(markdown="cal.description")
 
- div.row(ng-show="editForm", ng-class="cal.className")
-  div.column.small-12(ng-class="cal.className")
-   input#title(type="text", name="title", ng-model="cal.title", required="", placeholder="Title required for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
- div.row 
-  div.column.small-12 &nbsp; 
- div.row
-  div.column.small-2 Start 
-  div.column.small-6
-   input(type="date", ng-model="cal.start", required="", ng-change="setEnd(cal)")
-  div.column.small-4 
-   input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
- div.row
-  div.column.small-2 End
-  div.column.small-6
-   input(type="date", ng-model="cal.end")
-  div.column.small-4
-   input(type="time", ng-model="cal.end", ng-hide="cal.allDay")
- div.row
-  div.column.small-6 Allday
-  div.column.small-6 
-   div.switch.round
-    input#allDay(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
-    label(for="allDay")
- div.row
-  div.column.small-12 Description
-   textarea(ng-model="cal.description", rows="10", placeholder="You can use Markdown ...")
- div.row
-  div.column.small-6 Appointment
-  div.switch.round.column.small-6.cal-appointment
-   input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
-   label(for="cal-appointment") 
- div.row.my-row
-  div.column.small-6 Memo
-  div.switch.round.column.small-6.cal-memo
-   input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
-   label(for="cal-memo") 
- div.row
-  div.column.small-12
-   div.label.strong(ng-hide="timezone", ng-click='advanced = !advanced') Toggle Advanced
- div.row(ng-show="advanced")
-  div.column.small-12
-   p
-    label Timezones
-    select(ng-model="cal.tz", ng-options="option for option in tznames", value="{{option}}") {{option}}
+ div(ng-show="editForm")
+  div.row
+   div.column.small-12(ng-class="cal.className")
+    input#title(type="text", name="title", ng-model="cal.title", required="", placeholder="Title required for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
+  div.row 
+   div.column.small-12 &nbsp; 
+  div.row
+   div.column.small-2 Start 
+   div.column.small-6
+    input(type="date", ng-model="cal.start", required="", ng-change="setEnd(cal)")
+   div.column.small-4 
+    input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
+  div.row
+   div.column.small-2 End
+   div.column.small-6
+    input(type="date", ng-model="cal.end")
+   div.column.small-4
+    input(type="time", ng-model="cal.end", ng-hide="cal.allDay")
+  div.row
+   div.column.small-6 Allday
+   div.column.small-6 
+    div.switch.round
+     input#allDay(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
+     label(for="allDay")
+  div.row
+   div.column.small-12 Description
+    textarea(ng-model="cal.description", rows="10", placeholder="You can use Markdown ...")
+  div.row
+   div.column.small-6 Appointment
+   div.switch.round.column.small-6.cal-appointment
+    input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
+    label(for="cal-appointment") 
+  div.row.my-row
+   div.column.small-6 Memo
+   div.switch.round.column.small-6.cal-memo
+    input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
+    label(for="cal-memo") 
+  div.row
+   div.column.small-12
+    div.label.strong(ng-hide="timezone", ng-click='advanced = !advanced') Toggle Advanced
+  div.row(ng-show="advanced")
+   div.column.small-12
+    p
+     label Timezones
+     select(ng-model="cal.tz", ng-options="option for option in tznames", value="{{option}}") {{option}}
 
 div.row(ng-if="cal.created")
  div.column.small-12.my-row
