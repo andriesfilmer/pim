@@ -6,9 +6,9 @@ PIM is a application built with AngularJS, Node.js, Express and MongoDB.
 
 A private PIM with:
 
-* Register/Login/Logout users
-* Posts i.o Todo/Note/Blog/Knowledge base
-* Personal calendar (Appointments, Memos)
+* Register/Login/Logout users - With reset password.
+* Posts/Notes/Articles
+* Personal calendar (Appointments, Memos), Timezone awarenss.
 * Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses)
 * Bookmarks (With tags and notes)
 
@@ -70,6 +70,7 @@ Take a look in `api/sendBirthdayReminder.js` and create a crontab.
 ## Credits
 
 - [Zurb Foundation](http://foundation.zurb.com)
+- [Momentjs](http://momentjs.com/)
 - [Adam Shaw - Fullcalendar](http://fullcalendar.io/)
 - [Markdown - Eric J Nesser](http://daringfireball.net/projects/markdown/)
 - [Cropper - Fengyuan Chen](https://github.com/fengyuanchen/cropper)

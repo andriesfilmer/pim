@@ -113,6 +113,7 @@ module.exports = function(grunt) {
             'vendor/js/cropper.min.js',
             'vendor/js/ngCropper.min.js',
             'vendor/js/moment.min.js',
+            'vendor/js/moment-timezone-with-data.min.js',
             'vendor/js/calendar-ui.min.js',
             'vendor/js/fullcalendar.min.js',
             'vendor/js/foundation.min.js',

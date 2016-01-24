@@ -1,4 +1,4 @@
-// Controller for calendar or request for more events
+// Controller for calendar list events
 appControllers.controller('CalendarController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
   function CalendarController($scope, $state, $stateParams, $window, flash, CalendarService) {
 
@@ -65,7 +65,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
         // Prevent add events if offline
         if(!$scope.offline) {
           console.log('DayClick date -> ' + date); 
-          $state.go('calendar.event', {start: date});
+          $state.go('calendar.new', {start: date});
         }
       },
       eventClick: function(calEvent, jsEvent, view) {
@@ -163,8 +163,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.editForm = !$scope.editForm;
   };
 
-  // Length of (MongoDb) _id = 24, so it must be a existing event.
-  if (id.length === 24) {
+  if ($state.$current.name == 'calendar.event') {
     console.log('Fetch -> _id: ' + id); 
     CalendarService.read(id)
     .then(function(response) {
@@ -176,6 +175,19 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       $scope.cal.start = new Date(response.data.start);
       $scope.cal.end = new Date(response.data.end);
       $scope.cal.allDay = JSON.parse(response.data.allDay);
+      $scope.tznames = moment.tz.names();
+      offsetDb = moment.tz(response.data.start, response.data.tz);
+      offsetGuess = moment.tz(response.data.start, moment.tz.guess());
+
+      if(offsetDb.format('Z') !== offsetGuess.format('Z')) {
+        $scope.cal.tzShow = true;
+        $scope.cal.tzGuess = moment.tz.guess(); 
+        $scope.cal.tzStartDate = moment(moment.tz(response.data.start, response.data.tz)).format('ddd DD MMM'); 
+        $scope.cal.tzStartTime = moment(moment.tz(response.data.start, response.data.tz)).format('HH:mm'); 
+        $scope.cal.tzEndDate = moment(moment.tz(response.data.end, response.data.tz)).format('ddd DD MMM'); 
+        $scope.cal.tzEndTime = moment(moment.tz(response.data.end, response.data.tz)).format('HH:mm'); 
+      }
+
     }, function(response) {
       console.log('Promise reject');
       $scope.offline = true;
@@ -196,18 +208,19 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     });
   }
 
-  // Must be a new event, so we init.
-  if ($stateParams.start !== undefined) {
+  if ($state.$current.name == 'calendar.new') {
     console.log('INIT new event -> params.start: ' + $stateParams.start); 
     var initializing = true;
-    if ($stateParams.start === 'new') {
-      start = new Date();
-    } else {
+    if ($stateParams.start) {
       start = $stateParams.start;
+    } else {
+      start = new Date();
     }
     $scope.cal = {};
     $scope.cal.start = new Date(start);
     $scope.cal.end = new Date(start);
+    $scope.cal.tz = moment.tz.guess();
+    $scope.tznames = moment.tz.names();
     $scope.cal.allDay = true;
     $scope.showAddBt  = true;
     $scope.editForm = true;

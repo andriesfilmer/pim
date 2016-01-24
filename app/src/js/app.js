@@ -87,14 +87,14 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: "CalendarController",
       access: { requiredAuthentication: true }
     })
-    .state('calendar.event/:id', {
+    .state('calendar.event', {
       url: "/event/:id",
       templateUrl: "partials/calendar.event.html",
       controller: "EventController",
       access: { requiredAuthentication: true }
     })
-    .state('calendar.event', {
-      url: "/event?id&start",
+    .state('calendar.new', {
+      url: "/event/new/:start",
       templateUrl: "partials/calendar.event.html",
       controller: "EventController",
       access: { requiredAuthentication: true }

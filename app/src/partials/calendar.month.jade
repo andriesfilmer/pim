@@ -11,7 +11,7 @@ div.row(ng-hide="offline")
   span.divider
   a.fi-magnifying-glass(ng-click='searchCalendar()', title='Search', tabindex="1")
   span.right
-   a.fi-plus(ui-sref="calendar.event({start: 'new'})", title='New event')
+   a.fi-plus(ui-sref="calendar.new", title='New event')
 
 div.row
  div#myCalendar.calendar.scale-fade(ui-calendar="uiConfig.calendar" ng-model="eventSources", 

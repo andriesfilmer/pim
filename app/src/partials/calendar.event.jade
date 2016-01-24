@@ -15,16 +15,26 @@ form(name="eventForm")
     span.divider
     a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
 
- div.row(ng-hide="editForm",ng-if="cal.title", ng-class="cal.className")
-  div.column.small-12 
-   h2 {{cal.title}} {{editFrom}}
-  span &nbsp;
-  div.round.secondary.label {{cal.start | date: 'yyyy-MM-dd'}}
-  div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
-  div.round.secondary.label  {{cal.end | date: 'yyyy-MM-dd'}} 
-  div.round.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
-  div.round.secondary.label(ng-show='cal.allDay') all day
- div.row(ng-hide="editForm")
+ div.row(ng-hide="editForm", ng-if="cal.title")
+  div.column.small-12(ng-class="cal.className")
+   h2 {{cal.title}}
+  div.column.small-12
+   div.round.warning.label(ng-if='cal.tzShow') {{cal.tzGuess}}
+  div.column.small-12
+   div.round.secondary.label {{cal.start | date: 'EEE dd MMM'}}
+   div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
+   div.round.secondary.label  {{cal.end | date: 'EEE dd MMM'}} 
+   div.round.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
+   div.round.secondary.label(ng-show='cal.allDay') all day
+  div.column.small-12(ng-if='cal.tzShow')
+   div.round.warning.label {{cal.tz}}
+  div.column.small-12(ng-if='cal.tzShow')
+   div.round.secondary.label {{cal.tzStartDate}}
+   div.round.label(ng-hide='cal.allDay') {{cal.tzStartTime}}
+   div.round.secondary.label  {{cal.tzEndDate}} 
+   div.round.label(ng-hide='cal.allDay') {{cal.tzEndTime}}
+   div.round.secondary.label(ng-show='cal.allDay') all day
+  div.row(ng-hide="editForm")
    div.column.small-12
     p(markdown="cal.description")
 
@@ -60,15 +70,22 @@ form(name="eventForm")
    div.switch.round.column.small-6.cal-appointment
     input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
     label(for="cal-appointment") 
-  div.row
+  div.row.my-row
    div.column.small-6 Memo
    div.switch.round.column.small-6.cal-memo
     input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
     label(for="cal-memo") 
+  div.row
+   div.column.small-12
+    div.label.strong(ng-hide="timezone", ng-click='advanced = !advanced') Toggle Advanced
+  div.row(ng-show="advanced")
+   div.column.small-12
+    p
+     label Timezones
+     select(ng-model="cal.tz", ng-options="option for option in tznames", value="{{option}}") {{option}}
 
 div.row(ng-if="cal.created")
- div.column.small-12
-  hr
+ div.column.small-12.my-row
  div.column.small-6.meta-data
   i Created:  {{cal.created | date: 'yyyy-MM-dd'}}
  div.column.small-6.meta-data

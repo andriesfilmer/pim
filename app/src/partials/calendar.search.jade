@@ -7,9 +7,8 @@ div.row(ng-hide="offline")
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
  a(ui-sref='calendar.event({id: event._id})')
   div.columns.small-12.medium-7 {{event.title}}
-  div.columns.small-7.medium-3.meta-data {{event.start | date: 'EEEE d MMMM yyyy'}}
-  div.columns.small-5.medium-2
+  div.columns.small-9.medium-3.meta-data {{event.start | date: 'EEEE d MMMM yyyy'}}
+  div.columns.small-3.medium-2
    div.round.secondary.label(ng-show='event.allDay==="true"') all day
-  div.columns.small-5.medium-2
+  div.columns.small-3.medium-2
    div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
-   div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}}

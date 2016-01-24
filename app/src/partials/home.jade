@@ -4,7 +4,7 @@ div.row
  div.columns.small-9.text-right
   button.topBt.tiny.radius.fi-lock(ui-sref="user.logout", ng-show="showBts")  Logout
  div.column.small-12
-  span.meta-data  {{today | date: 'EEEE d MMMM  HH:mm'}}
+  span.secondary-data  {{today | date: 'EEEE d MMMM  HH:mm Z'}}
 div.row
  div.column.small-12.home
   i.fi-calendar
@@ -12,14 +12,13 @@ div.row
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
  a(ui-sref='calendar.event({id: event._id})')
   div.columns.small-12.medium-6 {{event.title}}
-  div.column.small-6.medium-3.meta-data {{event.start | date: 'EEEE d MMMM'}} 
-  div.column.small-6.medium-3.text-right
+  div.column.small-8.medium-4.secondary-data {{event.start | date: 'EEEE d MMMM'}} 
+  div.column.small-4.medium-2.text-center
    div.round.secondary.label(ng-show='event.allDay==="true"') all day
    div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}} 
-   div.round.label(ng-hide='event.allDay==="true"') {{event.end | date: 'HH:mm'}} 
 div.row
- div.columns.meta-data(ng-if="!events") No events yet
- div.columns.meta-data(ng-if="offline") Goto calender view 
+ div.columns.secondary-data(ng-if="!events") No events yet
+ div.columns.secondary-data(ng-if="offline") Goto calender view 
 
 div.row
  div.column.small-12.home
@@ -29,7 +28,7 @@ div.row
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
  a(ui-sref='contact.view({id: contact._id})')
   div.columns.small-10.medium-6 {{contact.name}}
-  div.columns.hide-for-small.medium-4.meta-data {{contact.companies[0].name}} &nbsp;
+  div.columns.hide-for-small.medium-4.secondary-data {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2.text-center
    img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
 

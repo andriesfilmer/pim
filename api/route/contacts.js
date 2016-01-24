@@ -71,7 +71,7 @@ exports.list = function(req, res) {
 exports.search = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   if (req.query.searchKey) {
@@ -102,7 +102,7 @@ exports.search = function(req, res) {
 exports.read = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id || '';
@@ -140,7 +140,7 @@ exports.read = function(req, res) {
 exports.create = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var contact = req.body.contact;
@@ -176,7 +176,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 
   if (!req.user) {
-    res.send(401); // Not authorized
+    return res.send(401); // Not authorized
   }
 
   var contact = req.body.contact;
@@ -249,7 +249,7 @@ exports.update = function(req, res) {
 exports.delete = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id;
@@ -280,7 +280,7 @@ exports.delete = function(req, res) {
 exports.photoUpload = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var filename = savePhotoUri(req.user.id, req.body.params.contact_id, req.body.params.dataUrl);
@@ -292,7 +292,7 @@ exports.photoUpload = function(req, res) {
 exports.vCardsUpload = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var contactDir = config.env().upload_dir + req.user.id + "/contacts/";
@@ -374,7 +374,7 @@ exports.vCardsUpload = function(req, res) {
 exports.vcardsDownload = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var query = db.contactModel.find({ user_id: req.user.id });
@@ -422,7 +422,7 @@ exports.vcardsDownload = function(req, res) {
 exports.vcardDownload = function(req, res) {
 
   if (!req.user) {
-    res.sendStatus(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   console.log('Create vCard for contact_id -> ' + req.body.params.contact_id); 

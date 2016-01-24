@@ -269,6 +269,10 @@ exports.pdf = function(req, res) {
 
 exports.listByTag = function(req, res) {
 
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
   var tagName = req.params.tagName || '';
   if (tagName == '') {
     return res.sendStatus(400);

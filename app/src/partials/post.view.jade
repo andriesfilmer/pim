@@ -26,9 +26,10 @@ form(name="postForm")
 
  div.row(ng-show="editForm")
   div.column.small-12
-   input#title(type="text", required='', name="title", placeholder="Title is required", ng-model="post.title", ng-change="isChanged()")
+   input(type="text", required='', name="title", placeholder="Title is required", ng-model="post.title", ng-change="isChanged()")
  div.row(ng-show="editForm")
   div.column.small-12
+   label Description
    textarea#content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
    input(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
  div.row

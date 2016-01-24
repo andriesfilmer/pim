@@ -32,6 +32,7 @@ var Event = new Schema({
     start: {type: Date},
     end: {type: Date},
     allDay: { type: String},
+    tz: { type: String },
     description: { type: String},
     status: { type: String },
     className: { type: String, default: 'appointment'},

@@ -4,8 +4,9 @@ var db = require('../config/mongo_database');
 exports.list = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
+
 
   if (req.query.end === undefined) { req.query.end = '3000-01-01' };
 
@@ -17,7 +18,7 @@ exports.list = function(req, res) {
                                    {"start": {"$gte": start, "$lte": end }},
                                    {  "end": {"$gte": start, "$lte": end }}
                                    ], user_id: req.user.id }).limit(500);
-  query.select("_id title start end allDay className");
+  query.select("_id title start end allDay tz className");
   query.sort('start');
   query.exec(function(err, results) {
     if (err) {
@@ -74,16 +75,15 @@ exports.read = function(req, res) {
   }
 
   var id = req.params.id || '';
-  if (id == '') {
-    return res.send(406); // Not Acceptable
+  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.sendStatus(406); // Not Acceptable
   }
 
   var query = db.eventModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id title start end allDay description className created updated');
+  query.select('_id title start end allDay tz description className created updated');
   query.exec(function(err, result) {
     if (err) {
         console.log(err);
-        return res.send(400); // Bad Request
     }
 
     if (result !== null) {
@@ -98,7 +98,7 @@ exports.read = function(req, res) {
 exports.create = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var event = req.body.calendar;
@@ -130,6 +130,10 @@ exports.create = function(req, res) {
     createEvent.end = event.end;
   }
 
+  if (event.tz !== undefined) {
+    createEvent.tz = event.tz;
+  }
+
   if (event.description !== undefined) {
     createEvent.description = event.description;
   }
@@ -154,7 +158,7 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var event = req.body.calendar;
@@ -183,6 +187,10 @@ exports.update = function(req, res) {
 
   if (event.end !== undefined) {
     updateEvent.end = event.end;
+  }
+
+  if (event.tz !== undefined) {
+    updateEvent.tz = event.tz;
   }
 
   if (event.description !== undefined) {
@@ -218,7 +226,7 @@ exports.delete = function(req, res) {
   //console.dir(req.params);
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.sendStatus(401); // Unauthorized
   }
 
   var id = req.params.id;
