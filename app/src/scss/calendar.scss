@@ -9,7 +9,7 @@ $color-memo: orange;
 
 .appointment { 
   border-right: 8px $color-appointment solid; 
-  padding-left: 0;
+  padding-right: 0;
   &.fc-event { 
     background-color: $color-appointment; 
     border-left: 2px; 
@@ -17,7 +17,7 @@ $color-memo: orange;
 }
 .memo { 
   border-right: 8px $color-memo solid;
-  padding-left: 0;
+  padding-right: 0;
   &.fc-event { 
     background-color: $color-memo; 
     border-color: darkorange;

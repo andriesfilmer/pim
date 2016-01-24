@@ -6,19 +6,19 @@ $color-todo: red;
 $color-kb: #008CBA;
 
 .note {
-  padding-left: 6px;
+  padding-right: 6px;
   border-right: 8px $color-note solid; 
 }
 .blog {
-  padding-left: 6px;
+  padding-right: 6px;
   border-right: 8px $color-blog solid; 
 }
 .todo { 
-  padding-left: 6px;
+  padding-right: 6px;
   border-right: 8px $color-todo solid; 
 }
 .kb   {
-  padding-left: 6px;
+  padding-right: 6px;
   border-right: 8px $color-kb solid; 
 }
 

@@ -13,8 +13,8 @@ div.row(ng-hide="offline")
    a.fi-trash(ng-click='deleteBookmark(bookmark)', title='Delete item', confirmation-needed="Really Delete?")
 
 div.row(ng-hide="editForm", ng-if="bookmark")
- div.column.small-12
- h1(ng-class='bookmark.category') {{bookmark.title}} 
+ div.column.small-12(ng-class='bookmark.category')
+  h1 {{bookmark.title}} 
  div.column.small-12
   a.fi-link(href="{{bookmark.url}}")  {{bookmark.url}} 
  div.column.small-12
@@ -22,10 +22,11 @@ div.row(ng-hide="editForm", ng-if="bookmark")
 
 form(name="bookmarkForm")
  div.row(ng-show="editForm")
-  div.column.small-12
-   input(type="text", required='', name="title", placeholder="Title is required", ng-model="bookmark.title", ng-change="isChanged()")
+  div.column.small-12(ng-class='bookmark.category')
+   input#title(type="text", required='', name="title", placeholder="Title is required", ng-model="bookmark.title", ng-change="isChanged()")
  div.row(ng-show="editForm")
   div.column.small-12
+   label URL
    input(type="text", placeholder="http://.....", ng-model="bookmark.url", ng-change="isChanged()")
  div.row(ng-show="editForm")
   div.column.small-12
