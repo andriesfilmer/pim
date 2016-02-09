@@ -35,7 +35,6 @@ div.row
      input(type="checkbox",name="notes", ng-model="dlNotes")
  div.column.small-12.medium-4
   p(ng-show="!vCardShow")
-   button.radius(ng-click="downloadContact(contact)", title='Download contact') Export vCard
+   button.radius(ng-click="downloadContact(contact)", title='Download contact') Download vCard
   p(ng-show="vCardShow")
-   a.button.radius.success.toggle.fi-download(href="{{vCardLink}}")  Download!
    div {{ downloadLabel }}

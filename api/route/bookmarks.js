@@ -141,7 +141,7 @@ exports.create = function(req, res) {
       return res.sendStatus(400); // Bad Request
     }
 
-    return res.status(200).send('Updated bookmark successfull');
+    return res.status(201).send('Created bookmark successfull');
 
   });
 }

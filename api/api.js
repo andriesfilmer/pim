@@ -70,7 +70,7 @@ app.post('/user/send-token', routes.users.sendToken);
 /*******************/
 
 // Get all events
-app.get('/calendar', expressJwt({secret: secret.secretToken}), routes.events.list);
+app.get('/calendar/events', expressJwt({secret: secret.secretToken}), routes.events.list);
 
 // Search events
 app.get('/calendar/search', expressJwt({secret: secret.secretToken}), routes.events.search);
@@ -92,10 +92,10 @@ app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.eve
 /*******************/
 
 // Get all contacts
-app.get('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.list);
+app.get('/contacts', expressJwt({secret: secret.secretToken}), routes.contacts.list);
 
 // Search contacts
-app.get('/contact/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
+app.get('/contacts/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
 
 // Get the contact id
 app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.read); 
@@ -107,7 +107,7 @@ app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.c
 app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update); 
 
 // File download for contact(s) in vCard format.
-app.post('/contact/download/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vcardsDownload); 
+app.post('/contacts/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcardsDownload); 
 app.post('/contact/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcardDownload); 
 
 // File upload for profile pictures
@@ -124,14 +124,11 @@ app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.cont
 /* Posts routes    */
 /*******************/
 
-// Get posts by tag
-app.get('/tag/:tagName', routes.posts.listByTag); 
+// Get all posts
+app.get('/posts', expressJwt({secret: secret.secretToken}), routes.posts.list);
 
 // Search posts
-app.get('/post/search', expressJwt({secret: secret.secretToken}), routes.posts.search);
-
-// Get all posts
-app.get('/post', expressJwt({secret: secret.secretToken}), routes.posts.list);
+app.get('/posts/search', expressJwt({secret: secret.secretToken}), routes.posts.search);
 
 // Get the post id
 app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 
@@ -152,14 +149,11 @@ app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.d
 /* Bookmark routes    */
 /*******************/
 
-// Get bookmarks by tag
-app.get('/tag/:tagName', routes.bookmarks.listByTag); 
-
 // Search bookmarks
-app.get('/bookmark/search', expressJwt({secret: secret.secretToken}), routes.bookmarks.search);
+app.get('/bookmarks/search', expressJwt({secret: secret.secretToken}), routes.bookmarks.search);
 
 // Get all bookmarks
-app.get('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.list);
+app.get('/bookmarks', expressJwt({secret: secret.secretToken}), routes.bookmarks.list);
 
 // Get the bookmark id
 app.get('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.read); 

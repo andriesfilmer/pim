@@ -99,7 +99,7 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
 
       var deferred = $q.defer();
 
-      $http.get(options.api.base_url + '/calendar/', {'params': {start: start, end: end}})
+      $http.get(options.api.base_url + '/calendar/events/', {'params': {start: start, end: end}})
       .then(function(response) {
         // Store events in LocalStorage with year+day io 'yyyy-dd'.
         if (saveLocal) {
@@ -115,6 +115,25 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
           response.statusText = 'Offline: Events not in localstorage';
           response.data = {};
         }
+        deferred.reject(response);
+      });
+
+      // Notify on slow connections
+      var msg = [{"title": "Loading..."}];
+      $timeout(function() {
+        deferred.notify(msg);
+      }, 1000);
+
+      return deferred.promise;
+    },
+
+    search: function(searchKey) {
+      var deferred = $q.defer();
+      $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}})
+      .then(function(response) {
+        deferred.resolve(response);
+      }, function(response) {
+        response.statusText = 'Error: can\'t search events';
         deferred.reject(response);
       });
 
@@ -154,25 +173,6 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
       return deferred.promise;
     },
 
-    search: function(searchKey) {
-      var deferred = $q.defer();
-      $http.get(options.api.base_url + '/calendar/search', {'params': {searchKey: searchKey}})
-      .then(function(response) {
-        deferred.resolve(response);
-      }, function(response) {
-        response.statusText = 'Error: can\'t search events';
-        deferred.reject(response);
-      });
-
-      // Notify on slow connections
-      var msg = [{"title": "Loading..."}];
-      $timeout(function() {
-        deferred.notify(msg);
-      }, 1000);
-
-      return deferred.promise;
-    },
-
     create: function(calendar) {
       return $http.post(options.api.base_url + '/calendar', {'calendar': calendar});
     },
@@ -199,7 +199,7 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
       var deferred = $q.defer();
 
-      $http.get(options.api.base_url + '/contact/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
+      $http.get(options.api.base_url + '/contacts/', {'params': {starred: starred, birthdate: birthdate, order: order, limit: limit}})
       .then(function(response) {
         deferred.resolve(response);
         if (saveLocal) {
@@ -224,6 +224,11 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
       return deferred.promise;
 
+    },
+
+    searchAll: function(birthdate, searchKey) { 
+      params = {'params': {birthdate: birthdate, searchKey: searchKey}};
+      return $http.get(options.api.base_url + '/contacts/search', params);
     },
 
     read: function(id) {
@@ -254,11 +259,6 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
     },
 
-    searchAll: function(birthdate, searchKey) { 
-      params = {'params': {birthdate: birthdate, searchKey: searchKey}};
-      return $http.get(options.api.base_url + '/contact/search', params);
-    },
-
     create: function(contact) {
       return $http.post(options.api.base_url + '/contact', {'contact': contact});
     },
@@ -276,8 +276,9 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
     },
 
     vCards: function(phones, companies, emails, websites, photo, addresses, birthdate, notes) {
-      return $http.post(options.api.base_url + '/contact/download/vcards', {'params': {phones: phones, companies: companies, 
-        emails: emails, websites: websites, addresses: addresses, birthdate: birthdate, photo: photo, notes: notes}});
+      return $http.post(options.api.base_url + '/contacts/download/vcard', {'params': {phones: phones, companies: companies, 
+        emails: emails, websites: websites, addresses: addresses, birthdate: birthdate, photo: photo, notes: notes}}, 
+        {responseType: 'arraybuffer'});
     },
 
     vCard: function(contact_id, phones, companies, emails, websites, photo, addresses, birthdate, notes) {
@@ -327,7 +328,7 @@ appServices.factory('PostService', function($http, $q, $timeout, $window) {
 
     findAll: function(limit) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/post/', {'params': {limit: limit}})
+      $http.get(options.api.base_url + '/posts/', {'params': {limit: limit}})
       .then(function(response) {
         $window.localStorage.postsAll = JSON.stringify(response.data);
         deferred.resolve(response);
@@ -395,7 +396,7 @@ appServices.factory('PostService', function($http, $q, $timeout, $window) {
     },
 
     searchAll: function(searchKey) { 
-      return $http.get(options.api.base_url + '/post/search', {'params': {searchKey: searchKey}});
+      return $http.get(options.api.base_url + '/posts/search', {'params': {searchKey: searchKey}});
     },
 
     pdf: function(id, toc) {
@@ -417,7 +418,7 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
 
       var deferred = $q.defer();
 
-      $http.get(options.api.base_url + '/bookmark/', {'params': {limit: limit}})
+      $http.get(options.api.base_url + '/bookmarks/', {'params': {limit: limit}})
       .then(function(response) {
         console.log('Fetched bookmarks from MongoDb and saved to localStorage.'); 
         $window.localStorage.bookmarksAll = JSON.stringify(response.data);
@@ -440,6 +441,10 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
       }, 1000);
 
       return deferred.promise;
+    },
+
+    searchAll: function(searchKey) { 
+      return $http.get(options.api.base_url + '/bookmarks/search', {'params': {searchKey: searchKey}});
     },
 
     read: function(id) {
@@ -483,10 +488,6 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
         deferred.reject(response);
       });
       return deferred.promise;
-    },
-
-    searchAll: function(searchKey) { 
-      return $http.get(options.api.base_url + '/bookmark/search', {'params': {searchKey: searchKey}});
     },
 
     delete: function(id) {

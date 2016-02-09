@@ -168,7 +168,7 @@ exports.create = function(req, res) {
       res.status(400).send('Bad Request'); 
     }
 
-    res.status(200).send('Contact created successful');
+    res.status(201).send('Contact created successful');
 
   });
 }
@@ -394,27 +394,33 @@ exports.vcardsDownload = function(req, res) {
         vcfContent += create_vCard(req, contact);
       });
 
-      // Create a crontab to remove old files from public download.
-      var downloadDir = '../app/public/download/' + req.user.id + '/';
-      if (!fs.existsSync(downloadDir)){ 
-        mkdir(downloadDir); 
-      }
-      var vcfFile = 'contacts.vcf';
+      // Download as file.
+      // -----------------------------------------------------------------
+      // var downloadDir = '../app/public/download/' + req.user.id + '/';
+      // if (!fs.existsSync(downloadDir)){ 
+      //   mkdir(downloadDir); 
+      // }
+      // var vcfFile = 'contacts.vcf';
+      //
+      // // vcfContent can be to big for sendFile so we create a local file to download.
+      // fs.writeFile(downloadDir + vcfFile, vcfContent, function(err) {
+      //
+      //   if(err) {
+      //     console.log(err); 
+      //     res.status(500).send('Internal Server Error');
+      //   }
+      //
+      //   console.log('The file ' + vcfFile + ' has been saved!');
+      //
+      //   // Send vcfFile as link
+      //   res.status(200).send('/download/' + req.user.id + '/' + vcfFile);
+      // -----------------------------------------------------------------
+ 
+      // }); 
 
-      // vcfContent can be to big for sendFile so we create a local file to download.
-      fs.writeFile(downloadDir + vcfFile, vcfContent, function(err) {
+      // Download as data stream.
+      res.status(200).send(vcfContent);
 
-        if(err) {
-          console.log(err); 
-          res.status(500).send('Internal Server Error');
-        }
-
-        console.log('The file ' + vcfFile + ' has been saved!');
-
-        // Send vcfFile as link
-        res.status(200).send('/download/' + req.user.id + '/' + vcfFile);
-
-      }); 
     }
   });
 };
@@ -532,7 +538,7 @@ function create_vCard(req, contact) {
   }
 
   // Convert image to base64 encoded string only if uploaded photo exists.
-  var photo = "../app/pubic" + contact.photo;
+  var photo = "../app/public" + contact.photo;
   if (contact.photo !== '' && fs.existsSync(photo) && dlPhoto) {
     vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
   }

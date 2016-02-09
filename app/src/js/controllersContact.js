@@ -116,14 +116,15 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     $scope.downloadContact = function downloadContacts() {
       ContactService.vCards($scope.dlPhones, $scope.dlCompanies, 
         $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses, 
-        $scope.dlBirthdate, $scope.dlNotes)
-      .then(function(response) {
-        $scope.vCardShow = true;
-        $scope.downloadLabel = 'File has been created.';
-        $scope.vCardLink = response.data;
+        $scope.dlBirthdate, $scope.dlNotes).then(function(response) {
+        var file = new Blob([response.data], {type: 'text/x-vcard'});
+        var fileName = 'contacts.vcf';
+        saveAs(file, fileName);
+        $scope.downloadLabel = 'File has been downloaded!';
       });
 
     };
+
 
     $scope.calculateAge = function calculateAge(birthdate) { 
         // Birthday must be a real date

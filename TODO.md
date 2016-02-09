@@ -1,4 +1,8 @@
 # General
+- Labels: red, orange, blauw, green
+ - Calendar: Appointment, Memo
+ - Posts: Todo, Note, Blog, Knowlege base
+ - Bookmarks: Business, Fun, Knowlege base, Other
 - After login, show processbar for loading localdata
 - jwt token expire feedback must be better from the api
 - https://sroze.github.io/ngInfiniteScroll/
