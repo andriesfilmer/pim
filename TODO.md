@@ -1,12 +1,16 @@
 # General
-- Labels: red, orange, blauw, green
- - Calendar: Appointment, Memo
- - Posts: Todo, Note, Blog, Knowlege base
- - Bookmarks: Business, Fun, Knowlege base, Other
-- After login, show processbar for loading localdata
+- Change types in mongodb
+  db.posts.find({type: 'kb'}).forEach(function(post) { db.posts.update({_id: post._id},{$set: { "type": "hobby" }}) });
+  db.posts.find({type: 'blog'}).forEach(function(post) { db.posts.update({_id: post._id},{$set: { "type": "article" }}) });
+  db.bookmarks.find({category: 'fun'}).forEach(function(bookmark) { db.bookmarks.update({_id: bookmark._id},{$set: { "category": "todo" }}) });
+  db.bookmarks.find({category: 'kb'}).forEach(function(bookmark) { db.bookmarks.update({_id: bookmark._id},{$set: { "category": "other" }}) });
+
+- vCard with N:Lastname;firstname
+
 - jwt token expire feedback must be better from the api
 - https://sroze.github.io/ngInfiniteScroll/
 - https://github.com/angular-translate/angular-translate
+- After login, show processbar for loading localdata
 
 # Calendar
 - Share event time not corret. UTC?

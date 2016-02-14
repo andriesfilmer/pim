@@ -32,10 +32,14 @@ appDirectives.directive('markdown', function (markdownConverter) {
 // Thanks to: https://github.com/gtramontina/angular-flash
 appDirectives.directive('flashMessages', [function() {
   var directive = { restrict: 'EA', replace: true };
+
   directive.template =
-    '<ol id="flash-messages">' +
-      '<li ng-repeat="m in messages" class="alert-box {{m.level}}">{{m.text}} <a href="#" class="close">&times;</a></li>' +
-    '</ol>';
+    '<div ng-repeat="m in messages" class="callout {{m.level}}" data-closable>' +
+        '{{m.text}}' +
+        '<button class="close-button" aria-label="Dismiss alert" type="button" data-close>' +
+        '<span aria-hidden="true">&times;</span>' +
+        '</button>' +
+    '</div>';
 
   directive.controller = ['$scope', '$rootScope', function($scope, $rootScope) {
     $rootScope.$on('flash:message', function(_, messages, done) {

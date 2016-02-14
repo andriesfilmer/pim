@@ -6,12 +6,12 @@ form(name="eventForm")
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
-   a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+   a.fi-share(title="Share", data-open="share") 
    span.divider
    span(ng-hide="eventForm.title.$error.required")
     a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
     a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'update')", ng-hide="showAddBt", title='Update event', tabindex=2)
-   span.right(ng-show="showDeleteBt")
+   span.float-right(ng-show="showDeleteBt")
     span.divider
     a.fi-trash(ng-click='deleteEvent(cal)', title='Delete item', confirmation-needed="Really Delete?")
 
@@ -19,21 +19,21 @@ form(name="eventForm")
   div.column.small-12(ng-class="cal.className")
    h2 {{cal.title}}
   div.column.small-12
-   div.round.warning.label(ng-if='cal.tzShow') {{cal.tzGuess}}
+   div.warning.label(ng-if='cal.tzShow') {{cal.tzGuess}}
   div.column.small-12
-   div.round.secondary.label {{cal.start | date: 'EEE dd MMM'}}
-   div.round.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
-   div.round.secondary.label  {{cal.end | date: 'EEE dd MMM'}} 
-   div.round.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
-   div.round.secondary.label(ng-show='cal.allDay') all day
+   div.secondary.label {{cal.start | date: 'EEE dd MMM'}}
+   div.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
+   div.secondary.label  {{cal.end | date: 'EEE dd MMM'}} 
+   div.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
+   div.secondary.label(ng-show='cal.allDay') all day
   div.column.small-12(ng-if='cal.tzShow')
-   div.round.warning.label {{cal.tz}}
+   div.warning.label {{cal.tz}}
   div.column.small-12(ng-if='cal.tzShow')
-   div.round.secondary.label {{cal.tzStartDate}}
-   div.round.label(ng-hide='cal.allDay') {{cal.tzStartTime}}
-   div.round.secondary.label  {{cal.tzEndDate}} 
-   div.round.label(ng-hide='cal.allDay') {{cal.tzEndTime}}
-   div.round.secondary.label(ng-show='cal.allDay') all day
+   div.secondary.label {{cal.tzStartDate}}
+   div.label(ng-hide='cal.allDay') {{cal.tzStartTime}}
+   div.secondary.label  {{cal.tzEndDate}} 
+   div.label(ng-hide='cal.allDay') {{cal.tzEndTime}}
+   div.secondary.label(ng-show='cal.allDay') all day
  div.row(ng-hide="editForm")
   div.column.small-12(markdown="cal.description")
 
@@ -58,25 +58,38 @@ form(name="eventForm")
   div.row
    div.column.small-6 Allday
    div.column.small-6 
-    div.switch.round
-     input#allDay(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
-     label(for="allDay")
+    div.switch
+     input#allDay.switch-input(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
+     label.switch-paddle(for="allDay")
   div.row
    div.column.small-12 Description
     textarea(ng-model="cal.description", rows="10", placeholder="You can use Markdown ...")
-  div.row
-   div.column.small-6 Appointment
-   div.switch.round.column.small-6.cal-appointment
-    input#cal-appointment(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
-    label(for="cal-appointment") 
-  div.row.my-row
-   div.column.small-6 Memo
-   div.switch.round.column.small-6.cal-memo
-    input#cal-memo(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
-    label(for="cal-memo") 
+  fieldset
+   legend Label
+   div.row
+    div.column.small-6 Appointment
+    div.switch.column.small-6.cal-appointment.appointment
+     input#cal-appointment.switch-input(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
+     label.switch-paddle(for="cal-appointment")
+   div.row
+    div.column.small-6 Memo
+    div.switch.column.small-6.cal-memo.memo
+     input#cal-memo.switch-input(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
+     label.switch-paddle(for="cal-memo") 
+   div.row
+    div.column.small-6 Business
+    div.switch.column.small-6.cal-business.business
+     input#cal-business.switch-input(type="radio", value="business", name="className", ng-model="cal.className", ng-change="change()")
+     label.switch-paddle(for="cal-business")
+   div.row
+    div.column.small-6 Holiday
+    div.switch.column.small-6.cal-holiday.holiday
+     input#cal-holiday.switch-input(type="radio", value="holiday", name="className", ng-model="cal.className", ng-change="change()")
+     label.switch-paddle(for="cal-holiday")
   div.row
    div.column.small-12
     div.label.strong(ng-hide="timezone", ng-click='advanced = !advanced') Toggle Advanced
+
   div.row(ng-show="advanced")
    div.column.small-12
     p
@@ -92,11 +105,12 @@ div.row(ng-if="cal.created")
  div.column.small-12.post-meta
    ul.inline-list
     li.tag(ng-repeat='tag in post.tags')
-     a.label.radius.success {{tag}}
+     a.label.success {{tag}}
 
 div.row
-  div#share.reveal-modal(data-reveal='')
-   a.close-reveal-modal &#215;
+  div#share.reveal.full(data-reveal='')
+   button.close-button(data-close='', type="button")
+    span(aria-hidden="true") &times;
    div.row
     div.small-12.columns
      fieldset

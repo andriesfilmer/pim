@@ -7,17 +7,17 @@ div.row(ng-hide="offline")
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+  a.fi-share(title="Share", data-open="share") 
   span.divider
   span(ng-hide="contactForm.name.$error.required")
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
-  span.right
+  span.float-right
    span.divider
    a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")
 
 div(ng-hide="editForm")
- div.profile-bg(style="background: url({{contact.photo}}?{{contact.updated}}); background-size: cover; background-position: center;")
+ div.profile-bg(style="background-image: url({{contact.photo}}?{{contact.updated}}); background-size: cover; background-position: center;")
  div.row
   div.column.text-right(ng-if="contact.birthdate")
    label.fi-crown  {{contact.birthdate | date: 'dd MMM'}} | {{ calculateAge(contact.birthdate) }}
@@ -114,7 +114,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-10
    input#title-input(type="text", required='', name="name", placeholder="Fullname", ng-model="contact.name", ng-change="isChanged()")
   div.column.small-2.text-center
-   a.fi-photo(title="Add photo", data-reveal-id="photo", data-reveal-ajax="true")
+   a.fi-photo(title="Add photo", data-open="photo")
 
   // Phones
   div.column.small-10.item-title Phonenumbers
@@ -131,7 +131,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
      input.items(ng-class="{false: 'hide'}[customValue === contact.phones[$index].type]",
       | type="text", ng-model="item.type", ng-change="labelChanged('phones', $index, contact.phones[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
-     button.tiny.reset-button(type="reset", ng-click="DiscardField('phones', $index)") &#215;
+     button.reset-button(type="reset", ng-click="DiscardField('phones', $index)") &times;
 
   // Companies
   div.column.small-10.item-title Companies
@@ -144,12 +144,12 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
     div.column.small-4
      input.items(type="text", ng-model="item.title", ng-change="isChanged()", placeholder="Title ...")
     div.column.small-2.text-center
-     button.tiny.reset-button(type="reset", ng-click="DiscardField('companies', $index)") &#215;
+     button.reset-button(type="reset", ng-click="DiscardField('companies', $index)") &times;
 
   // Relations
   div.column.small-10.item-title Relations
   div.column.small-2.text-center
-   a.fi-plus(data-reveal-id="contact-relations", data-reveal-ajax="true") 
+   a.fi-plus(data-open="contact-relations") 
   div.column.small-12
    div.row(ng-repeat="item in contact.relations")
     div.column.small-6
@@ -161,7 +161,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
      input.items(ng-class="{false: 'hide'}[customValue === contact.relations[$index].type]",
       | type="text", ng-model="item.type", ng-change="labelChanged('relations', $index, contact.relations[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
-     button.tiny.reset-button(type="reset", ng-click="DiscardField('relations', $index)") &#215;
+     button.reset-button(type="reset", ng-click="DiscardField('relations', $index)") &times;
 
   // E-mails
   div.column.small-10.item-title E-mailaddresses
@@ -178,7 +178,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
      input.items(ng-class="{false: 'hide'}[customValue === contact.emails[$index].type]",
       | type="text", ng-model="item.type", ng-change="labelChanged('emails', $index, contact.emails[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
-     button.tiny.reset-button(type="reset", ng-click="DiscardField('emails', $index)") &#215;
+     button.reset-button(type="reset", ng-click="DiscardField('emails', $index)") &times;
 
   // Websites
   div.column.small-10.item-title Websites
@@ -195,7 +195,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
      input.items(ng-class="{false: 'hide'}[customValue === contact.websites[$index].type]",
       | type="text", ng-model="item.type", ng-change="labelChanged('websites', $index, contact.websites[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
-     button.tiny.reset-button(type="reset", ng-click="DiscardField('websites', $index)") &#215;
+     button.reset-button(type="reset", ng-click="DiscardField('websites', $index)") &times;
 
   // Addresses
   div.column.small-10.item-title Addresses
@@ -212,7 +212,7 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
      input.items(ng-class="{false: 'hide'}[customValue === contact.addresses[$index].type]",
       | type="text", ng-model="item.type", ng-change="labelChanged('addresses', $index, contact.addresses[$index].type)", placeholder="Custom ...")
     div.column.small-2.text-center
-     button.tiny.reset-button(type="reset", ng-click="DiscardField('addresses', $index)") &#215;
+     button.reset-button(type="reset", ng-click="DiscardField('addresses', $index)") &times;
 
  // Brithdate
  div.row
@@ -227,21 +227,23 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
    textarea(rows="10", ng-model="contact.notes", ng-change="isChanged()", placeholder="You can use Markdown ...")
 
 div.row
- div#contact-relations.reveal-modal(data-reveal='')
-  a.close-reveal-modal &#215;
+ div#contact-relations.reveal.full(data-reveal='')
+  button.close-button(data-close='', type="button")
+   span(aria-hidden="true") &times;
   div.row
    form#search
-    div.columns.small-12
-     input.radius.search-box(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey" )
+    div.columns.small-10
+     input.search-box(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey" )
 
   div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
-   div(ng-click="AddRelation(contact._id, contact.name)")
+   div(ng-click="AddRelation(contact._id, contact.name)", data-close='')
     div.columns.small-12.medium-6 {{contact.name}} 
-    div.columns.hide-for-small.medium-6 &nbsp; {{contact.companies[0].name}}
+    div.columns.hide-for-small-only.medium-6 &nbsp; {{contact.companies[0].name}}
 
 div.row
-  div#share.reveal-modal(data-reveal='')
-   a.close-reveal-modal &#215;
+  div#share.reveal.full(data-reveal='')
+   button.close-button(data-close='', type="button")
+    span(aria-hidden="true") &times;
    div.row
     div.small-12.columns
      fieldset
@@ -251,21 +253,22 @@ div.row
       legend.fi-download  Contact as vCard
       include ./includes/contact.vcard.jade
 
-div#photo.reveal-modal(data-reveal='')
- a.close-reveal-modal &#215;
+div#photo.reveal.full(data-reveal='')
+ button.close-button(data-close='', type="button")
+  span(aria-hidden="true") &times;
  div.row(ng-if="contact._id")
   div.column.small-12
    h2 New profile photo
   div.columns.small-8
    input(type="file", onchange="angular.element(this).scope().onFile(this.files[0])")
   div.columns.small-4
-    button.radius.small.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(contact,dataUrl)")  Upload
+   button.button.fi-upload(ng-if="dataUrl", ng-click="uploadContactPhotoFile(contact,dataUrl)", data-close='')  Upload
   div.columns.small-12(ng-if="dataUrl" class="img-container")
    p
     img(ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="cropperOptions")
   div.column.small-12(ng-if="contact.photo") 
    h2 Remove profile photo
-   button.alert.radius.small(ng-click="removePhoto()", title="{{contact.photo}}")  Remove
+   button.button.alert(type="button", ng-click="removePhoto()", title="{{contact.photo}}")  Remove
  div.row(ng-if="!contact._id")
   div.column.small-12
    p Please add contact first before you upload a photo.

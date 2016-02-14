@@ -1,7 +1,9 @@
 div.row(ng-hide="offline")
+ div.columns.small-12 &nbsp;
   form#search
+  div.row
    div.columns.small-10
-    input.radius.search-box(name="focus", type="text", placeholder="Calendar search ...", ng-model="searchKey", tabindex="2" )
+    input.search-box(name="focus", type="text", placeholder="Calendar search ...", ng-model="searchKey", tabindex="2" )
    div.columns.small-2
     button.tiny.reset-button(ng-click="resetSearchKey()",type="reset") &#215;
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")
@@ -9,6 +11,6 @@ div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class
   div.columns.small-12.medium-7 {{event.title}}
   div.columns.small-9.medium-3.meta-data {{event.start | date: 'EEEE d MMMM yyyy'}}
   div.columns.small-3.medium-2
-   div.round.secondary.label(ng-show='event.allDay==="true"') all day
+   div.secondary.label(ng-show='event.allDay==="true"') all day
   div.columns.small-3.medium-2
-   div.round.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
+   div.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}

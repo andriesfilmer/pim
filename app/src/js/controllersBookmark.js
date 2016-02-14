@@ -17,7 +17,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.bookmarkSearchKey;
-      $state.go('bookmark', {}, {reload: true});
+      $state.go('bookmark.list', {}, {reload: true});
     };
 
     // Set bookmark limit for all bookmarks

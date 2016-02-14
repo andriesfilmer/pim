@@ -7,22 +7,22 @@ div.row(ng-hide="offline")
   span.divider
   a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search contacts', tabindex="3")
   span.divider
-  a.fi-widget(title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
-  span.right
+  a.fi-widget(title="Settings", data-open="contact-settings")
+  span.float-right
    span.divider
    a.fi-plus(ui-sref='contact.create', title='New item')
 
 div.row.flip-in(ng-show="searchForm")
  form#search
   div.columns.small-10
-   input#search-input.radius.search-box(focus-me="searchForm", type="text", placeholder="Contact search ...", ng-model="searchKey")
+   input#search-input.search-box(focus-me="searchForm", type="text", placeholder="Contact search ...", ng-model="searchKey")
   div.columns.small-2
    button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
 div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
  a(ui-sref='contact.view({id: contact._id})')
   div.columns.small-10.medium-5 {{contact.name}}
-  div.columns.hide-for-small.medium-5 {{contact.companies[0].name}} &nbsp;
+  div.columns.hide-for-small-only.medium-5 {{contact.companies[0].name}} &nbsp;
   div.column.small-2.medium-2
    img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
 div.columns.meta-data(ng-if="!contacts") No contacts yet

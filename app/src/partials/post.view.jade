@@ -6,12 +6,12 @@ form(name="postForm")
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
-   a.fi-share(title="Share", data-reveal-id="share", data-reveal-ajax="true") 
+   a.fi-share(title="Share", data-open="share") 
    span.divider
-   a.fi-widget(data-reveal-id="post-settings", data-reveal-ajax="true") 
+   a.fi-widget(data-open="post-settings") 
    span.divider
    a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
-   span.right(ng-hide="showDeleteBt")
+   span.float-right(ng-hide="showDeleteBt")
     span.divider
     a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")
 
@@ -33,10 +33,34 @@ form(name="postForm")
    textarea#content(rows="19", ng-model="post.content", ng-change="isChanged()", placeholder="You can use Markdown ...")
    input(type="text", placeholder="Tag #1, Tag #2, ...", my-tags='', ng-model="post.tags", ng-change="isChanged()")
  div.row
-  div.column.small-12.post-meta
-    ul.inline-list
-     li.tag(ng-repeat='tag in post.tags')
-      a.label.radius.success {{tag}}
+  div.column.small-12
+    span(ng-repeat='tag in post.tags')
+     label.label.small.success.tag {{tag}}
+ div.row(ng-show="editForm")
+  div.column.small-12
+  fieldset
+   legend Label
+   div.row
+    div.column.small-6 Todo
+    div.switch.column.small-6.post-todo.todo
+     input#post-todo.switch-input.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="isChanged()")
+     label.switch-paddle(for="post-todo")
+   div.row
+    div.column.small-6 Note
+    div.switch.column.small-6.post-note.note
+     input#post-note.switch-input(type="radio", value="note", name="postType", ng-model="post.type", ng-change="isChanged()")
+     label.switch-paddle(for="post-note")
+   div.row
+    div.column.small-6 Article
+    div.switch.column.small-6.post-article.article
+     input#post-article.switch-input(type="radio", value="article", name="postType", ng-model="post.type", ng-change="isChanged()")
+     label.switch-paddle(for="post-article")
+   div.row
+    div.column.small-6 Other
+    div.switch.column.small-6.post-other.other
+     input#post-other.switch-input(type="radio", value="other", name="postType", ng-model="post.type", ng-change="isChanged()")
+     label.switch-paddle(for="post-other")
+
  div.row(ng-if="post")
   div.column.small-6.meta-data
    i Created:  {{post.created | date: 'yyyy-MM-dd'}}
@@ -44,41 +68,20 @@ form(name="postForm")
    i Updated:  {{post.updated | date: 'yyyy-MM-dd'}}
 
 div.row
- div#post-settings.reveal-modal(data-reveal='')
-  a.close-reveal-modal &#215;
-  fieldset
-   legend Type
-   div.row
-    div.column.small-6.my-row.todo Todo
-    div.switch.round.column.small-6.post-todo
-     input#post-todo.todo(type="radio", value="todo", name="postType", ng-model="post.type", ng-change="isChanged()")
-     label(for="post-todo")
-   div.row
-    div.column.small-6.my-row.note Note
-    div.switch.round.column.small-6.post-note
-     input#post-note(type="radio", value="note", name="postType", ng-model="post.type", ng-change="isChanged()")
-     label(for="post-note")
-   div.row
-    div.column.small-6.my-row.blog Blog
-    div.switch.round.column.small-6.post-blog
-     input#post-blog(type="radio", value="blog", name="postType", ng-model="post.type", ng-change="isChanged()")
-     label(for="post-blog") 
-   div.row
-    div.column.small-6.my-row.kb Knowlege base
-    div.switch.round.column.small-6.post-kb
-     input#post-kb(type="radio", value="kb", name="postType", ng-model="post.type", ng-change="isChanged()")
-     label(for="post-kb") 
-
-  fieldset(ng-if="versions")
+ div#post-settings.reveal.full(data-reveal='')
+  button.close-button(data-close='', type="button")
+   span(aria-hidden="true") &times;
+  fieldset#versions(ng-if="versions")
    legend Versions
    div.row.my-row(ng-repeat='version in versions', ng-class="version.type", ng-class-odd="'odd'" ng-class-even="'even'")
-    a(ui-sref='post.version({id: version._id})')
-     div.columns.medium-9 {{version.title}}
-     div.column.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
+    a(ui-sref='post.version({id: version._id})', data-close='')
+     div.columns.small-12.medium-9 {{version.title}}
+     div.column.small-12.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
 
 div.row
-  div#share.reveal-modal(data-reveal='')
-   a.close-reveal-modal &#215;
+ div#share.reveal.full(data-reveal='')
+   button.close-button(data-close='', type="button")
+    span(aria-hidden="true") &times;
    div.row
     div.small-12.columns
      fieldset

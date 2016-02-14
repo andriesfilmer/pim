@@ -10,19 +10,22 @@
   color: #ddd;
 }
 
-ul.starred-list {
+.starred-list {
+  height: 160px;
+  text-align: center;
   margin: 0;
-  .photo {
+  img.photo {
     border-radius: 100%;
     max-height: 6rem;
     max-width: 6rem;
   }
-  .name {
-    text-align: center;
-    p {
-      font-size: 0.8rem;
-      margin: 3px;
-    }
+  p.name {
+    font-size: 0.8rem;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+  p.birthdate {
+    margin-top: 3px;
   }
 }
 
@@ -54,6 +57,7 @@ ul.starred-list {
     border-radius: 100%;
     max-width: 12em;
     margin-top: -1em;
+    position: relative;
   }
   .contact-name {
     position: inherit;
@@ -75,7 +79,6 @@ ul.starred-list {
     background: transparent;
     font-size: 2.5rem;
     font-weight: bold;
-    padding: 0 0 0 15px;
     bottom: 5px;
   }
   .fi-photo {
@@ -86,12 +89,14 @@ ul.starred-list {
   }
   .fi-plus {
     font-size:1.8rem;
-    margin-left: 5px;
+  }
+  .fi-x {
+    font-size:1.8rem;
+    color: orange;
   }
 }
 
 .download-vcard {
-  font-size: 0.8rem;
   text-align: right;
 }
 

@@ -4,46 +4,83 @@ input#title {
   margin: 0;
 }
 
-$color-appointment: #008CBA;
+$color-business: red;
 $color-memo: orange;
+$color-holiday: mediumseagreen;
+$color-appointment: dodgerblue;
 
-.appointment { 
-  border-right: 8px $color-appointment solid; 
+.business {
+  border-right: 8px $color-business solid; 
   padding-right: 0;
-  &.fc-event { 
-    background-color: $color-appointment; 
+  &.fc-event {
+    background-color: $color-business; 
     border-left: 2px; 
   }
 }
-.memo { 
+.memo {
   border-right: 8px $color-memo solid;
   padding-right: 0;
-  &.fc-event { 
+  &.fc-event {
     background-color: $color-memo; 
     border-color: darkorange;
     border-left: 2px; 
   }
 }
+.holiday {
+  border-right: 8px $color-holiday solid; 
+  padding-right: 0;
+  &.fc-event {
+    background-color: $color-holiday; 
+    border-left: 2px; 
+  }
+}
+.appointment {
+  border-right: 8px $color-appointment solid; 
+  padding-right: 0;
+  &.fc-event {
+    background-color: $color-appointment; 
+    border-left: 2px; 
+  }
+}
 
-.switch.cal-appointment input:checked + label {
-  background: $color-appointment;
+.switch.cal-business input:checked + label {
+  background: $color-business;
 }
 .switch.cal-memo input:checked + label {
   background: $color-memo;
 }
-
-span#search-calendar.fi-calendar {
-  font-size: 1.8em;
+.switch.cal-holiday input:checked + label {
+  background: $color-holiday;
 }
+.switch.cal-appointment input:checked + label {
+  background: $color-appointment;
+}
+
 
 /* Fullcalendar overwrites */
-
-.fc-state-default {
-  background-image: none;
-  &:focus {background-color: #f5f5f5;}
-  &:focus {color: #000000;}
+#myCalendar {
+  h2 {
+   font-weight: normal;
+   border-bottom: none;
+  }
+  .fc-state-default {
+    background-image: none;
+    &:focus {background-color: #f5f5f5;}
+    &:focus {color: #000000;}
+  }
+  .fc-toolbar {
+    margin-bottom: 0; 
+  }
+  table {
+    margin-bottom: 0;
+  }
+  thead, tbody, tfoot {
+    background: none;
+    border: none;
+      th, td {
+      font-weight: normal;
+    }
+  }
 }
 
-.fc-toolbar {
-  margin-bottom: 0; 
-}
+

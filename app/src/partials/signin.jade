@@ -1,15 +1,15 @@
 div.row(ng-hide='loginForm')
   div.columns.small-12
    h2 Login page
-  div.columns.small-12.panel.radius
+  div.columns.small-12.callout.primary
    div.columns.small-12
     input(type="email", name="email", placeholder="E-mail address", ng-model="user.email", tabindex="1")
    div.columns.small-12
     input(type="password", name="password", placeholder="Password", ng-model="user.password", tabindex="2")
    div.columns.small-12.medium-2
-    button.radius(type="submit", ng-click="signIn(user.email, user.password)", tabindex="3") Sign In
+    button.button(type="submit", ng-click="signIn(user.email, user.password)", tabindex="3") Sign In
    div.columns.small-12.medium-6
     p
      a(ui-sref="user.reset-password") Forgot password?
   div.columns.small-12
-   button.radius.secondary.radius(type="submit", ui-sref="signup") Sign Up
+   button.button.secondary(type="button", ui-sref="signup") Sign Up

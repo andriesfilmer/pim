@@ -102,12 +102,11 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 
     $scope.uploadvCardFile = function(){
       var file = $scope.vCardFile;
-      $('a.close-reveal-modal').trigger('click');
       console.log('Upload vCardFile');
       console.dir(file);
       ContactService.uploadContactVcf(file)
       .then(function(response) {
-        flash('notice', response.data);
+        flash('success', response.data);
       }, function(response) {
         flash('warning', response.data);
       });
@@ -246,7 +245,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       type: ''
     });
     $scope.saveForm = true;
-    $('a.close-reveal-modal').trigger('click');
   };
 
   // Remove (X) phone, email, relation, address or website field.
@@ -331,7 +329,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
       // HTMLCanvasElement.toDataURL() with only PNG and JPEG.
       fileTypeRegex = /^data:image\/(png|jpeg);base64/;
       if (!fileTypeRegex.test(dataUrl)){
-        $('a.close-reveal-modal').trigger('click');
+        $('#photo').foundation('close');
         flash('alert', 'File type not supported!');
       } else {
         $scope.dataUrl = dataUrl;
@@ -350,8 +348,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   };
 
   $scope.uploadContactPhotoFile = function(contact,dataUrl) {
-
-    $('a.close-reveal-modal').trigger('click');
 
     if ( (/iP(hone|od|ad)/).test(window.navigator.platform) && ($(window).width < 768 && ($(image).height() > 1000 || $(image).width() > 1000)) ) {
       flash('alert', 'Sorry, image to large (max 1000px width, 1000px heigth)');
@@ -379,9 +375,9 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   };
 
   $scope.removePhoto = function() {
+    $('#photo').foundation('close');
     $scope.contact.photo = '';
     $scope.saveForm = true;
-    $('a.close-reveal-modal').trigger('click');
     flash('success', 'Don\'t forget to save and to reload!');
   };
 

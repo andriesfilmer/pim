@@ -163,7 +163,7 @@ exports.sendToken = function(req, res) {
           + config.cors_url + '/#/user/change-password/' + token + '/' + user._id + '\n\n'
           + 'If you didn\'t mean to reset your password, then you can just ignore this email; your password will not change.\n\n'
           + 'Regards Andries Filmer.\n'
-          + 'http://pim.filmer.nl\n'
+          + 'http://pim.center\n'
 
     });
 

@@ -11,14 +11,13 @@ div.row(ng-hide="offline")
   a.fi-plus(ui-sref='contact.create',title='New item')
 
 div.row
- ul.small-block-grid-3.medium-block-grid-4.large-block-grid-6.starred-list
-  li.name(ng-repeat='contact in contacts')
+ div.columns.small-4.medium-3.large-2.starred-list(ng-repeat='contact in contacts')
    a(name="{{contact.birthdate | date: 'MM'}}")
    a(ui-sref='contact.view({id: contact._id})')
     img.photo(ng-show="!contact.photo || contact.photo === ''", ng-src="/static/images/profile.jpg")
     img.photo(ng-show="contact.photo", ng-src="{{contact.photo}}")
-    p {{contact.name}}
-    p.meta-data {{contact.birthdate | date: 'dd MMMM yyyy'}} ({{calculateAge(contact.birthdate) }})
+    p.name{{contact.name}}
+    p.birthdate.meta-data {{contact.birthdate | date: 'dd MMMM yyyy'}} ({{calculateAge(contact.birthdate) }})
  div.columns.meta-data(ng-if="!contacts") No contacts with birthdate 
   i.fi-crown  yet
 

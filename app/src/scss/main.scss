@@ -4,8 +4,21 @@
   display: none !important;
 }
 
+.menu {
+  &.expanded{ font-size: 2em};
+  background-color: black;
+  a {color: #fff;}
+}
+
+#offCanvas {
+  li {
+    border-bottom: 1px solid #7C7D7D;
+    border-top: 1px solid #47494A;
+  }
+}
+
 #flash-messages {
-  margin: 0; 
+  margin: 0;
   li.alert-box {
     margin: 0;
   }
@@ -75,17 +88,9 @@ code {
   }
 }
 
-#search input[type="text"].search-box {
-  margin-top: 1rem;
-  font-size: 1.2rem;
-}
-
-#search .reset-button {
+.reset-button {
   font-size: 2.6875rem;
   color: #AAAAAA;
-  background: transparent;
-  font-weight: bold;
-  padding-left: 0;
 }
 
 .my-row {
@@ -110,10 +115,10 @@ code {
 .reversed {
   color: white;
   padding: 5px 14px 5px 14px;
-  background: #008CBA;
+  background: #2199e8;
   border-radius: 20%;
   &:hover {
-   color: #008CBA;
+   color: #2199e8;
    background: #fff;
   }
 }
@@ -124,13 +129,8 @@ code {
     -webkit-filter: grayscale(1); /* Webkit */
 }
 
-ul.inline-list {
-  margin-left: 0rem;
-  margin-bottom: 0rem;
-  > li.tag {
-    margin-bottom: 0.5rem;
-    margin-left: 0.5rem;
-  }
+label.tag {
+  margin-bottom: 10px;
 }
 
 .odd {
@@ -150,7 +150,7 @@ ul.inline-list {
     width: 3rem;
     margin-bottom: 1rem;
   }
-  span {
+  fieldset span {
     font-size: 1.4rem;
     padding-left: 1rem;
   }
@@ -165,16 +165,24 @@ ul.inline-list {
   color: #aaa;
 }
 
-/* Foundation overwrites */
-
-.icon-bar {
-  margin-bottom: -6px; /* Icon-bar issue?! */
+/* Foundation 
+// Set `@include foundation-everything;` 
+// on the end of `/src/foundation/foundation.scss`
+// 
+// Set `$global-radius: 5px !default;`
+// in `src/foundation/_global.scss`
+//
+// Have made other foundation overwrites here, so we don't
+// have to update all these files after a update.
+*/
+fieldset {
+  margin: 1em;
+  border: solid 1px #ddd;
+  padding: 1em;
+  border-radius: 5px;
 }
 
-button {
-  margin-bottom: 0px;
-}
-
-.label {
-  font-size: 0.9rem;
+legend {
+  font-weight: bold;
+  padding: 0 5px 0 5px;
 }

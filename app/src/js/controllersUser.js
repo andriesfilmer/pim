@@ -72,10 +72,10 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
           });
         });
 
-        flash('succes', 'Success: Loading some data for offline usage...');
+        flash('success', 'Success: Loading some data for offline usage...');
         $timeout(function(){
           $state.go('home');
-          flash('succes', 'Signed in');
+          flash('success', 'Signed in');
         }, 3000);
 
         //---------------------------------------------------------------------
@@ -120,7 +120,7 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
     $scope.sendPasswordChangeToken = function sendPasswordChangeToken(email) {
       UserService.sendToken(email).then(function(response) {
         $scope.tokenSend = true;
-        flash('succes', response.data);
+        flash('success', response.data);
       }, function(response) {
         $scope.tokenSend = false;
         flash('alert', response.data);
@@ -130,13 +130,13 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
 
     // Set 'token' from querystring for changePassword which
     // is send by API service token/link to users mailbox.
-    if ($stateParams.token !== undefined) {
+    if ($stateParams.token) {
       $window.localStorage.token = $stateParams.token;
     }
 
     $scope.changePassword = function changePassword(password, passwordConfirm) {
       UserService.changePassword(password, passwordConfirm).then(function(response) {
-        flash('succes', 'Password has changed and you are logged-in');
+        flash('success', 'Password has changed and you are logged-in');
 
         // Set token with long expire date and user_id from API.
         $window.localStorage.token = response.data.token;

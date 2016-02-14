@@ -1,35 +1,35 @@
 /* bookmark */
 
-$color-fun: orange;
-$color-business: red;
-$color-kb: #008CBA;
-$color-other: green;
+$color-todo: red;
+$color-business: orange;
+$color-hobby: green;
+$color-other: dodgerblue;
 
-.fun {
+.todo {
   padding-right: 6px;
-  border-right: 8px $color-fun solid; 
-}
-.kb {
-  padding-right: 6px;
-  border-right: 8px $color-kb solid; 
+  border-right: 8px $color-todo solid; 
 }
 .business { 
   padding-right: 6px;
   border-right: 8px $color-business solid; 
+}
+.hobby {
+  padding-right: 6px;
+  border-right: 8px $color-hobby solid; 
 }
 .other   {
   padding-right: 6px;
   border-right: 8px $color-other solid; 
 }
 
-.switch.bookmark-fun input:checked + label {
-  background: $color-fun;
-}
-.switch.bookmark-kb input:checked + label {
-  background: $color-kb;
+.switch.bookmark-todo input:checked + label {
+  background: $color-todo;
 }
 .switch.bookmark-business input:checked + label {
   background: $color-business;
+}
+.switch.bookmark-hobby input:checked + label {
+  background: $color-hobby;
 }
 .switch.bookmark-other input:checked + label {
   background: $color-other;

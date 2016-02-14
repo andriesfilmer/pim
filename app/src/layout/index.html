@@ -57,33 +57,37 @@
 
 </head>
 <body ng-app="app">
-<div class="icon-bar five-up">
-  <a class="item" ui-sref="home" ui-sref-active="menu-active">
-    <i class="fi-home"></i>
-  </a>
-  <a class="item" ui-sref="calendar.month" ui-sref-opts="{reload: true}" ui-sref-active="menu-active">
-    <i class="fi-calendar"></i>
-  </a>
-  <a class="item" ui-sref="contact.list" ui-sref-opts="{reload: true}" ui-sref-active="menu-active">
-    <i class="fi-torsos"></i>
-  </a>
-  <a class="item" ui-sref="post.list" ui-sref-opts="{reload: true}" ui-sref-active="menu-active">
-    <i class="fi-page"></i>
-  </a>
-  <a class="item" ui-sref="bookmark.list" ui-sref-opts="{reload: true}" ui-sref-active="menu-active">
-    <i class="fi-bookmark"></i>
-  </a>
+<div class="off-canvas-wrapper">
+  <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+    <div class="off-canvas position-right" id="offCanvas" data-off-canvas data-position="right">
+      <ul class="menu vertical">
+        <li><a data-close="offCanvas" ui-sref="start">About</a></li>
+        <li><a data-close="offCanvas" ui-sref="user.change-password">Change password</a></li>
+        <li><a data-close="offCanvas" ui-sref="user.logout">Logout</a></li>
+      </ul>
+    </div>
+    <div class="main-content" data-off-canvas-content>
+
+      <ul class="menu expanded icon-top">
+       <li><a ui-sref="home" ui-sref-active="menu-active"><i class="fi-home"></i></a></li>
+       <li><a ui-sref="calendar.month" ui-sref-opts="{reload: true}" ui-sref-active="menu-active"><i class="fi-calendar"></i></a></li>
+       <li><a ui-sref="contact.list" ui-sref-opts="{reload: true}" ui-sref-active="menu-active"><i class="fi-torsos"></i></a></li>
+       <li><a ui-sref="post.list" ui-sref-opts="{reload: true}" ui-sref-active="menu-active"><i class="fi-page"></i></a></li>
+       <li><a ui-sref="bookmark.list" ui-sref-opts="{reload: true}" ui-sref-active="menu-active"><i class="fi-bookmark"></i></a></li>
+       <li><a data-open="offCanvas"><i class="fi-list"></i></a></li>
+      </ul>
+
+      <div class="flip-in">
+      <flash:messages ></flash:messages>
+      </div>
+
+      <div class="container">
+         <div class="" ui-view></div>
+      </div>
+
+    </div>
+  </div>
 </div>
-
-<div class="flip-in">
-<flash:messages ></flash:messages>
-</div>
-
-<div class="container">
-
-   <div class="" ui-view></div>
-</div>
-
 
 <!-- JS production CDN's -->
 
@@ -116,6 +120,9 @@
 <script src="vendor/js/vendor.js"></script>
 <script src="js/<!-- @echo pkgname -->.min.js"></script>
 <!-- @endif -->
+<script>
+  $(document).foundation();
+</script>
 
 </body>
 </html>

@@ -61,7 +61,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: '/change-password/:token/:user_id',
       templateUrl: 'partials/user.change-password.html',
       controller: 'UserController',
-      access: { requiredAuthentication: false }
+      access: { requiredAuthentication: false}
     })
     .state('user.reset-password', {
       url: "/reset-password",
