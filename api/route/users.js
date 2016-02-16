@@ -34,7 +34,7 @@ exports.signin = function(req, res) {
       }
 
       var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expireIn });
-      return res.json({token: token, user_id: user._id});
+      return res.json({token: token, user_id: user._id, fullname: user.fullname});
     });
 
   });

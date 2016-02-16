@@ -17,6 +17,7 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
         // we keep the token after clossing the browser.
         $window.localStorage.token = response.data.token;
         $window.localStorage.user_id = response.data.user_id;
+        $window.localStorage.fullname = response.data.fullname;
 
         //---------------------------------------------------------------------
         // After successfull login load some data for offline usage.
@@ -148,6 +149,30 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
         console.log(response.data);
         flash('warning', response.data);
       });
+    };
+
+    // Set contact limit for contacts
+    $scope.contactLimit =  $window.localStorage.contactLimit;
+    $scope.changeContactLimit = function(limit) {
+      $window.localStorage.contactLimit =  limit;
+    };
+
+    // Set contact order for contacts
+    $scope.contactOrder =  $window.localStorage.contactOrder;
+    $scope.changeContactOrder = function(order) {
+      $window.localStorage.contactOrder =  order;
+    };
+
+    // Set post limit for all posts
+    $scope.postLimit =  $window.localStorage.postLimit;
+    $scope.changePostLimit = function(limit) {
+      $window.localStorage.postLimit =  limit;
+    };
+
+    // Set bookmark limit for all bookmarks
+    $scope.bookmarkLimit =  $window.localStorage.bookmarkLimit;
+    $scope.changeBookmarkLimit = function(limit) {
+      $window.localStorage.bookmarkLimit =  limit;
     };
 
   }

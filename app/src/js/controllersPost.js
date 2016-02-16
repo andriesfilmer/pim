@@ -1,8 +1,6 @@
 appControllers.controller('PostListController', ['$scope', '$state', '$window', 'flash', 'PostService', 
   function PostListController($scope, $state, $window, flash, PostService) {
 
-    $(document).foundation();
-
     // Restore a search key
     if ($window.sessionStorage.postSearch) {
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
@@ -18,12 +16,6 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.postSearchKey;
       $state.go('post', {}, {reload: true});
-    };
-
-    // Set post limit for all posts
-    $scope.postLimit =  $window.localStorage.postLimit;
-    $scope.changeLimit = function(limit) {
-      $window.localStorage.postLimit =  limit;
     };
 
     $scope.posts = [];
@@ -63,8 +55,6 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 'MarkdownToc',
   function PostController($rootScope, $scope, $state, $window, $stateParams, flash, PostService, MarkdownToc) {
 
-  $(document).foundation();
-
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
 
@@ -80,7 +70,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   };
 
   if ($state.$current.name === 'post.version') {
-    $('a.close-reveal-modal').trigger('click');
     PostService.readVersion($stateParams.id).then(function(response) {
       console.log('Original version: ' + response.data.org_id);
       $scope.post = response.data;
@@ -151,11 +140,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       }, function(response) {
         flash('alert', 'Create post failure!');
       });
-    }
-
-    // Close modal if its open.
-    if($("#post-settings").is(":visible")) {
-      $('a.close-reveal-modal').trigger('click');
     }
 
   };

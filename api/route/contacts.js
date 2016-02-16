@@ -579,7 +579,6 @@ function savePhotoUri(user_id, contact_id, dataUrl) {
   // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
   var base64Data = dataUrl.replace(/^data:image\/(jpeg|png);base64,/, "");
-  console.log('base64Data -> ' + base64Data.substring(0,50)); 
   console.log('imgPath -> ' + imgPath); 
 
   fs.writeFile(imgPath, base64Data, 'base64', function(err) {

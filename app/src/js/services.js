@@ -544,7 +544,7 @@ appServices.provider('markdownConverter', function () {
 
     // Showdown.js required
 
-    var opts = { extensions: ['table', 'targetblank'] };
+    var opts = { strikethrough: true, tables: true, tasklists: true, extensions: ['targetblank'] };
     return {
       config: function (newOpts) {
         opts = newOpts;

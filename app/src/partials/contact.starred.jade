@@ -4,8 +4,6 @@ div.row(ng-hide="offline")
   a.fi-crown(ui-sref="contact.birthdate({birthdate: true})", title='Contacts with birthdates', tabindex="1")
   span.divider
   a.fi-torsos(ui-sref='contact.list', title='List contacts', tabindex="1")
-  span.divider
-  a.fi-widget(title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
  div.column.small-4.text-right.secondary-menu
   span.divider
   a.fi-plus(ui-sref='contact.create',title='New item')
@@ -18,6 +16,4 @@ div.row
    p.name {{contact.name}}
  div.columns.meta-data(ng-if="!contacts") No starred 
   i.fi-star  contacts yet
-
-include ./includes/contact.settings.jade
 

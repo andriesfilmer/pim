@@ -7,18 +7,16 @@
 
 - vCard with N:Lastname;firstname
 
+- Labels as selectbox add the end of title inputbox.
+- After login, show processbar for loading localdata
 - jwt token expire feedback must be better from the api
 - https://sroze.github.io/ngInfiniteScroll/
 - https://github.com/angular-translate/angular-translate
-- After login, show processbar for loading localdata
 
 # Calendar
 - Share event time not corret. UTC?
 - export vCal
 - import vCal
-
-# Contact
-- import vCard
 
 # Issues
 - Upload contact photo on ipad does not work correct.

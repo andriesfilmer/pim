@@ -6,8 +6,6 @@ div.row(ng-hide="offline")
   a.fi-crown(ui-sref="contact.birthdate({birthdate: true})", title='Contacts with birthdates', tabindex="2")
   span.divider
   a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search contacts', tabindex="3")
-  span.divider
-  a.fi-widget(title="Settings", data-open="contact-settings")
   span.float-right
    span.divider
    a.fi-plus(ui-sref='contact.create', title='New item')
@@ -27,5 +25,3 @@ div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-ev
    img.list-profile-img(ng-if="contact.photo", ng-src="{{contact.photo}}")
 div.columns.meta-data(ng-if="!contacts") No contacts yet
 
-
-include ./includes/contact.settings.jade

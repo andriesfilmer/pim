@@ -11,6 +11,13 @@
 }
 
 #offCanvas {
+  h2 {
+    color: #fff;
+    border: 0;
+    padding: 1em;
+    margin: 0;
+    background-color: #2199e8;
+  }
   li {
     border-bottom: 1px solid #7C7D7D;
     border-top: 1px solid #47494A;
@@ -35,6 +42,7 @@ h2 {
   font-size: 1.2rem;
   font-weight: bold;
   border-bottom: 1px solid #eee;
+  margin-top: 1em;
 }
 
 h3 {
@@ -185,4 +193,9 @@ fieldset {
 legend {
   font-weight: bold;
   padding: 0 5px 0 5px;
+}
+
+.menu.close-button {
+  color: #ddd; 
+  line-height: 0.7;
 }

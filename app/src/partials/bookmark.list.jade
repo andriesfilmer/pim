@@ -3,8 +3,6 @@ div.row(ng-hide="offline")
   i.fi-bookmark.reversed(title='Bookmarks')
   span.divider
   a.fi-magnifying-glass(ng-click='toggleSearch()', title='Show/Hide Search', tabindex="1")
-  span.divider
-  a.fi-widget(title="Settings", data-open="bookmark-settings") 
   span.float-right
    span.divider
    a.fi-plus(ui-sref='bookmark.create',title='New item')
@@ -23,38 +21,3 @@ div.row.my-row(ng-repeat='bookmark in bookmarks', ng-class="bookmark.category", 
    div.secondary.label {{bookmark.created | date: 'yyyy-MM-dd'}}
 div.columns.meta-data(ng-if="!bookmarks") No bookmarks yet
 
-div.row
- div#bookmark-settings.reveal.full(data-reveal='')
-  button.close-button(data-close='', type="button")
-   span(aria-hidden="true") &times;
-
-  h2 General bookmark settings
-  fieldset
-   legend Limit bookmarks per request
-   div.row
-    div.column.small-6 List 20
-     span.meta-data  fast
-    div.switch.column.small-6
-     input#bookmark-20.switch-input(type="radio", value="20", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(20)")
-     label.switch-paddle(for="bookmark-20") 
-   div.row
-    div.column.small-6 List 50
-     span.meta-data
-    div.switch.column.small-6
-     input#bookmark-50.switch-input(type="radio", value="50", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(50)")
-     label.switch-paddle(for="bookmark-50")
-   div.row
-    div.column.small-6 List 250
-    div.switch.column.small-6
-     input#bookmark-250.switch-input(type="radio", value="200", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(250)")
-     label.switch-paddle(for="bookmark-250")
-   div.row
-    div.column.small-6 List 1000
-     span.meta-data  slow
-    div.switch.column.small-6
-     input#bookmark-1000.switch-input(type="radio", value="1000", name="bookmarkLimit", ng-model="bookmarkLimit", ng-change="changeLimit(1000)")
-     label.switch-paddle(for="bookmark-1000")
-   div.row
-    div.column.small-12
-     span.meta-data
-      i  * Settings only for this device. 

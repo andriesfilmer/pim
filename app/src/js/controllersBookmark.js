@@ -1,8 +1,6 @@
 appControllers.controller('BookmarkListController', ['$scope', '$state', '$window', 'flash', 'BookmarkService', 
   function BookmarkListController($scope, $state, $window, flash, BookmarkService) {
 
-    $(document).foundation();
-
     // Restore a search key
     if ($window.sessionStorage.bookmarkSearch) {
       $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
@@ -18,12 +16,6 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.bookmarkSearchKey;
       $state.go('bookmark.list', {}, {reload: true});
-    };
-
-    // Set bookmark limit for all bookmarks
-    $scope.bookmarkLimit =  $window.localStorage.bookmarkLimit;
-    $scope.changeLimit = function(limit) {
-      $window.localStorage.bookmarkLimit =  limit;
     };
 
     $scope.bookmarks = [];
@@ -64,8 +56,6 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
 appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'BookmarkService', 'MarkdownToc',
   function BookmarkController($rootScope, $scope, $state, $window, $stateParams, flash, BookmarkService) {
-  $(document).foundation();
-
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
@@ -125,11 +115,6 @@ appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state
         console.log(response.data);
         flash('alert', 'Create bookmark failure!');
       });
-    }
-
-    // Close modal if its open.
-    if($("#bookmark-settings").is(":visible")) {
-      $('a.close-reveal-modal').trigger('click');
     }
 
   };

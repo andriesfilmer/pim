@@ -4,8 +4,6 @@ div.row(ng-hide="offline")
   a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
   span.divider
   a.fi-torsos(ui-sref="contact.list", title='All contacts', tabindex="2")
-  span.divider
-  a.fi-widget(title="Settings", data-reveal-id="contact-settings", data-reveal-ajax="true") 
  div.column.small-4.text-right.secondary-menu
   span.divider
   a.fi-plus(ui-sref='contact.create',title='New item')
@@ -16,9 +14,7 @@ div.row
    a(ui-sref='contact.view({id: contact._id})')
     img.photo(ng-show="!contact.photo || contact.photo === ''", ng-src="/static/images/profile.jpg")
     img.photo(ng-show="contact.photo", ng-src="{{contact.photo}}")
-    p.name{{contact.name}}
+    p.name {{contact.name}}
     p.birthdate.meta-data {{contact.birthdate | date: 'dd MMMM yyyy'}} ({{calculateAge(contact.birthdate) }})
  div.columns.meta-data(ng-if="!contacts") No contacts with birthdate 
   i.fi-crown  yet
-
-include ./includes/contact.settings.jade

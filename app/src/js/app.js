@@ -57,6 +57,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'UserController',
       access: { requiredAuthentication: true }
     })
+    .state('user.settings', {
+      url: '/settings',
+      templateUrl: 'partials/user.settings.html',
+      controller: 'UserController',
+      access: { requiredAuthentication: true}
+    })
     .state('user.change-password', {
       url: '/change-password/:token/:user_id',
       templateUrl: 'partials/user.change-password.html',
@@ -128,6 +134,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
       url: "/create",
       templateUrl: "partials/contact.view.html",
       controller: 'ContactController',
+      access: { requiredAuthentication: true}
+    })
+    .state('contact.import-export', {
+      url: "/import-export",
+      templateUrl: "partials/contact.import-export.html",
+      controller: 'ContactListController',
       access: { requiredAuthentication: true}
     })
     .state('contact.view', {
@@ -215,7 +227,15 @@ app.config(function ($httpProvider) {
   $httpProvider.interceptors.push('TokenInterceptor');
 });
 
-app.run(function ($rootScope, $window, $state, $location, flash, AuthenticationService) {
+app.run(function ($rootScope, $window, $state, $timeout, $location, flash, AuthenticationService) {
+
+  // http://stackoverflow.com/questions/16753003/angularjs-initialize-zurb-foundation-js
+  $rootScope.$on('$viewContentLoaded', function () {
+    $timeout(function(){
+      $(document).foundation();
+    }, 500);
+  });
+
 
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
@@ -226,11 +246,13 @@ app.run(function ($rootScope, $window, $state, $location, flash, AuthenticationS
     // RootScope.showBts is only for show/hide Signup, Signin buttons.
     if($window.localStorage.token) {
       $rootScope.showBts = true;
+      $rootScope.fullname = $window.localStorage.fullname;
     }
     // Only for show/hide Logout button.
     else {
       $rootScope.showBts = false;
     }
+
 
     if ($window.localStorage.token && (toState.name === 'signup' || toState.name === 'signin')) {
       flash('waring', 'You are already logged in');

@@ -1,0 +1,17 @@
+div.row
+ div.column.small-12
+  h2 Import & Export contacts
+  div.row
+   div.column.small-12.medium-12.large-6
+    fieldset
+     legend.fi-upload  Import
+     div.row
+      div.column.small-12.medium-8 Select a vCard file
+       input(type="file", bind-on-change="vCardFile")
+      div.column.small-12.medium-4
+       button.button(ng-click="uploadvCardFile()", data-close='') Import
+   div.column.small-12.medium-12.large-6
+    fieldset
+     legend.fi-download  Export
+     include ./includes/contact.vcard.jade
+

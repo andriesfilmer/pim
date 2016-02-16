@@ -1,21 +1,7 @@
 appControllers.controller('ContactListController', ['$scope', '$location', '$state', '$stateParams', '$window', 'flash', 'ContactService',
   function ContactListController($scope, $location, $state, $stateParams, $window, flash, ContactService) {
 
-    // Needed for reveal dialogs. 
-    $(document).foundation();
     $scope.contacts = {}; // hide 'no contacts yet' in view.
-
-    // Set contact limit for contacts
-    $scope.contactLimit =  $window.localStorage.contactLimit;
-    $scope.changeLimit = function(limit) {
-      $window.localStorage.contactLimit =  limit;
-    };
-
-    // Set contact order for contacts
-    $scope.contactOrder =  $window.localStorage.contactOrder;
-    $scope.changeOrder = function(order) {
-      $window.localStorage.contactOrder =  order;
-    };
 
     // Find starred or all contacts.
     var starred = $stateParams.starred || false;
@@ -138,9 +124,6 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 
 appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService','Cropper',
   function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, Cropper) {
-
-  // Needed for reveal dialogs. 
-  $(document).foundation();
 
   var id = $stateParams.id;
 

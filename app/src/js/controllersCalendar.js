@@ -149,8 +149,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
 
   var id = $stateParams.id || 0;
 
-  $(document).foundation();
-
   // If we enable the getHours feature.
   Date.prototype.addHours= function(h) {
     this.setHours(this.getHours()+h);

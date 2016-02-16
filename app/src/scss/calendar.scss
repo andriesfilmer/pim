@@ -63,6 +63,12 @@ $color-appointment: dodgerblue;
    font-weight: normal;
    border-bottom: none;
   }
+  .fc-content {
+    padding: 1px;
+   }
+  .fc-event {
+    border: none;
+  }
   .fc-state-default {
     background-image: none;
     &:focus {background-color: #f5f5f5;}
