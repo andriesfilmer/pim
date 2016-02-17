@@ -40,7 +40,6 @@ h1 {
 
 h2 {
   font-size: 1.2rem;
-  font-weight: bold;
   border-bottom: 1px solid #eee;
   margin-top: 1em;
 }
@@ -198,4 +197,8 @@ legend {
 .menu.close-button {
   color: #ddd; 
   line-height: 0.7;
+}
+
+.off-canvas-wrapper, .off-canvas-wrapper-inner {
+  height: inherit;
 }

@@ -11,7 +11,15 @@
 }
 
 .starred-list {
-  height: 160px;
+  height: 150px;
+}
+.birthdate-list {
+  height: 190px;
+  p.birthdate {
+    margin-top: 3px;
+  }
+}
+.starred-list, .birthdate-list {
   text-align: center;
   margin: 0;
   img.photo {
@@ -23,9 +31,6 @@
     font-size: 0.8rem;
     margin-top: 3px;
     margin-bottom: 3px;
-  }
-  p.birthdate {
-    margin-top: 3px;
   }
 }
 

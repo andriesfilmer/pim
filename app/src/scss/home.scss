@@ -1,16 +1,50 @@
 
 h1.home {
   font-size: 2rem;
-  letter-spacing: 6px;
+  letter-spacing: 5px;
+  margin-bottom: 0px;
   color: #2199e8;
   text-shadow: -2px 2px 3px #B8B2B5;
 }
+span.home {
+  font-size: 0.9rem;
+}
 
 div.home {
-  margin-top: 1em;
+  margin-top: 1rem;
   border-bottom: 2px solid #eee;
   font-size: 1.2rem;
   i {
     color: #2199e8;
   }
+}
+
+div.start {
+  p {
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: #2199e8;
+    opacity: 0.8;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80%;
+  }
+  button {
+   font-size: 1.1rem;
+   background-color: #0CC122;
+  }
+}
+
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+#start {
+  background-image: url(/static/images/bg-pim.jpg);
+  background-position: 0px 0px;
+  background-repeat: repeat-x;
+
+ animation: animatedBackground 30s linear infinite;
+
 }

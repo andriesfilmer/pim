@@ -1,0 +1,23 @@
+div.row(ng-hide="showBts")
+ div.columns.small-12.text-center
+  p Please sign-in or sign-up first.
+  button.button.fi-unlock(ui-sref="signin", title="Sign in")  Sign in
+  button.button.fi-torso.secondary(ui-sref="signup", title="Sign up")  Sign up
+div.row(ng-hide="showBts")
+ div.columns.small-12.text-center
+   p Read more about this personal information manager.
+   button.button(ui-sref="about")  About PIM
+div.row(ng-show="showBts")
+ div.column.small-12
+   p PIM reloaded, take a shortcut to....
+   button.button.fi-home(ui-sref="home")  Home
+   button.button.fi-calendar(ui-sref="calendar.month")  Calendar
+   button.button.fi-torsos(ui-sref="contact.list")  Concacts
+   button.button.fi-page(ui-sref="post.list")  Posts
+   button.button.fi-bookmark(ui-sref="bookmark.list")  Bookmarks
+div.row
+ div.column.small-12
+  p.meta-data #{package} Version: #{version}. See full source code on 
+   a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github. 
+   | The code has a 
+   a(href="http://opensource.org/licenses/MIT", target='_blank') MIT License.

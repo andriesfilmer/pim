@@ -101,7 +101,7 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
       // We have logout so we delete localstore for security.
       flash('success', 'Logged out successfull');
       $window.localStorage.clear();
-      $state.go('start');
+      $state.go('about');
     };
 
 

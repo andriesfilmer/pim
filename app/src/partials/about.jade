@@ -1,42 +1,34 @@
 div.row
  div.columns.small-12.medium-8
   h1.home PIM.center
+  span.home.meta-data Personal Information Manager 
  div.columns.small-12.medium-4.text-center
-  button.button.fi-unlock(ui-sref="signin", ng-hide="showBts", title="Sign in")  Sign in
-  button.button.fi-torso.secondary(ui-sref="signup", ng-hide="showBts", title="Sign up")  Sign up
+  p
+   button.button.fi-unlock(ui-sref="signin", ng-hide="showBts", title="Sign in")  Sign in
+   button.button.fi-torso.secondary(ui-sref="signup", ng-hide="showBts", title="Sign up")  Sign up
 div.row
- div.columns &nbsp;
-div.row
- div.column.small-12
-  h2.strong Personal Information Manager 
-div.row
- div.column.small-12
-  ul.start
-   li.fi-calendar
-    a(ui-sref="calendar.month") &nbsp; Calendar
-   li.fi-torsos
-    a(ui-sref="contact.list")  Concacts
-   li.fi-page
-    a(ui-sref="post.list")  &nbsp;Posts
-   li.fi-bookmark
-    a(ui-sref="bookmark.list")  &nbsp;Bookmarks
+ div#start.column.small-12.start
+   p.radius Keep your personal information private
+   button.button.fi-calendar(ui-sref="calendar.month")  Calendar
+   button.button.fi-torsos(ui-sref="contact.list")  Concacts
+   button.button.fi-page(ui-sref="post.list")  Posts
+   button.button.fi-bookmark(ui-sref="bookmark.list")  Bookmarks
 div.row
  div.column.small-12
   h2.fi-lock  Access to your data
-  p Keep your personal information private. Access your data wherever you are, whenever you need it, all under your control. 
+  p Access your data wherever you are, whenever you need it, all under your control. 
 div.row
  div.column.small-12.medium-6
   h2.fi-like  Pros
-  p Independent of Google, Facebook or other installed app/provider who can peek into your data.
-   | Data is not linked to native addressbook or calendar.
-  P Share items with Whatsapp, Telegram, SMS, Email, Facebook, Twitter, LinkedIn 
-   | via a sharelink so these providers can't access your personal data.
+  p Independent of Google, iCloud, Facebook or other installed app/provider who can peek into your data.
+   | Data is not linked to native addressbook, calendar or notes.
+   | You can install this service on you own server or use PIM.center.
  div.column.small-12.medium-6
   h2.fi-dislike  Cons
   p This web-app is not installed and therefore not link to incomming calls on your smartphone.
-  p Solution: You can export the contacts to vCard 
-   i.meta-data.sup (option for only phonenumbers and photo) 
-   | and import your contacts in your smartphone if you want to see who is calling.
+   | Solution: You can export only phonenumbers 
+   i.meta-data.sup (and if you want the photos) 
+   | and import in your smartphone if you want to see who is calling.
 div.row
  div.column.small-12
   h2.fi-star  General features
@@ -47,15 +39,16 @@ div.row
    li 
     a(href="http://showdownjs.github.io/demo/", target='_blank') Markdown is integrated.
     | so you can style your text easily.
-   li The code has 
+   li Open source and the code has 
     a(href="http://opensource.org/licenses/MIT", target='_blank') MIT License
     |, see full source code on 
     a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github.
+   li Share items with Whatsapp, Telegram, SMS, Email, Facebook, Twitter, LinkedIn 
+    | via a sharelink so these providers can't access your personal data.
 div.row
  div.column.small-12
   h2.fi-calendar  Calendar
   ul
-   li You can create events with the flag: <code>appointment</code> or <code>memo</code>. 
    li The calendar has month, day and list view. 
    li Search events and swipe the calendar (left/right). 
    li Calendar is timezone aware.
@@ -73,7 +66,7 @@ div.row
    li Make a small note or a big article with Markdown. 
    li Auto-generate a table of contents (TOC) on a large articles. 
    li Revisions, i.o. each post can be restored in 
-       i.fi-widget  versions. 
+       i.fi-page-multiple  versions. 
    li Create a pdf for sharing large posts/articles.
   h2.fi-bookmark  Bookmarks
   ul

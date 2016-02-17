@@ -60,18 +60,18 @@ form(name="bookmarkForm", ng-show="editForm")
     div.switch.small-6.column.bookmark-other.other
      input.switch-input#bookmark-other(type="radio", value="other", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
      label.switch-paddle(for="bookmark-other") 
- div.row(ng-if="bookmark")
-  div.column.small-6.meta-data
-   i Created:  {{bookmark.created | date: 'yyyy-MM-dd'}}
-  div.column.small-6.meta-data
-   i Updated:  {{bookmark.updated | date: 'yyyy-MM-dd'}}
+div.row(ng-if="bookmark")
+ div.column.small-6.meta-data
+  i Created:  {{bookmark.created | date: 'yyyy-MM-dd'}}
+ div.column.small-6.meta-data
+  i Updated:  {{bookmark.updated | date: 'yyyy-MM-dd'}}
 
 div.row
  div#share.reveal.full(data-reveal='')
-  div.row
-   div.small-12.columns
-    button.close-button(data-close='', type="button")
-     span(aria-hidden="true") &times;
-    fieldset
-     legend.fi-share  Share with
-     include ./includes/share.jade
+   button.close-button(data-close='', type="button")
+    span(aria-hidden="true") &times;
+   div.row
+    div.small-12.columns
+     fieldset
+      legend.fi-share  Share with
+      include ./includes/share.jade

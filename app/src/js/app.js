@@ -22,7 +22,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider) {
 
   // For any unmatched url, redirect to /calendar/month
-  $urlRouterProvider.otherwise("/start");
+  $urlRouterProvider.otherwise("/");
   //
   // Now set up the states
   $stateProvider
@@ -207,9 +207,15 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true }
     })
     // Startpage
-    .state('start', {
-      url: "/start",
-      templateUrl: 'partials/start.html',
+    .state('about', {
+      url: "/",
+      templateUrl: 'partials/about.html',
+      access: { requiredAuthentication: false }
+    })
+    // Startpage
+    .state('reload', {
+      url: "/reload",
+      templateUrl: 'partials/reload.html',
       access: { requiredAuthentication: false }
     });
   }
@@ -269,7 +275,7 @@ app.run(function ($rootScope, $window, $state, $timeout, $location, flash, Authe
         flash('alert', 'Sign-in first');
       }
       event.preventDefault();
-      $state.go('start');
+      $state.go('reload');
     }
   });
 

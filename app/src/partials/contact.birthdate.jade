@@ -3,13 +3,15 @@ div.row(ng-hide="offline")
   | &nbsp;
   a.fi-star(ui-sref="contact.starred({starred: true})", title='Starred contacts', tabindex="1")
   span.divider
+  a.fi-crown(ui-sref="contact.birthdate({birthdate: true})", title='Contacts with birthdates', tabindex="1")
+  span.divider
   a.fi-torsos(ui-sref="contact.list", title='All contacts', tabindex="2")
  div.column.small-4.text-right.secondary-menu
   span.divider
   a.fi-plus(ui-sref='contact.create',title='New item')
 
 div.row
- div.columns.small-4.medium-3.large-2.starred-list(ng-repeat='contact in contacts')
+ div.columns.small-4.medium-3.large-2.birthdate-list(ng-repeat='contact in contacts')
    a(name="{{contact.birthdate | date: 'MM'}}")
    a(ui-sref='contact.view({id: contact._id})')
     img.photo(ng-show="!contact.photo || contact.photo === ''", ng-src="/static/images/profile.jpg")
