@@ -1,0 +1,48 @@
+div.row
+ div.column.small-12
+  h2 Import & Export calendar
+  div.row
+   div.column.small-12.medium-12.large-6
+    fieldset
+     legend.fi-upload  Import
+     div.row
+      div.column.small-12.medium-8 Select a 
+       a(href="https://en.wikipedia.org/wiki/ICalendar", target="_blank") iCalendar file
+       input(type="file", bind-on-change="vCalendarFile")
+      div.column.small-12.medium-4
+       button.button(ng-click="uploadvCalendarFile()", data-close='') Import
+     div.row
+      p
+       label.label Label imported items as
+      div.column
+       div.row
+        div.column.small-6 Imported
+        div.switch.column.small-6.cal-import.import
+         input#cal-import.switch-input(type="radio", value="import", name="className", ng-model="className", ng-change="change()" selected='')
+         label.switch-paddle(for="cal-import")
+       div.row
+        div.column.small-6 Appointment
+        div.switch.column.small-6.cal-appointment.appointment
+         input#cal-appointment.switch-input(type="radio", value="appointment", name="className", ng-model="className", ng-change="change()")
+         label.switch-paddle(for="cal-appointment")
+       div.row
+        div.column.small-6 Memo
+        div.switch.column.small-6.cal-memo.memo
+         input#cal-memo.switch-input(type="radio", value="memo", name="className", ng-model="className", ng-change="change()")
+         label.switch-paddle(for="cal-memo") 
+       div.row
+        div.column.small-6 Business
+        div.switch.column.small-6.cal-business.business
+         input#cal-business.switch-input(type="radio", value="business", name="className", ng-model="className", ng-change="change()")
+         label.switch-paddle(for="cal-business")
+       div.row
+        div.column.small-6 Holiday
+        div.switch.column.small-6.cal-holiday.holiday
+         input#cal-holiday.switch-input(type="radio", value="holiday", name="className", ng-model="className", ng-change="change()")
+         label.switch-paddle(for="cal-holiday")
+
+   div.column.small-12.medium-12.large-6
+    fieldset
+     legend.fi-download  Export
+     include ./includes/calendar.vcalendar.jade
+

@@ -1,0 +1,6 @@
+div.row
+ div.column.small-12
+  p(ng-show="!vCalendarShow")
+   button.button(ng-click="downloadCalendar(cal)", title='Download calendar') Download iCalendar
+  p(ng-show="vCalendarShow")
+   div {{ downloadLabel }}
