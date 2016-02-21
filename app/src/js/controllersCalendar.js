@@ -27,7 +27,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
         var em = eDate.getMonth();
         var ed = eDate.getDay();
         if ( sm+sd !== em+ed ) {
-          event.end = new Date(eDate.getTime() + 60000);
+          event.end = new Date(eDate.getTime() + 60);
           event.allDay = false;
         }
 
@@ -139,6 +139,33 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
       }); 
     }
   });
+
+  if ($state.$current.name == 'calendar.import-export') {
+     $scope.className = 'import';
+  }
+
+  $scope.uploadvCalendarFile = function(){
+    var file = $scope.vCalendarFile;
+    var className = $scope.className;
+    console.log('Upload vCalendarFile');
+    console.dir(file);
+    CalendarService.uploadCalendarIcs(file, className)
+    .then(function(response) {
+      flash('success', response.data);
+    }, function(response) {
+      flash('warning', response.data);
+    });
+  };
+
+  $scope.downloadCalendar = function downloadCalendar() {
+    CalendarService.vevents().then(function(response) {
+      var file = new Blob([response.data], {type: 'text/calendar'});
+      var fileName = 'calendars.ics';
+      saveAs(file, fileName);
+      $scope.downloadLabel = 'File has been downloaded!';
+    });
+
+  };
 
 }]);
 
@@ -300,6 +327,17 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     }
   });
 
+  $scope.downloadEvent = function downloadvevent(cal) {
+    console.log('Download event -> ' + cal._id); 
+    CalendarService.vevent(cal._id).then(function(response) {
+        var file = new Blob([response.data], {type: 'text/calendar'});
+        var fileName = cal.title.replace(/[^\w]/gi, '') + '.ics';
+        saveAs(file, fileName);
+        $scope.downloadLabel = 'File has been downloaded!';
+    });
+
+  };
+
   function shareEvent(cal) {
     if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){
       $scope.whatsappEnabled = true;
@@ -325,4 +363,5 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   }
 
 }]);
+
 

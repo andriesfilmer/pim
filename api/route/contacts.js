@@ -3,11 +3,13 @@ var moment = require('moment');
 var quotedPrintable = require('quoted-printable');
 var utf8 = require('utf8');
 var util = require('util');
+var s = require("underscore.string");
 
 var config = require('../config/config.js');
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
 var vcard = require('../vcard-json');
+var functions = require('../functions');
 
 
 
@@ -296,7 +298,7 @@ exports.vCardsUpload = function(req, res) {
   }
 
   var contactDir = config.env().upload_dir + req.user.id + "/contacts/";
-  if (!fs.existsSync(contactDir)){ mkdir(contactDir); }
+  if (!fs.existsSync(contactDir)){ functions.mkdir(contactDir); }
 
   // First save upload file to disk
   req.pipe(req.busboy);
@@ -329,11 +331,10 @@ exports.vCardsUpload = function(req, res) {
       else {
         //console.log(util.inspect(data, false, null));
         data.forEach(function(contact) {
-          console.log("contactEntry name: " + contact.name);
 
           var contactEntry = new db.contactModel();
           contactEntry.user_id = req.user.id;
-          contactEntry.name = contact.name;
+          contactEntry.name = utf8.decode(quotedPrintable.decode(contact.name));
           contactEntry.companies = contact.companies;
           contactEntry.starred = contact.starred;
           contactEntry.phones = contact.phones;
@@ -341,7 +342,8 @@ exports.vCardsUpload = function(req, res) {
           contactEntry.websites = contact.websites;
           contactEntry.addresses = contact.addresses;
           contactEntry.birthdate = contact.birthdate;
-          contactEntry.notes = contact.notes;
+          if (contact.notes !== undefined)
+            contactEntry.notes = utf8.decode(quotedPrintable.decode(contact.notes));
 
           // Save contact to db.
           contactEntry.save(function(err, new_contact) {
@@ -349,8 +351,6 @@ exports.vCardsUpload = function(req, res) {
 
             // If it has a photo we want to save the picture on file with _id.
             if (contact.photo_uri !== undefined) {
-              console.log('##### contact.name -> ' + contact.name); 
-              console.log('Save photo_uri with lastInsertedId -> ' + new_contact._id); 
               var filename = savePhotoUri(req.user.id, new_contact._id, contact.photo_uri);
 
               // Save photo path to db
@@ -398,7 +398,7 @@ exports.vcardsDownload = function(req, res) {
       // -----------------------------------------------------------------
       // var downloadDir = '../app/public/download/' + req.user.id + '/';
       // if (!fs.existsSync(downloadDir)){ 
-      //   mkdir(downloadDir); 
+      //   functions.mkdir(downloadDir); 
       // }
       // var vcfFile = 'contacts.vcf';
       //
@@ -448,20 +448,6 @@ exports.vcardDownload = function(req, res) {
   });
 };
 
-// Recursive creation of dirs.
-function mkdir(path, root) {
-
-    var dirs = path.split('/'), dir = dirs.shift(), root = (root || '') + dir + '/';
-
-    try { fs.mkdirSync(root); }
-    catch (e) {
-        //dir wasn't made, something went wrong
-        if(!fs.statSync(root).isDirectory()) throw new Error(e);
-    }
-
-    return !dirs.length || mkdir(dirs.join('/'), root);
-}
-
 // Content for one vCard.
 function create_vCard(req, contact) {
 
@@ -480,7 +466,8 @@ function create_vCard(req, contact) {
   //var vcfContent = vcfContent || '';
   vcfContent  = "BEGIN:VCARD\n";
   vcfContent += "VERSION:3.0\n";
-  vcfContent += "FN:" + contact.name + "\n";
+  vcfContent += "N:" + utf8.encode(s(contact.name).strRight(' ').clean().value()) + ',' + utf8.encode(s(contact.name).strLeft(' ').clean().value()) + "\n";
+  vcfContent += "FN:" + utf8.encode(s(contact.name).clean().value()) + "\n";
 
   // Phonenumbers
   if (contact.phones.length > 0 && dlPhones) {
@@ -494,7 +481,8 @@ function create_vCard(req, contact) {
   // Companies
   if (contact.companies.length > 0 && dlCompanies) {
     contact.companies.forEach(function(company) {
-      if (company.title) {
+      if (company.name) {
+        if (company.title === undefined || company.title === null) company.title = '';
         vcfContent += "ORG;TYPE=" + company.title.replace(/\s/g, '_') + ":" + company.name + "\n";
       }
     });
@@ -534,15 +522,16 @@ function create_vCard(req, contact) {
 
   // notes
   if (contact.notes !== undefined && contact.notes.length > 0 && dlNotes) {
+    console.log('##### test notes encode -> ' + contact.notes); 
     vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + quotedPrintable.encode(utf8.encode(contact.notes)) + "\n";
   }
 
   // Convert image to base64 encoded string only if uploaded photo exists.
   var photo = "../app/public" + contact.photo;
   if (contact.photo !== '' && fs.existsSync(photo) && dlPhoto) {
-    vcfContent += "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo) + "\n";
+    var photoProp = "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo);
+    vcfContent += photoProp.replace(/(.{1,73})/g, '$1 \r\n ') + '\n';
   }
-
   vcfContent += "END:VCARD\n";
 
   return vcfContent;
@@ -573,13 +562,13 @@ function savePhotoUri(user_id, contact_id, dataUrl) {
   }
 
   var imgDir = config.env().upload_dir + user_id + "/contacts/";
-  if (!fs.existsSync(imgDir)){ mkdir(imgDir); }
+  if (!fs.existsSync(imgDir)){ functions.mkdir(imgDir); }
   var imgPath = imgDir + filename;
 
   // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
   var base64Data = dataUrl.replace(/^data:image\/(jpeg|png);base64,/, "");
-  console.log('imgPath -> ' + imgPath); 
+  //console.log('imgPath -> ' + imgPath); 
 
   fs.writeFile(imgPath, base64Data, 'base64', function(err) {
     if(err) {console.log(err);}

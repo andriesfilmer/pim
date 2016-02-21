@@ -8,11 +8,18 @@ div.row(ng-hide="showBts")
    p Read more about this personal information manager.
    button.button(ui-sref="about")  About PIM
 div.row(ng-show="showBts")
- div.column.small-12
-   p PIM reloaded, take a shortcut to....
-   button.button.fi-home(ui-sref="home")  Home
+ div.columns.small-12.medium-8
+  h1.home PIM.center
+  span.home.meta-data Personal Information Manager 
+ div.columns.small-12.medium-4.text-center
+  p
+   button.button.fi-unlock(ui-sref="signin", ng-hide="showBts", title="Sign in")  Sign in
+   button.button.fi-torso.secondary(ui-sref="signup", ng-hide="showBts", title="Sign up")  Sign up
+div.row
+ div#start.column.small-12.start
+   p.radius {{fullname}}
    button.button.fi-calendar(ui-sref="calendar.month")  Calendar
-   button.button.fi-torsos(ui-sref="contact.list")  Concacts
+   button.button.fi-torsos(ui-sref="contact.list")  Contacts
    button.button.fi-page(ui-sref="post.list")  Posts
    button.button.fi-bookmark(ui-sref="bookmark.list")  Bookmarks
 div.row

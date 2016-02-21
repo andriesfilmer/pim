@@ -14,6 +14,8 @@ mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
     }
 });
 
+//mongoose.set('debug', true);
+
 var Schema = mongoose.Schema;
 
 var User = new Schema({

@@ -2,8 +2,6 @@
 
 var fs = require ('fs');
 var EventEmitter = require("events").EventEmitter;
-var quotedPrintable = require('quoted-printable');
-var utf8 = require('utf8');
 var moment = require('moment');
 var _ = require ('underscore');
 var s = require("underscore.string");
@@ -80,10 +78,11 @@ function parse(data) {
       }
     });
 
-    // Add 'belongsTo' line to NOTE or PHOTO attribute.
+    // Add 'belongsTo' line to NOTE attribute.
     if (!_.contains(attributes, s(lineContent).strLeft(':').strLeft(';').value()) && belongsTo === 'note') {
       ee.emit("attributeMatched", 'NOTE_EXT', lineContent, contact);
     }
+    // Add 'belongsTo' line to PHOTO attribute.
     if (!_.contains(attributes, s(lineContent).strLeft(';').value()) && belongsTo === 'photo') {
       ee.emit("attributeMatched", 'PHOTO_EXT', lineContent, contact); 
     }
@@ -103,8 +102,7 @@ function attributeMatched(attribute, line, contact) {
       break;
 
     case "FN":
-      contact.name = s(utf8.decode(quotedPrintable.decode(line))).
-        strRight(':').value();
+      contact.name = s(line).strRight(':').value();
       break;
 
     case "ORG":
@@ -172,12 +170,12 @@ function attributeMatched(attribute, line, contact) {
       break;
 
     case "NOTE":
-      contact.notes = s(utf8.decode(quotedPrintable.decode(line))).strRight(':').value();
+      contact.notes = s(line).strRight(':').value() + '\n';
       break;
 
     case "NOTE_EXT":
-      line = s(line.replace(/END:VCARD/ig,''));
-      contact.notes += utf8.decode(quotedPrintable.decode(line));
+      line = s(line.replace(/END:VCARD/ig,'')).value();
+      contact.notes += line + '\n';
       break;
 
   }

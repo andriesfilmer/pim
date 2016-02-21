@@ -8,6 +8,7 @@ $color-business: red;
 $color-memo: orange;
 $color-holiday: mediumseagreen;
 $color-appointment: dodgerblue;
+$color-import: plum;
 
 .business {
   border-right: 8px $color-business solid; 
@@ -42,6 +43,14 @@ $color-appointment: dodgerblue;
     border-left: 2px; 
   }
 }
+.import {
+  border-right: 8px $color-import solid; 
+  padding-right: 0;
+  &.fc-event {
+    background-color: $color-import; 
+    border-left: 2px; 
+  }
+}
 
 .switch.cal-business input:checked + label {
   background: $color-business;
@@ -54,6 +63,9 @@ $color-appointment: dodgerblue;
 }
 .switch.cal-appointment input:checked + label {
   background: $color-appointment;
+}
+.switch.cal-import input:checked + label {
+  background: $color-import;
 }
 
 

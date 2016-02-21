@@ -64,28 +64,29 @@ form(name="eventForm")
   div.row
    div.column.small-12 Description
     textarea(ng-model="cal.description", rows="10", placeholder="You can use Markdown ...")
-  fieldset
-   legend Label
-   div.row
-    div.column.small-6 Appointment
-    div.switch.column.small-6.cal-appointment.appointment
-     input#cal-appointment.switch-input(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
-     label.switch-paddle(for="cal-appointment")
-   div.row
-    div.column.small-6 Memo
-    div.switch.column.small-6.cal-memo.memo
-     input#cal-memo.switch-input(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
-     label.switch-paddle(for="cal-memo") 
-   div.row
-    div.column.small-6 Business
-    div.switch.column.small-6.cal-business.business
-     input#cal-business.switch-input(type="radio", value="business", name="className", ng-model="cal.className", ng-change="change()")
-     label.switch-paddle(for="cal-business")
-   div.row
-    div.column.small-6 Holiday
-    div.switch.column.small-6.cal-holiday.holiday
-     input#cal-holiday.switch-input(type="radio", value="holiday", name="className", ng-model="cal.className", ng-change="change()")
-     label.switch-paddle(for="cal-holiday")
+  div.row
+   fieldset
+    legend Label
+    div.row
+     div.column.small-6 Appointment
+     div.switch.column.small-6.cal-appointment.appointment
+      input#cal-appointment.switch-input(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
+      label.switch-paddle(for="cal-appointment")
+    div.row
+     div.column.small-6 Memo
+     div.switch.column.small-6.cal-memo.memo
+      input#cal-memo.switch-input(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
+      label.switch-paddle(for="cal-memo") 
+    div.row
+     div.column.small-6 Business
+     div.switch.column.small-6.cal-business.business
+      input#cal-business.switch-input(type="radio", value="business", name="className", ng-model="cal.className", ng-change="change()")
+      label.switch-paddle(for="cal-business")
+    div.row
+     div.column.small-6 Holiday
+     div.switch.column.small-6.cal-holiday.holiday
+      input#cal-holiday.switch-input(type="radio", value="holiday", name="className", ng-model="cal.className", ng-change="change()")
+      label.switch-paddle(for="cal-holiday")
   div.row
    div.column.small-12
     div.label.strong(ng-hide="timezone", ng-click='advanced = !advanced') Toggle Advanced
@@ -116,3 +117,7 @@ div.row
      fieldset
       legend.fi-share  Share with
       include ./includes/share.jade
+     fieldset
+      legend.fi-download  Event as iCalendar
+      include ./includes/calendar.vcalendar.jade
+

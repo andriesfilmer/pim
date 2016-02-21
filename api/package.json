@@ -1,7 +1,7 @@
 {
   "name": "PIM",
   "description": "PIM api",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "private": true,
   "dependencies": {
     "bcrypt": "latest",
@@ -20,6 +20,7 @@
     "quoted-printable": "latest",
     "underscore": "latest",
     "underscore.string": "latest",
-    "utf8": "latest"
+    "utf8": "latest",
+    "moment-timezone": "~0.5.0"
   }
 }

@@ -185,6 +185,31 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
       return $http.delete(options.api.base_url + '/calendar/' + id);
     },
 
+    uploadCalendarIcs: function(file, className) {
+      var deferred = $q.defer();
+      var fd = new FormData();
+      fd.append('file', file);
+      $http.post(options.api.base_url + '/calendar/upload/vcalendar', fd, {
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined, 'importclassname': className}
+      })
+      .then(function(response) {
+        deferred.resolve(response);
+      }, function (response) {
+        deferred.reject(response); 
+      });
+      return deferred.promise;
+    },
+
+    vevents: function() {
+      return $http.post(options.api.base_url + '/calendar/download/vevents', {responseType: 'arraybuffer'});
+    },
+
+    vevent: function(event_id) {
+      return $http.post(options.api.base_url + '/calendar/download/vevents', 
+        {'params': {event_id: event_id}} ,{responseType: 'arraybuffer'});
+    }
+
   };
 });
 

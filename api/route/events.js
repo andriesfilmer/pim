@@ -1,5 +1,12 @@
+var fs = require('fs');
 var secret = require('../config/secret');
 var db = require('../config/mongo_database');
+var config = require('../config/config.js');
+var calendar = require('../vcalendar-json');
+var moment = require('moment');
+var functions = require('../functions');
+var quotedPrintable = require('quoted-printable');
+//var util = require('util');
 
 exports.list = function(req, res) {
 
@@ -165,7 +172,6 @@ exports.update = function(req, res) {
 
   if (event == null || event._id == null) {
     res.sendStatus(404); // Not found
-      //console.log('404 - Not Found'); 
   }
 
   // Title required
@@ -208,11 +214,9 @@ exports.update = function(req, res) {
   updateEvent.updated = new Date();
 
   db.eventModel.update({_id: event._id, user_id: req.user.id}, updateEvent, function(err, nbRows, raw) {
-    //console.log('Event update -> id: ' + event._id); 
     if (err) {
       console.log(err);
       return res.sendStatus(400);
-      //console.log('Event update error -> id: ' + event._id); 
     }
 
     return res.status(200).send('Updeted event successfull');
@@ -222,8 +226,6 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-
-  //console.dir(req.params);
 
   if (!req.user) {
     return res.sendStatus(401); // Unauthorized
@@ -251,3 +253,156 @@ exports.delete = function(req, res) {
   });
 };
 
+exports.vCalendarUpload = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var calendarDir = config.env().upload_dir + req.user.id + "/calendars/";
+  if (!fs.existsSync(calendarDir)) { functions.mkdir(calendarDir); }
+
+  // First save upload file to disk
+  req.pipe(req.busboy);
+  req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+
+    if (mimetype.toString() === 'text/calendar') {
+
+      var vCalendarPath = calendarDir + filename;
+
+      fstream = fs.createWriteStream(vCalendarPath);
+      file.pipe(fstream);
+      fstream.on('close', function() {
+        console.log("Upload Finished of " + vCalendarPath);
+        importEvents(vCalendarPath);
+      });
+    }
+    else {
+      return res.status(400).send('File type must be text/calendar');
+    }
+  });
+
+  // Function to import calendars from file
+  function importEvents(vCalendar) {
+    console.log('Import calendars from file -> ' + vCalendar); 
+    calendar.parseVcalendarFile(vCalendar, function(err, data){
+      if(err) {
+        return res.status(400).send('Bad Request parseCalendarFile');
+      }
+      else {
+
+        // Debug info, uncomment/include 'utils' at the top.
+        //console.log(util.inspect(data, false, null));
+
+        data.forEach(function(event) {
+          var eventEntry = new db.eventModel();
+          eventEntry.user_id = req.user.id;
+          eventEntry.title = event.title;
+          eventEntry.start = event.start;
+          eventEntry.end = event.end;
+          eventEntry.allDay = event.allDay;
+          eventEntry.description = quotedPrintable.decode(event.description);
+          eventEntry.tz = event.tz;
+
+          // If no 'PIM-CLASSNAME' propertie is include in the EVENT
+          // we use 'importclassname' form the header which comes from PIM.center.
+          event.className === undefined  ? eventEntry.className = req.headers.importclassname : eventEntry.className = event.className;
+
+          // Save event to db.
+          eventEntry.save(function(err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+
+        });
+
+        res.status(200).send('Calendar(s) created successful');
+      }
+    });
+  } // End function importCalendars
+
+};
+
+exports.veventsDownload = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = db.eventModel.find({ user_id: req.user.id });
+  query.sort('start');
+  query.exec(function(err, results) {
+
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+
+    if (results !== null) {
+
+      // Concat vevents
+      // https://tools.ietf.org/html/rfc5545
+      var icsContent = '';
+      icsContent  += "BEGIN:VCALENDAR\n";
+      icsContent  += "VERSION:2.0\n";
+      results.forEach(function(event){
+        icsContent += create_vEvent(req, event);
+      });
+      icsContent += "END:VCALENDAR\n";
+
+      // Download as data stream.
+      res.status(200).send(icsContent);
+
+    }
+  });
+};
+
+exports.veventDownload = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = db.eventModel.findOne({ user_id: req.user.id, _id: req.body.params.event_id });
+  query.exec(function(err, results) {
+
+    if (err) {
+      console.log(err);
+      res.status(500).send(err);
+    }
+
+    if (results !== null) {
+
+      // Concat vevents
+      // https://tools.ietf.org/html/rfc5545
+      var icsContent = '';
+      icsContent  += "BEGIN:VCALENDAR\n";
+      icsContent  += "VERSION:2.0\n";
+      results.forEach(function(event){
+        icsContent += create_vEvent(req, event);
+      });
+      icsContent += "END:VCALENDAR\n";
+
+      // Download as data stream.
+      res.status(200).send(icsContent);
+
+    }
+  });
+};
+
+// Content for one vevent.
+function create_vEvent(req, event) {
+
+  icsContent  = 'BEGIN:VEVENT\n';
+  icsContent += 'SUMMARY:' + event.title + '\n';
+  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment(event.start).toISOString().replace(/(:|-)/g,'') + '\n';
+  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment(event.end).toISOString().replace(/(:|-)/g,'') + '\n';
+  icsContent += 'PIM-CLASSNAME:' + event.className + '\n';
+  // Description SHOULD NOT be longer than 75 octets, excluding the line break
+  var desc = 'DESCRIPTION:' + event.description;
+  icsContent += desc.replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n ') + '\n';
+  icsContent += 'END:VEVENT\n';
+
+  return icsContent;
+}
