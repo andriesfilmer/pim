@@ -99,6 +99,9 @@ $color-import: plum;
       font-weight: normal;
     }
   }
+  tbody tr:nth-child(even) {
+    background-color: transparent;
+  }
 }
 
 
