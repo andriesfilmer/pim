@@ -255,6 +255,9 @@ app.run(function ($rootScope, $window, $state, $timeout, $location, flash, Authe
     console.log('AuthenticationService.isAuthenticated: ' + AuthenticationService.isAuthenticated); 
     console.log('StateChange -> ' + toState.name); 
 
+    // Add font-size from general settings.
+    $("body").addClass($window.localStorage.fontSetting);
+
     // RootScope.showBts is only for show/hide Signup, Signin buttons.
     if($window.localStorage.token) {
       $rootScope.showBts = true;

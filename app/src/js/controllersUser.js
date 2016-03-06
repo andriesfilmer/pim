@@ -151,6 +151,14 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
       });
     };
 
+    // Set font settings
+    $scope.fontSetting =  $window.localStorage.fontSetting;
+    $scope.changeFontSetting = function(size) {
+      $("body").removeClass($window.localStorage.fontSetting);
+      $window.localStorage.fontSetting =  size;
+      $("body").addClass(size);
+    };
+
     // Set contact limit for contacts
     $scope.contactLimit =  $window.localStorage.contactLimit;
     $scope.changeContactLimit = function(limit) {

@@ -1,6 +1,33 @@
 div.row
  div.column.small-12
-  blockquote Settings are only for this device
+  blockquote Settings for this device only
+div.row
+ div.column.small-12
+  h2 Font settings
+  div.row
+   div.column.small-12.medium-6
+    fieldset
+     div.row
+      div.column.small-6 Font small
+      div.switch.column.small-6
+       input#font-small.switch-input(type="radio", value="font-small", ng-model="fontSetting", ng-change="changeFontSetting('font-small')")
+       label.switch-paddle(for="font-small") 
+     div.row
+      div.column.small-6 Font default
+      div.switch.column.small-6
+       input#font-default.switch-input(type="radio", value="font-default", ng-model="fontSetting", ng-change="changeFontSetting('font-default')")
+       label.switch-paddle(for="font-default") 
+     div.row
+      div.column.small-6 Font large
+      div.switch.column.small-6
+       input#font-large.switch-input(type="radio", value="font-large", ng-model="fontSetting", ng-change="changeFontSetting('font-large')")
+       label.switch-paddle(for="font-large") 
+     div.row
+      div.column.small-6 Font extra large
+      div.switch.column.small-6
+       input#font-x-large.switch-input(type="radio", value="font-x-large", ng-model="fontSetting", ng-change="changeFontSetting('font-x-large')")
+       label.switch-paddle(for="font-x-large") 
+
 div.row
  div.column.small-12
   h2 Contact settings

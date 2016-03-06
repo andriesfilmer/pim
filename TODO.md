@@ -1,5 +1,5 @@
 # General
-- vCard with N:Lastname;firstname
+- Share datetime UTC time.
 - After login, show processbar for loading localdata
 - jwt token expire feedback must be better from the api
 
