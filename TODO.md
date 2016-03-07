@@ -12,6 +12,7 @@
 - Photo crop with rotation.
 
 # Issues
+- PDF Css body -> font size %60 works only in development?!
 - Upload contact photo on ipad does not work correct.
   https://github.com/fengyuanchen/cropper/issues/294
 - Share PDF with bullet list does not work correct with <ul><li>

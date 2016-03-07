@@ -22,11 +22,6 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       });
     };
 
-    // Restore a search key
-    if ($window.sessionStorage.postSearch) {
-      $scope.searchKey =  $window.sessionStorage.postSearchKey;
-    }
-
     // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;

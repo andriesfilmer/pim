@@ -22,11 +22,6 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
       });
     };
 
-    // Restore a search key
-    if ($window.sessionStorage.bookmarkSearch) {
-      $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
-    }
-
     // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;

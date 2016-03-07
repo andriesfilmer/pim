@@ -1,11 +1,6 @@
 appControllers.controller('ContactListController', ['$scope', '$location', '$state', '$stateParams', '$window', 'flash', 'ContactService',
   function ContactListController($scope, $location, $state, $stateParams, $window, flash, ContactService) {
 
-    // Restore a search key
-    if ($window.sessionStorage.contactSearch) {
-      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
-    }
-
     $scope.contacts = {}; // hide 'no contacts yet' in view.
 
     // Find starred or all contacts.
@@ -47,6 +42,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     // Hide searchForm, toggle first. Save/delete search in session.
     $scope.toggleSearch = function toggleSearch() {
       $scope.searchForm = !$scope.searchForm;
+      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
       if ($scope.searchForm) {
         $scope.searchContacts($scope.searchKey);
       }
@@ -84,7 +80,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
           flash('warning', 'Offline: Search not available');
         }
       }); 
-    }
+    };
 
     $scope.uploadvCardFile = function(){
       var file = $scope.vCardFile;
