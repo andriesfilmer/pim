@@ -85,9 +85,13 @@ exports.search = function(req, res) {
                                           {notes: { $exists: true, $regex: req.query.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   }
+  else {
+    var query = db.contactModel.find({user_id: req.user.id});
+  }
 
   query.select("_id name birthdate companies photo created updated starred");
-  query.sort('-updated');
+  req.query.order === 'name' ? query.sort('name') : query.sort('-last_read');
+  query.limit(req.query.limit);
   query.exec(function(err, results) {
 
     if (err) {
@@ -271,6 +275,7 @@ exports.delete = function(req, res) {
     if (result !== null) {
       result.remove();
       res.status(200).send('contact deleted successfull').end();
+      console.log('Contact deleted successfull -> User: ' + req.user.id + ' -> contact_id' + id); 
     }
     else {
       res.status(404).send('Not Found'); 
@@ -304,7 +309,6 @@ exports.vCardsUpload = function(req, res) {
   req.pipe(req.busboy);
   req.busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
 
-    console.log('##### vCardUpload -> busboy filename ' + filename + ' ' + mimetype); 
     if (mimetype.toString() === 'text/vcard' || mimetype.toString() === 'text/x-vcard') {
 
       var vCardPath = contactDir + filename;
@@ -415,10 +419,9 @@ exports.vcardsDownload = function(req, res) {
       //   // Send vcfFile as link
       //   res.status(200).send('/download/' + req.user.id + '/' + vcfFile);
       // -----------------------------------------------------------------
- 
       // }); 
 
-      // Download as data stream.
+      // Download as stream.
       res.status(200).send(vcfContent);
 
     }
@@ -522,7 +525,6 @@ function create_vCard(req, contact) {
 
   // notes
   if (contact.notes !== undefined && contact.notes.length > 0 && dlNotes) {
-    console.log('##### test notes encode -> ' + contact.notes); 
     vcfContent += "NOTE;CHARSET=UTF-8;ENCODING=QUOTED-PRINTABLE:" + quotedPrintable.encode(utf8.encode(contact.notes)) + "\n";
   }
 
@@ -568,7 +570,6 @@ function savePhotoUri(user_id, contact_id, dataUrl) {
   // HTMLCanvasElement.toDataURL(), JPEG and PNG file.types are accepted.
   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toDataURL
   var base64Data = dataUrl.replace(/^data:image\/(jpeg|png);base64,/, "");
-  //console.log('imgPath -> ' + imgPath); 
 
   fs.writeFile(imgPath, base64Data, 'base64', function(err) {
     if(err) {console.log(err);}

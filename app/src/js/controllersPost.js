@@ -1,6 +1,27 @@
 appControllers.controller('PostListController', ['$scope', '$state', '$window', 'flash', 'PostService', 
   function PostListController($scope, $state, $window, flash, PostService) {
 
+    var limit = $window.localStorage.postLimit;
+
+    // Init posts with promises and show all posts.
+    $scope.getPosts = function() {
+      PostService.findAll(limit)
+      .then(function(response) {
+        console.log('Promise resolve'); 
+        // To show 'no posts yet' in the view.
+        if (response.data.length === 0) { response.data = undefined; }
+        $scope.posts = response.data;
+      }, function(response) {
+        console.log('Promise reject'); 
+        $scope.offline = true;
+        $scope.posts = response.data;
+        flash('warning', response.statusText);
+      }, function(data) {
+        console.log('Promise notify'); 
+        $scope.posts = data;
+      });
+    };
+
     // Restore a search key
     if ($window.sessionStorage.postSearch) {
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
@@ -10,44 +31,40 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
+      if ($scope.searchForm) {
+        $scope.searchPosts($window.sessionStorage.postSearchKey);
+      }
+      else {
+        $scope.getPosts();
+      }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
+      $scope.searchKey = '';
       delete $window.sessionStorage.postSearchKey;
-      $state.go('post', {}, {reload: true});
+      $scope.searchPosts('', limit);
     };
 
     $scope.posts = [];
+    $scope.getPosts();
 
-    // Init posts with promises and show all posts.
-    PostService.findAll($window.localStorage.postLimit)
-    .then(function(response) {
-      console.log('Promise resolve'); 
-      // To show 'no posts yet' in the view.
-      if (response.data.length === 0) { response.data = undefined; }
-      $scope.posts = response.data;
-    }, function(response) {
-      console.log('Promise reject'); 
-      $scope.offline = true;
-      $scope.posts = response.data;
-      flash('warning', response.statusText);
-    }, function(data) {
-      console.log('Promise notify'); 
-      $scope.posts = data;
-    });
+    // Get new posts if we change the SearchKey
+    $scope.searchPosts = function(searchKey) {
+       $window.sessionStorage.postSearchKey = searchKey;
+       PostService.searchAll(searchKey, limit).then(function(response) {
+         $scope.posts = response.data;
+       }, function(response) {
+         console.log(response.data);
+         console.log('Posts search error');
+       }); 
+    };
 
     // Get new posts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
-        if (searchKey !== undefined && searchKey.length >= 3) {
-          $window.sessionStorage.postSearchKey = searchKey;
-          PostService.searchAll(searchKey).then(function(response) {
-            $scope.posts = response.data;
-          }, function(response) {
-            console.log(response.data);
-            console.log('Posts search error');
-          }); 
-        }
+      if (searchKey !== undefined && searchKey.length >= 3) {
+        $scope.searchPosts(searchKey);
+      }
     });
 
 }]);

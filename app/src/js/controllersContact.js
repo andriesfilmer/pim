@@ -1,6 +1,11 @@
 appControllers.controller('ContactListController', ['$scope', '$location', '$state', '$stateParams', '$window', 'flash', 'ContactService',
   function ContactListController($scope, $location, $state, $stateParams, $window, flash, ContactService) {
 
+    // Restore a search key
+    if ($window.sessionStorage.contactSearch) {
+      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+    }
+
     $scope.contacts = {}; // hide 'no contacts yet' in view.
 
     // Find starred or all contacts.
@@ -37,29 +42,20 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       });
     };
 
-
-    // Do we want a search form on list all contacts page.
-    if ($window.sessionStorage.contactSearchKey && $state.current.name === 'contact.list') {
-      $scope.searchForm = true;
-      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
-    }
-    else {
-      $scope.getContacts();
-    }
+    $scope.getContacts();
 
     // Hide searchForm, toggle first. Save/delete search in session.
     $scope.toggleSearch = function toggleSearch() {
       $scope.searchForm = !$scope.searchForm;
       if ($scope.searchForm) {
-        $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+        $scope.searchContacts($scope.searchKey);
       }
       else {
-        delete $window.sessionStorage.contactSearchKey;
-        $scope.getContacts();
+        $scope.getContacts($scope.searchKey);
       }
     };
 
-    // Remove search.
+    // Remove searchKey and show contacts
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.contactSearchKey;
       $scope.getContacts();
@@ -68,23 +64,27 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     // Get new contacts if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
       if (searchKey !== undefined && searchKey.length >= 3) {
-        $window.sessionStorage.contactSearchKey = searchKey;
-        ContactService.searchAll(birthdate, searchKey)
-        .then(function(response) {
-          $scope.contacts = response.data;
-        }, function(response) {
-          if (response.status === 0) {
-            $scope.searchForm = false;
-            $scope.getContacts();
-          }
-          else {
-            $scope.offline = true;
-            $scope.searchForm = false;
-            flash('warning', 'Offline: Search not available');
-          }
-        }); 
+        $scope.searchContacts(searchKey);
       }
     });
+
+    // Get new contacts if we change the SearchKey
+    $scope.searchContacts = function(searchKey) {
+      $window.sessionStorage.contactSearchKey = searchKey;
+      ContactService.searchAll(searchKey, order, limit).then(function(response) {
+        $scope.contacts = response.data;
+      }, function(response) {
+        if (response.status === 0) {
+          $scope.searchForm = false;
+          $scope.getContacts();
+        }
+        else {
+          $scope.offline = true;
+          $scope.searchForm = false;
+          flash('warning', 'Offline: Search not available');
+        }
+      }); 
+    }
 
     $scope.uploadvCardFile = function(){
       var file = $scope.vCardFile;

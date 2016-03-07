@@ -38,19 +38,18 @@ exports.search = function(req, res) {
   }
 
   if (bookmarks.searchKey) {
-    //console.log('Bookmark search -> ' + bookmarks.searchKey); 
     var query = db.bookmarkModel.find({ $or: [ 
                                           {title:   { $exists: true, $regex: bookmarks.searchKey, $options: 'i' } },
                                           {content: { $exists: true, $regex: bookmarks.searchKey, $options: 'i' } }, 
                                           {tags:    { $exists: true, $regex: bookmarks.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   } else {
-    //console.log('Bookmark empty search -> Show all'); 
     var query = db.bookmarkModel.find({ user_id: req.user.id });
   }
 
   query.select("_id title url category tags created updated public");
   query.sort('-updated');
+  query.limit(req.query.limit);
   query.exec(function(err, results) {
 
     if (err) {

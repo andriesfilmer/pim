@@ -1,6 +1,27 @@
 appControllers.controller('BookmarkListController', ['$scope', '$state', '$window', 'flash', 'BookmarkService', 
   function BookmarkListController($scope, $state, $window, flash, BookmarkService) {
 
+    var limit = $window.localStorage.bookmarkLimit;
+
+    // Init limited bookmarks with promise.
+    $scope.getBookmarks = function() {
+      BookmarkService.findAll(limit)
+      .then(function(response) {
+        console.log('Promise resolve'); 
+        // To show 'no bookmarks yet' in the view.
+        if (response.data.length === 0) { response.data = undefined; }
+        $scope.bookmarks = response.data;
+      }, function(response) {
+        console.log('Promise reject'); 
+        $scope.offline = true;
+        $scope.bookmarks = response.data;
+        flash('warning', response.statusText);
+      }, function(data) {
+        console.log('Promise notify'); 
+        $scope.bookmarks = data;
+      });
+    };
+
     // Restore a search key
     if ($window.sessionStorage.bookmarkSearch) {
       $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
@@ -10,46 +31,40 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
+      if ($scope.searchForm) {
+        $scope.searchBookmarks($window.sessionStorage.bookmarkSearchKey);
+      }
+      else {
+        $scope.getBookmarks();
+      }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
+      $scope.searchKey = '';
       delete $window.sessionStorage.bookmarkSearchKey;
-      $state.go('bookmark.list', {}, {reload: true});
+      $scope.searchBookmarks('', limit);
     };
 
     $scope.bookmarks = [];
+    $scope.getBookmarks();
 
-
-    // Init limited bookmarks with promise.
-    BookmarkService.findAll($window.localStorage.bookmarkLimit)
-    .then(function(response) {
-      console.log('Promise resolve'); 
-      // To show 'no bookmarks yet' in the view.
-      if (response.data.length === 0) { response.data = undefined; }
-      $scope.bookmarks = response.data;
-    }, function(response) {
-      console.log('Promise reject'); 
-      $scope.offline = true;
-      $scope.bookmarks = response.data;
-      flash('warning', response.statusText);
-    }, function(data) {
-      console.log('Promise notify'); 
-      $scope.bookmarks = data;
-    });
+    // Get new bookmarks if we change the SearchKey
+    $scope.searchBookmarks = function(searchKey) {
+      $window.sessionStorage.bookmarkSearchKey = searchKey;
+      BookmarkService.searchAll(searchKey, limit).then(function(response) {
+        $scope.bookmarks = response.data;
+      }, function(response) {
+        console.log(response.data);
+        console.log('Bookmarks search error');
+      }); 
+    };
 
     // Get new bookmarks if we change the SearchKey
     $scope.$watch('searchKey', function(searchKey) {
-        if (searchKey !== undefined) {
-          $window.sessionStorage.bookmarkSearchKey = searchKey;
-          BookmarkService.searchAll(searchKey)
-          .then(function(response) {
-            $scope.bookmarks = response.data;
-          }, function(response) {
-            console.log(response.data);
-            console.log('Bookmarks search error');
-          }); 
-        }
+      if (searchKey !== undefined && searchKey.length >= 3) {
+        $scope.searchBookmarks(searchKey);
+      }
     });
 
 }]);

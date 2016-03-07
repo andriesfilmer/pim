@@ -251,8 +251,8 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
     },
 
-    searchAll: function(birthdate, searchKey) { 
-      params = {'params': {birthdate: birthdate, searchKey: searchKey}};
+    searchAll: function(searchKey, order, limit) { 
+      params = {'params': {searchKey: searchKey, order: order, limit: limit}};
       return $http.get(options.api.base_url + '/contacts/search', params);
     },
 
@@ -420,8 +420,8 @@ appServices.factory('PostService', function($http, $q, $timeout, $window) {
       return $http.put(options.api.base_url + '/post', {'post': post});
     },
 
-    searchAll: function(searchKey) { 
-      return $http.get(options.api.base_url + '/posts/search', {'params': {searchKey: searchKey}});
+    searchAll: function(searchKey, limit) { 
+      return $http.get(options.api.base_url + '/posts/search', {'params': {searchKey: searchKey, limit: limit}});
     },
 
     pdf: function(id, toc) {
@@ -468,8 +468,8 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
       return deferred.promise;
     },
 
-    searchAll: function(searchKey) { 
-      return $http.get(options.api.base_url + '/bookmarks/search', {'params': {searchKey: searchKey}});
+    searchAll: function(searchKey, limit) { 
+      return $http.get(options.api.base_url + '/bookmarks/search', {'params': {searchKey: searchKey, limit: limit}});
     },
 
     read: function(id) {

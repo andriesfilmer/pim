@@ -39,16 +39,19 @@ exports.search = function(req, res) {
   }
 
   if (posts.searchKey) {
-    //console.log('Post search -> ' + posts.searchKey); 
     var query = db.postModel.find({ $or: [ 
                                           {title:   { $exists: true, $regex: posts.searchKey, $options: 'i' } },
                                           {content: { $exists: true, $regex: posts.searchKey, $options: 'i' } }, 
                                           {tags:    { $exists: true, $regex: posts.searchKey, $options: 'i' } } 
                                          ],user_id: req.user.id } );
   }
+  else {
+    var query = db.postModel.find({user_id: req.user.id});
+  }
 
   query.select("_id title type tags created updated public");
   query.sort('-updated');
+  query.limit(req.query.limit);
   query.exec(function(err, results) {
 
     if (err) {
@@ -221,7 +224,7 @@ exports.delete = function(req, res) {
     if (result != null) {
       result.remove();
       return res.status(200).send('Deleted post successfull');
-      console.log('Post -> delete'); 
+      console.log('Post deleted successfull -> User: ' + req.user.id + ' -> contact_id' + id); 
     }
     else {
       return res.sendStatus(404); // Not Found
