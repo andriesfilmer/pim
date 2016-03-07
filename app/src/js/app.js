@@ -258,14 +258,13 @@ app.run(function ($rootScope, $window, $state, $timeout, $location, flash, Authe
     // Add font-size from general settings.
     $("body").addClass($window.localStorage.fontSetting);
 
-    // RootScope.showBts is only for show/hide Signup, Signin buttons.
+    // RootScope.signedIn is only for show/hide elements.
     if($window.localStorage.token) {
-      $rootScope.showBts = true;
+      $rootScope.signedIn = true;
       $rootScope.fullname = $window.localStorage.fullname;
     }
-    // Only for show/hide Logout button.
     else {
-      $rootScope.showBts = false;
+      $rootScope.signedIn = false;
     }
 
 

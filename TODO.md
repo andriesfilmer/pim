@@ -1,25 +1,21 @@
-# General
-- Share datetime UTC time.
-- After login, show processbar for loading localdata
-- jwt token expire feedback must be better from the api
+# Need to fix
+- Fix datetime UTC time in localtime when sharing a event.
 
+# Wishlist
+
+## General 
+- jwt token expire feedback must be better from the api
 - Infinite Scroll for lists - https://sroze.github.io/ngInfiniteScroll/
 - Future wish to translate PIM - https://github.com/angular-translate/angular-translate
 
-# Contact
+## Contact 
 - Photo crop with rotation.
-
-# Calendar
-- Share event time not corret. UTC?
-- export vCal
-- import vCal
 
 # Issues
 - Upload contact photo on ipad does not work correct.
   https://github.com/fengyuanchen/cropper/issues/294
-
 - Share PDF with bullet list does not work correct with <ul><li>
 
-# Other
+# Other longterm wishes
 
 - Sync-it https://www.npmjs.com/package/sync-it
