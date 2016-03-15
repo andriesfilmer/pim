@@ -89,7 +89,7 @@ app.post('/calendar/upload/vcalendar', expressJwt({secret: secret.secretToken}),
 
 // File download for calendar event(s) in iCalendar format.
 app.post('/calendar/download/vevents', expressJwt({secret: secret.secretToken}), routes.events.veventsDownload); 
-//app.post('/calendar/download/vevent', expressJwt({secret: secret.secretToken}), routes.events.veventDownload); 
+app.post('/calendar/download/vevent', expressJwt({secret: secret.secretToken}), routes.events.veventDownload); 
 
 // Delete event item (id)
 app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.delete); 

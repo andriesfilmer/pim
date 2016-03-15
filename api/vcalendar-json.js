@@ -47,7 +47,6 @@ function parse(data) {
       vevent = {};
       vevent.title = "empty";
       vevent.allDay = 'false';
-      vevent.className = 'import';
       vevent.tz = moment.tz.guess();
     }
 

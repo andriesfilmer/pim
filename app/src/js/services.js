@@ -206,7 +206,7 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
     },
 
     vevent: function(event_id) {
-      return $http.post(options.api.base_url + '/calendar/download/vevents', 
+      return $http.post(options.api.base_url + '/calendar/download/vevent', 
         {'params': {event_id: event_id}} ,{responseType: 'arraybuffer'});
     }
 

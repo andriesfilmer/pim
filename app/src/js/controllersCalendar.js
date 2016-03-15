@@ -147,8 +147,6 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   $scope.uploadvCalendarFile = function(){
     var file = $scope.vCalendarFile;
     var className = $scope.className;
-    console.log('Upload vCalendarFile');
-    console.dir(file);
     CalendarService.uploadCalendarIcs(file, className)
     .then(function(response) {
       flash('success', response.data);
@@ -362,6 +360,16 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     return share;
   }
 
+  $scope.downloadCalendar = function downloadCalendar(cal) {
+    console.log('Download event -> ' + cal._id); 
+    CalendarService.vevent(cal._id).then(function(response) {
+      var file = new Blob([response.data], {type: 'text/calendar'});
+      var fileName = cal.title.replace(/[^\w]/gi, '') + '.ics';
+      saveAs(file, fileName);
+      $scope.downloadLabel = 'File has been downloaded!';
+    });
+
+  };
 }]);
 
 

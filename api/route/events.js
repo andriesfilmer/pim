@@ -294,19 +294,23 @@ exports.vCalendarUpload = function(req, res) {
         // Debug info, uncomment/include 'utils' at the top.
         //console.log(util.inspect(data, false, null));
 
+        count = 0;
         data.forEach(function(event) {
           var eventEntry = new db.eventModel();
+          count++;
           eventEntry.user_id = req.user.id;
           eventEntry.title = event.title;
           eventEntry.start = event.start;
           eventEntry.end = event.end;
           eventEntry.allDay = event.allDay;
-          eventEntry.description = quotedPrintable.decode(event.description);
+          if (event.description != '' && event.description !== undefined) {
+            eventEntry.description = quotedPrintable.decode(event.description);
+          }
           eventEntry.tz = event.tz;
 
-          // If no 'PIM-CLASSNAME' propertie is include in the EVENT
+          // If no 'PIM-CLASSNAME' property is included in the EVENT
           // we use 'importclassname' form the header which comes from PIM.center.
-          event.className === undefined  ? eventEntry.className = req.headers.importclassname : eventEntry.className = event.className;
+          event.className === undefined ? eventEntry.className = req.headers.importclassname : eventEntry.className = event.className;
 
           // Save event to db.
           eventEntry.save(function(err) {
@@ -317,7 +321,7 @@ exports.vCalendarUpload = function(req, res) {
 
         });
 
-        res.status(200).send('Calendar(s) created successful');
+        res.status(200).send(count + ' events successful created');
       }
     });
   } // End function importCalendars
@@ -364,29 +368,19 @@ exports.veventDownload = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
+  console.log('Create vEvent for event_id -> ' + req.body.params.event_id); 
+
   var query = db.eventModel.findOne({ user_id: req.user.id, _id: req.body.params.event_id });
-  query.exec(function(err, results) {
+  query.exec(function(err, result) {
 
     if (err) {
       console.log(err);
-      res.status(500).send(err);
+      res.status(500).send('Internal Server Error');
     }
 
-    if (results !== null) {
-
-      // Concat vevents
-      // https://tools.ietf.org/html/rfc5545
-      var icsContent = '';
-      icsContent  += "BEGIN:VCALENDAR\n";
-      icsContent  += "VERSION:2.0\n";
-      results.forEach(function(event){
-        icsContent += create_vEvent(req, event);
-      });
-      icsContent += "END:VCALENDAR\n";
-
-      // Download as data stream.
-      res.status(200).send(icsContent);
-
+    if (result !== null) {
+        icsContent = create_vEvent(req, result);
+        res.status(200).send(icsContent);
     }
   });
 };
@@ -400,8 +394,10 @@ function create_vEvent(req, event) {
   icsContent += 'DTEND;TZID=' + event.tz + ':' + moment(event.end).toISOString().replace(/(:|-)/g,'') + '\n';
   icsContent += 'PIM-CLASSNAME:' + event.className + '\n';
   // Description SHOULD NOT be longer than 75 octets, excluding the line break
-  var desc = 'DESCRIPTION:' + event.description;
-  icsContent += desc.replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n ') + '\n';
+  if (event.description !== undefined) {
+    var desc = 'DESCRIPTION:' + event.description;
+    icsContent += desc.replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n ') + '\n';
+  }
   icsContent += 'END:VEVENT\n';
 
   return icsContent;
