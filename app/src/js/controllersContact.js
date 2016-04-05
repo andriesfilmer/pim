@@ -44,7 +44,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.contactSearchKey;
       if ($scope.searchForm) {
-        $scope.searchContacts($scope.searchKey);
+        $scope.searchContacts($scope.searchKey || '');
       }
       else {
         $scope.getContacts($scope.searchKey);

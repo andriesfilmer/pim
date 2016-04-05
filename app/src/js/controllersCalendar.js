@@ -104,7 +104,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   // Remove search
   $scope.resetSearchKey = function resetSearchKey() {
-    $window.sessionStorage.clear('calendarSearchKey');
+    delete $window.sessionStorage.calendarSearchKey;
     $state.go('calendar.search', {}, {reload: true});
   };
 

@@ -160,7 +160,7 @@ exports.sendToken = function(req, res) {
         text: 'Hello ' + user.fullname + ',\n\n'
           + 'Someone has requested a token to reset your password (probably you).\n\n'
           + 'Just click on this link and change your password:\n'
-          + config.cors_url + '/#/user/change-password/' + token + '/' + user._id + '\n\n'
+          + config.cors_url[0] + '/#/user/change-password/' + token + '/' + user._id + '\n\n'
           + 'If you didn\'t mean to reset your password, then you can just ignore this email; your password will not change.\n\n'
           + 'Regards Andries Filmer.\n'
           + 'http://pim.center\n'

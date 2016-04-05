@@ -27,7 +27,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.postSearchKey;
       if ($scope.searchForm) {
-        $scope.searchPosts($window.sessionStorage.postSearchKey);
+        $scope.searchPosts($window.sessionStorage.postSearchKey || '');
       }
       else {
         $scope.getPosts();

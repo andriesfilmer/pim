@@ -27,7 +27,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
       if ($scope.searchForm) {
-        $scope.searchBookmarks($window.sessionStorage.bookmarkSearchKey);
+        $scope.searchBookmarks($window.sessionStorage.bookmarkSearchKey || '');
       }
       else {
         $scope.getBookmarks();
