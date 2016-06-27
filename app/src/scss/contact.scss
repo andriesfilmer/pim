@@ -43,24 +43,10 @@
   vertical-align: text-top;
 }
 
-.profile-bg {
-  height: 12em;
-  margin-bottom: -12em;
-  background-position: center;
-  -webkit-transform: translateZ(0);
-  -webkit-transform: translate3d(0, 0, 0);
-
-  -webkit-filter: blur(50px);
-  -moz-filter: blur(50px);
-  -o-filter: blur(50px);
-  -ms-filter: blur(50px);
-  filter: blur(50px);
-  opacity: 0.8;
-}
 .profile-row {
   .profile-img {
     border-radius: 100%;
-    max-width: 12em;
+    max-width: 14em;
     margin-top: -1em;
     position: relative;
   }

@@ -25,6 +25,8 @@ You need npm, nodejs and mongodb (default install will do)
 
     git clone https://github.com/andriesfilmer/pim.git
     cd pim/app && npm install
+    sudo npm install -g grunt-cli
+    sudo apt install nodejs-legacy
     grunt once    # To copy and compile vendor files once.
     grunt         # For development with 'connect' to run a server
 
@@ -57,6 +59,7 @@ Run the api in production
 - Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration and your enviroment.
 - Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production;/usr/local/bin/forever start --sourceDir /var/www/pim.filmer.net/current/api api.js` 
 - Create a upstream proxy  (zie api/nginx.conf as a example).
+- Create a symlink for photos `cd public/ && ln -s ../upload/ upload`
 
 
 ## Reminders by e-mail

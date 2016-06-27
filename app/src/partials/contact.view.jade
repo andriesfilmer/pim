@@ -17,7 +17,6 @@ div.row(ng-hide="offline")
    a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")
 
 div(ng-hide="editForm")
- div.profile-bg(ng-if="contact.photo", style="background-image: url({{contact.photo}}?{{contact.updated}}); background-size: cover; background-position: center;")
  div.row
   div.column.text-right(ng-if="contact.birthdate")
    label.fi-crown  {{contact.birthdate | date: 'dd MMM'}} | {{ calculateAge(contact.birthdate) }}

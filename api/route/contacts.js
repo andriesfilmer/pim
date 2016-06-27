@@ -469,7 +469,7 @@ function create_vCard(req, contact) {
   //var vcfContent = vcfContent || '';
   vcfContent  = "BEGIN:VCARD\n";
   vcfContent += "VERSION:3.0\n";
-  vcfContent += "N:" + utf8.encode(s(contact.name).strRight(' ').clean().value()) + ',' + utf8.encode(s(contact.name).strLeft(' ').clean().value()) + "\n";
+  vcfContent += "N:" + utf8.encode(s(contact.name).strRight(' ').clean().value()) + ',' + utf8.encode(s(contact.name).strLeft(' ').clean().value()) + ";;;;\n";
   vcfContent += "FN:" + utf8.encode(s(contact.name).clean().value()) + "\n";
 
   // Phonenumbers
@@ -529,7 +529,7 @@ function create_vCard(req, contact) {
   }
 
   // Convert image to base64 encoded string only if uploaded photo exists.
-  var photo = "../app/public" + contact.photo;
+  var photo = config.env().upload_dir.replace('/upload/','') + contact.photo;
   if (contact.photo !== '' && fs.existsSync(photo) && dlPhoto) {
     var photoProp = "PHOTO;ENCODING=BASE64;JPEG:" + base64_encode(photo);
     vcfContent += photoProp.replace(/(.{1,73})/g, '$1 \r\n ') + '\n';

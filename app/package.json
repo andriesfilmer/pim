@@ -4,21 +4,21 @@
   "version": "0.8.5",
   "private": true,
   "devDependencies": {
+    "grunt": "^1.0.1",
     "grunt-appcache": "latest",
     "grunt-contrib-clean": "latest",
     "grunt-contrib-concat": "latest",
     "grunt-contrib-connect": "latest",
     "grunt-contrib-copy": "latest",
     "grunt-contrib-cssmin": "latest",
+    "grunt-contrib-jade": "latest",
     "grunt-contrib-jshint": "latest",
     "grunt-contrib-sass": "latest",
-    "grunt-contrib-watch": "latest",
     "grunt-contrib-uglify": "latest",
-    "grunt-contrib-jade": "latest",
+    "grunt-contrib-watch": "latest",
     "grunt-env": "latest",
     "grunt-ng-constant": "latest",
     "grunt-preprocess": "latest",
-    "grunt-remove-logging": "latest",
-    "grunt": "latest"
+    "grunt-remove-logging": "latest"
   }
 }
