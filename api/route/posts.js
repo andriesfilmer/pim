@@ -9,7 +9,7 @@ exports.list = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  var query = db.postModel.find({user_id: req.user.id}).limit(req.query.limit);
+  var query = db.postModel.find({user_id: req.user.id}).limit(parseInt(req.query.limit));
 
   query.select("_id title type tags created updated public");
   query.sort('-updated');
@@ -51,7 +51,7 @@ exports.search = function(req, res) {
 
   query.select("_id title type tags created updated public");
   query.sort('-updated');
-  query.limit(req.query.limit);
+  query.limit(parseInt(req.query.limit));
   query.exec(function(err, results) {
 
     if (err) {

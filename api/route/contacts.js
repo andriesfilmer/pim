@@ -24,7 +24,7 @@ exports.list = function(req, res) {
   req.query.starred === 'true' ? query.find({starred: true}) : null;
   req.query.order === 'name' ? query.sort('name') : query.sort('-last_read');
   query.select("_id birthdate name companies starred photo");
-  query.limit(req.query.limit);
+  query.limit(parseInt(req.query.limit));
 
   // List only contacts with birthdates order by month,dayOfMonth.
   var queryBirthdates = db.contactModel.aggregate([
@@ -91,7 +91,7 @@ exports.search = function(req, res) {
 
   query.select("_id name birthdate companies photo created updated starred");
   req.query.order === 'name' ? query.sort('name') : query.sort('-last_read');
-  query.limit(req.query.limit);
+  query.limit(parseInt(req.query.limit));
   query.exec(function(err, results) {
 
     if (err) {
