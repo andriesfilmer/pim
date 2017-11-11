@@ -1,7 +1,7 @@
 {
   "name": "PIM",
   "description": "PIM api",
-  "version": "0.8.5",
+  "version": "0.8.8",
   "private": true,
   "dependencies": {
     "bcrypt": "latest",
@@ -17,10 +17,11 @@
     "moment": "latest",
     "mongoose": "latest",
     "mongoose-unique-validator": "latest",
+    "mysql": "latest",
     "quoted-printable": "latest",
     "underscore": "latest",
     "underscore.string": "latest",
     "utf8": "latest",
-    "moment-timezone": "~0.5.0"
+    "moment-timezone": "latest"
   }
 }

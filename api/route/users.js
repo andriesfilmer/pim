@@ -3,7 +3,6 @@ var nodemailer = require('nodemailer');
 
 var db = require('../config/mongo_database');
 var config = require('../config/config.js');
-var config = config.env();
 var secret = require('../config/secret');
 
 
@@ -33,7 +32,7 @@ exports.signin = function(req, res) {
         return res.sendStatus(401); // Unauthorized
       }
 
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expireIn });
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expiresIn });
       return res.json({token: token, user_id: user._id, fullname: user.fullname});
     });
 
@@ -116,7 +115,7 @@ exports.passwordChange = function(req, res) {
       }
 
       // return user_id and new token with longer expire date.
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expireIn });
+      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expiresIn });
 
       return res.json({token: token, user_id: user._id});
 

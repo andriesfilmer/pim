@@ -9,7 +9,8 @@ exports.env = function() {
 // Development and productions vars·
 // ---------------------------------
 
-exports.expireIn = "1y";
+exports.expiresIn = "365d";
+
 
 // Default location to store the uploaded photos.
 exports.default_upload_photo_dir = '../app/public/upload/contact_photos/';
