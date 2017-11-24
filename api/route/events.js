@@ -1,38 +1,47 @@
 var fs = require('fs');
-var secret = require('../config/secret');
-var db = require('../config/mongo_database');
-var config = require('../config/config.js');
-var calendar = require('../vcalendar-json');
 var moment = require('moment');
-var functions = require('../functions');
 var quotedPrintable = require('quoted-printable');
 //var util = require('util');
+
+var secret = require('../config/secret');
+var config = require('../config/config.js');
+var calendar = require('../vcalendar-json');
+var functions = require('../functions');
+
 
 exports.list = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
-
 
   if (req.query.end === undefined) { req.query.end = '3000-01-01' };
 
-  // Remove quotes and use only date (YYYY-mm-dd)
-  var start = req.query.start.replace(/"/g,"").substr(0,10);
-  var end = req.query.end.replace(/"/g,"").substr(0,10);
+  // Remove quotes and use only date (YYYY-mm-dd) for select.
+  var start = req.query.start.replace(/"/g,'').substr(0,10);
+  var end = req.query.end.replace(/"/g,'').substr(0,10);
 
-  var query = db.eventModel.find({ $or: [
-                                   {"start": {"$gte": start, "$lte": end }},
-                                   {  "end": {"$gte": start, "$lte": end }}
-                                   ], user_id: req.user.id }).limit(500);
-  query.select("_id title start end allDay tz className");
-  query.sort('start');
-  query.exec(function(err, results) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
-    return res.status(200).json(results); // OK
+  config.pool.getConnection(function(err, connection) {
+
+    var sql = 'SELECT id as _id, user_id,title, start, end, allDay, tz, className \
+               FROM events WHERE start >= ? AND end <= ? AND user_id = ? \
+               ORDER BY start LIMIT 500';
+
+    connection.query(sql, [start, end, req.user.id], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      results.forEach(function(entry) {
+        entry.start = moment.utc(entry.start).format();
+        entry.end = moment.utc(entry.end).format();
+      });
+
+      return res.status(200).json(results); // OK
+
+    });
+
   });
 
 };
@@ -40,224 +49,192 @@ exports.list = function(req, res) {
 // Search calendar
 exports.search = function(req, res) {
 
-  var calendar = req.query; 
+  var calendar = req.query;
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  if (calendar.searchKey) {
-    var query = db.eventModel.find({ $or: [ 
-                                          {title:   { $exists: true, $regex: calendar.searchKey, $options: 'i' } },
-                                          {description: { $exists: true, $regex: calendar.searchKey, $options: 'i' } }
-                                         ], user_id: req.user.id } ).limit(100);
-  } else {
-    var query = db.eventModel.find({ user_id: req.user.id });
+  if (req.query.searchKey) {
+
+    // list all contacts.
+    config.pool.getConnection(function(err, connection) {
+
+      var sql = "SELECT id as _id, title, start, end , allDay, className, created, updated \
+                 FROM events WHERE (title LIKE ? OR description LIKE ? )\
+                 AND user_id = ? \
+                 ORDER BY start LIMIT 100";
+      var searchFor = '%' + req.query.searchKey + '%';
+
+      var query = connection.query(sql, [searchFor, searchFor, req.user.id], function(err, results) {
+
+        connection.release();
+
+        if (err) throw err;
+
+        results.forEach(function(entry) {
+          entry.start = moment.utc(entry.start).format();
+          entry.end = moment.utc(entry.end).format();
+        });
+
+        return res.status(200).json(results); // OK
+
+      });
+
+    });
   }
-
-  query.select("_id title start end allDay className created updated");
-  query.sort('-start');
-  query.exec(function(err, results) {
-
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
-
-    if (results !== null) {
-      return res.status(200).json(results); // OK
-    }
-    else {
-      return res.sendStatus(404); // Not Found
-    }
-
-  });
 
 };
 
 exports.read = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var id = req.params.id || '';
-  if (!id.match(/^[0-9a-fA-F]{24}$/)) {
-    return res.sendStatus(406); // Not Acceptable
-  }
+  config.pool.getConnection(function(err, connection) {
 
-  var query = db.eventModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id title start end allDay tz description className created updated');
-  query.exec(function(err, result) {
-    if (err) {
-        console.log(err);
-    }
+    var sql = "SELECT id as _id, title, start, end, allDay, tz, description, className, created, updated \
+               FROM events WHERE id= ? AND user_id = ? LIMIT 1";
 
-    if (result !== null) {
-      return res.status(200).json(result);
-    } else {
-      return res.sendStatus(404); // Not found
-    }
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
+      }
+      else {
+
+        results[0].start = moment.utc(results[0].start).format();
+        results[0].end = moment.utc(results[0].end).format();
+
+        return res.status(200).json(results[0]); // OK
+      }
+
+    });
+
+
   });
 
-}; 
+};
 
 exports.create = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   var event = req.body.calendar;
-  if (event == null) {
-    return res.sendStatus(400); // Bad Request
-  }
+  var createEvent = checkEvent(event);
 
-  var createEvent = new db.eventModel();
-
-  createEvent.user_id = req.user.id;
-
-  // Title required
-  if (event.title !== undefined && event.title !== null && event.title !== "") {
-    createEvent.title = event.title;
+  if (createEvent.err) {
+    return res.status(createEvent.err).send(createEvent.msg).end();
   }
   else {
-    return res.sendStatus(400); // Bad Request
-  }
 
-  // Start required
-  if (event.start !== undefined && event.start !== "" && event.start !== null) {
-    createEvent.start = event.start;
-  }
-  else {
-    return res.sendStatus(400); // Bad Request
-  }
+    createEvent.user_id = req.user.id;
 
-  if (event.end !== undefined) {
-    createEvent.end = event.end;
-  }
+    config.pool.getConnection(function(err, connection) {
 
-  if (event.tz !== undefined) {
-    createEvent.tz = event.tz;
-  }
+      var query = connection.query('INSERT INTO events SET ?', createEvent, function (err, results, fields) {
 
-  if (event.description !== undefined) {
-    createEvent.description = event.description;
-  }
+        connection.release();
 
-  if (event.className !== undefined) {
-    createEvent.className = event.className;
-  }
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+        else {
+          return res.status(200).send('Created event id:' + results.insertId + ' successfull');
+        }
 
-  if (event.allDay !== undefined) {
-    createEvent.allDay = event.allDay;
-  }
+      });
 
-  createEvent.save(function(err) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
-    return res.status(200).send('Created event successfull');
-  });
+    });
+  }
 }
 
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   var event = req.body.calendar;
 
-  if (event == null || event._id == null) {
-    res.sendStatus(404); // Not found
+  // Id required.
+  if (event._id == null) {
+    return res.status(400).send('Bad request - id required').end();
   }
 
-  // Title required
-  var updateEvent = {};
-  if (event.title !== undefined && event.title !== "" && event.title !== null) {
-    updateEvent.title = event.title;
-  }
-  else {
-    return res.sendStatus(400); // Bad Request
-  }
+  var updateEvent = checkEvent(event);
 
-  // Start required
-  if (event.start !== undefined && event.start !== "" && event.start !== null) {
-    updateEvent.start = event.start;
-  }
-  else {
-    return res.sendStatus(400); // Bad Request
-  }
+  config.pool.getConnection(function(err, connection) {
 
-  if (event.end !== undefined) {
-    updateEvent.end = event.end;
-  }
+    var query = connection.query("UPDATE events SET title = ?, start = ?, end = ?, description = ?,\
+                className = ?, allDay= ?, tz = ?, updated = ? WHERE id = ?",
+                [updateEvent.title,updateEvent.start, updateEvent.end, updateEvent.description,
+                updateEvent.className, updateEvent.allDay, updateEvent.tz, updateEvent.updated,
+                event._id], function (err, results, fields) {
 
-  if (event.tz !== undefined) {
-    updateEvent.tz = event.tz;
-  }
+      connection.release();
 
-  if (event.description !== undefined) {
-    updateEvent.description = event.description;
-  }
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        return res.status(200).send('Updated event successfully'); // OK
+      }
 
-  if (event.allDay !== undefined) {
-    updateEvent.allDay = event.allDay;
-  }
-
-  if (event.className !== undefined) {
-    updateEvent.className = event.className;
-  }
-
-  updateEvent.updated = new Date();
-
-  db.eventModel.update({_id: event._id, user_id: req.user.id}, updateEvent, function(err, nbRows, raw) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400);
-    }
-
-    return res.status(200).send('Updeted event successfull');
+    });
 
   });
 
-};
+}
 
 exports.delete = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   var id = req.params.id;
   if (id === null || id === undefined || id === '') {
-    res.send(400); // Bad request
+    return res.status(400).send('Bad request - id required').end();
   }
 
-  var query = db.eventModel.findOne({_id: id, user_id: req.user.id});
-  query.exec(function(err, result) {
-    if (err) {
-      console.log(err);
-      return res.send(400); // Bad request
-    }
+  config.pool.getConnection(function(err, connection) {
 
-    if (result === null) {
-      return res.sendStatus(400); // Bad request
-    } else {
-      result.remove();
-      return res.status(200).send('Deleted event successfull');
-    }
+    var query = connection.query("DELETE FROM events WHERE id = ? AND user_id = ?",
+                [id, req.user.id], function (err, results, fields) {
+
+      connection.release();
+
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        return res.status(200).send('Deleted event successfull'); // OK
+      }
+
+    });
 
   });
+
 };
 
 exports.vCalendarUpload = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
+
+  // Todo: make check if file is uploaded (exists).
 
   var calendarDir = config.env().upload_dir + req.user.id + "/calendars/";
   if (!fs.existsSync(calendarDir)) { functions.mkdir(calendarDir); }
@@ -278,13 +255,13 @@ exports.vCalendarUpload = function(req, res) {
       });
     }
     else {
-      return res.status(400).send('File type must be text/calendar');
+      return res.status(400).send('File type must be text/calendar').end();
     }
   });
 
   // Function to import calendars from file
   function importEvents(vCalendar) {
-    console.log('Import calendars from file -> ' + vCalendar); 
+    console.log('Import calendars from file -> ' + vCalendar);
     calendar.parseVcalendarFile(vCalendar, function(err, data){
       if(err) {
         return res.status(400).send('Bad Request parseCalendarFile');
@@ -296,34 +273,43 @@ exports.vCalendarUpload = function(req, res) {
 
         count = 0;
         data.forEach(function(event) {
-          var eventEntry = new db.eventModel();
-          count++;
+
+          var eventEntry = checkEvent(event);
           eventEntry.user_id = req.user.id;
-          eventEntry.title = event.title;
-          eventEntry.start = event.start;
-          eventEntry.end = event.end;
-          eventEntry.allDay = event.allDay;
-          if (event.description != '' && event.description !== undefined) {
-            eventEntry.description = quotedPrintable.decode(event.description);
-          }
-          eventEntry.tz = event.tz;
+          count++;
 
           // If no 'PIM-CLASSNAME' property is included in the EVENT
           // we use 'importclassname' form the header which comes from PIM.center.
-          event.className === undefined ? eventEntry.className = req.headers.importclassname : eventEntry.className = event.className;
+          if (event.className) {
+            eventEntry.className = event.className;
+          }
+          else if (req.headers.importclassname) {
+            eventEntry.className = req.headers.importclassname
+          }
 
           // Save event to db.
-          eventEntry.save(function(err) {
-            if (err) {
-              console.log(err);
-            }
+          config.pool.getConnection(function(err, connection) {
+
+            var query = connection.query('INSERT INTO events SET ?', eventEntry, function (err, results, fields) {
+
+              connection.release();
+
+              if (err) {
+                console.log(err);
+                return res.status(400).send(err.sqlMessage).end(); // Bad Request
+              }
+
+            });
+
           });
 
         });
 
-        res.status(200).send(count + ' events successful created');
+        res.status(200).send(count + ' events successful created').end();
       }
+
     });
+
   } // End function importCalendars
 
 };
@@ -331,44 +317,52 @@ exports.vCalendarUpload = function(req, res) {
 exports.veventsDownload = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var query = db.eventModel.find({ user_id: req.user.id });
-  query.sort('start');
-  query.exec(function(err, results) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (err) {
-      console.log(err);
-      res.status(500).send(err);
-    }
+    var sql = 'SELECT id as _id, user_id,title, start, end, description, allDay, tz, className \
+               FROM events WHERE user_id = ? ORDER BY start';
 
-    if (results !== null) {
+    query = connection.query(sql, [req.user.id], function(err, results) {
 
-      // Concat vevents
-      // https://tools.ietf.org/html/rfc5545
-      var icsContent = '';
-      icsContent  += "BEGIN:VCALENDAR\n";
-      icsContent  += "VERSION:2.0\n";
-      results.forEach(function(event){
-        icsContent += create_vEvent(req, event);
-      });
-      icsContent += "END:VCALENDAR\n";
+      connection.release();
 
-      // Download as data stream.
-      res.status(200).send(icsContent);
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+      }
 
-    }
+      if (results) {
+        var icsContent = '';
+        icsContent  += "BEGIN:VCALENDAR\n";
+        icsContent  += "VERSION:2.0\n";
+        results.forEach(function(event){
+          icsContent += create_vEvent(event);
+        });
+        icsContent += "END:VCALENDAR\n";
+
+        // Download as data stream.
+        res.status(200).send(icsContent);
+      }
+      else {
+        return res.status(404).send('Not found');
+      }
+
+    });
+
   });
+
 };
 
 exports.veventDownload = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  console.log('Create vEvent for event_id -> ' + req.body.params.event_id); 
+  console.log('Create vEvent for event_id -> ' + req.body.params.event_id);
 
   var query = db.eventModel.findOne({ user_id: req.user.id, _id: req.body.params.event_id });
   query.exec(function(err, result) {
@@ -385,13 +379,14 @@ exports.veventDownload = function(req, res) {
   });
 };
 
-// Content for one vevent.
-function create_vEvent(req, event) {
+
+// Content for one vevent.in ics format.
+function create_vEvent(event) {
 
   icsContent  = 'BEGIN:VEVENT\n';
   icsContent += 'SUMMARY:' + event.title + '\n';
-  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment(event.start).toISOString().replace(/(:|-)/g,'') + '\n';
-  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment(event.end).toISOString().replace(/(:|-)/g,'') + '\n';
+  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment.utc(event.start).toISOString().replace(/(:|-)/g,'') + '\n';
+  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment.utc(event.end).toISOString().replace(/(:|-)/g,'') + '\n';
   icsContent += 'PIM-CLASSNAME:' + event.className + '\n';
   // Description SHOULD NOT be longer than 75 octets, excluding the line break
   if (event.description !== undefined) {
@@ -402,3 +397,67 @@ function create_vEvent(req, event) {
 
   return icsContent;
 }
+
+
+// Check values for input db.
+function checkEvent (event) {
+
+  var checkedEvent = {};
+
+  if (event == null) {
+    return checkedEvent = { err: 400, msg: 'Bad request - No event available' };
+  }
+
+  // Title required.
+  if (event.title) {
+    checkedEvent.title = event.title;
+  }
+  else {
+    return checkedEvent = { err: 400, msg: 'Bad request - Title required' };
+  }
+
+  if (event.tz) {
+    checkedEvent.tz = event.tz;
+  }
+  else {
+    return checkedEvent = { err: 400, msg: 'Bad request - Timezone required' };
+  }
+
+  // Start required.
+  if (event.start) {
+    checkedEvent.start = moment.utc(event.start).format('YYYY-MM-DD HH:mm');
+  }
+  else {
+    return checkedEvent = { status: 400, msg: 'Bad request - Start required' };
+  }
+
+  if (event.end) {
+    checkedEvent.end = moment.utc(event.end).format('YYYY-MM-DD HH:mm');
+  }
+  else {
+    // Set end with one hour if no end time is given.
+    checkedEvent.end = moment(checkedEvent.start,'YYYY-MM-DD HH:mm').add(1,'hour').format('YYYY-MM-DD HH:mm');
+  }
+
+  if (event.tz) {
+    checkedEvent.tz = event.tz;
+  }
+
+  if (event.description) {
+    checkedEvent.description = event.description;
+  }
+
+  if (event.className) {
+    checkedEvent.className = event.className;
+  }
+
+  if (event.allDay) {
+    checkedEvent.allDay = JSON.parse(event.allDay);
+  }
+
+  checkedEvent.updated = new Date();
+
+  return checkedEvent;
+}
+
+

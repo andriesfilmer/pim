@@ -1,252 +1,264 @@
+var moment = require('moment');
+
 var secret = require('../config/secret');
-var db = require('../config/mongo_database');
+var config = require('../config/config.js');
+var secret = require('../config/secret');
 
 exports.list = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var query = db.bookmarkModel.find({user_id: req.user.id}).limit(parseInt(req.query.limit));
+  config.pool.getConnection(function(err, connection) {
 
-  query.select("_id title url category tags created updated public");
-  query.sort('-updated');
-  query.exec(function(err, results) {
+    req.query.order === 'title' ? order = 'title' : order = 'last_read';
 
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
+    var limit = (typeof req.query.limit === 'undefined') ? 300 : parseInt(req.query.limit);
 
-    if (results === null) {
-      return res.sendStatus(404); // Not Found
-    }
-    else {
-      return res.status(200).json(results); // OK
-    } 
+    var sql = "SELECT id as _id, title, url, category, tags, created, updated \
+               FROM bookmarks WHERE user_id = ? ORDER BY " + order + " DESC limit ?";
 
+    var query = connection.query(sql, [req.user.id, limit], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      return res.status(200).json(results).end(); // OK
+
+    });
   });
-
 };
+
 
 exports.search = function(req, res) {
 
-  var bookmarks = req.query; 
+  var bookmarks = req.query;
+  var searchFor = '%' + req.query.searchKey + '%';
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   if (bookmarks.searchKey) {
-    var query = db.bookmarkModel.find({ $or: [ 
-                                          {title:   { $exists: true, $regex: bookmarks.searchKey, $options: 'i' } },
-                                          {content: { $exists: true, $regex: bookmarks.searchKey, $options: 'i' } }, 
-                                          {tags:    { $exists: true, $regex: bookmarks.searchKey, $options: 'i' } } 
-                                         ],user_id: req.user.id } );
-  } else {
-    var query = db.bookmarkModel.find({ user_id: req.user.id });
-  }
 
-  query.select("_id title url category tags created updated public");
-  query.sort('-updated');
-  query.limit(parseInt(req.query.limit));
-  query.exec(function(err, results) {
+    req.query.order === 'name' ? order = 'name' : order = 'last_read';
 
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
+    // list all bookmarks.
+    var query = config.pool.getConnection(function(err, connection) {
 
-    if (results === null) {
-      return res.sendStatus(404); // Not Found
-    }
-    else {
-      return res.status(200).json(results); // OK
-    }
+      var sql = "SELECT id as _id, title, created , updated\
+                 FROM bookmarks WHERE (title LIKE ? \
+                 OR content LIKE ? \
+                 OR url LIKE ? \
+                 OR tags LIKE ? )\
+                 AND user_id = ? \
+                 ORDER BY ?";
 
-  });
+      var query = connection.query(sql, [searchFor, searchFor, searchFor, searchFor, req.user.id, order], function(err, results) {
 
+        connection.release();
+
+        if (err) throw err;
+
+        if (results.length === 0) {
+          return res.status(200).json([]).end();
+        }
+        else {
+          return res.status(200).json(results).end(); // OK
+        }
+      });
+      console.log("######## query.sql: " + query.sql);
+    });
+  };
 };
+
 
 exports.read = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var id = req.params.id || '';
-  if (id === '') {
-    return res.sendStatus(400); // Bad Request
+  if (!req.params.id) {
+    return res.status(400).send('Bad request - id not found').end(); // Bad Request
   }
 
-  var query = db.bookmarkModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id title url category content tags created updated public');
-  query.exec(function(err, result) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
+    var sql = "SELECT id as _id, title, url,category, content, tags, created, updated \
+               FROM bookmarks WHERE id= ? AND user_id = ? LIMIT 1";
 
-    if (result === null) {
-      return res.sendStatus(400); // Bad Request
-    }
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 
-    return res.status(200).json(result);
+      var query = connection.query('UPDATE bookmarks \
+          SET times_read = times_read+1, last_read = ? \
+          WHERE id = ? AND user_id = ?',
+          [moment.utc().format('YYYY-MM-DD HH:mm'), req.params.id,req.user.id], function (err, results, fields) {
 
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+
+      });
+
+      connection.release();
+
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
+      }
+      else {
+        if (results[0].tags) { results[0].tags = JSON.parse([results[0].tags]);}
+        return res.status(200).json(results[0]).end(); // OK
+      }
+    });
   });
-}; 
+};
+
 
 exports.create = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   var bookmark = req.body.bookmark;
-  if (bookmark == null) {
-    return res.sendStatus(400); // Bad Request
+  if (!bookmark) {
+    res.status(400).send('Bad Request').end();
   }
 
-  var bookmarkEntry = new db.bookmarkModel();
+  var createBookmark = checkBookmark(bookmark);
 
-  bookmarkEntry.user_id = req.user.id;
-
-  // Title required
-  if (bookmark.title !== undefined && bookmark.title !== null && bookmark.title !== "") {
-    bookmarkEntry.title = bookmark.title;
+  if (createBookmark.err) {
+    return res.status(createBookmark.err).send(createBookmark.msg).end();
   }
   else {
-    return res.sendStatus(400); // Bad Request
+
+    createBookmark.user_id = req.user.id;
+
+    config.pool.getConnection(function(err, connection) {
+
+      var query = connection.query('INSERT INTO bookmarks SET ?', createBookmark, function (err, results, fields) {
+
+        connection.release();
+
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+        else {
+          return res.status(200).send('Created bookmark id:' + results.insertId + ' successfully').end(); // OK
+        }
+      });
+    });
   }
-
-  bookmarkEntry.url = bookmark.url;
-  bookmarkEntry.public = bookmark.public;
-  bookmarkEntry.content = bookmark.content;
-  bookmarkEntry.category = bookmark.category;
-
-  // Tags are comma separated
-  if (bookmark.tags != null) {
-    if (Object.prototype.toString.call(bookmark.tags) === '[object Array]') {
-      bookmarkEntry.tags = bookmark.tags;
-    }
-    else {
-      bookmarkEntry.tags = bookmark.tags.split(',');
-    }
-  }
-
-  bookmarkEntry.save(function(err) {
-    if (err) {
-      return res.sendStatus(400); // Bad Request
-    }
-
-    return res.status(201).send('Created bookmark successfull');
-
-  });
 }
 
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.send(401); // Not authorized
+    return res.sendStatus(401); // Not authorized
   }
 
   var bookmark = req.body.bookmark;
-  if (bookmark == null) {
-    res.sendStatus(400); // Bad request
+  if (!bookmark) {
+    return res.status(400).send('Bad request').end();
   }
 
-  var updateBookmark = {};
-
-  // Title required
-  if (bookmark.title !== null && bookmark.title !== "" && bookmark.title !== undefined) {
-    updateBookmark.title = bookmark.title;
+  if (!bookmark._id) {
+    return res.status(400).send('Bad request - id required').end();
   }
 
-  // Convert commaseparate tags to objects.
-  if (bookmark.tags != null) {
-    if (Object.prototype.toString.call(bookmark.tags) === '[object Array]') {
-      updateBookmark.tags = bookmark.tags;
-    }
-    else {
-      updateBookmark.tags = bookmark.tags.split(',');
-    }
-  }
+  var updateBookmark = checkBookmark(bookmark);
+  console.dir(updateBookmark);
+  var setkeys = Object.keys(updateBookmark).map(item => `${item} = ?`);
+  var values = Object.values(updateBookmark);
+  values.push(bookmark._id,req.user.id);
 
-  if (bookmark.url !== undefined) {
-    updateBookmark.url = bookmark.url;
-  }
+  config.pool.getConnection(function(err, connection) {
 
-  if (bookmark.category !== undefined) {
-    updateBookmark.category = bookmark.category;
-  }
+    var query = connection.query("UPDATE bookmarks SET " + setkeys + " WHERE id = ? AND user_id = ?",
+        values, function (err, results, fields) {
 
-  if (bookmark.public !== undefined) {
-    updateBookmark.public = bookmark.public;
-  }
+      connection.release();
 
-  if (bookmark.content !== undefined) {
-    updateBookmark.content = bookmark.content;
-  }
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        return res.status(200).send('Updated bookmark successfully').end(); // OK
+      }
 
-  updateBookmark.updated = new Date();
+    });
 
-  db.bookmarkModel.update({_id: bookmark._id, user_id: req.user.id}, updateBookmark, function(err, nbRows, raw) {
-    return res.status(200).send('Updated bookmark successfull');
+    console.log("######## query.sql: " + query.sql);
+
   });
-
 };
 
 exports.delete = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var id = req.params.id;
-  if (id == null || id == '') {
-    res.sendStatus(400); // Bad request
+  if (!req.params.id) {
+    res.status(400).send('Bad request - Undefined id').end();
   }
 
-  var query = db.bookmarkModel.findOne({_id:id});
+  config.pool.getConnection(function(err, connection) {
 
-  query.exec(function(err, result) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad request
-    }
+    var query = connection.query("DELETE FROM bookmarks WHERE id = ? AND user_id = ?",
+        [req.params.id,req.user.id], function (err, results, fields) {
 
-    if (result === undefined) {
-      return res.sendStatus(404); // Not Found
-    } else {
-      result.remove();
-      return res.status(200).send('Deleted bookmark successfull');
-    }
+      connection.release();
 
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        console.log(moment().format('YYYY-MM-DD') + ' user: ' + req.user.id + ' deleted -> bookmark_id: ' + req.params.id);
+        var photo = config.env().upload_dir + req.user.id + "/bookmarks/" + req.params.id + '.jpg';
+        if (fs.existsSync(photo)){ fs.unlinkSync(photo); }
+        return res.status(200).send('Deleted bookmark successfully').end(); // OK
+      }
+    });
   });
 };
 
-exports.listByTag = function(req, res) {
+// Check values for input db.
+function checkBookmark (bookmark) {
 
-  var tagName = req.params.tagName || '';
-  if (tagName == '') {
-    return res.sendStatus(400);
+  var checkedBookmark = {};
+
+  if (bookmark == null) {
+    return checkedBookmark = { err: 400, msg: 'Bad request - No bookmark available' };
   }
 
-  var query = db.bookmarkModel.find({tags: tagName, public: true, user_id: req.user.id });
-  query.select('_id title url tags category created updated public');
-  query.sort('-created');
-  query.exec(function(err, results) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400);
-    }
+  if (bookmark.title) {
+    checkedBookmark.title = bookmark.title;
+  }
 
-    for (var bookmarkKey in results) {
-      results[bookmarkKey].content = results[bookmarkKey].content.substr(0, 400);
-    }
+  if (bookmark.url) {
+    checkedBookmark.url = bookmark.url;
+  }
 
-    return res.status(200).json(result);
-  });
+  if (bookmark.content) {
+    checkedBookmark.content = bookmark.content;
+  }
+
+  if (bookmark.tags) {
+    checkedBookmark.tags = JSON.stringify(bookmark.tags);
+  }
+
+  checkedBookmark.updated = new Date();
+
+  return checkedBookmark;
 }
 

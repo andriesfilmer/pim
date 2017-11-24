@@ -1,16 +1,28 @@
-// Take a look in `env.json` form enviroment vars.
-var env = require('./env.json');
+var mysql = require('mysql');
 
+var env = require('./env.json');
+var secret = require('./secret.js');
+
+// Take a look in `env.json` form enviroment vars.
 exports.env = function() {
   var node_env = process.env.NODE_ENV || 'development';
+  //console.log("env:" + node_env)
   return env[node_env];
 };
 
-// Development and productions vars·
-// ---------------------------------
+var pool = mysql.createPool({
+  //debug    : true,
+  host     : exports.env().mysql_host,
+  user     : 'root',
+  password : secret.mysqlpassword,
+  database : 'pim',
+  //stringifyObjects : false,
+  dateStrings: 'date'
 
-exports.expiresIn = "365d";
+});
 
+exports.pool = pool;
 
-// Default location to store the uploaded photos.
-exports.default_upload_photo_dir = '../app/public/upload/contact_photos/';
+// Time in minutes (10080 = week, 524160 = 52 weeks)
+exports.expireToken = '524160m';
+

@@ -1,0 +1,13 @@
+_id
+user_id
+title
+description
+start
+end
+startTime
+name
+className
+allDay
+tz
+created
+updated

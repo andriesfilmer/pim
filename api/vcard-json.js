@@ -5,6 +5,8 @@ var EventEmitter = require("events").EventEmitter;
 var moment = require('moment');
 var _ = require ('underscore');
 var s = require("underscore.string");
+var utf8 = require('utf8');
+var quotedPrintable = require('quoted-printable');
 
 var ee = new EventEmitter();
 var attributes = {};
@@ -171,11 +173,12 @@ function attributeMatched(attribute, line, contact) {
 
     case "NOTE":
       contact.notes = s(line).strRight(':').value() + '\n';
+      contact.notes = quotedPrintable.decode(utf8.decode(contact.notes));
       break;
 
     case "NOTE_EXT":
       line = s(line.replace(/END:VCARD/ig,'')).value();
-      contact.notes += line + '\n';
+      contact.notes += quotedPrintable.decode(utf8.decode(line));
       break;
 
   }

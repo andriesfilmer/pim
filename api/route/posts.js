@@ -1,144 +1,157 @@
-var secret = require('../config/secret');
-var db = require('../config/mongo_database');
 var fs = require('fs');
+var moment = require('moment');
 var markdownpdf = require("markdown-pdf");
+
+var config = require('../config/config.js');
+var secret = require('../config/secret');
 
 exports.list = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var query = db.postModel.find({user_id: req.user.id}).limit(parseInt(req.query.limit));
+  config.pool.getConnection(function(err, connection) {
 
-  query.select("_id title type tags created updated public");
-  query.sort('-updated');
-  query.exec(function(err, results) {
+    req.query.order === 'title' ? order = 'title' : order = 'last_read';
 
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
+    var limit = (typeof req.query.limit === 'undefined') ? 300 : parseInt(req.query.limit);
 
-    if (results !== null) {
-      return res.status(200).json(results); // OK
-    } else {
-      return res.sendStatus(404); // Not Found
-    }
+    var sql = "SELECT id as _id, title, type, tags, created, updated \
+               FROM posts WHERE user_id = ? ORDER BY " + order + " DESC limit ?";
 
+    var query = connection.query(sql, [req.user.id, limit], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      return res.status(200).json(results).end(); // OK
+
+    });
   });
-
 };
 
 exports.search = function(req, res) {
 
-  var posts = req.query; 
+  var posts = req.query;
+  var searchFor = '%' + req.query.searchKey + '%';
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   if (posts.searchKey) {
-    var query = db.postModel.find({ $or: [ 
-                                          {title:   { $exists: true, $regex: posts.searchKey, $options: 'i' } },
-                                          {content: { $exists: true, $regex: posts.searchKey, $options: 'i' } }, 
-                                          {tags:    { $exists: true, $regex: posts.searchKey, $options: 'i' } } 
-                                         ],user_id: req.user.id } );
-  }
-  else {
-    var query = db.postModel.find({user_id: req.user.id});
-  }
 
-  query.select("_id title type tags created updated public");
-  query.sort('-updated');
-  query.limit(parseInt(req.query.limit));
-  query.exec(function(err, results) {
+    req.query.order === 'name' ? order = 'name' : order = 'last_read';
 
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
+    // list all posts.
+    config.pool.getConnection(function(err, connection) {
 
-    if (results !== null) {
-      return res.status(200).json(results); // OK
-    }
-    else {
-      return res.sendStatus(404); // Not Found
-    }
+      var sql = "SELECT id as _id, title, type, created , updated\
+                 FROM posts WHERE (title LIKE ? \
+                 OR content LIKE ? \
+                 OR tags LIKE ? )\
+                 AND user_id = ? \
+                 ORDER BY ?";
 
-  });
+      var query = connection.query(sql, [searchFor, searchFor, searchFor, req.user.id, order], function(err, results) {
 
+        connection.release();
+
+        if (err) throw err;
+
+        if (results.length === 0) {
+          return res.status(200).json([]).end();
+        }
+        else {
+          return res.status(200).json(results).end(); // OK
+        }
+      });
+    });
+  };
 };
 
 exports.read = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var id = req.params.id || '';
-  if (id === '') {
-    return res.sendStatus(400); // Bad Request
+  if (!req.params.id) {
+    return res.status(400).send('Bad request - id not found').end(); // Bad Request
   }
 
-  var query = db.postModel.findOne({ _id: id, user_id: req.user.id });
-  query.select('_id title tags type content created updated public');
-  query.exec(function(err, result) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
+    var sql = "SELECT id as _id, title, type, tags, content, created, updated \
+               FROM posts WHERE id= ? AND user_id = ? LIMIT 1";
 
-    if (result != null) {
-      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
-        return res.status(200).json(result);
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
+
+      var query = connection.query('UPDATE posts \
+          SET times_read = times_read+1, last_read = ? \
+          WHERE id = ? AND user_id = ?',
+          [moment.utc().format('YYYY-MM-DD HH:mm'), req.params.id,req.user.id], function (err, results, fields) {
+
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+
       });
-    }
-    else {
-      return res.sendStatus(400); // Bad Request
-    }
 
+      connection.release();
+
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
+      }
+      else {
+        if (results[0].tags) { results[0].tags = JSON.parse([results[0].tags]);}
+        return res.status(200).json(results[0]).end(); // OK
+      }
+    });
   });
-}; 
+};
 
 exports.create = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
   var post = req.body.post;
-  if (post == null) {
-    return res.sendStatus(400); // Bad Request
+  if (!post) {
+    res.status(400).send('Bad Request').end();
   }
 
-  var postEntry = new db.postModel();
+  var createPost = checkPost(post);
 
-  postEntry.user_id = req.user.id;
-  postEntry.title = post.title;
-  postEntry.public = post.public;
-  postEntry.content = post.content;
-  postEntry.type = post.type;
-
-  // Tags are comma separated
-  if (post.tags != null) {
-    if (Object.prototype.toString.call(post.tags) === '[object Array]') {
-      postEntry.tags = post.tags;
-    }
-    else {
-      postEntry.tags = post.tags.split(',');
-    }
+  if (createPost.err) {
+    return res.status(createPost.err).send(createPost.msg).end();
   }
+  else {
 
-  postEntry.save(function(err) {
-    if (err) {
-      return res.sendStatus(400); // Bad Request
-    }
+    createPost.user_id = req.user.id;
 
-    return res.status(200).send('Created post successfull');
+    config.pool.getConnection(function(err, connection) {
 
-  });
+      var query = connection.query('INSERT INTO posts SET ?', createPost, function (err, results, fields) {
+
+        connection.release();
+
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+        else {
+          return res.status(200).send('Created post id:' + results.insertId + ' successfully').end(); // OK
+        }
+      });
+    });
+  }
 }
 
 exports.update = function(req, res) {
@@ -148,88 +161,80 @@ exports.update = function(req, res) {
   }
 
   var post = req.body.post;
-  if (post == null) {
-    res.sendStatus(400); // Bad request
+  if (!post) {
+    return res.status(400).send('Bad request').end();
   }
 
-  var updatePost = {};
-
-  // Title required
-  if (post.title !== null && post.title !== "" && post.title !== undefined) {
-    updatePost.title = post.title;
+  if (!post._id) {
+    return res.status(400).send('Bad request - id required').end();
   }
 
-  // Convert commaseparate tags to objects.
-  if (post.tags != null) {
-    if (Object.prototype.toString.call(post.tags) === '[object Array]') {
-      updatePost.tags = post.tags;
-    }
-    else {
-      updatePost.tags = post.tags.split(',');
-    }
-  }
+  var updatePost = checkPost(post);
+  var setkeys = Object.keys(updatePost).map(item => `${item} = ?`);
+  var values = Object.values(updatePost);
+  values.push(post._id,req.user.id);
 
-  if (post.type != null) {
-    updatePost.type = post.type;
-  }
+  config.pool.getConnection(function(err, connection) {
 
-  if (post.public != null) {
-    updatePost.public = post.public;
-  }
+    var query = connection.query("UPDATE posts SET " + setkeys + " WHERE id = ? AND user_id = ?",
+        values, function (err, results, fields) {
 
-  if (post.content != null && post.content != "") {
-    updatePost.content = post.content;
-  }
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
 
-  updatePost.updated = new Date();
+    });
+    console.log("######## query.sql: " + query.sql);
 
-  db.postModel.update({_id: post._id, user_id: req.user.id}, updatePost, function(err, nbRows, raw){});
+    var createCopy = {'org_id': post._id, 'user_id': req.user.id };
+    var createVersion = Object.assign(updatePost, createCopy);
 
-  // Make a version after each update
-  var postVersionEntry = new db.postVersionModel({org_id: true});
-  postVersionEntry.user_id = req.user.id;
-  postVersionEntry.org_id = post._id;
-  var version = Object.keys(updatePost); 
-  version.forEach(function(entry) {
-    postVersionEntry[entry] = updatePost[entry]; 
+    var query = connection.query('INSERT INTO postversions SET ?', createVersion, function (err, results, fields) {
+
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        return res.status(200).send('Updated post successfully').end(); // OK
+      }
+
+    });
+
+    connection.release();
+
   });
-  postVersionEntry.save(function(err) {
-    if (err) {
-      return res.sendStatus(400); // Bad Request
-    }
-    return res.status(200).send('Updated post successfull'); 
-  });
-
 };
 
 exports.delete = function(req, res) {
 
   if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
+    return res.status(401).send('Unauthorized').end();
   }
 
-  var id = req.params.id;
-  if (id == null || id == '') {
-    res.sendStatus(400); // Bad request
+  if (!req.params.id) {
+    res.status(400).send('Bad request - Undefined id').end();
   }
 
-  var query = db.postModel.findOne({_id:id});
+  config.pool.getConnection(function(err, connection) {
 
-  query.exec(function(err, result) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad request
-    }
+    var query = connection.query("DELETE FROM posts WHERE id = ? AND user_id = ?",
+        [req.params.id,req.user.id], function (err, results, fields) {
 
-    if (result != null) {
-      result.remove();
-      return res.status(200).send('Deleted post successfull');
-      console.log('Post deleted successfull -> User: ' + req.user.id + ' -> contact_id' + id); 
-    }
-    else {
-      return res.sendStatus(404); // Not Found
-    }
+      connection.release();
 
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        console.log(moment().format('YYYY-MM-DD') + ' user: ' + req.user.id + ' deleted -> post_id: ' + req.params.id);
+        var photo = config.env().upload_dir + req.user.id + "/posts/" + req.params.id + '.jpg';
+        if (fs.existsSync(photo)){ fs.unlinkSync(photo); }
+        return res.status(200).send('Deleted post successfully').end(); // OK
+      }
+    });
   });
 };
 
@@ -243,60 +248,44 @@ exports.pdf = function(req, res) {
     return res.sendStatus(400); // Bad Request
   }
 
-  var query = db.postModel.findOne({ _id: req.params.id, user_id: req.user.id });
-  query.select('_id title tags type content created updated public');
-  query.exec(function(err, result) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
+    var sql = "SELECT id as _id, title, tags, content, created, updated \
+               FROM posts WHERE id= ? AND user_id = ? LIMIT 1";
 
-    if (result != null) {
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 
-      var options = { 
-        cssPath: './config/pdf.css',
+      query = connection.query('UPDATE posts SET last_read = ? WHERE id = ? AND user_id = ?',
+          [moment.utc().format('YYYY-MM-DD HH:mm'), req.params.id,req.user.id], function (err, results, fields) {
+
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+
+      });
+
+      connection.release();
+
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
       }
+      else {
 
-      var pathToPdf = './tmp/pdf/' + result._id;
-      var body = '# ' + result.title + '\n\n' + result.content;
-      markdownpdf(options).from.string(body).to(pathToPdf, function () {
-        console.log("Created -> ", pathToPdf)
-        res.download(pathToPdf); 
-      })
-
-    }
-
+        var options = { cssPath: './config/pdf.css' };
+        var pathToPdf = './tmp/pdf/' + results[0].id;
+        var body = '# ' + results[0].title + '\n\n' + results[0].content;
+        markdownpdf(options).from.string(body).to(pathToPdf, function () {
+          console.log("Created -> ", pathToPdf)
+          res.download(pathToPdf);
+        })
+      }
+    });
   });
-}; 
+};
 
-exports.listByTag = function(req, res) {
-
-  if (!req.user) {
-    return res.sendStatus(401); // Unauthorized
-  }
-
-  var tagName = req.params.tagName || '';
-  if (tagName == '') {
-    return res.sendStatus(400);
-  }
-
-  var query = db.postModel.find({tags: tagName, public: true, user_id: req.user.id });
-  query.select('_id title tags type created updated public');
-  query.sort('-created');
-  query.exec(function(err, results) {
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400);
-    }
-
-    for (var postKey in results) {
-      results[postKey].content = results[postKey].content.substr(0, 400);
-    }
-
-    return res.status(200).json(result);
-  });
-}
 
 exports.listVersions = function(req, res) {
 
@@ -304,25 +293,21 @@ exports.listVersions = function(req, res) {
     return res.sendStatus(401); // Unauthorized
   }
 
-  var query = db.postVersionModel.find({user_id: req.user.id, org_id: req.params.id});
+  var query = config.pool.getConnection(function(err, connection) {
 
-  query.select("_id title type created");
-  query.sort('-updated');
-  query.exec(function(err, results) {
+    var sql = "SELECT id as _id, title, type, tags, created, updated \
+               FROM postversions WHERE org_id = ? AND user_id = ? ORDER BY created DESC";
 
-    if (err) {
-      console.log(err);
-      return res.sendStatus(400); // Bad Request
-    }
+    query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 
-    if (results !== null) {
-      return res.status(200).json(results); // OK
-    } else {
-      return res.sendStatus(404); // Not Found
-    }
+      connection.release();
 
+      if (err) throw err;
+
+      return res.status(200).json(results).end(); // OK
+
+    });
   });
-
 };
 
 exports.readVersion = function(req, res) {
@@ -334,24 +319,55 @@ exports.readVersion = function(req, res) {
   if (!req.params.id === '') {
     return res.sendStatus(400); // Bad Request
   }
+  config.pool.getConnection(function(err, connection) {
 
-  var query = db.postVersionModel.findOne({ _id: req.params.id, user_id: req.user.id });
-  query.exec(function(err, result) {
+    var sql = "SELECT id as _id, org_id, title,type, tags, content \
+               FROM postversions WHERE id= ? AND user_id = ? LIMIT 1";
 
-    if (err) {
-        console.log(err);
-        return res.sendStatus(400); // Bad Request
-    }
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 
-    if (result != null) {
-      result.update({ $inc: { read: 1 } }, function(err, nbRows, raw) {
-        return res.status(200).json(result);
-      });
-    }
-    else {
-      return res.sendStatus(400); // Bad Request
-    }
+      connection.release();
 
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
+      }
+      else {
+        if (results[0].tags) { results[0].tags = JSON.parse([results[0].tags]);}
+        return res.status(200).json(results[0]).end(); // OK
+      }
+    });
   });
-}; 
+};
+
+// Check values for input db.
+function checkPost (post) {
+
+  var checkedPost = {};
+
+  if (post == null) {
+    return checkedPost = { err: 400, msg: 'Bad request - No post available' };
+  }
+
+  if (post.title) {
+    checkedPost.title = post.title;
+  }
+
+  if (post.content) {
+    checkedPost.content = post.content;
+  }
+
+  if (post.tags) {
+    checkedPost.tags = JSON.stringify(post.tags);
+  }
+
+  if (post.type) {
+    checkedPost.type = post.type;
+  }
+
+  checkedPost.updated = new Date();
+
+  return checkedPost;
+}
 

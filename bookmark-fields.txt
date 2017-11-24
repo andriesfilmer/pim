@@ -1,0 +1,10 @@
+_id
+user_id
+title
+url
+content
+category
+tags
+public
+created
+updated

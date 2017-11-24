@@ -1,0 +1,12 @@
+ _id
+user_id
+title
+description
+content
+type
+tags
+lang
+public
+read
+created
+updated

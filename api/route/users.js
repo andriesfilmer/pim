@@ -1,171 +1,166 @@
 var jwt = require('jsonwebtoken');
 var nodemailer = require('nodemailer');
 
-var db = require('../config/mongo_database');
 var config = require('../config/config.js');
-var secret = require('../config/secret');
-
+var secret = require('../config/secret.js');
 
 exports.signin = function(req, res) {
 
-  var email = req.body.email.toLowerCase() || '';
-  var password = req.body.password || '';
+  var email = req.body.email || undefined;
+  var password = req.body.password || undefined;
 
-  if (email == '' || password == '') { 
+  if (email === undefined || password === undefined) { 
     return res.sendStatus(401); // Unauthorized
   }
 
-  db.userModel.findOne({email: email}, function (err, user) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (err) {
-      console.log(err);
-      return res.sendStatus(500); // Internal server error
-    }
+    var sql = 'SELECT * FROM user WHERE email = ? AND password = ? AND active=1';
 
-    if (user == undefined) {
-      console.log('users -> signin -> undefined user');
-      return res.sendStatus(401); // Unauthorized 
-    }
+    connection.query(sql, [email, password], function(err, results) {
 
-    user.comparePassword(password, function(isMatch) {
-      if (!isMatch) {
-        return res.sendStatus(401); // Unauthorized
+      connection.release();
+
+      if (err) throw err;
+
+      console.log('Results: ', results);
+
+      if (results.length === 0) {
+
+        return res.sendStatus(401); // Unauthorized 
+
+      } else {
+
+        console.log("####### id: " + results[0].id);
+        var token = jwt.sign({id: results[0].id}, secret.secretToken, { expiresIn: config.expireToken });
+        return res.json({token:token, user_id: results[0].id, fullname: results[0].name});
+
       }
 
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expiresIn });
-      return res.json({token: token, user_id: user._id, fullname: user.fullname});
     });
 
   });
-};
+
+}
 
 exports.logout = function(req, res) {
 
   // Angular has already destroyed the sessionStorage.token
-  console.log("Logout -> no user from angular yet! " + req.user);
+  //console.log("Logout -> no user from angular yet! " + req.user);
+
   if (req.user) {
-    delete req.user;  
+
+    delete req.user;
     return res.send(200); // OK
-  }
-  else {
+
+  } else {
+
     return res.status(401).end(); // Unauthorized
+
   }
-}
-
-exports.register = function(req, res) {
-
-  if (req.body.fullname === undefined) {
-    return res.status(400).send('Fullname required');
-  }
-
-  var emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-  if (!emailRegex.test(req.body.email)){
-    return res.status(400).send('Not a valid emailaddress');
-  }
-
-  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
-  if (!passwordRegex.test(req.body.password)){
-    return res.status(400).send('Password must have 8 characters with numbers, lower- and uppercase');
-  }
-
-  if (req.body.passwordConfirmation !== req.body.password) {
-    return res.status(400).send('Password and confirm password not equal');
-  }
-
-  var user = new db.userModel();
-
-  user.fullname = req.body.fullname;
-  user.email = req.body.email.toLowerCase();
-  user.password = req.body.password;
-
-  user.save(function(err) {
-    console.log('Registered user.save -> ' + user.email);
-    if (err) {
-      console.log(err);
-      return res.sendStatus(500); // Internal Server Error
-    }
-    return res.sendStatus(200); // Success
-  });
-
-}
-
-exports.passwordChange = function(req, res) {
-
-  if (!req.user) {
-    return res.sendStatus(401); // Not authorized
-  }
-
-  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
-  if (!passwordRegex.test(req.body.password)){
-    return res.status(400).send('Password must have 8 characters with numbers, lower- and uppercase');
-  }
-
-  if (req.body.passwordConfirmation !== req.body.password) {
-    return res.status(400).send('Password and confirm password not equal');
-  }
-
-  var user = {};
-  db.userModel.findOne({_id: req.user.id}, function (err, user) {
-
-    user.password = req.body.password;
-    user.save(function(err) {
-      if (err) {
-        console.log(err);
-        return res.sendStatus(500); // Internal Server Error
-      }
-
-      // return user_id and new token with longer expire date.
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: config.expiresIn });
-
-      return res.json({token: token, user_id: user._id});
-
-    });
-
-  });
 
 }
 
 exports.sendToken = function(req, res) {
 
-  var user = {};
-  db.userModel.findOne({email: req.body.email}, function (err, user) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (user) {
-      var token = jwt.sign({id: user._id}, secret.secretToken, { expiresIn: "2h" });
-      sendMailToken(user, token);
-      return res.status(200).send('Email has been send'); // Success
-    }
-    else {
-      return res.status(400).send('E-mail does not exists'); // Bad Request
-    }
+    var sql = 'SELECT * FROM user WHERE email = ? and active=1';
+    connection.query(sql, [req.body.email], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      console.log('Results: ', results);
+
+      if (results.length > 0 ) {
+
+        var token = jwt.sign({id: results[0].id}, secret.secretToken, { expiresIn: '1200m' });
+        sendMailToken(results[0].name, results[0].email, token);
+        return res.end(JSON.stringify({ success: true, message: 'E-mail is verstuurd!' }));
+
+      } else {
+
+        return res.end(JSON.stringify({ success: false, message: 'E-mailadres onbekend!' }));
+
+      }
+
+    });
 
   });
 
   // Function for sending a login/change-password token to emailaddress.
-  function sendMailToken(user, token) {
+  function sendMailToken(name, email, token) {
 
     var transporter = nodemailer.createTransport({ 
-      port: config.mail_port,
+      port: config.env().mail_port,
       ignoreTLS: true
     });
 
-    var emailAddress = user.fullname + ' <' + user.email + '>' ; 
-    console.log('Send token to: ' + emailAddress + ' Port: ' + config.mail_port); 
+    var emailAddress = name + ' <' + email + '>' ; 
+    //console.log('Send token to: ' + emailAddress + ' Port: ' + config.env().mail_port); 
 
     transporter.sendMail({
-        from: config.mail_from,
+        from: config.env().mail_from,
         to: emailAddress,
-        subject: 'PIM token to change password',
-        text: 'Hello ' + user.fullname + ',\n\n'
-          + 'Someone has requested a token to reset your password (probably you).\n\n'
-          + 'Just click on this link and change your password:\n'
-          + config.cors_url[0] + '/#/user/change-password/' + token + '/' + user._id + '\n\n'
-          + 'If you didn\'t mean to reset your password, then you can just ignore this email; your password will not change.\n\n'
-          + 'Regards Andries Filmer.\n'
-          + 'http://pim.center\n'
+        subject: 'Inholland-Face | wachtwoord vergeten',
+        text: 'Beste ' + name + ',\n\n'
+          + 'Iemand heeft een verzoek gestuurd om je wachtwoord te resetten (waarschijnlijk jij zelf).\n\n'
+          + 'Klik op de onderstaande link en verander je wachtwoord:\n'
+          + config.env().cors_url + '/#/user/change-password?token=' + token + '\n\n'
+          + 'Als het niet de bedoeling was om je wachtwoord te resetten dan kan je deze mail negeren; Je wachtwoord wordt niet aangepast.\n\n'
+          + 'Groet Andries Filmer.\n'
+          + 'http://andries.filmer.nl\n'
 
     });
 
   }
+}
+
+exports.passwordChange = function(req, res) {
+
+
+  if (!req.user) {
+    return res.sendStatus(401); // Not authorized
+  }
+
+  console.log('passwordChange for id: ' + req.user.id);
+
+  //var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+  //console.log('##### password -> ' + req.body.password); 
+  if (!passwordRegex.test(req.body.password)){
+    return res.end(JSON.stringify({ success: false, message: 'Wachtwoord moet minstens 8 karakters zijn met cijfers, hoofd- en kleineletters.' }));
+  }
+
+  if (req.body.passwordConfirmation !== req.body.password) {
+    return res.end(JSON.stringify({ success: false, message: 'Wachtwoorden zijn niet gelijk!' }));
+  }
+
+  // Have te make a password strength check.
+  config.pool.getConnection(function(err, connection) {
+
+    var sql = 'UPDATE user SET password = ? WHERE id = ?';
+    connection.query(sql, [req.body.password, req.user.id], function(err, result) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      if (result.affectedRows > 0) {
+
+        return res.end(JSON.stringify({ success: true, message: 'Wachtwoord is aangepast.' }));
+
+      } else {
+
+        return res.end(JSON.stringify({ success: false, message: 'Gebruiker niet gevonden!' }));
+
+      }
+
+    });
+
+  });
 
 }
+
