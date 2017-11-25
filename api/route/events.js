@@ -27,7 +27,7 @@ exports.list = function(req, res) {
                FROM events WHERE start >= ? AND end <= ? AND user_id = ? \
                ORDER BY start LIMIT 500';
 
-    connection.query(sql, [start, end, req.user.id], function(err, results) {
+    var query = connection.query(sql, [start, end, req.user.id], function(err, results) {
 
       connection.release();
 
@@ -41,9 +41,7 @@ exports.list = function(req, res) {
       return res.status(200).json(results); // OK
 
     });
-
   });
-
 };
 
 // Search calendar
@@ -116,11 +114,7 @@ exports.read = function(req, res) {
       }
 
     });
-    console.log("######## query.sql: " + query.sql);
-
-
   });
-
 };
 
 exports.create = function(req, res) {

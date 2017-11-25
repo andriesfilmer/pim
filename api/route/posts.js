@@ -100,7 +100,6 @@ exports.read = function(req, res) {
         }
 
       });
-      console.log("######## query.sql: " + query.sql);
 
       connection.release();
 
@@ -186,7 +185,6 @@ exports.update = function(req, res) {
       }
 
     });
-    console.log("######## query.sql: " + query.sql);
 
     var createCopy = {'org_id': post._id, 'user_id': req.user.id };
     var createVersion = Object.assign(updatePost, createCopy);
