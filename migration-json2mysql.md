@@ -86,7 +86,7 @@ Use '--local-infile' with startup mysql-client for LOAD DATA.
     ALTER TABLE events CHANGE updated updated DATETIME DEFAULT CURRENT_TIMESTAMP;
     ALTER TABLE events CHANGE start start DATETIME;
     ALTER TABLE events CHANGE end end DATETIME;
-    ALTER TABLE events CHANGE allDay allDay BOOLEAN;
+    ALTER TABLE events CHANGE allDay allDay BOOLEAN DEFAULT 1;
 
     UPDATE events SET user_id='1' WHERE user_id='54c604baa6dedf6721cf609a';
     UPDATE events SET user_id='2' WHERE user_id='56e18dd635f8a31456da8839';
@@ -167,7 +167,7 @@ Use '--local-infile' with startup mysql-client for LOAD DATA.
     ALTER TABLE contacts CHANGE created created DATETIME DEFAULT CURRENT_TIMESTAMP;
     ALTER TABLE contacts CHANGE updated updated DATETIME DEFAULT CURRENT_TIMESTAMP;
     ALTER TABLE contacts CHANGE birthdate birthdate DATE;
-    ALTER TABLE contacts CHANGE starred starred BOOLEAN;
+    ALTER TABLE contacts CHANGE starred starred BOOLEAN DEFAUL 0;
 
     ALTER TABLE contacts CHANGE `read` times_read varchar(100);
     UPDATE contacts SET times_read = '0' WHERE times_read='' OR times_read IS NULL;

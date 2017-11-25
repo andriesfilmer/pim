@@ -13,12 +13,12 @@ exports.list = function(req, res) {
 
   config.pool.getConnection(function(err, connection) {
 
-    req.query.order === 'title' ? order = 'title' : order = 'last_read';
+    req.query.order === 'title' ? order = 'title' : order = 'last_read DESC';
 
     var limit = (typeof req.query.limit === 'undefined') ? 300 : parseInt(req.query.limit);
 
     var sql = "SELECT id as _id, title, type, tags, created, updated \
-               FROM posts WHERE user_id = ? ORDER BY " + order + " DESC limit ?";
+               FROM posts WHERE user_id = ? ORDER BY " + order + " limit ?";
 
     var query = connection.query(sql, [req.user.id, limit], function(err, results) {
 
@@ -43,7 +43,7 @@ exports.search = function(req, res) {
 
   if (posts.searchKey) {
 
-    req.query.order === 'name' ? order = 'name' : order = 'last_read';
+    req.query.order === 'name' ? order = 'name' : order = 'last_read DESC';
 
     // list all posts.
     config.pool.getConnection(function(err, connection) {
@@ -100,6 +100,7 @@ exports.read = function(req, res) {
         }
 
       });
+      console.log("######## query.sql: " + query.sql);
 
       connection.release();
 
@@ -295,7 +296,7 @@ exports.listVersions = function(req, res) {
 
   var query = config.pool.getConnection(function(err, connection) {
 
-    var sql = "SELECT id as _id, title, type, tags, created, updated \
+    var sql = "SELECT id as _id, title, type, tags, created \
                FROM postversions WHERE org_id = ? AND user_id = ? ORDER BY created DESC";
 
     query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {

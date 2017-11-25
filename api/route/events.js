@@ -94,7 +94,7 @@ exports.read = function(req, res) {
 
   config.pool.getConnection(function(err, connection) {
 
-    var sql = "SELECT id as _id, title, start, end, allDay, tz, description, className, created, updated \
+    var sql = "SELECT id as _id, title, start, end, CASE WHEN allDay = 0 THEN 'false' ELSE 'true' END AS allDay, tz, description, className, created, updated \
                FROM events WHERE id= ? AND user_id = ? LIMIT 1";
 
     var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
@@ -108,6 +108,7 @@ exports.read = function(req, res) {
       }
       else {
 
+        results[0].allDay = JSON.parse(results[0].allDay);
         results[0].start = moment.utc(results[0].start).format();
         results[0].end = moment.utc(results[0].end).format();
 
@@ -115,6 +116,7 @@ exports.read = function(req, res) {
       }
 
     });
+    console.log("######## query.sql: " + query.sql);
 
 
   });

@@ -18,7 +18,8 @@
     "mysql": "^2.x",
     "nodemailer": "^4.x",
     "quoted-printable": "^1.x",
-    "underscore": "^2.x",
+    "underscore": "^1.x",
     "underscore.string": "^3.x",
     "utf8": "^2.x"
   }
+}

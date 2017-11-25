@@ -19,18 +19,18 @@ exports.list = function(req, res) {
   // list all contacts.
   config.pool.getConnection(function(err, connection) {
 
-    req.query.order === 'name' ? order = 'name' : order = 'last_read';
+    req.query.order === 'name' ? order = 'name' : order = 'last_read DESC';
 
     var limit = (typeof req.query.limit === 'undefined') ? 300 : parseInt(req.query.limit);
 
     if (JSON.parse(req.query.starred)) {
       var sql = "SELECT id as _id, birthdate, name, companies, starred, photo \
-                 FROM contacts WHERE user_id = ? AND starred ORDER BY " + order + " DESC limit ?";
+                 FROM contacts WHERE user_id = ? AND starred ORDER BY " + order + " limit ?";
     } else if (JSON.parse(req.query.birthdate)) {
       var sql = "SELECT id as _id, birthdate, name, companies, starred, photo \
                  FROM contacts WHERE user_id = ? AND birthdate limit ?";
     } else {
-      var sql = "SELECT id as _id, birthdate, name, companies, starred, photo FROM contacts WHERE user_id = ? ORDER BY " + order + " DESC limit ?";
+      var sql = "SELECT id as _id, birthdate, name, companies, starred, photo FROM contacts WHERE user_id = ? ORDER BY " + order + " limit ?";
     }
 
     query = connection.query(sql, [req.user.id, limit], function(err, results) {
@@ -60,7 +60,7 @@ exports.search = function(req, res) {
 
   if (req.query.searchKey) {
 
-    req.query.order === 'name' ? order = 'name' : order = 'last_read';
+    req.query.order === 'name' ? order = 'name' : order = 'last_read DESC';
 
     // list all contacts.
     config.pool.getConnection(function(err, connection) {
@@ -264,8 +264,8 @@ exports.photoUpload = function(req, res) {
   }
 
   var filename = savePhotoUri(req.user.id, req.body.params.contact_id, req.body.params.dataUrl);
-  var photo = '/upload/' + req.user.id + "/contacts/" + filename;
-  res.status(200).send('Upload photo successfully').end();
+  var photoPath = '/upload/' + req.user.id + "/contacts/" + filename;
+  res.status(200).json({contact: {photo: photoPath}}).end(); // OK
 
 };
 
@@ -331,17 +331,7 @@ exports.vCardsUpload = function(req, res) {
               // If it has a photo_uri we want to save the picture on file with new created id.
               if (contact.photo_uri) {
 
-                var filename = savePhotoUri(req.user.id, results.insertId, contact.photo_uri);
-                photo = '/upload/' + req.user.id + '/contacts/' + filename;
-                var query = connection.query('UPDATE contacts SET photo = ? WHERE id = ?', [photo,results.insertId], function (err, results, fields) {
-
-                  if (err) {
-                    console.log(err);
-                    return res.status(400).send(err.sqlMessage).end(); // Bad Request
-                  }
-
-                });
-
+                savePhotoUri(req.user.id, results.insertId, contact.photo_uri);
               }
 
             });
@@ -394,8 +384,6 @@ exports.vcardsDownload = function(req, res) {
           contact.emails = JSON.parse([contact.emails]);
           contact.websites = JSON.parse([contact.websites]);
           contact.addresses = JSON.parse([contact.addresses]);
-
-          console.log("######## contact.name: " + contact.id + " -> " + contact.name);
 
           vcfContent += create_vCard(req, contact);
 
@@ -593,6 +581,18 @@ function savePhotoUri(user_id, contact_id, dataUrl) {
 
   fs.writeFile(imgPath, base64Data, 'base64', function(err) {
     if(err) {console.log(err);}
+  });
+
+  config.pool.getConnection(function(err, connection) {
+    photo = '/upload/' + user_id + '/contacts/' + filename;
+    var query = connection.query('UPDATE contacts SET photo = ? WHERE id = ?', [filename, contact_id], function (err, results, fields) {
+
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+
+    });
   });
 
   return filename;

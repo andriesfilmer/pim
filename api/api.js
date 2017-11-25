@@ -129,8 +129,7 @@ app.post('/contact/upload/photo', expressJwt({secret: secret.secretToken}), rout
 app.post('/contact/upload/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vCardsUpload);
 
 // Delete the contact id
-app.delete('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.delete);
-
+app.delete('/contact/:id', expressJwt({secret: secret.secretToken, credentialsRequired: true}), routes.contacts.delete);
 
 
 /*******************/
@@ -161,7 +160,7 @@ app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.d
 
 
 /*******************/
-/* Bookmark routes    */
+/* Bookmark routes */
 /*******************/
 
 // Search bookmarks
@@ -183,9 +182,16 @@ app.put('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.
 app.delete('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.delete); 
 
 
+/*******************/
+/* Error handling   /
+/*******************/
 
+app.use(function(err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send('Unauthorized - Invalid token');
+  }
+});
 
-
-
-
-
+app.use(function(req,res) {
+  res.status(404).send('Not found');
+});
