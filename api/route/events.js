@@ -106,7 +106,7 @@ exports.read = function(req, res) {
       }
       else {
 
-        results[0].allDay = JSON.parse(results[0].allDay);
+        //results[0].allDay = JSON.parse(results[0].allDay);
         results[0].start = moment.utc(results[0].start).format();
         results[0].end = moment.utc(results[0].end).format();
 
@@ -187,9 +187,7 @@ exports.update = function(req, res) {
       }
 
     });
-
   });
-
 }
 
 exports.delete = function(req, res) {
@@ -447,10 +445,7 @@ function checkEvent (event) {
     checkedEvent.className = event.className;
   }
 
-  if (event.allDay) {
-    checkedEvent.allDay = JSON.parse(event.allDay);
-  }
-
+  checkedEvent.allDay = event.allDay;
   checkedEvent.updated = new Date();
 
   return checkedEvent;
