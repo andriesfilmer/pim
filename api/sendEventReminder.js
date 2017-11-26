@@ -1,28 +1,21 @@
 var nodemailer = require('nodemailer');
-var moment = require('moment');
-
 var config = require('./config/config.js');
-var secret = require('./config/secret');
 
 // This script is only for Event reminders.
 //-----------------------------------------
 // I have a cron that runs each 5 minutes.
 // */5 * * * * export NODE_ENV=production /usr/bin/node /path/to/api_root/sendEventReminder.js
-var mStart = moment().add(1, 'days').format('YYYY-MM-DD HH:mm');
-var mEnd   = moment().add(1, 'days').add(5, 'minutes').format('YYYY-MM-DD HH:mm');
 
-// Debugging
-//console.log('Between -> gte: ' + mStart + ' And -> lt: ' + mEnd); 
-
-// Get events from MongoDb.
-getEvents(mStart, mEnd);
+// Get events from db.
+getEvents();
 
 function getEvents(mStart, mEnd) {
 
   config.pool.getConnection(function(err, connection) {
 
-    var sql = 'SELECT id as _id, user_id,title, start, end, allDay, tz, className \
-               FROM events WHERE start >= ? AND start <= ? LIMIT 10';
+    var sql = 'SELECT * FROM events\
+              WHERE start >= NOW() + INTERVAL 1 DAY\
+              AND start <= NOW() + INTERVAL 1 DAY + INTERVAL 5 MINUTE';
 
     var query = connection.query(sql, [mStart, mEnd], function(err, results) {
 
@@ -49,16 +42,17 @@ function getUser(event) {
 
   config.pool.getConnection(function(err, connection) {
 
-    var sql = 'SELECT * FROM user WHERE id = ? AND active=1';
+    var sql = 'SELECT name, email FROM user WHERE id = ? AND active=1';
 
-    var query = connection.query(sql, [event.user_id], function(err, result) {
+    var query = connection.query(sql, [event.user_id], function(err, results) {
 
       connection.release();
 
       if (err) throw err;
 
       // Call for sending the reminder.
-       sendReminder(event, result);
+      user = results[0];
+      sendReminder(event, user);
 
     });
   });
@@ -67,15 +61,15 @@ function getUser(event) {
 // Function for sending the email reminder.
 function sendReminder(event,user) {
 
-  var emailAddress = user[0].name + ' <' + user[0].email + '>' ; 
-  var transporter = nodemailer.createTransport({ 
+  var emailAddress = user.name + ' <' + user.email + '>' ;
+  var transporter = nodemailer.createTransport({
     port: config.env().mail_port,
     ignoreTLS: true
   });
 
   // Debugging
-  //console.log('Send reminder to: ' + emailAddress); 
-  //console.log('From address: ' + config.env().mail_from); 
+  //console.log('Send reminder to: ' + emailAddress);
+  //console.log('From address: ' + config.env().mail_from);
 
   var description = '';
   if (event.description) {
@@ -87,18 +81,18 @@ function sendReminder(event,user) {
       to: emailAddress,
       subject: event.title,
       text: 'Title: ' + event.title + '\n'
-        + 'Start: ' + moment(event.start).format('YYYY-MM-DD HH:mm') + '\n'
-        + 'End  : ' + moment(event.end).format('YYYY-MM-DD HH:mm') + '\n'
+        + 'Start: ' + event.start + '\n'
+        + 'End  : ' + event.end + '\n'
         + '---------------------------------------------------------------\n\n'
         + description + '\n\n'
         + '---------------------------------------------------------------\n'
-        + 'Event created on: ' + moment(event.created).format('YYYY-MM-DD') + '\n'
+        + 'Event created on: ' + event.created + '\n'
         + '---------------------------------------------------------------\n'
   });
-
 }
 
 setTimeout(function onEnd() {
   process.exit(0);
 }, 1000);
+
 

@@ -13,7 +13,7 @@ exports.env = function() {
 var pool = mysql.createPool({
   //debug    : true,
   host     : exports.env().mysql_host,
-  user     : 'pim',
+  user     : exports.env().mysql_user,
   password : secret.mysqlpassword,
   database : 'pim',
   //stringifyObjects : false,

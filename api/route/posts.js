@@ -188,6 +188,7 @@ exports.update = function(req, res) {
 
     var createCopy = {'org_id': post._id, 'user_id': req.user.id };
     var createVersion = Object.assign(updatePost, createCopy);
+    delete createVersion.updated;
 
     var query = connection.query('INSERT INTO postversions SET ?', createVersion, function (err, results, fields) {
 

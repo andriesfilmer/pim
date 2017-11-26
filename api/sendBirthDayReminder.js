@@ -2,89 +2,71 @@ var nodemailer = require('nodemailer');
 var moment = require('moment');
 
 var config = require('./config/config.js');
-var secret = require('./config/secret');
-var db = require('./config/mongo_database');
 
 // This script is only for reminder off birthdays.
 //------------------------------------------------
 // For the crontab that runs once each day at 5am.
 // 0 5 * * * export NODE_ENV=production /usr/bin/node /path/to/api_root/sendBirthDayReminder.js
 
-var month = moment().format("MM");
-var day = moment().add(1, 'days').format("DD");
 
-// Iterate contacts from MongoDb.
-getBirthdays(month, day);
+// Iterate contacts from db.
+getBirthdays();
 
-function getBirthdays(m, d) {
+function getBirthdays() {
 
-  var queryContact = db.contactModel.aggregate({
-    $match: { birthdate: { $exists: true, $ne: null }}
-  },
-  {
-    $project: {
-      name:1,
-      birthdate:1,
-      user_id:1,
-      month: { $month: '$birthdate' },
-      day: {$dayOfMonth: '$birthdate'}
-    }
-  },
-  { 
-     $match: { month: parseInt(m) , day: parseInt(d)}
-  });
+  config.pool.getConnection(function(err, connection) {
 
-  queryContact.exec(function(err, results) {
-    if (err) {
-      console.log(err);
-    }
+    var sql = "SELECT * FROM contacts\
+               WHERE DATE_FORMAT(birthdate,'%m-%d') = DATE_FORMAT(NOW() + INTERVAL 1 DAY, '%m-%d')";
 
-    // Send a reminder for each contact
-    if (typeof results === 'object') {
+    var query = connection.query(sql, function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
 
       results.forEach(function(contact){
 
-        // Debugging
-        //console.log('found: ' + contact.name);
-
+        // Call for recipient
         getUser(contact);
 
       });
-    }
+    });
   });
-
-
 };
 
 // Get user email address
 function getUser(contact) {
 
-  var queryUser = db.userModel.find({_id: { $in : [contact.user_id]}});
-  queryUser.select("fullname email");
-  queryUser.exec(function(err, result) {
+  config.pool.getConnection(function(err, connection) {
 
-   if (err) {
-     console.log(err);
-   }
+    var sql = 'SELECT name,email FROM user WHERE id = ? AND active=1 LIMIT 1';
 
-   // Call for sending the reminder.
-   sendReminder(contact, result);
+    var query = connection.query(sql, [contact.user_id], function(err, results) {
 
+      connection.release();
+
+      if (err) throw err;
+
+      // Call for sending the reminder.
+      user = results[0];
+      sendReminder(contact, user);
+
+    });
   });
-
 }
 
 // Function for sending the email reminder.
 function sendReminder(contact,user) {
 
-  var emailAddress = user[0].fullname + ' <' + user[0].email + '>' ; 
-  //console.log('Send reminder for: ' + contact.name); 
-  //console.log('Send reminder to: ' + emailAddress); 
-  //console.log('Send reminder from: ' + config.env().mail_from); 
-  //console.log('Send reminder port: ' + config.env().mail_port); 
+  var emailAddress = user.name + ' <' + user.email + '>' ;
+  //console.log('Send reminder for: ' + contact.name);
+  //console.log('Send reminder to: ' + emailAddress);
+  //console.log('Send reminder from: ' + config.env().mail_from);
+  //console.log('Send reminder port: ' + config.env().mail_port);
 
-  var transporter = nodemailer.createTransport({ 
-    port: config.env().mail_port, 
+  var transporter = nodemailer.createTransport({
+    port: config.env().mail_port,
     ignoreTLS: true
   });
 
@@ -92,11 +74,9 @@ function sendReminder(contact,user) {
       from: config.env().mail_from,
       to: emailAddress,
       subject: 'Birthday reminder for: ' + contact.name,
-      text: 'Birthday: ' + moment(contact.birthdate).format('YYYY-MM-DD') + '\n'
+      text: 'Birthday: ' + moment(contact.birthdate).format('YYYY-MM-DD') + '\n\n'
           + contact.name + ' is getting ' + (moment().diff(contact.birthdate, 'years') + 1) + ' within one day.\n'
   });
-
-
 }
 
 setTimeout(function() {
