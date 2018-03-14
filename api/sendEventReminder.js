@@ -13,7 +13,10 @@ function getEvents(mStart, mEnd) {
 
   config.pool.getConnection(function(err, connection) {
 
-    var sql = 'SELECT * FROM events\
+    var sql = 'SELECT *,\
+              CONVERT_TZ(`start`,'+00:00',@@global.time_zone) AS start_tz,\
+              CONVERT_TZ(`end`,'+00:00',@@global.time_zone) AS end_tz\
+              FROM events\
               WHERE start >= NOW() + INTERVAL 1 DAY\
               AND start <= NOW() + INTERVAL 1 DAY + INTERVAL 5 MINUTE';
 
@@ -81,8 +84,8 @@ function sendReminder(event,user) {
       to: emailAddress,
       subject: event.title,
       text: 'Title: ' + event.title + '\n'
-        + 'Start: ' + event.start + '\n'
-        + 'End  : ' + event.end + '\n'
+        + 'Start: ' + event.start_tz + '\n'
+        + 'End  : ' + event.end_tz + '\n'
         + '---------------------------------------------------------------\n\n'
         + description + '\n\n'
         + '---------------------------------------------------------------\n'
