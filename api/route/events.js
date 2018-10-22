@@ -24,10 +24,10 @@ exports.list = function(req, res) {
   config.pool.getConnection(function(err, connection) {
 
     var sql = 'SELECT id as _id, user_id,title, start, end, allDay, tz, className \
-               FROM events WHERE start >= ? AND end <= ? AND user_id = ? \
+               FROM events WHERE start <= ? AND end >= ? AND user_id = ? \
                ORDER BY start LIMIT 500';
 
-    var query = connection.query(sql, [start, end, req.user.id], function(err, results) {
+    var query = connection.query(sql, [end, start, req.user.id], function(err, results) {
 
       connection.release();
 
@@ -61,7 +61,7 @@ exports.search = function(req, res) {
       var sql = "SELECT id as _id, title, start, end , allDay, className, created, updated \
                  FROM events WHERE (title LIKE ? OR description LIKE ? )\
                  AND user_id = ? \
-                 ORDER BY start LIMIT 100";
+                 ORDER BY start DESC LIMIT 100";
       var searchFor = '%' + req.query.searchKey + '%';
 
       var query = connection.query(sql, [searchFor, searchFor, req.user.id], function(err, results) {
@@ -144,7 +144,7 @@ exports.create = function(req, res) {
           return res.status(400).send(err.sqlMessage).end(); // Bad Request
         }
         else {
-          return res.status(200).send('Created event id:' + results.insertId + ' successfull');
+          return res.status(200).send('Created event id:' + results.insertId + ' successfully');
         }
 
       });
@@ -213,7 +213,7 @@ exports.delete = function(req, res) {
         return res.status(400).send(err.sqlMessage).end(); // Bad Request
       }
       else {
-        return res.status(200).send('Deleted event successfull'); // OK
+        return res.status(200).send('Deleted event successfully'); // OK
       }
 
     });
