@@ -107,6 +107,50 @@ exports.sendToken = function(req, res) {
   }
 }
 
+
+exports.register = function(req, res) {
+
+  if (req.body.fullname === undefined) {
+    return res.status(400).send('Fullname required');
+  }
+
+  var emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  if (!emailRegex.test(req.body.email)){
+    return res.status(400).send('Not a valid emailaddress');
+  }
+
+  var passwordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+  if (!passwordRegex.test(req.body.password)){
+    return res.status(400).send('Password must have 8 characters with numbers, lower- and uppercase');
+  }
+
+  if (req.body.passwordConfirmation !== req.body.password) {
+    return res.status(400).send('Password and confirm password not equal');
+  }
+
+  var user = {};
+  user.name = req.body.fullname;
+  user.email = req.body.email;
+  user.password = req.body.password;
+
+  config.pool.getConnection(function(err, connection) {
+
+    var query = connection.query('INSERT INTO user SET ?', user, function (err, results, fields) {
+
+      connection.release();
+
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+      else {
+        return res.status(200).send('Created user id:' + results.insertId + ' successfully').end(); // OK
+      }
+    });
+  });
+
+}
+
 exports.passwordChange = function(req, res) {
 
   if (!req.user) {
@@ -138,7 +182,7 @@ exports.passwordChange = function(req, res) {
       //} else {
       //  return res.status(200).json('Password not changed!').end();
       //}
-      console.log("######## Password change: " + new Date().toUTCString() + " user.id: " + req.user.id);
+      //console.log("######## Password change: " + new Date().toUTCString() + " user.id: " + req.user.id);
       var token = jwt.sign({id: req.user.id}, secret.secretToken, { expiresIn: config.expireToken });
       return res.json({ token:token, user_id: req.user.id }).end();
 
