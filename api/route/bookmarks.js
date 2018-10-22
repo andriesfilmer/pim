@@ -1,8 +1,8 @@
 var moment = require('moment');
+var fs = require('fs');
 
 var secret = require('../config/secret');
 var config = require('../config/config.js');
-var secret = require('../config/secret');
 
 exports.list = function(req, res) {
 
@@ -69,7 +69,6 @@ exports.search = function(req, res) {
           return res.status(200).json(results).end(); // OK
         }
       });
-      console.log("######## query.sql: " + query.sql);
     });
   };
 };

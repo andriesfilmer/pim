@@ -25,9 +25,9 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.bookmarkSearchKey;
+      $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
       if ($scope.searchForm) {
-        $scope.searchBookmarks($window.sessionStorage.bookmarkSearchKey || '');
+        $scope.searchBookmarks($window.sessionStorage.sessionSearchKey || '');
       }
       else {
         $scope.getBookmarks();
@@ -37,7 +37,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       $scope.searchKey = '';
-      delete $window.sessionStorage.bookmarkSearchKey;
+      delete $window.sessionStorage.sessionSearchKey;
       $scope.searchBookmarks('', limit);
     };
 
@@ -46,7 +46,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
     // Get new bookmarks if we change the SearchKey
     $scope.searchBookmarks = function(searchKey) {
-      $window.sessionStorage.bookmarkSearchKey = searchKey;
+      $window.sessionStorage.sessionSearchKey = searchKey;
       BookmarkService.searchAll(searchKey, limit).then(function(response) {
         $scope.bookmarks = response.data;
       }, function(response) {

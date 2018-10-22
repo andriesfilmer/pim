@@ -4,7 +4,7 @@ var config = require('./config/config.js');
 // This script is only for Event reminders.
 //-----------------------------------------
 // I have a cron that runs each 5 minutes.
-// */5 * * * * export NODE_ENV=production /usr/bin/node /path/to/api_root/sendEventReminder.js
+// */5 * * * * export NODE_ENV=production /usr/local/bin/node /path/to/api_root/sendEventReminder.js
 
 // Get events from db.
 getEvents();

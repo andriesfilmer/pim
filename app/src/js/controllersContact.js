@@ -42,7 +42,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     // Hide searchForm, toggle first. Save/delete search in session.
     $scope.toggleSearch = function toggleSearch() {
       $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.contactSearchKey;
+      $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
       if ($scope.searchForm) {
         $scope.searchContacts($scope.searchKey || '');
       }
@@ -53,7 +53,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 
     // Remove searchKey and show contacts
     $scope.resetSearch = function resetSearch() {
-      delete $window.sessionStorage.contactSearchKey;
+      delete $window.sessionStorage.sessionSearchKey;
       $scope.getContacts();
     };
 
@@ -66,7 +66,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 
     // Get new contacts if we change the SearchKey
     $scope.searchContacts = function(searchKey) {
-      $window.sessionStorage.contactSearchKey = searchKey;
+      $window.sessionStorage.sessionSearchKey = searchKey;
       ContactService.searchAll(searchKey, order, limit).then(function(response) {
         $scope.contacts = response.data;
       }, function(response) {
@@ -177,7 +177,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.editForm = true;
   }
 
-  // Length of mongoDb _id = 24, so it must be a existing contact.
   if ($state.$current.name == 'contact.view') {
     console.log('Fetch contact -> _id: ' + id); 
     $scope.showAddBt  = false;

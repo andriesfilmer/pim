@@ -25,9 +25,9 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.postSearchKey;
+      $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
       if ($scope.searchForm) {
-        $scope.searchPosts($window.sessionStorage.postSearchKey || '');
+        $scope.searchPosts($window.sessionStorage.sessionSearchKey || '');
       }
       else {
         $scope.getPosts();
@@ -37,7 +37,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       $scope.searchKey = '';
-      delete $window.sessionStorage.postSearchKey;
+      delete $window.sessionStorage.sessionSearchKey;
       $scope.searchPosts('', limit);
     };
 
@@ -46,7 +46,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 
     // Get new posts if we change the SearchKey
     $scope.searchPosts = function(searchKey) {
-       $window.sessionStorage.postSearchKey = searchKey;
+       $window.sessionStorage.sessionSearchKey = searchKey;
        PostService.searchAll(searchKey, limit).then(function(response) {
          $scope.posts = response.data;
        }, function(response) {

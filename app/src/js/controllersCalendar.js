@@ -10,7 +10,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
     CalendarService.find(start, end)
     .then(function(response) {
       console.log('Promise resolve');
-      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(response.data));
+      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(response));
 
       // We get a allDay false/true as string, convert it to a boolean.
       response.data.forEach(function(event) {
@@ -104,12 +104,12 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
 
   // Remove search
   $scope.resetSearchKey = function resetSearchKey() {
-    delete $window.sessionStorage.calendarSearchKey;
+    delete $window.sessionStorage.sessionSearchKey;
     $state.go('calendar.search', {}, {reload: true});
   };
 
   // Only load searched events if searchKey is defined and we are on the search page.
-  $scope.searchKey =  $window.sessionStorage.calendarSearchKey;
+  $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
   if ($state.$current.name === 'calendar.search' && $scope.searchKey === undefined) {
     CalendarService.find(startDate).then(function(response) {
       $scope.events = response.data;
@@ -126,7 +126,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   // After each searchKey change get new evenst from CalendarService.
   $scope.$watch('searchKey', function(searchKey) {
     if (searchKey !== undefined && searchKey.length >= 3 && $state.$current.name === 'calendar.search') {
-      $window.sessionStorage.calendarSearchKey = searchKey;
+      $window.sessionStorage.sessionSearchKey = searchKey;
       CalendarService.search(searchKey).then(function(response) {
         $scope.events = response.data;
       }, function(response) {

@@ -6,7 +6,7 @@ var config = require('./config/config.js');
 // This script is only for reminder off birthdays.
 //------------------------------------------------
 // For the crontab that runs once each day at 5am.
-// 0 5 * * * export NODE_ENV=production /usr/bin/node /path/to/api_root/sendBirthDayReminder.js
+// 0 5 * * * export NODE_ENV=production /usr/local/bin/node /path/to/api_root/sendBirthDayReminder.js
 
 
 // Iterate contacts from db.
