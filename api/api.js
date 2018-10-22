@@ -102,6 +102,10 @@ app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.eve
 // User contacts     */
 /*******************/
 
+// Signup users
+app.post('/user/register', routes.users.register);
+
+
 // List contacts
 app.get('/contacts', expressJwt({secret: secret.secretToken}), routes.contacts.list);
 
