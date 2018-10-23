@@ -241,13 +241,6 @@ app.config(function ($httpProvider) {
 
 app.run(function ($rootScope, $window, $state, $timeout, $location, flash, AuthenticationService) {
 
-  // http://stackoverflow.com/questions/16753003/angularjs-initialize-zurb-foundation-js
-  $rootScope.$on('$viewContentLoaded', function () {
-    $timeout(function(){
-      $(document).foundation();
-    }, 500);
-  });
-
 
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
@@ -286,5 +279,7 @@ app.run(function ($rootScope, $window, $state, $timeout, $location, flash, Authe
       $state.go('reload');
     }
   });
+
+  $(document).foundation();
 
 });
