@@ -95,7 +95,8 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       });
     };
 
-    $scope.downloadContact = function downloadContacts() {
+    $scope.downloadContacts = function downloadContacts() {
+      console.log("######## $scope.dlPhones: " + $scope.dlPhones);
       ContactService.vCards($scope.dlPhones, $scope.dlCompanies, 
         $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses, 
         $scope.dlBirthdate, $scope.dlNotes).then(function(response) {

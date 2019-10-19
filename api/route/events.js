@@ -402,7 +402,7 @@ function create_vEvent(event) {
   // Description SHOULD NOT be longer than 75 octets, excluding the line break
   if (event.description !== undefined) {
     var desc = 'DESCRIPTION:' + event.description;
-    icsContent += desc.replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n');
+    icsContent += desc.replace(/\t/g,' ').replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n');
   }
   icsContent += 'END:VEVENT\n';
 

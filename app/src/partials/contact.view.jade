@@ -236,7 +236,7 @@ div.row
 
   div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
    div(ng-click="AddRelation(contact._id, contact.name)", data-close='')
-    div.columns.small-12.medium-6 {{contact.name}} 
+    div.columns.small-12.medium-6 {{contact.name}}
     div.columns.hide-for-small-only.medium-6 &nbsp; {{contact.companies[0].name}}
 
 div.row
@@ -265,7 +265,7 @@ div#photo.reveal.full(data-reveal='')
   div.columns.small-12(ng-if="dataUrl" class="img-container")
    p
     img(ng-src="{{dataUrl}}", ng-cropper, ng-cropper-show="showEvent", ng-cropper-options="cropperOptions")
-  div.column.small-12(ng-if="contact.photo") 
+  div.column.small-12(ng-if="contact.photo")
    h2 Remove profile photo
    button.button.alert(type="button", ng-click="removePhoto()", title="{{contact.photo}}")  Remove
  div.row(ng-if="!contact._id")

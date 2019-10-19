@@ -362,7 +362,7 @@ exports.vcardsDownload = function(req, res) {
 
     var sql = 'SELECT id, user_id, name,phones,emails, addresses,\
                companies, websites, name, birthdate, notes, starred, photo \
-               FROM contacts WHERE user_id = ? ORDER BY name limit 10';
+               FROM contacts WHERE user_id = ? ORDER BY name';
 
     query = connection.query(sql, [req.user.id], function(err, results) {
 
