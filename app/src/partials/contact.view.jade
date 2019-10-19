@@ -232,7 +232,7 @@ div.row
   div.row
    form#search
     div.columns.small-10
-     input.search-box(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey" )
+     input(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey" )
 
   div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
    div(ng-click="AddRelation(contact._id, contact.name)", data-close='')

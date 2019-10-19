@@ -55,6 +55,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.sessionSearchKey;
       $scope.getContacts();
+      $("#search input").focus();
     };
 
     // Get new contacts if we change the SearchKey

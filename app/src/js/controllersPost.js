@@ -36,9 +36,9 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
-      $scope.searchKey = '';
       delete $window.sessionStorage.sessionSearchKey;
-      $scope.searchPosts('', limit);
+      $scope.getPosts();
+      $("#search input").focus();
     };
 
     $scope.posts = [];

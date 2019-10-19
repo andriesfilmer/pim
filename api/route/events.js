@@ -358,18 +358,35 @@ exports.veventDownload = function(req, res) {
 
   console.log('Create vEvent for event_id -> ' + req.body.params.event_id);
 
-  var query = db.eventModel.findOne({ user_id: req.user.id, _id: req.body.params.event_id });
-  query.exec(function(err, result) {
+  config.pool.getConnection(function(err, connection) {
 
-    if (err) {
-      console.log(err);
-      res.status(500).send('Internal Server Error');
-    }
+    var sql = 'SELECT * FROM events WHERE id = ? AND user_id = ?';
 
-    if (result !== null) {
-        icsContent = create_vEvent(req, result);
+    query = connection.query(sql, [req.body.params.event_id, req.user.id], function(err, result) {
+
+      connection.release();
+
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+      }
+
+      if (result) {
+        var icsContent = '';
+        icsContent += "BEGIN:VCALENDAR\n";
+        icsContent += "VERSION:2.0\n";
+        icsContent += create_vEvent(result[0]);
+        icsContent += "END:VCALENDAR\n";
+
+        // Download as data stream.
         res.status(200).send(icsContent);
-    }
+      }
+      else {
+        return res.status(404).send('Not found');
+      }
+
+    });
+
   });
 };
 
@@ -379,13 +396,13 @@ function create_vEvent(event) {
 
   icsContent  = 'BEGIN:VEVENT\n';
   icsContent += 'SUMMARY:' + event.title + '\n';
-  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment.utc(event.start).toISOString().replace(/(:|-)/g,'') + '\n';
-  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment.utc(event.end).toISOString().replace(/(:|-)/g,'') + '\n';
+  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment.utc(moment(event.start).isValid() ? event.start : "").toISOString().replace(/(:|-)/g,'') + '\n';
+  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment.utc(moment(event.end).isValid() ? event.end : "").toISOString() + '\n';
   icsContent += 'PIM-CLASSNAME:' + event.className + '\n';
   // Description SHOULD NOT be longer than 75 octets, excluding the line break
   if (event.description !== undefined) {
     var desc = 'DESCRIPTION:' + event.description;
-    icsContent += desc.replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n ') + '\n';
+    icsContent += desc.replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n');
   }
   icsContent += 'END:VEVENT\n';
 

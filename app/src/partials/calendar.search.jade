@@ -1,9 +1,8 @@
 div.row(ng-hide="offline")
  div.columns.small-12 &nbsp;
-  form#search
   div.row
    div.columns.small-10
-    input.search-box(name="focus", type="text", placeholder="Calendar search ...", ng-model="searchKey", tabindex="2" )
+    input(focus-me="searchForm", type="text", placeholder="Calendar search ...", ng-model="searchKey")
    div.columns.small-2
     button.tiny.reset-button(ng-click="resetSearchKey()",type="reset") &#215;
 div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class-odd="'odd'" ng-class-even="'even'")

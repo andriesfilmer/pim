@@ -8,14 +8,14 @@ div.row(ng-hide="offline")
    a.fi-plus(ui-sref='bookmark.create',title='New item')
 
 div.row.flip-in(ng-show="searchForm")
- div.columns.small-10
-  input.search-box(focus-me="searchForm", type="text", placeholder="Bookmark search ...", ng-model="searchKey")
- div.columns.small-2
-  button.reset-button(ng-click="resetSearch()")
-   span(aria-hidden="true") &times;
+ form#search
+  div.columns.small-10
+   input(focus-me="searchForm", type="text", placeholder="Bookmark search ...", ng-model="searchKey")
+  div.columns.small-2
+   button.tiny.reset-button(type="reset", ng-click="resetSearch()") &#215;
 
 div.row.my-row(ng-repeat='bookmark in bookmarks', ng-class="bookmark.category", ng-class-odd="'odd'" ng-class-even="'even'")
-  a(ui-sref='bookmark.view({id: bookmark._id})')
+ a(ui-sref='bookmark.view({id: bookmark._id})')
    div.columns.medium-10 {{bookmark.title}}
   div.column.medium-2.hide-for-small-only
    div.secondary.label {{bookmark.created | date: 'yyyy-MM-dd'}}

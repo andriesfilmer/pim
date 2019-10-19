@@ -1,4 +1,4 @@
-appControllers.controller('BookmarkListController', ['$scope', '$state', '$window', 'flash', 'BookmarkService', 
+appControllers.controller('BookmarkListController', ['$scope', '$state', '$window', 'flash', 'BookmarkService',
   function BookmarkListController($scope, $state, $window, flash, BookmarkService) {
 
     var limit = $window.localStorage.bookmarkLimit;
@@ -7,17 +7,17 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     $scope.getBookmarks = function() {
       BookmarkService.findAll(limit)
       .then(function(response) {
-        console.log('Promise resolve'); 
+        console.log('Promise resolve');
         // To show 'no bookmarks yet' in the view.
         if (response.data.length === 0) { response.data = undefined; }
         $scope.bookmarks = response.data;
       }, function(response) {
-        console.log('Promise reject'); 
+        console.log('Promise reject');
         $scope.offline = true;
         $scope.bookmarks = response.data;
         flash('warning', response.statusText);
       }, function(data) {
-        console.log('Promise notify'); 
+        console.log('Promise notify');
         $scope.bookmarks = data;
       });
     };
@@ -36,9 +36,9 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
-      $scope.searchKey = '';
       delete $window.sessionStorage.sessionSearchKey;
-      $scope.searchBookmarks('', limit);
+      $scope.getBookmarks();
+      $("#search input").focus();
     };
 
     $scope.bookmarks = [];

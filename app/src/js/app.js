@@ -280,6 +280,8 @@ app.run(function ($rootScope, $window, $state, $timeout, $location, flash, Authe
     }
   });
 
-  $(document).foundation();
+  $rootScope.$on('$viewContentLoaded', function () {
+    $(document).foundation();
+  });
 
 });

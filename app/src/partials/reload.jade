@@ -9,8 +9,8 @@ div.row(ng-hide="signedIn")
    button.button(ui-sref="about")  About PIM
 div.row(ng-show="signedIn")
  div.columns.small-12.medium-8
-  h1.home PIM.center
-  span.home.meta-data Personal Information Manager 
+  h1.home PIM
+  span.home.meta-data Personal Information Manager
  div.columns.small-12.medium-4.text-center
   p
    button.button.fi-unlock(ui-sref="signin", ng-hide="signedIn", title="Sign in")  Sign in
@@ -24,7 +24,7 @@ div.row(ng-show="signedIn")
    button.button.fi-bookmark(ui-sref="bookmark.list")  Bookmarks
 div.row
  div.column.small-12.text-center
-  p.meta-data #{package} Version: #{version}. See full source code on 
-   a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github. 
+  p.meta-data #{package} Version: #{version}. See full source code on
+   a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github.
    | The code has a 
    a(href="http://opensource.org/licenses/MIT", target='_blank') MIT License.

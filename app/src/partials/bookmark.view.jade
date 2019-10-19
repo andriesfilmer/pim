@@ -5,7 +5,7 @@ div.row(ng-hide="offline")
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  a.fi-share(title="Share", data-open="share") 
+  a.fi-share(title="Share", data-open="share")
   span.divider
   a.fi-upload(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
   span.float-right(ng-show="showDeleteBt")
@@ -14,11 +14,11 @@ div.row(ng-hide="offline")
 
 div.row(ng-hide="editForm", ng-if="bookmark")
  div.column.small-12(ng-class='bookmark.category')
-  h1 {{bookmark.title}} 
+  h1 {{bookmark.title}}
  div.column.small-12
-  a.fi-link(href="{{bookmark.url}}")  {{bookmark.url}} 
+  a.fi-link(href="{{bookmark.url}}")  {{bookmark.url}}
  div.column.small-12
-  p#markdown(markdown='bookmark.content') 
+  p#markdown(markdown='bookmark.content')
 
 form(name="bookmarkForm", ng-show="editForm")
  div.row
@@ -54,12 +54,12 @@ form(name="bookmarkForm", ng-show="editForm")
     div.column.small-6 Hobby
     div.switch.small-6.column.bookmark-hobby.hobby
      input.switch-input#bookmark-hobby(type="radio", value="hobby", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
-     label.switch-paddle(for="bookmark-hobby") 
+     label.switch-paddle(for="bookmark-hobby")
    div.row
     div.column.small-6 Other
     div.switch.small-6.column.bookmark-other.other
      input.switch-input#bookmark-other(type="radio", value="other", name="bookmarkCategory", ng-model="bookmark.category", ng-change="isChanged()")
-     label.switch-paddle(for="bookmark-other") 
+     label.switch-paddle(for="bookmark-other")
 div.row(ng-if="bookmark")
  div.column.small-6.meta-data
   i Created:  {{bookmark.created | date: 'yyyy-MM-dd'}}

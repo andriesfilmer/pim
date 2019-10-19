@@ -1,6 +1,6 @@
 // Controller for calendar list events
-appControllers.controller('CalendarController', ['$scope', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
-  function CalendarController($scope, $state, $stateParams, $window, flash, CalendarService) {
+appControllers.controller('CalendarController', ['$scope', '$timeout', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
+  function CalendarController($scope, $timeout, $state, $stateParams, $window, flash, CalendarService) {
 
   var startDate = $stateParams.start || new Date();
 
@@ -106,6 +106,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   $scope.resetSearchKey = function resetSearchKey() {
     delete $window.sessionStorage.sessionSearchKey;
     $state.go('calendar.search', {}, {reload: true});
+    $timeout(function() { $("input").focus(); });
   };
 
   // Only load searched events if searchKey is defined and we are on the search page.
@@ -158,7 +159,7 @@ appControllers.controller('CalendarController', ['$scope', '$state', '$statePara
   $scope.downloadCalendar = function downloadCalendar() {
     CalendarService.vevents().then(function(response) {
       var file = new Blob([response.data], {type: 'text/calendar'});
-      var fileName = 'calendars.ics';
+      var fileName = 'calendar.ics';
       saveAs(file, fileName);
       $scope.downloadLabel = 'File has been downloaded!';
     });
@@ -326,7 +327,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   });
 
   $scope.downloadEvent = function downloadvevent(cal) {
-    console.log('Download event -> ' + cal._id); 
+    console.log('Download event -> ' + cal._id);
     CalendarService.vevent(cal._id).then(function(response) {
         var file = new Blob([response.data], {type: 'text/calendar'});
         var fileName = cal.title.replace(/[^\w]/gi, '') + '.ics';
@@ -360,16 +361,6 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     return share;
   }
 
-  $scope.downloadCalendar = function downloadCalendar(cal) {
-    console.log('Download event -> ' + cal._id); 
-    CalendarService.vevent(cal._id).then(function(response) {
-      var file = new Blob([response.data], {type: 'text/calendar'});
-      var fileName = cal.title.replace(/[^\w]/gi, '') + '.ics';
-      saveAs(file, fileName);
-      $scope.downloadLabel = 'File has been downloaded!';
-    });
-
-  };
 }]);
 
 
