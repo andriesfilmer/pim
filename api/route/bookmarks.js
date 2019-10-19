@@ -252,6 +252,10 @@ function checkBookmark (bookmark) {
     checkedBookmark.content = bookmark.content;
   }
 
+  if (bookmark.category) {
+    checkedBookmark.category = bookmark.category;
+  }
+
   if (bookmark.tags) {
     checkedBookmark.tags = JSON.stringify(bookmark.tags);
   }
