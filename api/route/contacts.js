@@ -636,7 +636,7 @@ function checkContact (contact) {
     checkedContact.birthdate = moment(contact.birthdate).format('YYYY-MM-DD');
   }
 
-  if (contact.starred) {
+  if (typeof contact.starred !== 'undefined') {
     checkedContact.starred = contact.starred;
   }
 
