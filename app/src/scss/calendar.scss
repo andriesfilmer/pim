@@ -5,6 +5,7 @@ input#title {
 }
 
 $color-business: red;
+$color-task: purple;
 $color-memo: orange;
 $color-holiday: mediumseagreen;
 $color-appointment: dodgerblue;
@@ -15,6 +16,15 @@ $color-import: plum;
   padding-right: 0;
   &.fc-event {
     background-color: $color-business; 
+    border-left: 2px; 
+  }
+}
+.task {
+  border-right: 8px $color-task solid;
+  padding-right: 0;
+  &.fc-event {
+    background-color: $color-task; 
+    border-color: purple;
     border-left: 2px; 
   }
 }

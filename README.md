@@ -26,7 +26,7 @@ You need npm, nodejs and mongodb (default install will do)
     git clone https://github.com/andriesfilmer/pim.git
     cd pim/app && npm install
     sudo npm install -g grunt-cli
-    sudo apt install nodejs-legacy
+    sudo apt install nodejs
     grunt once    # To copy and compile vendor files once.
     grunt         # For development with 'connect' to run a server
 
@@ -43,8 +43,8 @@ After running `grunt production` copy the `public` folder to your webserver.
 
 Create a file `api/config/secret.js`
 
-    exports.mongodbURL = 'mongodb://pim:yourpassword@localhost/pim';
-    exports.secretToken = 'feb5ed8--your-secret-token--rzeSFejmplc';
+    exports.secretToken = '--your-secret-token--';
+    exports.mysqlpassword = '--your-secret-mysql-password--';
 
 Run the api in development
 
@@ -57,7 +57,7 @@ Run the api in production
 - The api is running on http://localhost:3001
 - Change `api/config/env.json` to your needs.
 - Edit `api/config/env.json` and replace the value of `cors_url` (Access-Control-Allow-Origin) to match your server configuration and your enviroment.
-- Create a `cron` for running your api after reboot: `@reboot export NODE_ENV=production;/usr/local/bin/forever start --sourceDir /var/www/pim.filmer.net/current/api api.js` 
+- Create a systemd service `systemctl link config/api-filmer.service`
 - Create a upstream proxy  (zie api/nginx.conf as a example).
 - Create a symlink for photos `cd public/ && ln -s ../upload/ upload`
 

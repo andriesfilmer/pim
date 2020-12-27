@@ -356,7 +356,7 @@ exports.veventDownload = function(req, res) {
     return res.status(401).send('Unauthorized').end();
   }
 
-  console.log('Create vEvent for event_id -> ' + req.body.params.event_id);
+  console.log('Select event for download -> event_id -> ' + req.body.params.event_id);
 
   config.pool.getConnection(function(err, connection) {
 
@@ -396,13 +396,14 @@ function create_vEvent(event) {
 
   icsContent  = 'BEGIN:VEVENT\n';
   icsContent += 'SUMMARY:' + event.title + '\n';
-  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment.utc(moment(event.start).isValid() ? event.start : "").toISOString().replace(/(:|-)/g,'') + '\n';
-  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment.utc(moment(event.end).isValid() ? event.end : "").toISOString() + '\n';
+  icsContent += 'DTSTART;TZID=' + event.tz + ':' + moment(event.start).format('YYYYMMDDTHHmmss') + 'Z\n';
+  icsContent += 'DTEND;TZID=' + event.tz + ':' + moment(event.end).format('YYYYMMDDTHHmmss') + 'Z\n';
   icsContent += 'PIM-CLASSNAME:' + event.className + '\n';
-  // Description SHOULD NOT be longer than 75 octets, excluding the line break
   if (event.description !== undefined) {
     var desc = 'DESCRIPTION:' + event.description;
-    icsContent += desc.replace(/\t/g,' ').replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n');
+    // Description SHOULD NOT be longer than 75 octets, excluding the line break
+    //icsContent += desc.replace(/\t/g,' ').replace(/(\r\n|\n|\r)/g,'\\n').replace(/(.{1,73})/g, '$1 \r\n');
+    icsContent += desc.replace(/\t/g,' ').replace(/(\r\n|\n|\r)/g,'\\n').replace(/(\,)/g,'\\,') + '\n';
   }
   icsContent += 'END:VEVENT\n';
 

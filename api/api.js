@@ -63,7 +63,7 @@ app.post('/user/signin', routes.users.signin);
 app.get('/user/logout', routes.users.logout);
 
 // Password change
-app.post('/user/password-change', expressJwt({secret: secret.secretToken, credentialsRequired: false}), routes.users.passwordChange);
+app.post('/user/password-change', expressJwt({secret: secret.secretToken, algorithms: ['HS256'], credentialsRequired: false}), routes.users.passwordChange);
 
 // Send token to emailaddress
 app.post('/user/send-token', routes.users.sendToken);
@@ -73,29 +73,29 @@ app.post('/user/send-token', routes.users.sendToken);
 /*******************/
 
 // Get all events
-app.get('/calendar/events', expressJwt({secret: secret.secretToken}), routes.events.list);
+app.get('/calendar/events', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.list);
 
 // Search events
-app.get('/calendar/search', expressJwt({secret: secret.secretToken}), routes.events.search);
+app.get('/calendar/search', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.search);
 
 // Get the event (id)
-app.get('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.read);
+app.get('/calendar/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.read);
 
 // Create a new event item
-app.post('/calendar', expressJwt({secret: secret.secretToken}), routes.events.create);
+app.post('/calendar', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.create);
 
 // Update event item (id)
-app.put('/calendar', expressJwt({secret: secret.secretToken}), routes.events.update);
+app.put('/calendar', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.update);
 
 // File upload for vCalendar
-app.post('/calendar/upload/vcalendar', expressJwt({secret: secret.secretToken}), routes.events.vCalendarUpload);
+app.post('/calendar/upload/vcalendar', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.vCalendarUpload);
 
 // File download for calendar event(s) in iCalendar format.
-app.post('/calendar/download/vevents', expressJwt({secret: secret.secretToken}), routes.events.veventsDownload);
-app.post('/calendar/download/vevent', expressJwt({secret: secret.secretToken}), routes.events.veventDownload);
+app.post('/calendar/download/vevents', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.veventsDownload);
+app.post('/calendar/download/vevent', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.veventDownload);
 
 // Delete event item (id)
-app.delete('/calendar/:id', expressJwt({secret: secret.secretToken}), routes.events.delete);
+app.delete('/calendar/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.delete);
 
 
 /*******************/
@@ -107,33 +107,33 @@ app.post('/user/register', routes.users.register);
 
 
 // List contacts
-app.get('/contacts', expressJwt({secret: secret.secretToken}), routes.contacts.list);
+app.get('/contacts', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.list);
 
 // Search contacts
-app.get('/contacts/search', expressJwt({secret: secret.secretToken}), routes.contacts.search);
+app.get('/contacts/search', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.search);
 
 // Get the contact id
-app.get('/contact/:id', expressJwt({secret: secret.secretToken}), routes.contacts.read);
+app.get('/contact/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.read);
 
 // Create a new contact
-app.post('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.create);
+app.post('/contact', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.create);
 
 // Edit the contact id
-app.put('/contact', expressJwt({secret: secret.secretToken}), routes.contacts.update);
+app.put('/contact', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.update);
 
 
 // File download for contact(s) in vCard format.
-app.post('/contacts/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcardsDownload);
-app.post('/contact/download/vcard', expressJwt({secret: secret.secretToken}), routes.contacts.vcardDownload);
+app.post('/contacts/download/vcard', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.vcardsDownload);
+app.post('/contact/download/vcard', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.vcardDownload);
 
 // File upload for profile pictures
-app.post('/contact/upload/photo', expressJwt({secret: secret.secretToken}), routes.contacts.photoUpload);
+app.post('/contact/upload/photo', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.photoUpload);
 
 // File upload for vCards
-app.post('/contact/upload/vcards', expressJwt({secret: secret.secretToken}), routes.contacts.vCardsUpload);
+app.post('/contact/upload/vcards', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.vCardsUpload);
 
 // Delete the contact id
-app.delete('/contact/:id', expressJwt({secret: secret.secretToken, credentialsRequired: true}), routes.contacts.delete);
+app.delete('/contact/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256'], credentialsRequired: true}), routes.contacts.delete);
 
 
 /*******************/
@@ -141,25 +141,25 @@ app.delete('/contact/:id', expressJwt({secret: secret.secretToken, credentialsRe
 /*******************/
 
 // Get all posts
-app.get('/posts', expressJwt({secret: secret.secretToken}), routes.posts.list);
+app.get('/posts', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.list);
 
 // Search posts
-app.get('/posts/search', expressJwt({secret: secret.secretToken}), routes.posts.search);
+app.get('/posts/search', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.search);
 
 // Get the post id
-app.get('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.read); 
-app.post('/post/pdf/:id', expressJwt({secret: secret.secretToken}), routes.posts.pdf); 
-app.get('/post/version/:id', expressJwt({secret: secret.secretToken}), routes.posts.readVersion); 
-app.get('/post/versions/:id', expressJwt({secret: secret.secretToken}), routes.posts.listVersions); 
+app.get('/post/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.read);
+app.post('/post/pdf/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.pdf);
+app.get('/post/version/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.readVersion);
+app.get('/post/versions/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.listVersions);
 
 // Create a new post
-app.post('/post', expressJwt({secret: secret.secretToken}), routes.posts.create); 
+app.post('/post', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.create);
 
 // Edit the post id
-app.put('/post', expressJwt({secret: secret.secretToken}), routes.posts.update); 
+app.put('/post', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.update);
 
 // Delete the post id
-app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.delete); 
+app.delete('/post/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.posts.delete);
 
 
 
@@ -168,22 +168,22 @@ app.delete('/post/:id', expressJwt({secret: secret.secretToken}), routes.posts.d
 /*******************/
 
 // Search bookmarks
-app.get('/bookmarks/search', expressJwt({secret: secret.secretToken}), routes.bookmarks.search);
+app.get('/bookmarks/search', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.bookmarks.search);
 
 // Get all bookmarks
-app.get('/bookmarks', expressJwt({secret: secret.secretToken}), routes.bookmarks.list);
+app.get('/bookmarks', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.bookmarks.list);
 
 // Get the bookmark id
-app.get('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.read); 
+app.get('/bookmark/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.bookmarks.read);
 
 // Create a new bookmark
-app.post('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.create); 
+app.post('/bookmark', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.bookmarks.create);
 
 // Edit the bookmark id
-app.put('/bookmark', expressJwt({secret: secret.secretToken}), routes.bookmarks.update); 
+app.put('/bookmark', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.bookmarks.update);
 
 // Delete the bookmark id
-app.delete('/bookmark/:id', expressJwt({secret: secret.secretToken}), routes.bookmarks.delete); 
+app.delete('/bookmark/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.bookmarks.delete);
 
 
 /*******************/

@@ -1,3 +1,5 @@
+// IMPORT vcards into DB
+// ---------------------
 // Inspired by https://github.com/steven-elliott/vcard-json
 
 var fs = require ('fs');
@@ -46,7 +48,7 @@ function parse(data) {
       // Init new event
       vevent = {};
       vevent.title = "empty";
-      vevent.allDay = 'false';
+      vevent.allDay = 0;
       vevent.tz = moment.tz.guess();
     }
 
@@ -58,7 +60,15 @@ function parse(data) {
 
       if (s(lineContent).startsWith(attribute) && vevent) {
 
-        ee.emit("attributeMatched", attribute, lineContent, vevent); 
+        ee.emit("attributeMatched", attribute, lineContent, vevent);
+
+        // If we have DTSTART and DTEND ending on '0000Z' its a allDay event.
+        if (s(lineContent).startsWith('DTSTART') || s(lineContent).startsWith('DTEND')) {
+          console.log("######## lineContent: " + lineContent);
+          if (s(lineContent).endsWith('T000000Z') && s(lineContent).endsWith('T000000Z')) {
+            vevent.allDay = 1;
+          }
+        }
 
         // If we have DESCRIPTION there can be more lines.
         // We add the unknown lines to the last attribute.
@@ -95,7 +105,7 @@ function attributeMatched(attribute, line, vevent) {
 
     case "DTSTART":
       var start = s(line).strRight(':').clean().value();
-      vevent.start = moment(start).toISOString(); 
+      vevent.start = moment(start).toISOString();
       break;
 
     case "DTSTART;TZID=":

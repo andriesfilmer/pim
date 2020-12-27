@@ -167,16 +167,16 @@ module.exports = function(grunt) {
       }
     },
     // Jade templating language focused on enabling quick HTML coding
-    jade: {
+    pug: {
       compile: {
         options: {
             pretty: true,
             data: {package: '<%= pkg.name %>', version: '<%= pkg.version %>'}
         },
-        files: [ { 
-          expand: true, 
+        files: [ {
+          expand: true,
           dest: "public/partials",
-          src: "**/*.jade", 
+          src: "**/*.pug",
           cwd: "src/partials",
           ext: '.html',
           extDot: 'last'
@@ -194,7 +194,7 @@ module.exports = function(grunt) {
     watch: {
       all: {
         options: { livereload: true },
-        files: ['Gruntfile.js', 'src/layout/*', 'src/js/*', 'src/scss/*','src/partials/**/*.jade'],
+        files: ['Gruntfile.js', 'src/layout/*', 'src/js/*', 'src/scss/*','src/partials/**/*.pug'],
         tasks: ['default']
       },
     },
@@ -223,7 +223,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-connect');
-  grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks('grunt-contrib-pug');
   grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks("grunt-remove-logging");
 
@@ -232,12 +232,12 @@ module.exports = function(grunt) {
   grunt.registerTask('once', ['sass:foundation', 'copy']);
 
   // Default tasks for development
-  grunt.registerTask('default', ['env:dev',  'preprocess', 'ngconstant:dev', 'sass:dist', 'concat:dev', 
-                                 'uglify', 'jade', 'jshint', 'connect','watch']);
+  grunt.registerTask('default', ['env:dev',  'preprocess', 'ngconstant:dev', 'sass:dist', 'concat:dev',
+                                 'uglify', 'pug', 'jshint', 'connect','watch']);
 
   // grunt for production (minified files, remove logging, clean-up)
-  grunt.registerTask('production', ['once', 'env:prod','preprocess', 'ngconstant:prod', 'sass', 
-                                    'concat:prod', 'removelogging', 'cssmin', 'uglify', 
-                                    'jade', 'appcache', 'clean']);
+  grunt.registerTask('production', ['once', 'env:prod','preprocess', 'ngconstant:prod', 'sass',
+                                    'concat:prod', 'removelogging', 'cssmin', 'uglify',
+                                    'pug', 'appcache', 'clean']);
 
 };

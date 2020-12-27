@@ -56,7 +56,12 @@
   <!-- @endif -->
 
 </head>
+<!-- @if NODE_ENV == 'DEVELOPMENT' -->
+<body ng-app="app" style="background: silver">
+<!-- @endif -->
+<!-- @if NODE_ENV == 'PRODUCTION' -->
 <body ng-app="app">
+<!-- @endif -->
 <div class="off-canvas-wrapper">
   <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
     <div class="off-canvas position-right" id="offCanvas" data-off-canvas data-position="right">

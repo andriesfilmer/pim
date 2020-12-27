@@ -73,6 +73,11 @@ form(name="eventForm")
       input#cal-appointment.switch-input(type="radio", value="appointment", name="className", ng-model="cal.className", ng-change="change()")
       label.switch-paddle(for="cal-appointment")
     div.row
+     div.column.small-6 Task
+     div.switch.column.small-6.cal-task.task
+      input#cal-memo.switch-input(type="radio", value="task", name="className", ng-model="cal.className", ng-change="change()")
+      label.switch-paddle(for="cal-memo") 
+    div.row
      div.column.small-6 Memo
      div.switch.column.small-6.cal-memo.memo
       input#cal-memo.switch-input(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
@@ -116,8 +121,9 @@ div.row
     div.small-12.columns
      fieldset
       legend.fi-share  Share with
-      include ./includes/share.jade
+      include ./includes/share.pug
+
      fieldset
       legend.fi-download  Event as iCalendar
-      include ./includes/calendar.vevent.jade
+      include ./includes/calendar.vevent.pug
 
