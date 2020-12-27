@@ -1,0 +1,20 @@
+[Unit]
+Description=Api Filmer Express HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+User=nodejs
+Group=www-data
+
+Environment=NODE_ENV=production
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/var/www/pim.filmer.net/current/api
+
+ExecStart=/usr/bin/node /var/www/pim.filmer.net/current/api/api.js
+PIDFile=/var/www/pim.filmer.net/current/api/form-api.pid
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
