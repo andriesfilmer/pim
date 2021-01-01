@@ -111,6 +111,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: 'CalendarController',
       access: { requiredAuthentication: true}
     })
+    .state('calendar.version', {
+      url: "/event/:id",
+      templateUrl: "partials/calendar.event.html",
+      controller: 'EventController',
+      access: { requiredAuthentication: true }
+    })
 
     // Contact views
     .state('contact', {
@@ -150,6 +156,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
     })
     .state('contact.view', {
       url: "/:id",
+      templateUrl: "partials/contact.view.html",
+      controller: 'ContactController',
+      access: { requiredAuthentication: true }
+    })
+    .state('contact.version', {
+      url: "/version/:id",
       templateUrl: "partials/contact.view.html",
       controller: 'ContactController',
       access: { requiredAuthentication: true }

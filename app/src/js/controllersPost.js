@@ -64,13 +64,13 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 
 }]);
 
-appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 'MarkdownToc',
-  function PostController($rootScope, $scope, $state, $window, $stateParams, flash, PostService, MarkdownToc) {
+appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 'MarkdownToc',
+  function PostController($scope, $state, $window, $stateParams, flash, PostService, MarkdownToc) {
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
 
-    // Creat new TOC.
+    // Create new TOC.
     $scope.toc = MarkdownToc.make({_id: $scope.post._id, content: $scope.post.content});
     $scope.editForm = !$scope.editForm;
 
@@ -93,6 +93,7 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
   }
   // ID is present so it must be a existing post.
   else if ($state.$current.name == 'post.view') {
+    console.log('Fetch post -> _id: ' + $stateParams.id);
     PostService.read($stateParams.id).then(function(response) {
       $scope.share = sharePost(response.data);
       $scope.post = response.data;
@@ -104,7 +105,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
       flash('warning', response.statusText);
     }, function(data) {
       console.log('Promise notify'); 
-      console.dir(data);
       $scope.post = data;
     });
 
@@ -158,7 +158,6 @@ appControllers.controller('PostController', ['$rootScope', '$scope', '$state' ,'
 
   $scope.downloadPdf = function downloadPdf(post) {
     PostService.pdf(post._id).then(function(response) {
-      console.dir(response.data);
       var file = new Blob([response.data], {type: 'application/pdf'});
       var title = post.title.replace(/[^\w]/gi, '');
       saveAs(file, title + ".pdf");

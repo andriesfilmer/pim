@@ -80,6 +80,8 @@ app.get('/calendar/search', expressJwt({secret: secret.secretToken, algorithms: 
 
 // Get the event (id)
 app.get('/calendar/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.read);
+app.get('/calendar/version/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.readVersion);
+app.get('/calendar/versions/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.listVersions);
 
 // Create a new event item
 app.post('/calendar', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.events.create);
@@ -114,6 +116,8 @@ app.get('/contacts/search', expressJwt({secret: secret.secretToken, algorithms: 
 
 // Get the contact id
 app.get('/contact/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.read);
+app.get('/contact/version/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.readVersion);
+app.get('/contact/versions/:id', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.listVersions);
 
 // Create a new contact
 app.post('/contact', expressJwt({secret: secret.secretToken, algorithms: ['HS256']}), routes.contacts.create);

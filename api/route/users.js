@@ -29,7 +29,7 @@ exports.signin = function(req, res) {
 
       } else {
 
-        console.log("######## Login: " + new Date().toUTCString() + " User: " + results[0].name);
+        console.log("Login: " + new Date().toUTCString() + " User: " + results[0].name);
         var token = jwt.sign({id: results[0].id}, secret.secretToken, { expiresIn: config.expireToken });
         return res.json({token:token, user_id: results[0].id, fullname: results[0].name});
 

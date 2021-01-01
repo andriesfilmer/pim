@@ -173,6 +173,14 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
       return deferred.promise;
     },
 
+    readVersion: function(id) {
+      return $http.get(options.api.base_url + '/calendar/version/' + id);
+    },
+
+    listVersions: function(id) {
+      return $http.get(options.api.base_url + '/calendar/versions/' + id);
+    },
+
     create: function(calendar) {
       return $http.post(options.api.base_url + '/calendar', {'calendar': calendar});
     },
@@ -282,6 +290,14 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
       return deferred.promise;
 
+    },
+
+    readVersion: function(id) {
+      return $http.get(options.api.base_url + '/contact/version/' + id);
+    },
+
+    listVersions: function(id) {
+      return $http.get(options.api.base_url + '/contact/versions/' + id);
     },
 
     create: function(contact) {

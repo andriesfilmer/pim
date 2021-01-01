@@ -156,39 +156,55 @@ exports.create = function(req, res) {
 exports.update = function(req, res) {
 
   if (!req.user) {
-    return res.status(401).send('Unauthorized').end();
+    return res.sendStatus(401); // Not authorized
   }
 
   var event = req.body.calendar;
+  if (!event) {
+    return res.status(400).send('Bad request').end();
+  }
 
-  // Id required.
-  if (event._id == null) {
+  if (!event._id) {
     return res.status(400).send('Bad request - id required').end();
   }
 
   var updateEvent = checkEvent(event);
+  var setkeys = Object.keys(updateEvent).map(item => `${item} = ?`);
+  var values = Object.values(updateEvent);
+  values.push(event._id,req.user.id);
 
   config.pool.getConnection(function(err, connection) {
 
-    var query = connection.query("UPDATE events SET title = ?, start = ?, end = ?, description = ?,\
-                className = ?, allDay= ?, tz = ?, updated = ? WHERE id = ?",
-                [updateEvent.title,updateEvent.start, updateEvent.end, updateEvent.description,
-                updateEvent.className, updateEvent.allDay, updateEvent.tz, updateEvent.updated,
-                event._id], function (err, results, fields) {
+    var query = connection.query("UPDATE events SET " + setkeys + " WHERE id = ? AND user_id = ?",
+        values, function (err, results, fields) {
 
-      connection.release();
+      if (err) {
+        console.log(err);
+        return res.status(400).send(err.sqlMessage).end(); // Bad Request
+      }
+
+    });
+
+    var createCopy = {'org_id': event._id, 'user_id': req.user.id };
+    var createVersion = Object.assign(updateEvent, createCopy);
+    delete createVersion.updated;
+
+    var query = connection.query('INSERT INTO eventversions SET ?', createVersion, function (err, results, fields) {
 
       if (err) {
         console.log(err);
         return res.status(400).send(err.sqlMessage).end(); // Bad Request
       }
       else {
-        return res.status(200).send('Updated event successfully'); // OK
+        return res.status(200).send('Updated event successfully').end(); // OK
       }
 
     });
+
+    connection.release();
+
   });
-}
+};
 
 exports.delete = function(req, res) {
 
@@ -220,6 +236,67 @@ exports.delete = function(req, res) {
 
   });
 
+};
+
+exports.listVersions = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = config.pool.getConnection(function(err, connection) {
+
+    var sql = "SELECT id as _id, title \
+               FROM eventversions WHERE org_id = ? AND user_id = ? ";
+    console.log("######## sql: " + sql);
+    console.log("######## req.params.id: " + req.params.id);
+    console.log("######## req.user.id: " + req.user.id);
+
+    query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      console.dir(results);
+      return res.status(200).json(results).end(); // OK
+
+    });
+  });
+};
+
+exports.readVersion = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  if (!req.params.id === '') {
+    return res.sendStatus(400); // Bad Request
+  }
+  config.pool.getConnection(function(err, connection) {
+
+    var sql = "SELECT id as _id, org_id, title \
+               FROM eventversions WHERE id= ? AND user_id = ? LIMIT 1";
+    console.log("######## sql: " + sql);
+    console.log("######## req.params.id: " + req.params.id);
+    console.log("######## req.user.id: " + req.user.id);
+
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
+      }
+      else {
+        if (results[0].tags) { results[0].tags = JSON.parse([results[0].tags]);}
+        return res.status(200).json(results[0]).end(); // OK
+      }
+    });
+  });
 };
 
 exports.vCalendarUpload = function(req, res) {

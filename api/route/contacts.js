@@ -126,8 +126,8 @@ exports.read = function(req, res) {
       else {
 
         // Parse json strings from database.
-        results[0].companies = JSON.parse([results[0].companies]);
         results[0].phones = JSON.parse([results[0].phones]);
+        results[0].companies = JSON.parse([results[0].companies]);
         results[0].emails = JSON.parse([results[0].emails]);
         results[0].websites = JSON.parse([results[0].websites]);
         results[0].addresses = JSON.parse([results[0].addresses]);
@@ -198,7 +198,7 @@ exports.update = function(req, res) {
     return res.status(400).send('Bad request - id required').end();
   }
 
-  var updateContact = checkContact(contact);
+  var updateContact = checkContact(contact, req.user.id);
   var setkeys = Object.keys(updateContact).map(item => `${item} = ?`);
   var values = Object.values(updateContact);
   values.push(contact._id,req.user.id);
@@ -208,17 +208,36 @@ exports.update = function(req, res) {
     var query = connection.query("UPDATE contacts SET " + setkeys + " WHERE id = ? AND user_id = ?",
         values, function (err, results, fields) {
 
-      connection.release();
-
       if (err) {
         console.log(err);
         return res.status(400).send(err.sqlMessage).end(); // Bad Request
       }
-      else {
-        return res.status(200).send('Updated contact successfully').end(); // OK
-      }
 
     });
+
+    // Don't create a version copy if name not exitst, i.o. update for starred.
+    if (contact.name) {
+      var createCopy = {'org_id': contact._id, 'user_id': req.user.id };
+      var createVersion = Object.assign(updateContact, createCopy);
+      delete createVersion.updated;
+
+      var query = connection.query('INSERT INTO contactversions SET ?', createVersion, function (err, results, fields) {
+
+        if (err) {
+          console.log(err);
+          return res.status(400).send(err.sqlMessage).end(); // Bad Request
+        }
+        else {
+          return res.status(200).send('Updated contact successfully').end(); // OK
+        }
+
+      });
+    }
+    else {
+      return res.status(200).send('Updated contact successfully').end(); // OK
+    }
+
+    connection.release();
 
   });
 
@@ -254,6 +273,68 @@ exports.delete = function(req, res) {
 
     });
 
+  });
+};
+
+exports.listVersions = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  var query = config.pool.getConnection(function(err, connection) {
+
+    var sql = "SELECT id as _id, name, created \
+               FROM contactversions WHERE org_id = ? AND user_id = ? ORDER BY created DESC";
+
+    query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      return res.status(200).json(results).end(); // OK
+
+    });
+  });
+};
+
+exports.readVersion = function(req, res) {
+
+  if (!req.user) {
+    return res.sendStatus(401); // Unauthorized
+  }
+
+  if (!req.params.id === '') {
+    return res.sendStatus(400); // Bad Request
+  }
+  config.pool.getConnection(function(err, connection) {
+
+    var sql = "SELECT id as _id, org_id, phones, emails, addresses, companies, websites, name, birthdate, notes, phones_fax, starred, photo \
+               FROM contactversions WHERE id= ? AND user_id = ? LIMIT 1";
+
+    var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
+
+      connection.release();
+
+      if (err) throw err;
+
+      if (results.length === 0) {
+        return res.status(404).send('Not found').end();
+      }
+      else {
+
+        // Parse json strings from database.
+        //results[0].companies = JSON.parse([results[0].companies]);
+        results[0].phones = JSON.parse([results[0].phones]);
+        results[0].companies = JSON.parse([results[0].companies]);
+        results[0].emails = JSON.parse([results[0].emails]);
+        results[0].websites = JSON.parse([results[0].websites]);
+        results[0].addresses = JSON.parse([results[0].addresses]);
+
+        return res.status(200).json(results[0]).end(); // OK
+      }
+    });
   });
 };
 
@@ -360,7 +441,7 @@ exports.vcardsDownload = function(req, res) {
 
   config.pool.getConnection(function(err, connection) {
 
-    var sql = 'SELECT id, user_id, name,phones,emails, addresses,\
+    var sql = 'SELECT id, user_id, name, phones, emails, addresses,\
                companies, websites, name, birthdate, notes, starred, photo \
                FROM contacts WHERE user_id = ? ORDER BY name';
 
@@ -490,9 +571,9 @@ function create_vCard(req, contact) {
   // Companies
   if (contact.companies.length > 0 && dlCompanies) {
     contact.companies.forEach(function(company) {
-      if (company.name) {
-        if (company.title === undefined || company.title === null) company.title = '';
-        vcfContent += "ORG;TYPE=" + company.title.replace(/\s/g, '_') + ":" + company.name + "\n";
+      if (company.type) {
+        if (company.type === undefined || company.type === null) company.type = '';
+        vcfContent += "ORG;TYPE=" + company.type.replace(/\s/g, '_') + ":" + company.value + "\n";
       }
     });
   }
@@ -600,7 +681,7 @@ function savePhotoUri(user_id, contact_id, dataUrl) {
 }
 
 // Check values for input db.
-function checkContact (contact) {
+function checkContact (contact, user_id = null) {
 
   var checkedContact = {};
 
@@ -640,6 +721,11 @@ function checkContact (contact) {
     checkedContact.starred = contact.starred;
   }
 
+  if (contact.photo == '') {
+    var photo = config.env().upload_dir + user_id + "/contacts/" + contact._id + '.jpg';
+    if (fs.existsSync(photo)){ fs.unlinkSync(photo); }
+    checkedContact.photo = null;
+  }
   if (contact.photo) {
     checkedContact.photo = contact.photo;
   }

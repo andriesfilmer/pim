@@ -187,7 +187,18 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.editForm = !$scope.editForm;
   };
 
-  if ($state.$current.name == 'calendar.event') {
+  if ($state.$current.name === 'event.version') {
+    eventService.readVersion($stateParams.id).then(function(response) {
+      console.log('Original version: ' + response.data.org_id);
+      $scope.event = response.data;
+      $scope.event._id = response.data.org_id;
+      $scope.toc = MarkdownToc.make(response.data);
+      $scope.saveForm = true;
+      flash('warning', 'Click save to restore');
+    });
+  }
+  // ID is present so it must be a existing event.
+  else if ($state.$current.name == 'calendar.event') {
     console.log('Fetch -> _id: ' + id); 
     CalendarService.read(id)
     .then(function(response) {
@@ -230,6 +241,12 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       console.log('Promise notify'); 
       $scope.cal = data;
     });
+
+    // Get event versions
+    CalendarService.listVersions($stateParams.id).then(function(response) {
+      $scope.versions = response.data; 
+    });
+
   }
 
   if ($state.$current.name == 'calendar.new') {

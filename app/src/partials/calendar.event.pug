@@ -6,7 +6,9 @@ form(name="eventForm")
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
-   a.fi-share(title="Share", data-open="share") 
+   a.fi-page-multiple(data-open="event-versions")
+   span.divider
+   a.fi-share(title="Share", data-open="share")
    span.divider
    span(ng-hide="eventForm.title.$error.required")
     a.fi-upload(ng-class="{true: 'alert', false: ''}[isChanged]", ng-click="upsertEvent(cal,'insert')", ng-show="showAddBt", title='Add event', tabindex=2)
@@ -23,7 +25,7 @@ form(name="eventForm")
   div.column.small-12
    div.secondary.label {{cal.start | date: 'EEE dd MMM'}}
    div.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
-   div.secondary.label  {{cal.end | date: 'EEE dd MMM'}} 
+   div.secondary.label  {{cal.end | date: 'EEE dd MMM'}}
    div.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
    div.secondary.label(ng-show='cal.allDay') all day
   div.column.small-12(ng-if='cal.tzShow')
@@ -31,7 +33,7 @@ form(name="eventForm")
   div.column.small-12(ng-if='cal.tzShow')
    div.secondary.label {{cal.tzStartDate}}
    div.label(ng-hide='cal.allDay') {{cal.tzStartTime}}
-   div.secondary.label  {{cal.tzEndDate}} 
+   div.secondary.label  {{cal.tzEndDate}}
    div.label(ng-hide='cal.allDay') {{cal.tzEndTime}}
    div.secondary.label(ng-show='cal.allDay') all day
  div.row(ng-hide="editForm")
@@ -41,13 +43,13 @@ form(name="eventForm")
   div.row
    div.column.small-12(ng-class="cal.className")
     input#title(type="text", name="title", ng-model="cal.title", required="", placeholder="Title required for {{cal.start| date: 'EEE d MMM'}}", tabindex=1)
-  div.row 
-   div.column.small-12 &nbsp; 
   div.row
-   div.column.small-2 Start 
+   div.column.small-12 &nbsp;
+  div.row
+   div.column.small-2 Start
    div.column.small-6
     input(type="date", ng-model="cal.start", required="", ng-change="setEnd(cal)")
-   div.column.small-4 
+   div.column.small-4
     input(type="time", ng-model="cal.start", ng-hide="cal.allDay", ng-change="setEnd(cal)")
   div.row
    div.column.small-2 End
@@ -57,7 +59,7 @@ form(name="eventForm")
     input(type="time", ng-model="cal.end", ng-hide="cal.allDay")
   div.row
    div.column.small-2 Allday
-   div.column.small-10 
+   div.column.small-10
     div.switch
      input#allDay.switch-input(type="checkbox", ng-model="cal.allDay", ng-click="allDayChange(cal)")
      label.switch-paddle(for="allDay")
@@ -75,13 +77,13 @@ form(name="eventForm")
     div.row
      div.column.small-6 Task
      div.switch.column.small-6.cal-task.task
-      input#cal-memo.switch-input(type="radio", value="task", name="className", ng-model="cal.className", ng-change="change()")
-      label.switch-paddle(for="cal-memo") 
+      input#cal-task.switch-input(type="radio", value="task", name="className", ng-model="cal.className", ng-change="change()")
+      label.switch-paddle(for="cal-task")
     div.row
      div.column.small-6 Memo
      div.switch.column.small-6.cal-memo.memo
       input#cal-memo.switch-input(type="radio", value="memo", name="className", ng-model="cal.className", ng-change="change()")
-      label.switch-paddle(for="cal-memo") 
+      label.switch-paddle(for="cal-memo")
     div.row
      div.column.small-6 Business
      div.switch.column.small-6.cal-business.business
@@ -112,6 +114,17 @@ div.row(ng-if="cal.created")
    ul.inline-list
     li.tag(ng-repeat='tag in post.tags')
      a.label.success {{tag}}
+
+div.row
+ div#event-versions.reveal.full(data-reveal='')
+  button.close-button(data-close='', type="button")
+   span(aria-hidden="true") &times;
+  fieldset#versions(ng-if="versions")
+   legend.fi-page-multiple  Versions
+   div.row.my-row(ng-repeat='version in versions', ng-class="version.id", ng-class-odd="'odd'" ng-class-even="'even'")
+    a(ui-sref='event.version({id: version._id})', data-close='')
+     div.columns.small-12.medium-9 {{version.title}}
+     div.column.small-12.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
 
 div.row
   div#share.reveal.full(data-reveal='')

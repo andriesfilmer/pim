@@ -295,7 +295,7 @@ exports.listVersions = function(req, res) {
 
   var query = config.pool.getConnection(function(err, connection) {
 
-    var sql = "SELECT id as _id, title, type, tags, created \
+    var sql = "SELECT id as _id, title, tags, created \
                FROM postversions WHERE org_id = ? AND user_id = ? ORDER BY created DESC";
 
     query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {

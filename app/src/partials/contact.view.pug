@@ -7,7 +7,9 @@ div.row(ng-hide="offline")
   a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
   a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
   span.divider
-  a.fi-share(title="Share", data-open="share") 
+  a.fi-page-multiple(data-open="contact-versions")
+  span.divider
+  a.fi-share(title="Share", data-open="share")
   span.divider
   span(ng-hide="contactForm.name.$error.required")
    a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
@@ -41,20 +43,10 @@ div(ng-hide="editForm")
    div.row.item-title(ng-if="contact.companies[0]") Companies
    div.row(ng-repeat="item in contact.companies")
     div.column.small-8
-     label {{item.name}}
-     | {{item.title}} &nbsp;
+     label {{item.type}}
+     | {{item.value}} &nbsp;
     div.column.small-4.text-right
      i.icon-button.fi-torso-business
-
-   // Relations
-   div.row.item-title(ng-if="contact.relations[0]") Relations
-   div.row(ng-repeat="item in contact.relations")
-    a(ui-sref="contact.view({id: item.id})") 
-     div.column.small-8
-      label {{item.type}}
-      | {{item.value}} &nbsp;
-     div.column.small-4.text-right
-      i.icon-button.fi-torsos
 
    // Emails
    div.row.item-title(ng-if="contact.emails[0]") Emails
@@ -139,28 +131,11 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
   div.column.small-12
    div.row(ng-repeat="item in contact.companies")
     div.column.small-6
-     input.items(type="text", ng-model="item.name", ng-change="isChanged()", placeholder="Name ...")
+     input.items(type="text", ng-model="item.value", ng-change="isChanged()", placeholder="Name ...")
     div.column.small-4
-     input.items(type="text", ng-model="item.title", ng-change="isChanged()", placeholder="Title ...")
+     input.items(type="text", ng-model="item.type", ng-change="isChanged()", placeholder="Title ...")
     div.column.small-2.text-center
      button.reset-button(type="reset", ng-click="DiscardField('companies', $index)") &times;
-
-  // Relations
-  div.column.small-10.item-title Relations
-  div.column.small-2.text-center
-   a.fi-plus(data-open="contact-relations") 
-  div.column.small-12
-   div.row(ng-repeat="item in contact.relations")
-    div.column.small-6
-     input.items(type="text", ng-model="item.value", ng-change="isChanged()")
-    div.column.small-4
-     select(ng-class="{false: 'hide'}[customValue !== contact.relations[$index].type]", 
-      | ng-model="item.type", ng-options="type for type in contactRelationOptions", ng-change="labelChanged('relations', $index, contact.relations[$index].type)")
-      option(value="") {{contact.relations[$index].type}}
-     input.items(ng-class="{false: 'hide'}[customValue === contact.relations[$index].type]",
-      | type="text", ng-model="item.type", ng-change="labelChanged('relations', $index, contact.relations[$index].type)", placeholder="Custom ...")
-    div.column.small-2.text-center
-     button.reset-button(type="reset", ng-click="DiscardField('relations', $index)") &times;
 
   // E-mails
   div.column.small-10.item-title E-mailaddresses
@@ -226,18 +201,15 @@ form#contact-form(method="post", autocomplete="on", name="contactForm",ng-show="
    textarea(rows="10", ng-model="contact.notes", ng-change="isChanged()", placeholder="You can use Markdown ...")
 
 div.row
- div#contact-relations.reveal.full(data-reveal='')
+ div#contact-versions.reveal.full(data-reveal='')
   button.close-button(data-close='', type="button")
    span(aria-hidden="true") &times;
-  div.row
-   form#search
-    div.columns.small-10
-     input(name="focus", type="text", placeholder="Enter search ...", ng-model="searchKey" )
-
-  div.row.my-row(ng-repeat='contact in contacts', ng-class-odd="'odd'" ng-class-even="'even'")
-   div(ng-click="AddRelation(contact._id, contact.name)", data-close='')
-    div.columns.small-12.medium-6 {{contact.name}}
-    div.columns.hide-for-small-only.medium-6 &nbsp; {{contact.companies[0].name}}
+  fieldset#versions(ng-if="versions")
+   legend.fi-page-multiple  Versions
+   div.row.my-row(ng-repeat='version in versions', ng-class="version.type", ng-class-odd="'odd'" ng-class-even="'even'")
+    a(ui-sref='contact.version({id: version._id})', data-close='')
+     div.columns.small-12.medium-9 {{version.name}}
+     div.column.small-12.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
 
 div.row
   div#share.reveal.full(data-reveal='')

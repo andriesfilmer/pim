@@ -16,7 +16,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     $scope.getContacts = function() {
       ContactService.findAll(starred, birthdate, order, limit)
       .then(function(response) {
-        console.log('Promise resolve'); 
+        console.log('Promise resolve');
 
         // To show 'no contacts yet' in the view.
         if (response.data.length === 0) { response.data = undefined; }
@@ -27,12 +27,12 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
         $location.hash(scrollToThisMonth);
 
       }, function(response) {
-        console.log('Promise reject'); 
+        console.log('Promise reject');
         $scope.offline = true;
         $scope.contacts = response.data;
         flash('warning', response.statusText);
       }, function(data) {
-        console.log('Promise notify'); 
+        console.log('Promise notify');
         $scope.contacts = data;
       });
     };
@@ -80,7 +80,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
           $scope.searchForm = false;
           flash('warning', 'Offline: Search not available');
         }
-      }); 
+      });
     };
 
     $scope.uploadvCardFile = function(){
@@ -96,9 +96,8 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     };
 
     $scope.downloadContacts = function downloadContacts() {
-      console.log("######## $scope.dlPhones: " + $scope.dlPhones);
-      ContactService.vCards($scope.dlPhones, $scope.dlCompanies, 
-        $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses, 
+      ContactService.vCards($scope.dlPhones, $scope.dlCompanies,
+        $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
         $scope.dlBirthdate, $scope.dlNotes).then(function(response) {
         var file = new Blob([response.data], {type: 'text/x-vcard'});
         var fileName = 'contacts.vcf';
@@ -108,22 +107,10 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 
     };
 
-
-    $scope.calculateAge = function calculateAge(birthdate) { 
-        // Birthday must be a real date
-        birthdate = new Date(birthdate);
-        var ageDifMs = Date.now() - birthdate.getTime();
-        var ageDate = new Date(ageDifMs); // miliseconds from epoch
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-    };
-
-
 }]);
 
 appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService','Cropper',
   function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, Cropper) {
-
-  var id = $stateParams.id;
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
@@ -132,20 +119,15 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   // Array's for labels on select boxes
   $scope.contactPhoneOptions = ['Mobile','Home','Work','Fax','Other'];
-  $scope.contactRelationOptions = ['Family','Friend','Business','Other'];
+  $scope.contactCompaniesOptions = ['Home','Work','Other'];
   $scope.contactEmailOptions = ['Personal','Home','Work','Other'];
   $scope.contactWebsiteOptions = ['Personal','Work','Social','Other'];
   $scope.contactAddressOptions = ['Home','Work','Other'];
 
+
   $scope.isChanged = function() {
     // Add alert class on save icon
     $scope.saveForm = true;
-  };
-
-  $scope.deletePhoto = function() {
-    $scope.contact.photo = undefined;
-    $scope.saveForm = true;
-    // Todo -> remove file from server.
   };
 
   $scope.labelChanged = function(type, idx, value) {
@@ -158,11 +140,11 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     // Show placeholder
     if (value === 'Other') {
       $scope.customValue = '';
-      if (type === 'phones')   { $scope.contact.phones[idx].type = '';}
+      if (type === 'phones')    { $scope.contact.phones[idx].type = '';}
+      if (type === 'companies') { $scope.contact.companies[idx].type = '';}
       if (type === 'emails')    { $scope.contact.emails[idx].type = '';}
       if (type === 'websites')  { $scope.contact.websites[idx].type = '';}
       if (type === 'addresses') { $scope.contact.addresses[idx].type = '';}
-      if (type === 'relations') { $scope.contact.relations[idx].type = '';}
     }
 
     // Add alert class on save icon
@@ -179,29 +161,48 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $scope.editForm = true;
   }
 
-  if ($state.$current.name == 'contact.view') {
-    console.log('Fetch contact -> _id: ' + id); 
+  // Load form with a previous version.
+  if ($state.$current.name === 'contact.version') {
+    ContactService.readVersion($stateParams.id).then(function(response) {
+      console.log('Original version: ' + response.data.org_id);
+      $scope.contact = response.data;
+      $scope.contact._id = response.data.org_id;
+      realBirthdate(response.data.birthdate);
+      $scope.saveForm = true;
+      flash('warning', 'Click save to restore');
+    });
+  }
+  // ID is present so it must be a existing contact.
+  else if ($state.$current.name == 'contact.view') {
+    console.log('Fetch contact -> _id: ' + $stateParams.id);
     $scope.showAddBt  = false;
-    ContactService.read(id).then(function(response) {
-      console.log('Response contact and save to localStorage.'); 
+    ContactService.read($stateParams.id).then(function(response) {
+      console.log('Response contact and save to localStorage.');
       $scope.contact = response.data;
       $scope.share = shareContact(response.data);
-      realBirthdate(response.data);
+      realBirthdate(response.data.birthdate);
     }, function(response) {
       $scope.offline = true;
       $scope.contact = response.data;
-      realBirthdate(response.data);
+      realBirthdate(response.data.birthdate);
       flash('warning', response.statusText);
     }, function(data) {
-      console.log('Promise notify'); 
+      console.log('Promise notify');
       $scope.contact = data;
     });
+
+    // Get contact versions
+    ContactService.listVersions($stateParams.id).then(function(response) {
+      $scope.versions = response.data;
+    });
+
   }
 
+
   // Angular in forms need a 'real' date.
-  function realBirthdate(contact) {
-    if (contact.birthdate !== undefined && contact.birthdate !== null) {
-      $scope.contact.birthdate = new Date(contact.birthdate);
+  function realBirthdate(birthdate) {
+    if (birthdate !== undefined && birthdate !== null) {
+      $scope.contact.birthdate = new Date(birthdate);
     }
   }
 
@@ -212,19 +213,6 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     }
     $scope.contact[type].push({});
     $scope.customValue = '';
-  };
-
-  // Add (push) relation with id/link to other contact.
-  $scope.AddRelation = function(id, name) {
-    if ($scope.contact.relations === undefined) {
-      $scope.contact.relations = [];
-    }
-    $scope.contact.relations.push({
-      id: id,
-      value: name,
-      type: ''
-    });
-    $scope.saveForm = true;
   };
 
   // Remove (X) phone, email, relation, address or website field.
@@ -238,8 +226,8 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   // Update of insert a contact
   $scope.upsertContact = function upsertContact(contact, upsert) {
 
-    // Create array's from db
-    var arrays = {'phones': [], 'emails': [], 'addresses': [], 'websites': []};
+    // Create array's for db
+    var arrays = {'phones': [], 'companies': [], 'emails': [], 'addresses': [], 'websites': []};
     angular.forEach(arrays, function(v, k) {
       angular.forEach($scope.contact[k], function(val, key) {
         if(val.value.trim()) {
@@ -278,17 +266,8 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
 
   };
 
-  // Get contacts by relations if we change the SearchKey
-  $scope.$watch('searchKey', function(searchKey) {
-    if (searchKey !== undefined && searchKey.length >= 3) {
-      ContactService.searchAll(false, searchKey).then(function(response) {
-        $scope.contacts = response.data;
-      }); 
-    }
-  });
-
   $scope.deleteContact = function deleteContact(contact) {
-    ContactService.delete(id).then(function(response) {
+    ContactService.delete(contact._id).then(function(response) {
       $timeout(function() {
         $state.go("contact.list");
       }, 2000);
@@ -297,9 +276,9 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   };
 
   $scope.calculateAge = function calculateAge(birthdate) { // birthday is a date
-      var ageDifMs = Date.now() - birthdate.getTime();
-      var ageDate = new Date(ageDifMs); // miliseconds from epoch
-      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    var ageDifMs = Date.now() - birthdate.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
   };
 
   // Cropper for profile photos
@@ -347,7 +326,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
         }, function(data) {
           $scope.contact.photo = data;
           $scope.editForm = false;
-        }); 
+        });
       });
 
     }
@@ -358,7 +337,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     $('#photo').foundation('close');
     $scope.contact.photo = '';
     $scope.saveForm = true;
-    flash('success', 'Don\'t forget to save and to reload!');
+    flash('warning', 'Don\'t forget to save and to reload!');
   };
 
 
@@ -374,7 +353,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
   };
 
   $scope.downloadContact = function downloadContact(contact) {
-    console.log('Download contact -> ' + contact._id); 
+    console.log('Download contact -> ' + contact._id);
     ContactService.vCard(contact._id, $scope.dlPhones, $scope.dlCompanies,
       $scope.dlEmails, $scope.dlWebsites, $scope.dlPhoto, $scope.dlAddresses,
       $scope.dlBirthdate, $scope.dlNotes).then(function(response) {
@@ -403,7 +382,7 @@ appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,
     }
     if (contact.companies.length > 0) {
       contact.companies.forEach(function(company) {
-        share.body += 'Company ' + company.title + ': ' + company.name + "\n";
+        share.body += 'Company ' + company.type + ': ' + company.value + "\n";
       });
     }
     if (contact.emails.length > 0) {
