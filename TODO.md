@@ -29,7 +29,6 @@ CREATE TABLE `eventversions` (
   `description` text DEFAULT NULL,
   `start` datetime DEFAULT NULL,
   `end` datetime DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
   `className` varchar(1024) DEFAULT 'appointment',
   `allDay` tinyint(1) DEFAULT 1,
   `tz` varchar(100) DEFAULT NULL,
@@ -63,3 +62,5 @@ CREATE TABLE `contactversions` (
 
 update contacts set companies = REGEXP_REPLACE(companies, '"name":', '\"value\":');
 update contacts set companies = REGEXP_REPLACE(companies, '"title":', '\"type\":');
+alter table events drop column name;
+alter table events drop column startTime;

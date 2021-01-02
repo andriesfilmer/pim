@@ -248,9 +248,6 @@ exports.listVersions = function(req, res) {
 
     var sql = "SELECT id as _id, title \
                FROM eventversions WHERE org_id = ? AND user_id = ? ";
-    console.log("######## sql: " + sql);
-    console.log("######## req.params.id: " + req.params.id);
-    console.log("######## req.user.id: " + req.user.id);
 
     query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 
@@ -258,7 +255,6 @@ exports.listVersions = function(req, res) {
 
       if (err) throw err;
 
-      console.dir(results);
       return res.status(200).json(results).end(); // OK
 
     });
@@ -276,11 +272,8 @@ exports.readVersion = function(req, res) {
   }
   config.pool.getConnection(function(err, connection) {
 
-    var sql = "SELECT id as _id, org_id, title \
+    var sql = "SELECT id as _id, org_id, title , description, start, end , className, allDay, tz\
                FROM eventversions WHERE id= ? AND user_id = ? LIMIT 1";
-    console.log("######## sql: " + sql);
-    console.log("######## req.params.id: " + req.params.id);
-    console.log("######## req.user.id: " + req.user.id);
 
     var query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 

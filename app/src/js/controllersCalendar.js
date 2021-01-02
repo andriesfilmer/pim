@@ -187,13 +187,12 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     $scope.editForm = !$scope.editForm;
   };
 
-  if ($state.$current.name === 'event.version') {
-    eventService.readVersion($stateParams.id).then(function(response) {
+  if ($state.$current.name === 'calendar.version') {
+    CalendarService.readVersion($stateParams.id).then(function(response) {
       console.log('Original version: ' + response.data.org_id);
-      $scope.event = response.data;
-      $scope.event._id = response.data.org_id;
-      $scope.toc = MarkdownToc.make(response.data);
-      $scope.saveForm = true;
+      $scope.cal = checkEvent(response.data);
+      $scope.cal._id = response.data.org_id;
+      $scope.isChanged = true;
       flash('warning', 'Click save to restore');
     });
   }
@@ -206,23 +205,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       $scope.showAddBt  = false;
       $scope.showDeleteBt  = true;
       $scope.share = shareEvent(response.data);
-      $scope.cal = response.data;
-      $scope.cal.start = new Date(response.data.start);
-      $scope.cal.end = new Date(response.data.end);
-      $scope.cal.allDay = JSON.parse(response.data.allDay);
-      $scope.tznames = moment.tz.names();
-      offsetDb = moment.tz(response.data.start, response.data.tz);
-      offsetGuess = moment.tz(response.data.start, moment.tz.guess());
-
-      if(offsetDb.format('Z') !== offsetGuess.format('Z')) {
-        $scope.cal.tzShow = true;
-        $scope.cal.tzGuess = moment.tz.guess(); 
-        $scope.cal.tzStartDate = moment(moment.tz(response.data.start, response.data.tz)).format('ddd DD MMM'); 
-        $scope.cal.tzStartTime = moment(moment.tz(response.data.start, response.data.tz)).format('HH:mm'); 
-        $scope.cal.tzEndDate = moment(moment.tz(response.data.end, response.data.tz)).format('ddd DD MMM'); 
-        $scope.cal.tzEndTime = moment(moment.tz(response.data.end, response.data.tz)).format('HH:mm'); 
-      }
-
+      $scope.cal = checkEvent(response.data);
     }, function(response) {
       console.log('Promise reject');
       $scope.offline = true;
@@ -353,6 +336,26 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     });
 
   };
+
+  function checkEvent(cal) {
+    $scope.cal = cal;
+    $scope.cal.start = new Date(cal.start);
+    $scope.cal.end = new Date(cal.end);
+    $scope.cal.allDay = JSON.parse(cal.allDay);
+    $scope.tznames = moment.tz.names();
+    offsetDb = moment.tz(cal.start, cal.tz);
+    offsetGuess = moment.tz(cal.start, moment.tz.guess());
+
+    if(offsetDb.format('Z') !== offsetGuess.format('Z')) {
+      $scope.cal.tzShow = true;
+      $scope.cal.tzGuess = moment.tz.guess();
+      $scope.cal.tzStartDate = moment(moment.tz(cal.start, cal.tz)).format('ddd DD MMM');
+      $scope.cal.tzStartTime = moment(moment.tz(cal.start, cal.tz)).format('HH:mm');
+      $scope.cal.tzEndDate = moment(moment.tz(cal.end, cal.tz)).format('ddd DD MMM');
+      $scope.cal.tzEndTime = moment(moment.tz(cal.end, cal.tz)).format('HH:mm');
+    }
+    return $scope.cal;
+  }
 
   function shareEvent(cal) {
     if (navigator.userAgent.match(/iPad|iPhone|Android|BlackBerry|Windows Phone|webOS/i)){

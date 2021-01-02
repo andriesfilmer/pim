@@ -122,7 +122,7 @@ div.row
   fieldset#versions(ng-if="versions")
    legend.fi-page-multiple  Versions
    div.row.my-row(ng-repeat='version in versions', ng-class="version.id", ng-class-odd="'odd'" ng-class-even="'even'")
-    a(ui-sref='event.version({id: version._id})', data-close='')
+    a(ui-sref='calendar.version({id: version._id})', data-close='')
      div.columns.small-12.medium-9 {{version.title}}
      div.column.small-12.medium-3 {{version.created | date: 'yyyy-MM-dd HH:mm'}}
 

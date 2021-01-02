@@ -1,4 +1,4 @@
-appControllers.controller('PostListController', ['$scope', '$state', '$window', 'flash', 'PostService', 
+appControllers.controller('PostListController', ['$scope', '$state', '$window', 'flash', 'PostService',
   function PostListController($scope, $state, $window, flash, PostService) {
 
     var limit = $window.localStorage.postLimit;
@@ -7,17 +7,17 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.getPosts = function() {
       PostService.findAll(limit)
       .then(function(response) {
-        console.log('Promise resolve'); 
+        console.log('Promise resolve');
         // To show 'no posts yet' in the view.
         if (response.data.length === 0) { response.data = undefined; }
         $scope.posts = response.data;
       }, function(response) {
-        console.log('Promise reject'); 
+        console.log('Promise reject');
         $scope.offline = true;
         $scope.posts = response.data;
         flash('warning', response.statusText);
       }, function(data) {
-        console.log('Promise notify'); 
+        console.log('Promise notify');
         $scope.posts = data;
       });
     };
@@ -52,7 +52,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
        }, function(response) {
          console.log(response.data);
          console.log('Posts search error');
-       }); 
+       });
     };
 
     // Get new posts if we change the SearchKey
@@ -99,18 +99,18 @@ appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$st
       $scope.post = response.data;
       $scope.toc = MarkdownToc.make(response.data);
     }, function(response) {
-      console.log('Promise reject'); 
+      console.log('Promise reject');
       $scope.offline = true;
       $scope.post = response.data;
       flash('warning', response.statusText);
     }, function(data) {
-      console.log('Promise notify'); 
+      console.log('Promise notify');
       $scope.post = data;
     });
 
     // Get post versions
     PostService.listVersions($stateParams.id).then(function(response) {
-      $scope.versions = response.data; 
+      $scope.versions = response.data;
     });
 
   }
@@ -168,7 +168,7 @@ appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$st
 
   $scope.deletePost = function deletePost(post) {
     PostService.delete(post._id).then(function(response) {
-      console.log('Deleted post:' + post._id + ' ' + response.statusText); 
+      console.log('Deleted post:' + post._id + ' ' + response.statusText);
       flash('success', 'Post deleted successful');
       $state.go("post.list");
     });

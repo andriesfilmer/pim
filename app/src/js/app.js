@@ -105,17 +105,17 @@ app.config(['$stateProvider', '$urlRouterProvider',
       controller: "EventController",
       access: { requiredAuthentication: true }
     })
+    .state('calendar.version', {
+      url: "/version/:id",
+      templateUrl: "partials/calendar.event.html",
+      controller: 'EventController',
+      access: { requiredAuthentication: true }
+    })
     .state('calendar.import-export', {
       url: "/import-export",
       templateUrl: "partials/calendar.import-export.html",
       controller: 'CalendarController',
       access: { requiredAuthentication: true}
-    })
-    .state('calendar.version', {
-      url: "/event/:id",
-      templateUrl: "partials/calendar.event.html",
-      controller: 'EventController',
-      access: { requiredAuthentication: true }
     })
 
     // Contact views
