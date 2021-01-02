@@ -461,7 +461,7 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
 
       $http.get(options.api.base_url + '/bookmarks/', {'params': {limit: limit}})
       .then(function(response) {
-        console.log('Fetched bookmarks from MongoDb and saved to localStorage.'); 
+        console.log('Fetched bookmarks from Db and saved to localStorage.'); 
         $window.localStorage.bookmarksAll = JSON.stringify(response.data);
         deferred.resolve(response);
       }, function(response) {

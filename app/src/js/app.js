@@ -64,6 +64,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true}
     })
     .state('user.change-password', {
+      params: {user_id: '', token: '' },
       url: '/change-password/:token/:user_id',
       templateUrl: 'partials/user.change-password.html',
       controller: 'UserController',
@@ -100,6 +101,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
       access: { requiredAuthentication: true }
     })
     .state('calendar.new', {
+      params: { start: moment(new Date()).format('YYYY-MM-DD')},
       url: "/event/new/:start",
       templateUrl: "partials/calendar.event.html",
       controller: "EventController",

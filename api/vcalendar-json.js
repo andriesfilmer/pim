@@ -64,7 +64,6 @@ function parse(data) {
 
         // If we have DTSTART and DTEND ending on '0000Z' its a allDay event.
         if (s(lineContent).startsWith('DTSTART') || s(lineContent).startsWith('DTEND')) {
-          console.log("######## lineContent: " + lineContent);
           if (s(lineContent).endsWith('T000000Z') && s(lineContent).endsWith('T000000Z')) {
             vevent.allDay = 1;
           }

@@ -1,6 +1,6 @@
 # PIM (personal information manager)
 
-PIM is a application built with AngularJS, Node.js, Express and MongoDB.
+PIM is a application built with AngularJS, Node.js, Express and Mysql/MariaDb.
 
 ## Description
 
@@ -12,12 +12,11 @@ A private PIM with:
 * Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses)
 * Bookmarks (With tags and notes)
 
-Take a look on the [PIM.center](http://pim.center) for more features.
-
+Take a look on the [pim.filmer.net](http://pim.filmer.net) for more features.
 
 ## Dependencies
 
-You need npm, nodejs and mongodb (default install will do)
+You need npm, nodejs and mysql/mariadb (default install will do)
 
 ## Install
 
@@ -61,13 +60,12 @@ Run the api in production
 - Create a upstream proxy  (zie api/nginx.conf as a example).
 - Create a symlink for photos `cd public/ && ln -s ../upload/ upload`
 
-
 ## Reminders by e-mail
 
 If you want event reminders before each event (default 1 day), you can create a cron.
 Take a look in `api/sendEventReminder.js` and create a crontab.
 
-If you want birhtdatereminders before each event (default 1 day), you can create a cron.
+If you want birhtdate reminders before each contact (default 1 day), you can create a cron.
 Take a look in `api/sendBirthdayReminder.js` and create a crontab.
 
 ## Credits

@@ -109,8 +109,8 @@ function attributeMatched(attribute, line, contact) {
 
     case "ORG":
       var company_obj = {};
-      company_obj.name = s(line).strRight(':').clean().value();
-      company_obj.title = s(line.replace(/(org|type|=|;)/ig,' ')).
+      company_obj.value = s(line).strRight(':').clean().value();
+      company_obj.type = s(line.replace(/(org|type|=|;)/ig,' ')).
         strLeft(':').toLowerCase().clean().capitalize().value();
       contact.companies.push(company_obj);
       break;
