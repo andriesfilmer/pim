@@ -85,7 +85,7 @@ module.exports = function(grunt) {
     removelogging: {
       dist: {
         // File will be overwritten with the output!
-        src: "public/js/<%= pkg.name %>.js" 
+        src: "public/js/<%= pkg.name %>.js"
       }
     },
     concat: {

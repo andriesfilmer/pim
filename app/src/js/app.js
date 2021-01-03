@@ -3,7 +3,7 @@ var appFilters = angular.module('appFilters', []);
 var appControllers = angular.module('appControllers', []);
 var appDirectives = angular.module('appDirectives', []);
 var app = angular.module('app', [
-                                 'ui.router', 
+                                 'ui.router',
                                  'ui.calendar',
                                  'ngTouch',
                                  'ngAnimate',
@@ -147,96 +147,80 @@ app.config(['$stateProvider', '$urlRouterProvider',
     .state('contact.create', {
       url: "/create",
       templateUrl: "partials/contact.view.html",
-      controller: 'ContactController',
-      access: { requiredAuthentication: true}
+      controller: 'ContactController'
     })
     .state('contact.import-export', {
       url: "/import-export",
       templateUrl: "partials/contact.import-export.html",
-      controller: 'ContactListController',
-      access: { requiredAuthentication: true}
+      controller: 'ContactListController'
     })
     .state('contact.view', {
       url: "/:id",
       templateUrl: "partials/contact.view.html",
-      controller: 'ContactController',
-      access: { requiredAuthentication: true }
+      controller: 'ContactController'
     })
     .state('contact.version', {
       url: "/version/:id",
       templateUrl: "partials/contact.view.html",
-      controller: 'ContactController',
-      access: { requiredAuthentication: true }
+      controller: 'ContactController'
     })
 
     // Post views
     .state('post', {
       url: "/post",
       templateUrl: "partials/post.html",
-      controller: 'PostListController',
-      access: { requiredAuthentication: true }
+      controller: 'PostListController'
     })
     .state('post.list', {
       url: "/list",
-      templateUrl: "partials/post.list.html",
-      controller: 'PostListController',
-      access: { requiredAuthentication: true }
+      templateUrl: "partials/post.list.html"
     })
     .state('post.create', {
       url: "/create",
       templateUrl: "partials/post.view.html",
-      controller: 'PostController',
-      access: { requiredAuthentication: true }
+      controller: 'PostController'
     })
     .state('post.view', {
       url: "/:id",
       templateUrl: "partials/post.view.html",
-      controller: 'PostController',
-      access: { requiredAuthentication: true }
+      controller: 'PostController'
     })
     .state('post.version', {
       url: "/version/:id",
       templateUrl: "partials/post.view.html",
-      controller: 'PostController',
-      access: { requiredAuthentication: true }
+      controller: 'PostController'
     })
 
     // Bookmark views
     .state('bookmark', {
       url: "/bookmark",
       templateUrl: "partials/bookmark.html",
-      controller: 'BookmarkListController',
-      access: { requiredAuthentication: true }
+      controller: 'BookmarkListController'
     })
     .state('bookmark.list', {
       url: "/bookmark",
       templateUrl: "partials/bookmark.list.html",
-      controller: 'BookmarkListController',
-      access: { requiredAuthentication: true }
+      controller: 'BookmarkListController'
     })
     .state('bookmark.create', {
       url: "/bookmark/create",
       templateUrl: "partials/bookmark.view.html",
-      controller: 'BookmarkController',
-      access: { requiredAuthentication: true }
+      controller: 'BookmarkController'
     })
     .state('bookmark.view', {
       url: "/:id",
       templateUrl: "partials/bookmark.view.html",
-      controller: 'BookmarkController',
-      access: { requiredAuthentication: true }
+      controller: 'BookmarkController'
     })
     // Startpage
     .state('about', {
       url: "/",
-      templateUrl: 'partials/about.html',
-      access: { requiredAuthentication: false }
+      templateUrl: 'partials/about.html'
     })
     // Startpage
     .state('reload', {
       url: "/reload",
-      templateUrl: 'partials/reload.html',
-      access: { requiredAuthentication: false }
+      templateUrl: 'partials/reload.html'
     });
   }
 ]);
@@ -253,49 +237,32 @@ app.config(function ($httpProvider) {
   $httpProvider.interceptors.push('TokenInterceptor');
 });
 
-app.run(function ($rootScope, $window, $state, $timeout, $location, flash, AuthenticationService) {
+app.run(function ($rootScope, $window, $transitions, flash) {
 
+  $transitions.onStart({ to: '**' }, function(trans) {
 
-  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+    //console.log("######## trans.to().name: " + trans.to().name);
+    //console.dir(trans.to());
 
-    console.log('toSstate.access.requiredAuthentication: ' + toState.access.requiredAuthentication); 
-    console.log('AuthenticationService.isAuthenticated: ' + AuthenticationService.isAuthenticated); 
-    console.log('StateChange -> ' + toState.name); 
+    var auth = trans.injector().get('AuthenticationService');
 
-    // Add font-size from general settings.
-    $("body").addClass($window.localStorage.fontSetting);
-
-    // RootScope.signedIn is only for show/hide elements.
-    if($window.localStorage.token) {
+    if (auth.isAuthenticated) {
       $rootScope.signedIn = true;
       $rootScope.fullname = $window.localStorage.fullname;
+
+      if (trans.to().name === 'signin') {
+        flash('waring', 'You are already logged in');
+      }
     }
     else {
       $rootScope.signedIn = false;
     }
 
-
-    if ($window.localStorage.token && (toState.name === 'signup' || toState.name === 'signin')) {
-      flash('waring', 'You are already logged in');
-      event.preventDefault();
-      $state.go('home');
-    }
-
-    // Redirect only if both required authentication in rout  and isAuthenticated is false.
-    if (toState.access.requiredAuthentication && !AuthenticationService.isAuthenticated) {
-
-      // Do we have a token in localStorage i.o. do we show sign-in or logout?.
-      // On reload/refresh don't show flash if the user has a access token.
-      if(!$window.localStorage.getItem('token')) {
-        flash('alert', 'Sign-in first');
-      }
-      event.preventDefault();
-      $state.go('reload');
-    }
   });
 
-  $rootScope.$on('$viewContentLoaded', function () {
-    $(document).foundation();
-  });
+  $(document).foundation();
+
+  // Add font-size from general settings.
+  $("body").addClass($window.localStorage.fontSetting);
 
 });
