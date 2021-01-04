@@ -112,6 +112,8 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
 appControllers.controller('ContactController', ['$scope', '$timeout', '$state' ,'$window', '$stateParams', 'flash', 'ContactService','Cropper',
   function ContactController($scope, $timeout, $state, $window, $stateParams, flash, ContactService, Cropper) {
 
+  $(document).foundation();
+
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
     $scope.editForm = !$scope.editForm;

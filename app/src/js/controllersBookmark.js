@@ -67,6 +67,8 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
 appControllers.controller('BookmarkController', ['$rootScope', '$scope', '$state' ,'$window', '$stateParams', 'flash', 'BookmarkService', 'MarkdownToc',
   function BookmarkController($rootScope, $scope, $state, $window, $stateParams, flash, BookmarkService) {
 
+  $(document).foundation();
+
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
     $scope.editForm = !$scope.editForm;

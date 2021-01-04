@@ -6,9 +6,9 @@ form(name="postForm")
    a.fi-pencil(ng-hide="editForm", ng-click='toggleForm()', title='Edit item')
    a.fi-eye(ng-show="editForm", ng-click='toggleForm()', title='View item')
    span.divider
-   a.fi-page-multiple(data-open="post-versions") 
+   a.fi-page-multiple(data-open="post-versions")
    span.divider
-   a.fi-share(title="Share", data-open="share") 
+   a.fi-share(title="Share", data-open="share")
    span.divider
    a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
    span.float-right(ng-hide="showDeleteBt")
@@ -20,9 +20,9 @@ form(name="postForm")
    h1 {{post.title}}
   fieldset.post-toc(ng-show="toc")
    legend Content
-   div(markdown='toc') {{toc}} 
+   div(markdown='toc') {{toc}}
   div.column.small-12
-   p#markdown(markdown='post.content') 
+   p#markdown(markdown='post.content')
 
  div.row(ng-show="editForm")
   div.column.small-12(ng-class="post.type")

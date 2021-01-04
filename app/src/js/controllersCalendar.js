@@ -173,6 +173,8 @@ appControllers.controller('CalendarController', ['$scope', '$timeout', '$state',
 appControllers.controller('EventController', ['$scope','$timeout', '$state', '$stateParams', '$window', 'flash', 'CalendarService',
   function EventController($scope, $timeout, $state, $stateParams, $window, flash, CalendarService) {
 
+  $(document).foundation();
+
   var id = $stateParams.id || 0;
 
   // If we enable the getHours feature.

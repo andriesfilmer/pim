@@ -27,10 +27,10 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
       if ($scope.searchForm) {
-        $scope.searchPosts($window.sessionStorage.sessionSearchKey || '');
+        $scope.searchPosts($scope.sessionSearchKey || '');
       }
       else {
-        $scope.getPosts();
+        $scope.getPosts($scope.searchPosts);
       }
     };
 
@@ -66,6 +66,8 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
 
 appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$stateParams', 'flash', 'PostService', 'MarkdownToc',
   function PostController($scope, $state, $window, $stateParams, flash, PostService, MarkdownToc) {
+
+  $(document).foundation();
 
   // By clicking the edit icon we show the edit from.
   $scope.toggleForm = function () {
