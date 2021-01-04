@@ -173,6 +173,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
     })
     .state('post.list', {
       url: "/list",
+      controller: 'PostListController',
       templateUrl: "partials/post.list.html"
     })
     .state('post.create', {
