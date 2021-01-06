@@ -25,7 +25,7 @@ exports.signin = function(req, res) {
 
       if (results.length === 0) {
 
-        return res.sendStatus(401); // Unauthorized 
+        return res.sendStatus(401); // Unauthorized
 
       } else {
 
@@ -82,13 +82,13 @@ exports.sendToken = function(req, res) {
   // Function for sending a login/change-password token to emailaddress.
   function sendMailToken(user, token) {
 
-    var transporter = nodemailer.createTransport({ 
+    var transporter = nodemailer.createTransport({
       port: config.env().mail_port,
       ignoreTLS: true
     });
 
-    var emailAddress = user.name + ' <' + user.email + '>' ; 
-    //console.log('Send token to: ' + emailAddress + ' Port: ' + config.env().mail_port); 
+    var emailAddress = user.name + ' <' + user.email + '>' ;
+    //console.log('Send token to: ' + emailAddress + ' Port: ' + config.env().mail_port);
 
     transporter.sendMail({
         from: config.env().mail_from,
@@ -97,7 +97,7 @@ exports.sendToken = function(req, res) {
         text: 'Hello ' + user.name + ',\n\n'
           + 'Someone has requested a token to reset your password (probably you).\n\n'
           + 'Just click on this link and change your password:\n'
-          + config.env().cors_url + '/#/user/change-password/' + token + '/' + user.id + '\n\n'
+          + config.env().cors_url + '/#!/user/change-password/' + token + '/' + user.id + '\n\n'
 
           + 'If you didn\'t mean to reset your password, then you can just ignore this email; your password will not change.\n\n'
           + 'Regards Andries Filmer.\n'

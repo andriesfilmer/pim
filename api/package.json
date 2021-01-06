@@ -1,7 +1,7 @@
 {
   "name": "PIM",
   "description": "PIM api",
-  "version": "0.10.1",
+  "version": "0.10.22",
   "private": true,
   "dependencies": {
     "bcrypt": "5.x",
