@@ -114,7 +114,6 @@ appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$st
     PostService.listVersions($stateParams.id).then(function(response) {
       $scope.versions = response.data;
     });
-
   }
   // Must be a new post so init with default values.
   else  {
@@ -134,7 +133,7 @@ appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$st
     $scope.toc = MarkdownToc.make({_id: $scope.post._id, content: $scope.post.content});
 
     // String comma separated to array
-    if (post.tags !== undefined && Object.prototype.toString.call(post.tags) !== '[object Array]') {
+    if (post.tags && Object.prototype.toString.call(post.tags) !== '[object Array]') {
       post.tags = post.tags.split(',');
     }
 
@@ -151,6 +150,7 @@ appControllers.controller('PostController', ['$scope', '$state' ,'$window', '$st
 
       PostService.create(post).then(function(response) {
         flash('success', response.data);
+        $state.go("post.list");
       }, function(response) {
         flash('alert', 'Create post failure!');
       });
