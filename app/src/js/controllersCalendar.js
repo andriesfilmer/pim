@@ -64,7 +64,7 @@ appControllers.controller('CalendarController', ['$scope', '$timeout', '$state',
       dayClick: function(date, jsEvent, view) {
         // Prevent add events if offline
         if(!$scope.offline) {
-          console.log('DayClick date -> ' + date); 
+          console.log('DayClick date -> ' + date);
           $state.go('calendar.new', {start: date});
         }
       },
@@ -115,13 +115,13 @@ appControllers.controller('CalendarController', ['$scope', '$timeout', '$state',
     CalendarService.find(startDate).then(function(response) {
       $scope.events = response.data;
     }, function(response) {
-      console.log('Promise reject'); 
+      console.log('Promise reject');
       flash('warning', response.statusText);
       $scope.events = response.data;
     }, function(data) {
-      console.log('Promise notify search init'); 
+      console.log('Promise notify search init');
       $scope.events = data;
-    }); 
+    });
   }
 
   // After each searchKey change get new evenst from CalendarService.
@@ -131,13 +131,13 @@ appControllers.controller('CalendarController', ['$scope', '$timeout', '$state',
       CalendarService.search(searchKey).then(function(response) {
         $scope.events = response.data;
       }, function(response) {
-        console.log('Promise reject'); 
+        console.log('Promise reject');
         $scope.offline = true;
         flash('warning', response.statusText);
       }, function(data) {
-        console.log('Promise notify search'); 
+        console.log('Promise notify search');
         $scope.events = data;
-      }); 
+      });
     }
   });
 
@@ -200,7 +200,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
   }
   // ID is present so it must be a existing event.
   else if ($state.$current.name == 'calendar.event') {
-    console.log('Fetch -> _id: ' + id); 
+    console.log('Fetch -> _id: ' + id);
     CalendarService.read(id)
     .then(function(response) {
       console.log('Promise resolve id: ' + response.data._id);
@@ -223,19 +223,19 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       flash('warning', response.statusText);
 
     }, function(data) {
-      console.log('Promise notify'); 
+      console.log('Promise notify');
       $scope.cal = data;
     });
 
     // Get event versions
     CalendarService.listVersions($stateParams.id).then(function(response) {
-      $scope.versions = response.data; 
+      $scope.versions = response.data;
     });
 
   }
 
   if ($state.$current.name == 'calendar.new') {
-    console.log('INIT new event -> params.start: ' + $stateParams.start); 
+    console.log('INIT new event -> params.start: ' + $stateParams.start);
     var initializing = true;
     if ($stateParams.start) {
       start = $stateParams.start;
@@ -261,7 +261,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
 
   // If we set allDay event we reset the start en end time.
   $scope.allDayChange = function(cal) {
-    console.log('Switch allDay: ' + cal.allDay); 
+    console.log('Switch allDay: ' + cal.allDay);
     var date = new Date(cal.start);
     var d = date.getDate();
     var m = date.getMonth();
@@ -290,7 +290,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       }, function(response) {
         flash('alert', 'Event insert failure');
       });
-    } 
+    }
 
     // Update a event
     else {

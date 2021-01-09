@@ -44,16 +44,17 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
       if ($scope.searchForm) {
-        $scope.searchContacts($scope.searchKey || '');
+        $scope.searchContacts($scope.searchKey);
       }
       else {
-        $scope.getContacts($scope.searchKey);
+        $scope.getContacts();
       }
     };
 
     // Remove searchKey and show contacts
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.sessionSearchKey;
+      $scope.searchKey = '';
       $scope.getContacts();
       $("#search input").focus();
     };

@@ -37,6 +37,7 @@ appControllers.controller('BookmarkListController', ['$scope', '$state', '$windo
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.sessionSearchKey;
+      $scope.searchKey = '';
       $scope.getBookmarks();
       $("#search input").focus();
     };

@@ -45,7 +45,6 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.postFilter = filter;
     $scope.changePostFilter = function(filter) {
       $('#post-filter').foundation('close');
-      //searchKey = $scope.searchKey
       $window.localStorage.postFilter = filter;
       if ($scope.searchForm) {
         $scope.searchPosts($scope.searchKey);
@@ -58,6 +57,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.sessionSearchKey;
+      $scope.searchKey = '';
       $scope.getPosts($scope.postFilter, $window.localStorage.postLimit);
       $("#search input").focus();
     };
