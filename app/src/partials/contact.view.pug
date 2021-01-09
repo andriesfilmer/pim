@@ -12,8 +12,8 @@ div.row(ng-hide="offline")
   a.fi-share(title="Share", data-open="share")
   span.divider
   span(ng-hide="contactForm.name.$error.required")
-   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
-   a.fi-upload(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
+   a.fi-download(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'insert')", ng-show="showAddBt", title='Add contact')
+   a.fi-download(ng-class="{true: 'alert', false: ''}[saveForm]", ng-click="upsertContact(contact,'update')", ng-hide="showAddBt", title='Update contact')
   span.float-right
    span.divider
    a.fi-trash(ng-click='deleteContact(contact)', title='Delete item', confirmation-needed="Really Delete?")

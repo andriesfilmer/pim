@@ -168,13 +168,12 @@ app.config(['$stateProvider', '$urlRouterProvider',
     // Post views
     .state('post', {
       url: "/post",
-      templateUrl: "partials/post.html",
-      controller: 'PostListController'
+      templateUrl: "partials/post.html"
     })
     .state('post.list', {
       url: "/list",
-      controller: 'PostListController',
-      templateUrl: "partials/post.list.html"
+      templateUrl: "partials/post.list.html",
+      controller: 'PostListController'
     })
     .state('post.create', {
       url: "/create",
@@ -195,8 +194,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
     // Bookmark views
     .state('bookmark', {
       url: "/bookmark",
-      templateUrl: "partials/bookmark.html",
-      controller: 'BookmarkListController'
+      templateUrl: "partials/bookmark.html"
     })
     .state('bookmark.list', {
       url: "/bookmark",

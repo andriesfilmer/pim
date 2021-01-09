@@ -7,7 +7,7 @@ div.row(ng-hide="offline")
   span.divider
   a.fi-share(title="Share", data-open="share")
   span.divider
-  a.fi-upload(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
+  a.fi-download(ng-hide="bookmarkForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(bookmark)', title='Save item')
   span.float-right(ng-show="showDeleteBt")
    span.divider
    a.fi-trash(ng-click='deleteBookmark(bookmark)', title='Delete item', confirmation-needed="Really Delete?")

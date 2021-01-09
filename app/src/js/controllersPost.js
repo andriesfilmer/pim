@@ -1,11 +1,16 @@
 appControllers.controller('PostListController', ['$scope', '$state', '$window', 'flash', 'PostService',
   function PostListController($scope, $state, $window, flash, PostService) {
 
+    $(document).foundation();
+    $scope.posts = [];
+
+    var filter = $window.localStorage.postFilter;
     var limit = $window.localStorage.postLimit;
+    var searchKey = $window.sessionStorage.sessionSearchKey;
 
     // Init posts with promises and show all posts.
-    $scope.getPosts = function() {
-      PostService.findAll(limit)
+    $scope.getPosts = function(filter, limit) {
+      PostService.findAll(filter, limit)
       .then(function(response) {
         console.log('Promise resolve');
         // To show 'no posts yet' in the view.
@@ -22,37 +27,53 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
       });
     };
 
+    $scope.getPosts(filter, limit);
+
     // Hide searchForm, toggle first. Get saved search.
     $scope.toggleSearch = function () {
       $scope.searchForm = !$scope.searchForm;
       $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
-      if ($scope.searchForm) {
-        $scope.searchPosts($scope.sessionSearchKey || '');
+      if ($scope.searchForm && $scope.searchKey) {
+        $scope.searchPosts($scope.searchKey);
       }
       else {
-        $scope.getPosts($scope.searchPosts);
+        $scope.getPosts($scope.postFilter, $window.localStorage.postLimit);
+      }
+    };
+
+    // Set filter for posts
+    $scope.postFilter = filter;
+    $scope.changePostFilter = function(filter) {
+      $('#post-filter').foundation('close');
+      //searchKey = $scope.searchKey
+      $window.localStorage.postFilter = filter;
+      if ($scope.searchForm) {
+        $scope.searchPosts($scope.searchKey);
+      }
+      else {
+        $scope.getPosts($scope.postFilter, $window.localStorage.postLimit);
       }
     };
 
     // Remove search.
     $scope.resetSearch = function resetSearch() {
       delete $window.sessionStorage.sessionSearchKey;
-      $scope.getPosts();
+      $scope.getPosts($scope.postFilter, $window.localStorage.postLimit);
       $("#search input").focus();
     };
 
-    $scope.posts = [];
-    $scope.getPosts();
-
     // Get new posts if we change the SearchKey
     $scope.searchPosts = function(searchKey) {
-       $window.sessionStorage.sessionSearchKey = searchKey;
-       PostService.searchAll(searchKey, limit).then(function(response) {
-         $scope.posts = response.data;
-       }, function(response) {
-         console.log(response.data);
-         console.log('Posts search error');
-       });
+      $window.sessionStorage.sessionSearchKey = searchKey;
+      filter = $scope.postFilter;
+      if (searchKey && searchKey.length >= 3) {
+        PostService.searchAll(filter, searchKey, limit).then(function(response) {
+          $scope.posts = response.data;
+        }, function(response) {
+          console.log(response.data);
+          console.log('Posts search error');
+        });
+      }
     };
 
     // Get new posts if we change the SearchKey

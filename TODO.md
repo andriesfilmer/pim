@@ -1,3 +1,5 @@
+alter table posts change type type ENUM('article', 'hobby', 'note', 'todo', 'other')
+
 # Need to fix
 - Fix datetime UTC time in localtime when sharing a event.
 - Feedback from api if token invalid. Now we show only '.... from localhost'

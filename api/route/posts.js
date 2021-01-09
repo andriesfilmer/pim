@@ -13,14 +13,12 @@ exports.list = function(req, res) {
 
   config.pool.getConnection(function(err, connection) {
 
-    req.query.order === 'title' ? order = 'title' : order = 'last_read DESC';
-
     var limit = (typeof req.query.limit === 'undefined') ? 300 : parseInt(req.query.limit);
-
     var sql = "SELECT id as _id, title, type, tags, created, updated \
-               FROM posts WHERE user_id = ? ORDER BY " + order + " limit ?";
+               FROM posts WHERE user_id = ? AND type LIKE ?\
+               ORDER BY last_read DESC LIMIT ?";
 
-    var query = connection.query(sql, [req.user.id, limit], function(err, results) {
+    var query = connection.query(sql, [req.user.id, '%' + req.query.filter + '%', limit], function(err, results) {
 
       connection.release();
 
@@ -41,21 +39,20 @@ exports.search = function(req, res) {
     return res.status(401).send('Unauthorized').end();
   }
 
+  if (req.query.searchKey === '') {
+    return res.status(411).send('Length Required').end();
+  }
+
   if (posts.searchKey) {
 
-    req.query.order === 'name' ? order = 'name' : order = 'last_read DESC';
-
-    // list all posts.
     config.pool.getConnection(function(err, connection) {
 
       var sql = "SELECT id as _id, title, type, created , updated\
-                 FROM posts WHERE (title LIKE ? \
-                 OR content LIKE ? \
-                 OR tags LIKE ? )\
-                 AND user_id = ? \
-                 ORDER BY ?";
+                 FROM posts WHERE (title LIKE ? OR content LIKE ? OR tags LIKE ? )\
+                 AND type LIKE ? AND user_id = ?\
+                 ORDER BY last_read DESC";
 
-      var query = connection.query(sql, [searchFor, searchFor, searchFor, req.user.id, order], function(err, results) {
+      var query = connection.query(sql, [searchFor, searchFor, searchFor, '%' + req.query.filter + '%', req.user.id], function(err, results) {
 
         connection.release();
 
@@ -67,6 +64,7 @@ exports.search = function(req, res) {
         else {
           return res.status(200).json(results).end(); // OK
         }
+
       });
     });
   };

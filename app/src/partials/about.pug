@@ -1,7 +1,7 @@
 div.row
  div.columns.small-12.medium-8
   h1.home PIM
-  span.home.meta-data Personal Information Manager 
+  span.home.meta-data Personal Information Manager
  div.columns.small-12.medium-4.text-center
   p
    button.button.fi-unlock(ui-sref="signin", ng-hide="signedIn", title="Sign in")  Sign in
@@ -16,58 +16,62 @@ div.row
 div.row
  div.column.small-12
   h2.fi-lock  Access to your data
-  p Access your data wherever you are, whenever you need it, all under your control. 
+  p Access your data wherever you are, whenever you need it, all under your control.
 div.row
  div.column.small-12.medium-6
   h2.fi-like  Pros
   p Independent of Google, iCloud, Facebook or other installed app/provider who can peek into your data.
    | Data is not linked to native addressbook, calendar or notes.
-   | You can install this service on you own server or use 
+   | You can install this service on you own server or use
    a(href="https://pim.filmer.net") pim.filmer.net.
  div.column.small-12.medium-6
   h2.fi-dislike  Cons
   p This web-app is not installed and therefore not link to incomming calls on your smartphone.
-   | Solution: You can export only phonenumbers 
-   i.meta-data.sup (and if you want the photos) 
+   | Solution: You can export only phonenumbers
+   i.meta-data.sup (and if you want the photos)
    | and import in your smartphone if you want to see who is calling.
 div.row
  div.column.small-12
   h2.fi-star  General features
-  ul 
+  ul
    li This 'Web App' has a responsive design so you can use it on your mobile, tablet or desktop.
    li Interactive searches.
    li All data is (read only) available offline.
-   li 
+   li
     a(href="http://showdownjs.github.io/demo/", target='_blank') Markdown is integrated.
     | so you can style your text easily.
-   li Open source and the code has 
+   li Open source and the code has
     a(href="http://opensource.org/licenses/MIT", target='_blank') MIT License
-    |, see full source code on 
+    |, see full source code on
     a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github.
-   li Share items with Whatsapp, Telegram, SMS, Email, Facebook, Twitter, LinkedIn 
+   li Share items with Whatsapp, Telegram, SMS, Email, Facebook, Twitter, LinkedIn
     | via a sharelink so these providers can't access your personal data.
 div.row
  div.column.small-12
   h2.fi-calendar  Calendar
   ul
-   li The calendar has month, day and list view. 
-   li Search events and swipe the calendar (left/right). 
+   li The calendar has month, day and list view.
+   li Search events and swipe the calendar (left/right).
    li Calendar is timezone aware.
+   li Revisions, i.o. each event wil be restored in &nbsp;
+     i.fi-page-multiple &nbsp;versions.
    li Get reminders by e-mail (crontab script included).
   h2.fi-torsos  Contacts
   ul
-   li Create contacts and add unlimited phonenumbers, companies, relations, e-mailaddresses, websites, addresses.  
+   li Create contacts and add unlimited phonenumbers, companies, relations, e-mailaddresses, websites, addresses.
    li There is a starred, birthdates and list view.
    li Add birthdate and get a reminder by e-mail.
    li Add profile photos (crop and scale before upload)
    li Import and export contacts (vCard).
    li Export or share individual contacts
+   li Revisions, i.o. each contact wil be restored in &nbsp;
+     i.fi-page-multiple &nbsp;versions.
   h2.fi-page  Posts
   ul
-   li Make a small note or a big article with Markdown. 
-   li Auto-generate a table of contents (TOC) on a large articles. 
-   li Revisions, i.o. each post can be restored in 
-       i.fi-page-multiple  versions. 
+   li Make a small note or a big article with Markdown.
+   li Auto-generate a table of contents (TOC) on a large articles.
+   li Revisions, i.o. each post wil be restored in &nbsp;
+     i.fi-page-multiple &nbsp;versions.
    li Create a pdf for sharing large posts/articles.
   h2.fi-bookmark  Bookmarks
   ul
@@ -77,24 +81,24 @@ div.row
   h2.fi-plus  Install this web app
   p If you want a icon on your tablet or smartphone homescreen like a real App.
  div.column.small-12.medium-6
-  p For iPhone Safari: Tap 
-   img(src='/static/images/add-to-homescreen-iphone-icon.png') 
-   |  and then 
-   strong  
+  p For iPhone Safari: Tap
+   img(src='/static/images/add-to-homescreen-iphone-icon.png')
+   |  and then
+   strong
     nobr Add to Home screen
   img(src='/static/images/add-to-homescreen-iphone.png')
  div.column.small-12.medium-6
-  p For Android Chrome: Tap 
+  p For Android Chrome: Tap
    img(src='/static/images/add-to-homescreen-android-chrome-icon.png')
    |  and then
-   strong  
+   strong
     nobr Add to Home screen
   img(src='/static/images/add-to-homescreen-android-chrome.png')
 
 div.row
  div.column.small-12
   hr
-  p #{package} Version: #{version}. See full source code on 
-   a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github. 
-   | The code has a 
+  p #{package} Version: #{version}. See full source code on
+   a.fi-social-github(href="https://github.com/andriesfilmer/pim", target='_blank')  Github.
+   | The code has a
    a(href="http://opensource.org/licenses/MIT", target='_blank') MIT License.

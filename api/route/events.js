@@ -246,7 +246,7 @@ exports.listVersions = function(req, res) {
 
   var query = config.pool.getConnection(function(err, connection) {
 
-    var sql = "SELECT id as _id, title \
+    var sql = "SELECT id as _id, title, created\
                FROM eventversions WHERE org_id = ? AND user_id = ? ";
 
     query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {

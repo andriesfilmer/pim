@@ -4,11 +4,11 @@ appServices.factory('AuthenticationService', ['ENV', function(ENV) {
   // But I leave it for now......
   if ( ENV === 'development' ) {
     options.api.base_url = "http://dev.filmer.net:3001";
-    console.log('ENV in Development'); 
+    console.log('ENV in Development');
   }
   else {
     options.api.base_url = "https://api.filmer.net";
-    console.log('ENV in Production'); 
+    console.log('ENV in Production');
   }
 
   var auth = {isAuthenticated: false };
@@ -19,7 +19,7 @@ appServices.factory('AuthenticationService', ['ENV', function(ENV) {
 appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationService) {
   return {
     request: function (config) {
-      console.log('TokenInterceptor -> request -> url: ' + config.url); 
+      console.log('TokenInterceptor -> request -> url: ' + config.url);
       config.headers = config.headers || {};
       if ($window.localStorage.token) {
         config.headers.Authorization = 'Bearer ' + $window.localStorage.token;
@@ -27,22 +27,22 @@ appServices.factory('TokenInterceptor', function ($q, $window, AuthenticationSer
       return config;
     },
     requestError: function(rejection) {
-      console.log('TokenInterceptor -> requestError -> rejection.status: ' + rejection.status); 
+      console.log('TokenInterceptor -> requestError -> rejection.status: ' + rejection.status);
       return $q.reject(rejection);
     },
 
     /* Set Authentication.isAuthenticated to true if 200 received */
     response: function (response) {
-      console.log('TokenInterceptor -> response -> response.status: ' + response.status); 
+      console.log('TokenInterceptor -> response -> response.status: ' + response.status);
       if (response !== null && response.status === 200 && $window.localStorage.token) {
         AuthenticationService.isAuthenticated = true;
       }
       return $q.when(response);
     },
 
-    // Revoke client authentication if 401 is received 
+    // Revoke client authentication if 401 is received
     responseError: function(rejection) {
-      console.log('TokenInterceptor -> responseError -> reject.status: ' + rejection.status); 
+      console.log('TokenInterceptor -> responseError -> reject.status: ' + rejection.status);
       if (rejection.status === 401) {
         delete $window.localStorage.token;
         AuthenticationService.isAuthenticated = false;
@@ -58,7 +58,7 @@ appServices.factory('UserService', function ($q, $window, $http) {
       return $http.post(options.api.base_url + '/user/signin', {email: email, password: password});
     },
     register: function(fullname, email, password, passwordConfirmation) {
-      return $http.post(options.api.base_url + '/user/register', 
+      return $http.post(options.api.base_url + '/user/register',
         {fullname: fullname, email: email, password: password, passwordConfirmation: passwordConfirmation });
     },
     changePassword: function(password, passwordConfirmation) {
@@ -73,7 +73,7 @@ appServices.factory('UserService', function ($q, $window, $http) {
       return deferred.promise;
     },
     sendToken: function(email) {
-      return $http.post(options.api.base_url + '/user/send-token', 
+      return $http.post(options.api.base_url + '/user/send-token',
         {email: email});
     }
   };
@@ -107,7 +107,7 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
         }
         deferred.resolve(response);
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         if($window.localStorage['events_' + thisMonth]) {
           response.statusText = 'Offline: Events from localstorage';
           response.data = JSON.parse($window.localStorage['events_' + thisMonth]);
@@ -204,7 +204,7 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
       .then(function(response) {
         deferred.resolve(response);
       }, function (response) {
-        deferred.reject(response); 
+        deferred.reject(response);
       });
       return deferred.promise;
     },
@@ -214,7 +214,7 @@ appServices.factory('CalendarService', function($http, $q, $timeout, $window) {
     },
 
     vevent: function(event_id) {
-      return $http.post(options.api.base_url + '/calendar/download/vevent', 
+      return $http.post(options.api.base_url + '/calendar/download/vevent',
         {'params': {event_id: event_id}} ,{responseType: 'arraybuffer'});
     }
 
@@ -239,7 +239,7 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
           $window.localStorage.contactsAll = JSON.stringify(response.data);
         }
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         if($window.localStorage.contactsAll) {
           response.data = JSON.parse($window.localStorage.contactsAll);
           response.statusText = "Offline: Contacts from localstorage";
@@ -259,7 +259,7 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
 
     },
 
-    searchAll: function(searchKey, order, limit) { 
+    searchAll: function(searchKey, order, limit) {
       params = {'params': {searchKey: searchKey, order: order, limit: limit}};
       return $http.get(options.api.base_url + '/contacts/search', params);
     },
@@ -270,7 +270,7 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
         deferred.resolve(response);
         $window.localStorage['contact_' + id] = JSON.stringify(response.data);
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         if($window.localStorage.getItem('contact_' + id)) {
           response.data = JSON.parse($window.localStorage.getItem('contact_' + id));
           response.statusText = 'Offline: Contact from localstorage';
@@ -317,14 +317,14 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
     },
 
     vCards: function(phones, companies, emails, websites, photo, addresses, birthdate, notes) {
-      return $http.post(options.api.base_url + '/contacts/download/vcard', {'params': {phones: phones, companies: companies, 
-        emails: emails, websites: websites, addresses: addresses, birthdate: birthdate, photo: photo, notes: notes}}, 
+      return $http.post(options.api.base_url + '/contacts/download/vcard', {'params': {phones: phones, companies: companies,
+        emails: emails, websites: websites, addresses: addresses, birthdate: birthdate, photo: photo, notes: notes}},
         {responseType: 'arraybuffer'});
     },
 
     vCard: function(contact_id, phones, companies, emails, websites, photo, addresses, birthdate, notes) {
-      return $http.post(options.api.base_url + '/contact/download/vcard', {'params': {contact_id: contact_id, 
-        phones: phones, companies: companies, emails: emails, websites: websites, addresses: addresses, 
+      return $http.post(options.api.base_url + '/contact/download/vcard', {'params': {contact_id: contact_id,
+        phones: phones, companies: companies, emails: emails, websites: websites, addresses: addresses,
         birthdate: birthdate, photo: photo, notes: notes}}, {responseType: 'arraybuffer'});
     },
 
@@ -340,7 +340,7 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
         deferred.resolve(response);
 
       }, function (response) {
-        deferred.reject(response); 
+        deferred.reject(response);
       });
       return deferred.promise;
     },
@@ -355,7 +355,7 @@ appServices.factory('ContactService', function($http, $q, $timeout, $window) {
       .then(function(response) {
         deferred.resolve(response);
       }, function (response) {
-        deferred.reject(response); 
+        deferred.reject(response);
       });
       return deferred.promise;
     }
@@ -367,14 +367,14 @@ appServices.factory('PostService', function($http, $q, $timeout, $window) {
 
   return {
 
-    findAll: function(limit) {
+    findAll: function(filter, limit) {
       var deferred = $q.defer();
-      $http.get(options.api.base_url + '/posts/', {'params': {limit: limit}})
+      $http.get(options.api.base_url + '/posts/', {'params': {filter: filter, limit: limit}})
       .then(function(response) {
         $window.localStorage.postsAll = JSON.stringify(response.data);
         deferred.resolve(response);
      }, function(response) {
-        console.log(response.statusText); 
+        console.log(response.statusText);
         if($window.localStorage.postsAll) {
           response.statusText = 'Offline: Posts from localstorage';
           response.data = JSON.parse($window.localStorage.postsAll);
@@ -400,7 +400,7 @@ appServices.factory('PostService', function($http, $q, $timeout, $window) {
         $window.localStorage['post_' + id] = JSON.stringify(response.data);
         deferred.resolve(response);
       }, function(response) {
-        console.log(response.statusText); 
+        console.log(response.statusText);
         if($window.localStorage['post_' + id]) {
           response.statusText = 'Offline: Post from localstorage';
           response.data = JSON.parse($window.localStorage['post_' + id]);
@@ -436,8 +436,8 @@ appServices.factory('PostService', function($http, $q, $timeout, $window) {
       return $http.put(options.api.base_url + '/post', {'post': post});
     },
 
-    searchAll: function(searchKey, limit) { 
-      return $http.get(options.api.base_url + '/posts/search', {'params': {searchKey: searchKey, limit: limit}});
+    searchAll: function(filter, searchKey, limit) {
+      return $http.get(options.api.base_url + '/posts/search', {'params': {filter: filter, searchKey: searchKey, limit: limit}});
     },
 
     pdf: function(id, toc) {
@@ -461,11 +461,11 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
 
       $http.get(options.api.base_url + '/bookmarks/', {'params': {limit: limit}})
       .then(function(response) {
-        console.log('Fetched bookmarks from Db and saved to localStorage.'); 
+        console.log('Fetched bookmarks from Db and saved to localStorage.');
         $window.localStorage.bookmarksAll = JSON.stringify(response.data);
         deferred.resolve(response);
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         if($window.localStorage.bookmarksAll) {
           response.data = JSON.parse($window.localStorage.bookmarksAll);
           response.statusText = "Offline: Bookmarks in localstorage";
@@ -484,7 +484,7 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
       return deferred.promise;
     },
 
-    searchAll: function(searchKey, limit) { 
+    searchAll: function(searchKey, limit) {
       return $http.get(options.api.base_url + '/bookmarks/search', {'params': {searchKey: searchKey, limit: limit}});
     },
 
@@ -494,7 +494,7 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
         $window.localStorage['bookmark_' + id] = JSON.stringify(response.data);
         deferred.resolve(response);
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         if($window.localStorage['bookmark_' + id]) {
           response.statusText = 'Offline: Bookmark from localstorage';
           response.data = JSON.parse($window.localStorage['bookmark_' + id]);
@@ -512,7 +512,7 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
       .then(function(response) {
         deferred.resolve(response);
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         deferred.reject(response);
       });
       return deferred.promise;
@@ -525,7 +525,7 @@ appServices.factory('BookmarkService', function($http, $q, $timeout, $window) {
         $window.localStorage['bookmark_' + bookmark.id] = JSON.stringify(response.data);
         deferred.resolve(response);
       }, function(response) {
-        console.log(response.data); 
+        console.log(response.data);
         deferred.reject(response);
       });
       return deferred.promise;

@@ -10,7 +10,7 @@ form(name="postForm")
    span.divider
    a.fi-share(title="Share", data-open="share")
    span.divider
-   a.fi-upload(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
+   a.fi-download(ng-hide="postForm.title.$error.required", ng-class="{true: 'alert', false: ''}[saveForm]", ng-click='save(post)', title='Save item')
    span.float-right(ng-hide="showDeleteBt")
     span.divider
     a.fi-trash(ng-click='deletePost(post)', title='Delete item', confirmation-needed="Really Delete?")

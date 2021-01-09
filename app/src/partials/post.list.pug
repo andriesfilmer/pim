@@ -3,12 +3,13 @@ div.row(ng-hide="offline")
   i.fi-page.reversed(title='Posts')
   span.divider
   a.fi-magnifying-glass(ng-click='toggleSearch()', title='Search', tabindex="1")
+  span.divider
+  a.fi-filter(data-open="post-filter") &nbsp;{{postFilter}}
   span.float-right
    span.divider
    a.fi-plus(ui-sref='post.create',title='New item')
 
 div.row.flip-in(ng-show="searchForm")
- form#search
   div.columns.small-10
    input(focus-me="searchForm", type="text", placeholder="Post search ...", ng-model="searchKey")
   div.columns.small-2
@@ -21,3 +22,33 @@ div.row.my-row(ng-repeat='post in posts', ng-class="post.type", ng-class-odd="'o
    div.secondary.label {{post.created | date: 'yyyy-MM-dd'}}
 div.columns.meta-data(ng-if="!posts") No posts, todos, notes or articles yet
 
+div#post-filter.reveal.full(data-reveal='')
+ button.close-button(data-close='', type="button")
+  span(aria-hidden="true") &times;
+ fieldset
+   legend.fi-filter  Filter
+   div.row
+    div.column.small-6 All posts
+    div.switch.column.small-6
+     input#post-none.switch-input(type="radio", value="", name="postFilter", ng-model="postFilter", ng-change="changePostFilter('')")
+     label.switch-paddle(for="post-none")
+   div.row
+    div.column.small-6 Todo posts
+    div.switch.column.small-6.post-todo.todo
+     input#post-todo.todo.switch-input(type="radio", value="todo", name="postFilter", ng-model="postFilter", ng-change="changePostFilter('todo')")
+     label.switch-paddle(for="post-todo")
+   div.row
+    div.column.small-6 Note posts
+    div.switch.column.small-6.post-note.note
+     input#post-note.switch-input(type="radio", value="note", name="postFilter", ng-model="postFilter", ng-change="changePostFilter('note')")
+     label.switch-paddle(for="post-note")
+   div.row
+    div.column.small-6 Article posts
+    div.switch.column.small-6.post-article.article
+     input#post-article.switch-input(type="radio", value="article", name="postFilter", ng-model="postFilter", ng-change="changePostFilter('article')")
+     label.switch-paddle(for="post-article")
+   div.row
+    div.column.small-6 Other posts
+    div.switch.column.small-6.post-other.other
+     input#post-other.switch-input(type="radio", value="other", name="postFilter", ng-model="postFilter", ng-change="changePostFilter('other')")
+     label.switch-paddle(for="post-other")
