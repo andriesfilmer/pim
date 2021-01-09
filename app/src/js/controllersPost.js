@@ -4,7 +4,7 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $(document).foundation();
     $scope.posts = [];
 
-    var filter = $window.localStorage.postFilter;
+    var filter = $window.localStorage.postFilter || '';
     var limit = $window.localStorage.postLimit;
     var searchKey = $window.sessionStorage.sessionSearchKey;
 
