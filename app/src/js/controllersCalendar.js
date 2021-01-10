@@ -6,42 +6,17 @@ appControllers.controller('CalendarController', ['$scope', '$timeout', '$state',
 
   // Load events (json) from CalendarService.
   $scope.events = function(start, end, timezone, callback) {
-
     CalendarService.find(start, end)
     .then(function(response) {
       console.log('Promise resolve');
-      //console.log('CalendarService -> stringEvents: ' + JSON.stringify(response));
-
-      // We get a allDay false/true as string, convert it to a boolean.
-      response.data.forEach(function(event) {
-        event.allDay = JSON.parse(event.allDay);
-
-        // 00:00:00 is exclusieve it don't show on the next day!
-        // If allDay is true it even don't show if it is the next day !?!
-        // So we have a hack for displaying multiple days in the fullcalendar
-        // There must be a simpler way, but I don't get it. Is this a bug?
-        var sDate = new Date(event.start);
-        var eDate = new Date(event.end);
-        var sm = sDate.getMonth();
-        var sd = sDate.getDay();
-        var em = eDate.getMonth();
-        var ed = eDate.getDay();
-        if ( sm+sd !== em+ed ) {
-          event.end = new Date(eDate.getTime() + 60);
-          event.allDay = false;
-        }
-
-      });
-
+      //console.log('CalendarService.find -> stringify(response): ' + JSON.stringify(response));
       callback(response.data);
-
     }, function(response) {
       console.log('Promise reject');
       $scope.offline = true;
       flash('warning', response.statusText);
       callback(response.data);
     });
-
   };
 
   // Fullcalendar options.
@@ -212,16 +187,7 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
       console.log('Promise reject');
       $scope.offline = true;
       $scope.cal = response.data;
-
-      // Check if we have a real event with start,end and allday values.
-      if(response.data.start) {
-        $scope.cal.start = new Date(response.data.start);
-        $scope.cal.end = new Date(response.data.end);
-        $scope.cal.allDay = JSON.parse(response.data.allDay);
-      }
-
       flash('warning', response.statusText);
-
     }, function(data) {
       console.log('Promise notify');
       $scope.cal = data;
@@ -267,14 +233,14 @@ appControllers.controller('EventController', ['$scope','$timeout', '$state', '$s
     var m = date.getMonth();
     var y = date.getFullYear();
     if (cal.allDay === true) {
+      // For convenience we set the time on the start of the day.
+      cal.start = new Date(y, m, d).addHours(9);
+      cal.end = new Date(y, m, d).addHours(10);
+    }
+    else {
       // Remove time
       $scope.cal.start = new Date(y, m, d);
       $scope.cal.end = new Date(y, m, d);
-    }
-    // For convenience we set the time on the start of the day.
-    else {
-      cal.start = new Date(y, m, d).addHours(9);
-      cal.end = new Date(y, m, d).addHours(10);
     }
   };
 

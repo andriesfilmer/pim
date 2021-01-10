@@ -247,7 +247,7 @@ exports.listVersions = function(req, res) {
   var query = config.pool.getConnection(function(err, connection) {
 
     var sql = "SELECT id as _id, title, created\
-               FROM eventversions WHERE org_id = ? AND user_id = ? ";
+               FROM eventversions WHERE org_id = ? AND user_id = ? ORDER BY id DESC";
 
     query = connection.query(sql, [req.params.id, req.user.id], function(err, results) {
 
@@ -341,6 +341,9 @@ exports.vCalendarUpload = function(req, res) {
           var eventEntry = checkEvent(event);
           eventEntry.user_id = req.user.id;
           count++;
+
+          eventEntry.start = moment(eventEntry.start).tz(eventEntry.tz).format('YYYY-MM-DD HH:mm');
+          eventEntry.end   = moment(eventEntry.end).tz(eventEntry.tz).format('YYYY-MM-DD HH:mm');
 
           // If no 'PIM-CLASSNAME' property is included in the EVENT
           // we use 'importclassname' form the header which comes from PIM.center.

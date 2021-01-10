@@ -10,6 +10,6 @@ div.row.my-row(ng-repeat='event in events', ng-class="event.className", ng-class
   div.columns.small-12.medium-7 {{event.title}}
   div.columns.small-9.medium-3.meta-data {{event.start | date: 'EEEE d MMMM yyyy'}}
   div.columns.small-3.medium-2
-   div.secondary.label(ng-show='event.allDay==="true"') all day
+   div.secondary.label(ng-show='event.allDay') all day
   div.columns.small-3.medium-2
-   div.label(ng-hide='event.allDay==="true"') {{event.start | date: 'HH:mm'}}
+   div.label(ng-hide='event.allDay') {{event.start | date: 'HH:mm'}}

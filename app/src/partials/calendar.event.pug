@@ -23,7 +23,7 @@ form(name="eventForm")
   div.column.small-12
    div.warning.label(ng-if='cal.tzShow') {{cal.tzGuess}}
   div.column.small-12
-   div.secondary.label {{cal.start | date: 'EEE dd MMM'}}
+   div.secondary.label {{cal.start | date: 'yyyy EEE dd MMM'}}
    div.label(ng-hide='cal.allDay') {{cal.start | date: 'HH:mm'}}
    div.secondary.label  {{cal.end | date: 'EEE dd MMM'}}
    div.label(ng-hide='cal.allDay') {{cal.end | date: 'HH:mm'}}
