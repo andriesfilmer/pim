@@ -53,6 +53,10 @@ exports.search = function(req, res) {
     return res.status(401).send('Unauthorized').end();
   }
 
+  if (req.query.searchKey === '') {
+    return res.status(204).send('No content').end();
+  }
+
   if (req.query.searchKey) {
 
     // list all contacts.

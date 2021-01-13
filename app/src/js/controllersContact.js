@@ -42,8 +42,8 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
     // Hide searchForm, toggle first. Save/delete search in session.
     $scope.toggleSearch = function toggleSearch() {
       $scope.searchForm = !$scope.searchForm;
-      $scope.searchKey =  $window.sessionStorage.sessionSearchKey;
-      if ($scope.searchForm) {
+      $scope.searchKey =  $window.sessionStorage.sessionSearchKey || '';
+      if ($scope.searchForm && $scope.searchKey.length >= 3) {
         $scope.searchContacts($scope.searchKey);
       }
       else {
@@ -79,7 +79,7 @@ appControllers.controller('ContactListController', ['$scope', '$location', '$sta
         else {
           $scope.offline = true;
           $scope.searchForm = false;
-          flash('warning', 'Offline: Search not available');
+          flash('warning', response.statusText);
         }
       });
     };

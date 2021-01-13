@@ -5,8 +5,8 @@ appControllers.controller('PostListController', ['$scope', '$state', '$window', 
     $scope.posts = [];
 
     var filter = $window.localStorage.postFilter || '';
+    var searchKey = $window.sessionStorage.sessionSearchKey || '';
     var limit = $window.localStorage.postLimit;
-    var searchKey = $window.sessionStorage.sessionSearchKey;
 
     // Init posts with promises and show all posts.
     $scope.getPosts = function(filter, limit) {
