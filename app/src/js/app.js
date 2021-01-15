@@ -27,7 +27,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
   // Now set up the states
   $stateProvider
     .state('home', {
-      url: "/home?start",
+      url: "/",
       templateUrl: "partials/home.html",
       controller: "HomeController",
       access: { requiredAuthentication: true }
@@ -213,7 +213,7 @@ app.config(['$stateProvider', '$urlRouterProvider',
     })
     // Startpage
     .state('about', {
-      url: "/",
+      url: "/about",
       templateUrl: 'partials/about.html'
     })
     // Startpage

@@ -51,7 +51,7 @@ appControllers.controller('UserController', ['$scope', '$timeout', '$state', '$s
           });
         });
 
-        PostService.findAll(100)
+        PostService.findAll('', 100)
         .then(function(response) {
           console.log('Loading last updated posts into localStorage'); 
           $window.localStorage.postsAll = JSON.stringify(response.data);
