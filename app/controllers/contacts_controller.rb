@@ -1,25 +1,20 @@
 class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
 
-  # GET /contacts or /contacts.json
   def index
-    @contacts = Contact.all.limit 10
+    @contacts = Contact.all.order("id desc").limit 10
   end
 
-  # GET /contacts/1 or /contacts/1.json
   def show
   end
 
-  # GET /contacts/new
   def new
     @contact = Contact.new
   end
 
-  # GET /contacts/1/edit
   def edit
   end
 
-  # POST /contacts or /contacts.json
   def create
     @contact = Contact.new(contact_params)
 
@@ -34,7 +29,6 @@ class ContactsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /contacts/1 or /contacts/1.json
   def update
     respond_to do |format|
       if @contact.update(contact_params)
@@ -47,12 +41,11 @@ class ContactsController < ApplicationController
     end
   end
 
-  # DELETE /contacts/1 or /contacts/1.json
   def destroy
     @contact.destroy
 
     respond_to do |format|
-      format.html { redirect_to contacts_url, notice: "Contact was successfully destroyed." }
+      format.html { redirect_to contacts_url, notice: "Contact was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -63,8 +56,8 @@ class ContactsController < ApplicationController
       @contact = Contact.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def contact_params
-      params.fetch(:contact, {})
+      params.require(:contact).permit(:name, :phones, :emails, :addresses, :companies, :websites,
+        :name, :brithdate, :notes, :starred)
     end
 end
