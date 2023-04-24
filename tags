@@ -1,0 +1,30 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Application	config/application.rb	/^  class Application < Rails::Application$/;"	c	class:Pim
+ApplicationCable	app/channels/application_cable/channel.rb	/^module ApplicationCable$/;"	m
+ApplicationCable	app/channels/application_cable/connection.rb	/^module ApplicationCable$/;"	m
+ApplicationController	app/controllers/application_controller.rb	/^class ApplicationController < ActionController::Base$/;"	c
+ApplicationHelper	app/helpers/application_helper.rb	/^module ApplicationHelper$/;"	m
+ApplicationJob	app/jobs/application_job.rb	/^class ApplicationJob < ActiveJob::Base$/;"	c
+ApplicationMailer	app/mailers/application_mailer.rb	/^class ApplicationMailer < ActionMailer::Base$/;"	c
+ApplicationRecord	app/models/application_record.rb	/^class ApplicationRecord < ActiveRecord::Base$/;"	c
+Channel	app/channels/application_cable/channel.rb	/^  class Channel < ActionCable::Channel::Base$/;"	c	class:ApplicationCable
+Connection	app/channels/application_cable/connection.rb	/^  class Connection < ActionCable::Connection::Base$/;"	c	class:ApplicationCable
+Contact	app/models/contact.rb	/^class Contact < ApplicationRecord$/;"	c
+ContactsController	app/controllers/contacts_controller.rb	/^class ContactsController < ApplicationController$/;"	c
+ContactsHelper	app/helpers/contacts_helper.rb	/^module ContactsHelper$/;"	m
+Pim	config/application.rb	/^module Pim$/;"	m
+contact_params	app/controllers/contacts_controller.rb	/^    def contact_params$/;"	f	class:ContactsController
+create	app/controllers/contacts_controller.rb	/^  def create$/;"	f	class:ContactsController
+destroy	app/controllers/contacts_controller.rb	/^  def destroy$/;"	f	class:ContactsController
+edit	app/controllers/contacts_controller.rb	/^  def edit$/;"	f	class:ContactsController
+index	app/controllers/contacts_controller.rb	/^  def index$/;"	f	class:ContactsController
+new	app/controllers/contacts_controller.rb	/^  def new$/;"	f	class:ContactsController
+set_contact	app/controllers/contacts_controller.rb	/^    def set_contact$/;"	f	class:ContactsController
+show	app/controllers/contacts_controller.rb	/^  def show$/;"	f	class:ContactsController
+system!	bin/setup	/^def system!(*args)$/;"	f
+update	app/controllers/contacts_controller.rb	/^  def update$/;"	f	class:ContactsController
