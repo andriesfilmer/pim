@@ -40,3 +40,5 @@ Pin turbo
 ## Resources
 
 * [Working with javascript in rails](https://guides.rubyonrails.org/working_with_javascript_in_rails.html)
+* [Flash messages with Hotwire](https://www.hotrails.dev/turbo-rails/flash-messages-hotwire)
+

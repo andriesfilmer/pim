@@ -1,0 +1,3 @@
+<%= turbo_stream.prepend "contacts", @contact %>
+<%= turbo_stream.update Contact.new, "" %>
+<%= turbo_stream.prepend "flash", partial: "layouts/flash" %>
