@@ -1,18 +1,9 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @contact %>
-
-<div>
-  <%= link_to "Edit this contact", edit_contact_path(@contact) %> |
-  <%= link_to "Back to contacts", contacts_path %>
-
-  <%= button_to "Destroy this contact", @contact, method: :delete %>
-</div>
+<%= @contact.name %>
 
 <ul>
   <li><%= link_to "Edit", edit_contact_path(@contact) %></li>
-  <li><%= link_to "Destroy", contact_path(@contact), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } %></li>
+  <li><%= link_to "Link format html delete", contact_path(@contact, format: :html), data: {turbo_method: :delete} %></li>
+  <li><%= button_to "Html delete", contact_path(@contact, format: :html), method: :delete %></li>
+  <li><%= button_to "Turbo false delete", contact_path(@contact), method: :delete, data: {turbo: false} %></li>
+  <li><%= link_to "Back to contacts", contacts_path %></li>
 </ul>
