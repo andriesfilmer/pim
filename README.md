@@ -1,24 +1,42 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+    git clone git@github.com:andriesfilmer/pim-rails.git
 
-Things you may want to cover:
+# New rail app
 
-* Ruby version
+Rails 7.0.4.3
 
-* System dependencies
+    rails new pim-app
 
-* Configuration
+## importmap
 
-* Database creation
+    rails importmap:install
+`
+Add Importmap include tags in application layout
+      insert  app/views/layouts/application.html.erb
+Create application.js module as entrypoint
+      create  app/javascript/application.js
+Use vendor/javascript for downloaded pins
+      create  vendor/javascript
+Ensure JavaScript files are in the Sprocket manifest
+      append  app/assets/config/manifest.js
+Configure importmap paths in config/importmap.rb
+      create  config/importmap.rb
+Copying binstub
+      create  bin/importmap
 
-* Database initialization
+## Turbo
 
-* How to run the test suite
+    rails turbo:install
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+Pin turbo
 
-* ...
+    bin/importmap pin @hotwired/turbo-rails
+    bin/importmap pin application
+
+
+
+## Resources
+
+* [Working with javascript in rails](https://guides.rubyonrails.org/working_with_javascript_in_rails.html)
