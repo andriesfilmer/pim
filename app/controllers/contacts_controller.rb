@@ -52,6 +52,21 @@ class ContactsController < ApplicationController
     end
   end
 
+  def search
+    if params.dig(:name_search).present?
+      @contacts = Contact.where('name LIKE ?', "%#{params[:name_search]}%").order(updated: :desc)
+    else
+      @contacts = []
+    end
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update("contacts", partial: "contacts", locals: { contacts: @contacts })
+        ]
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact

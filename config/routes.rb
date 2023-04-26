@@ -1,9 +1,12 @@
 Rails.application.routes.draw do
-  resources :contacts
 
   # Defines the root path route ("/")
   root "contacts#index"
 
-  get "/contacts", to: "contacts#index"
+  resources :contacts do
+    collection do
+      post 'search'
+    end
+  end
 
 end

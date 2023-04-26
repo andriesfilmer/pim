@@ -2,10 +2,10 @@
 
 <h1>Contacts</h1>
 
-<div id="contacts">
-  <% @contacts.each do |contact| %>
-    <%= render contact %>
-  <% end %>
-</div>
+<%= form_with url: search_contacts_path, method: :contact do |form| %>
+  <%= form.search_field :name_search, value: params[:name_search], oninput: "this.form.requestSubmit()" %>
+<% end %>
+
+<%= render "contacts" %>
 
 <%= link_to "New contact", new_contact_path %>

@@ -33,6 +33,8 @@ Copying binstub
 Pin turbo
 
     bin/importmap pin @hotwired/turbo-rails
+    bin/importmap unpin jquery --download
+
     bin/importmap pin application
 
 
