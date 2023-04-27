@@ -6,6 +6,10 @@ class ContactsController < ApplicationController
   end
 
   def show
+    #respond_to do |format|
+    #  format.html
+    #  format.json { render json: @contact.to_json } # else only id, created_at, updated_at
+    #end
   end
 
   def new

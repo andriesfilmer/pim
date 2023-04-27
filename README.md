@@ -8,6 +8,10 @@ Rails 7.0.4.3
 
     rails new pim-app
 
+## Turbo
+
+    rails turbo:install
+
 ## importmap
 
     rails importmap:install
@@ -25,17 +29,11 @@ Configure importmap paths in config/importmap.rb
 Copying binstub
       create  bin/importmap
 
-## Turbo
-
-    rails turbo:install
-
-
 Pin turbo
 
-    bin/importmap pin @hotwired/turbo-rails
-    bin/importmap unpin jquery --download
-
-    bin/importmap pin application
+    ./bin/importmap pin application
+    ./bin/importmap pin @hotwired/turbo-rails
+    ./bin/importmap pin jquery --download
 
 
 
