@@ -1,0 +1,72 @@
+/*
+* Prefixed by https://autoprefixer.github.io
+* PostCSS: v8.4.14,
+* Autoprefixer: v10.4.7
+* Browsers: last 4 version
+*/
+
+@mixin xlarge-columns {
+  .xlarge-1  { grid-column: span 1; }
+  .xlarge-2  { grid-column: span 2; }
+  .xlarge-3  { grid-column: span 3; }
+  .xlarge-4  { grid-column: span 4; }
+  .xlarge-5  { grid-column: span 5; }
+  .xlarge-6  { grid-column: span 6; }
+  .xlarge-7  { grid-column: span 7; }
+  .xlarge-8  { grid-column: span 8; }
+  .xlarge-9  { grid-column: span 9; }
+  .xlarge-10 { grid-column: span 10; }
+  .xlarge-11 { grid-column: span 11; }
+  .xlarge-12 { grid-column: span 12; }
+}
+@mixin large-columns {
+  .large-1  { grid-column: span 1; }
+  .large-2  { grid-column: span 2; }
+  .large-3  { grid-column: span 3; }
+  .large-4  { grid-column: span 4; }
+  .large-5  { grid-column: span 5; }
+  .large-6  { grid-column: span 6; }
+  .large-7  { grid-column: span 7; }
+  .large-8  { grid-column: span 8; }
+  .large-9  { grid-column: span 9; }
+  .large-10 { grid-column: span 10; }
+  .large-11 { grid-column: span 11; }
+  .large-12 { grid-column: span 12; }
+}
+@mixin medium-columns {
+  .medium-1  { grid-column: span 1; }
+  .medium-2  { grid-column: span 2; }
+  .medium-3  { grid-column: span 3; }
+  .medium-4  { grid-column: span 4; }
+  .medium-5  { grid-column: span 5; }
+  .medium-6  { grid-column: span 6; }
+  .medium-7  { grid-column: span 7; }
+  .medium-8  { grid-column: span 8; }
+  .medium-9  { grid-column: span 9; }
+  .medium-10 { grid-column: span 10; }
+  .medium-11 { grid-column: span 11; }
+  .medium-12 { grid-column: span 12; }
+}
+@mixin small-columns {
+  .small-1  { grid-column: span 1; }
+  .small-2  { grid-column: span 2; }
+  .small-3  { grid-column: span 3; }
+  .small-4  { grid-column: span 4; }
+  .small-5  { grid-column: span 5; }
+  .small-6  { grid-column: span 6; }
+  .small-7  { grid-column: span 7; }
+  .small-8  { grid-column: span 8; }
+  .small-9  { grid-column: span 9; }
+  .small-10 { grid-column: span 10; }
+  .small-11 { grid-column: span 11; }
+  .small-12 { grid-column: span 12; }
+}
+
+@mixin focus-visible-active {
+  outline: none;
+  border: 1px solid #8a8a8a;
+  background-color: #fefefe;
+  box-shadow: 0 0 5px #cacaca;
+  transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+}
+
