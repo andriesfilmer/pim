@@ -1,3 +1,4 @@
-<%= turbo_stream.prepend "contacts", @contact %>
-<%= turbo_stream.update Contact.new, "" %>
+<% flash.now[:notice] = "Turbo - Contact (id #{@contact.id}) was successfully created." %>
+<%= turbo_stream.prepend "contacts", @contact if @contact.id %>
+<%= turbo_stream.update "new_contact", partial: "contacts/form", locals: { contact: Contact.new } unless @contact.id %>
 <%= turbo_stream.prepend "flash", partial: "layouts/flash" %>

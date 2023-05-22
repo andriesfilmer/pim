@@ -1,11 +1,35 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Contacts</h1>
-
-<%= form_with url: search_contacts_path, method: :contact do |form| %>
-  <%= form.search_field :name_search, value: params[:name_search], oninput: "this.form.requestSubmit()" %>
+<% content_for :head do %>
+<%= javascript_import_module_tag "checkout" %>
 <% end %>
 
-<%= render "contacts" %>
+<div class="row secondary-menu">
+  <div class="columns small-12 medium-12 text-right">
+    <span class="divider"></span>
+    <%= link_to "", new_contact_path, data: { turbo_frame: dom_id(Contact.new) }, class: "fi-plus" %>
+  </div>
+</div>
 
-<%= link_to "New contact", new_contact_path %>
+<div class="row">
+  <div class="columns">
+    <h1>Contacts</h1>
+
+    <button onclick="window.myFunction()">Click me</button>
+    <button onclick="window.setFocus()">Set focus</button>
+    <button onclick="window.helloFunction()">Hello</button>
+    <p id="demo"></p>
+
+    <%= turbo_frame_tag Contact.new %>
+
+    <%= form_with url: search_contacts_path, method: :contact do |form| %>
+      Search: <%= form.search_field :name_search, value: params[:name_search], oninput: "this.form.requestSubmit()" %>
+    <% end %>
+
+  </div>
+</div>
+
+<%= turbo_stream_from @contact %>
+
+<%= turbo_frame_tag "contacts" do %>
+  <%= render "contacts" %>
+<% end %>
+

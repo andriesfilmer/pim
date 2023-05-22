@@ -1,22 +1,33 @@
 <%= form_with(model: contact) do |form| %>
+
+<div class="row">
+  <div class="columns">
   <% if contact.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
-
-      <ul>
-        <% contact.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
+    <h2><%= pluralize(contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
+    <ul>
+    <% contact.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
+    </ul>
   <% end %>
+  </div>
+</div>
 
-  <div>
+<div class="row">
+  <div class="columns medium-2">
     <%= form.label :name %>
+  </div>
+  <div class="columns medium-10">
     <%= form.text_field :name %>
   </div>
+</div>
 
-  <div>
+<div class="row">
+  <div class="columns medium-2">
+  </div>
+  <div class="columns medium-10">
     <%= form.submit %>
   </div>
+</div>
+
 <% end %>

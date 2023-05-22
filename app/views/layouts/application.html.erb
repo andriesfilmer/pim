@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pim</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <%= csrf_meta_tags %>
-  <%= csp_meta_tag %>
+<title>Pim</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<%= csrf_meta_tags %>
+<%= csp_meta_tag %>
 
-  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-  <%= javascript_importmap_tags %>
+<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+<%= javascript_importmap_tags %>
+<%= yield(:head) %>
 </head>
 
 <body>
 
+<nav class="top-bar">
   <%= render  "layouts/menu" %>
+</nav>
 
-  <div id="flash" class="flash">
-    <%= render "layouts/flash" %>
-  </div>
+<div id="flash" class="flash">
+  <%= render "layouts/flash" %>
+</div>
 
-  <%= yield %>
+<%= yield %>
 
 </body>
 </html>

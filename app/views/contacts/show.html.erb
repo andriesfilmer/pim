@@ -1,9 +1,53 @@
-<%= @contact.name %>
 
-<ul>
-  <li><%= link_to "Edit", edit_contact_path(@contact) %></li>
-  <li><%= link_to "Link format html delete", contact_path(@contact, format: :html), data: {turbo_method: :delete} %></li>
-  <li><%= button_to "Html delete", contact_path(@contact, format: :html), method: :delete %></li>
-  <li><%= button_to "Turbo false delete", contact_path(@contact), method: :delete, data: {turbo: false} %></li>
-  <li><%= link_to "Back to contacts", contacts_path %></li>
-</ul>
+<div class="row secondary-menu">
+  <div class="columns small-2 medium-2">
+    <a href="" class="fi-star"></a>
+    <span class="divider"></span>
+    <%= link_to "", edit_contact_path(@contact), class: "fi-pencil" %>
+    <span class="divider"></span>
+  </div>
+  <div class="columns small-10 medium-10 text-right">
+    <span class="divider"></span>
+    <%= link_to "", contact_path(@contact, format: :html), data: {turbo_method: :delete}, class: "fi-trash" %>
+  </div>
+</div>
+
+<%= turbo_frame_tag dom_id @contact do %>
+  <%= render @contact %>
+<% end %>
+
+<div class="row">
+  <div class="columns">
+    <h3><%= @contact.name %></h3>
+    <%= link_to "", edit_contact_path(@contact), class: "fi-pencil" %>
+  </div>
+</div>
+<div class="row">
+  <div class="medium-6 columns">
+      <label class="label-th">Phones</label>
+      <% JSON.parse(@contact.phones).each do | phone | %>
+      <div class="row">
+        <div class="medium-10 columns">
+          <%= label_tag phone["type"] %><br>
+          <%= phone["value"] %>
+        </div>
+        <div class="medium-2 columns fi-telephone large-icon"></div>
+      </div>
+      <% end %>
+    <div>
+      <label class="label-th">Emails</label>
+      <% JSON.parse(@contact.emails).each do | email | %>
+        <%= email["type"] %>: <%= email["value"] %><br>
+      <% end %>
+    </div>
+  </div>
+  <div class="medium-6 columns">
+    <label class="label-th">Notes</label>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns"><label class="label-th"></label></div>
+  <div class="columns small-6 medium-6 meta-data">Created: <%= @contact.created_at %></div>
+  <div class="columns small-6 medium-6 meta-data">Updated: <%= @contact.updated_at %></div>
+</div>

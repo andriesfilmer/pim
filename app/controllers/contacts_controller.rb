@@ -1,4 +1,5 @@
 class ContactsController < ApplicationController
+
   before_action :set_contact, only: %i[ show edit update destroy ]
 
   def index
@@ -25,12 +26,14 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.save
         format.html { redirect_to contacts_path, notice: "Contact was successfully created." }
+        # Turbo-stream actions in separate file update.turbo_stream.erb
         format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully created." }
-        format.json { render :show, status: :created, location: @contact }
+        format.json { render :show, status: :created, location: @contact } and return
       else
         format.html { render :new, status: :unprocessable_entity }
-        #format.json { render json: @contact.errors, status: :unprocessable_entity }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
+     # redirect_to root_path
     end
   end
 
@@ -38,6 +41,8 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.update(contact_params)
         format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
+        # Turbo-stream actions in this block
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("contact_#{@contact.id}", @contact) }
         format.json { render :show, status: :ok, location: @contact }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -50,7 +55,7 @@ class ContactsController < ApplicationController
     @contact.destroy
 
     respond_to do |format|
-      format.turbo_stream { @contacts = Contact.all.order("id desc").limit(10) }
+      format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully deleted." }
       format.html { redirect_to contacts_path, notice: "Contact was successfully destroyed." }
       format.json { head :no_content }
     end

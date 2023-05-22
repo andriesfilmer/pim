@@ -1,6 +1,3 @@
-<% flash.now[:notice] = "Contact (id #{@contact.id}) was successfully destroyed." %>
+<% flash.now[:notice] = "Turbo - Contact (id #{@contact.id}) was successfully destroyed." %>
 <%= turbo_stream.remove @contact %>
 <%= turbo_stream.prepend "flash", partial: "layouts/flash" %>
-<% @contacts.each do | contact | %>
-  <%= turbo_stream.append "contacts", contact %>
-<% end %>

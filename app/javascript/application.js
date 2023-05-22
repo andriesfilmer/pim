@@ -4,5 +4,3 @@
 import "@hotwired/turbo-rails"
 import "jquery"
 //Turbo.session.drive = false
-//
-$("#name_search").focus();

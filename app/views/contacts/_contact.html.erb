@@ -1,6 +1,10 @@
-<div id="<%= dom_id contact %>">
+<%= turbo_frame_tag dom_id contact do %>
+<div class="row odd-even">
+  <div class="columns">
   <%= contact.name %>
-  <%= link_to "Show this contact", contact %> |
-  <%= link_to "Turbo destroy", contact, data: {turbo_method: :delete} %>
-  <hr>
+  <%= link_to "Show this contact", contact, data: { turbo_frame: "_top" } %> |
+  <%= link_to "Turbo destroy", contact, data: {turbo_method: :delete} %> |
+  <%= link_to "Turbo Edit", edit_contact_path(contact) %>
+  </div>
 </div>
+<% end %>

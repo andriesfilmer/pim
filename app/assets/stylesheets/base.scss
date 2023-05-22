@@ -1,0 +1,91 @@
+nav.top-bar {
+  font-size: 1.5em;
+  max-width: 100%;
+  background-color: #000;
+  color: #fff;
+  a {
+    font-size: 1.2rem;
+    color: #fff;
+    vertical-align: middle;
+  }
+}
+
+.secondary-menu {
+  font-size: 2rem;
+  padding-bottom: 1rem;
+  .divider {
+    margin: 1rem;
+    border-right: 1px solid #eee;
+  }
+}
+
+label.label-th {
+  display: block;
+  margin-top: 1rem;
+  border-bottom: 1px solid #eee;
+  font-size: 1.2rem;
+}
+.row-caption {
+  color: #fff;
+  a {color: #fff;} a:hover { color: #ddd} a:focus { color: #eee; }
+  font-weight: bold;
+}
+.row-caption, .row-th, .odd-even {
+  padding: 0.3em 0 0.3em 0.3em;
+  line-height: 2em;
+  border-left: 0.1em solid #ddd;
+  border-right: 0.1em solid #ddd;
+  border-bottom: 0.1em solid #ddd;
+  background-color: #fff;
+}
+
+.odd-even:nth-child(2n+1){ background-color: #f2f2f2; }
+.odd-even { &:hover { background-color: #ddd; }}
+
+.disabled { color: #ccc; }
+
+.close-button {
+  font-size: 2em;
+  margin-top: -0.5rem;
+  padding-right: 0px; // for iphone devices
+  float: right;
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+  &:hover { color: #888; }
+}
+
+.medium-icon:before {
+  font-size: 1.8em;
+  vertical-align: sub;
+  line-height: initial;
+}
+.large-icon { font-size: 2em; }
+
+.meta-data {
+  font-size: 90%;
+  color: #999;
+}
+
+// Don't let user select elements
+button, .button, .pagination, .user-select-none {
+  user-select: none;
+}
+
+// Rails overwrites
+//-----------------
+.field_with_errors {
+  display: inline;
+  input { border-color: red; background-color: #f7e4e1; }
+  select { border-color: red; background-color: #f7e4e1; }
+}
+
+.button.success { &:hover { color: #fff} &:focus { color: #fff; } }
+.button.warning { color: #fff; &:hover { color: #fff; } }
+
+// Added extra 'duplicate' icons in foundation-icons.css */
+.fi-notice:before { content: "\f15e"; }
+.fi-success:before { content: "\f126"; }
+.fi-warning:before { content: "\f101"; }
+.fi-alert:before { content: "\f101"; }
+.fi-error:before { content: "\f101"; }
