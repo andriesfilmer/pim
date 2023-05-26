@@ -9,6 +9,7 @@ gem "sprockets-rails"
 gem "puma", "~> 5.0"
 gem "importmap-rails"
 gem "turbo-rails"
+gem "redis" # https://github.com/redis/redis-rb
 #gem "stimulus-rails"
 gem "jbuilder" # Simple DSL for declaring JSON structures
 

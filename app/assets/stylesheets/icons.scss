@@ -1,0 +1,106 @@
+@import 'svg-icons';
+
+/**
+* Source: https://css-tricks.com/how-i-made-an-icon-system-out-of-css-custom-properties/
+*--------------------------------------------------------------------------------------
+* Characters to escape from SVGs
+* This list allows you to have inline CSS in your SVG code as well
+*/
+$fs-escape-chars: (
+  ' ': '%20',
+  '\'': '%22',
+  '"': '%27',
+  '#': '%23',
+  '/': '%2F',
+  ':': '%3A',
+  '(': '%28',
+  ')': '%29',
+  '%': '%25',
+  '<': '%3C',
+  '>': '%3E',
+  '\\': '%5C',
+  '^': '%5E',
+  '{': '%7B',
+  '|': '%7C',
+  '}': '%7D',
+);
+
+/* Sass function to encode the icons */
+@function svg($name) {
+  // Check if icon exists
+  @if not map-has-key($svg-icons, $name) {
+    @error 'icon “#{$name}” does not exists in $svg-icons map';
+    @return false;
+  }
+
+  // Get icon data
+  $icon-map: map-get($svg-icons, $name);
+
+  $escaped-string: '';
+  $unquote-icon: unquote($icon-map);
+  // Loop through each character in string
+  @for $i from 1 through str-length($unquote-icon) {
+    $char: str-slice($unquote-icon, $i, $i);
+
+    // Check if character is in symbol map
+    $char-lookup: map-get($fs-escape-chars, $char);
+
+    // If it is, use escaped version
+    @if $char-lookup != null {
+        $char: $char-lookup;
+    }
+
+    // Append character to escaped string
+    $escaped-string: $escaped-string + $char;
+  }
+
+  // Return inline SVG data
+  @return url('data:image/svg+xml, #{$escaped-string} ');
+}
+
+
+/* Store each icon into a custom property */
+:root {
+  @each $name, $code in $svg-icons {
+    --svg-#{$name}: #{svg($name)};
+  }
+}
+
+[class*="ib-"]::before, [class*="ia-"]::after {
+  content: "";
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: currentColor;
+  &.icon-medium {
+    width: 1.5em;
+    height: 1.5em;
+  }
+  &.icon-large {
+    width: 2em;
+    height: 2em;
+  }
+  vertical-align: middle;
+}
+
+/* Import inline SVG */
+.ib-arrow-back:before { -webkit-mask-image: var(--svg-arrow-back); mask-image: var(--svg-arrow-back); }
+.ib-arrow-forward:before { -webkit-mask-image: var(--svg-arrow-forward); mask-image: var(--svg-arrow-forward); }
+.ib-article:before { -webkit-mask-image: var(--svg-article); mask-image: var(--svg-article); }
+.ib-bookmarks:before { -webkit-mask-image: var(--svg-bookmarks); mask-image: var(--svg-bookmarks); }
+.ib-calendar-month:before { -webkit-mask-image: var(--svg-calendar-month); mask-image: var(--svg-calendar-month); }
+.ib-edit:before { -webkit-mask-image: var(--svg-edit); mask-image: var(--svg-edit); }
+.ib-home:before { -webkit-mask-image: var(--svg-home); mask-image: var(--svg-home); }
+.ib-lock:before { -webkit-mask-image: var(--svg-lock); mask-image: var(--svg-lock); }
+.ib-menu:before { -webkit-mask-image: var(--svg-menu); mask-image: var(--svg-menu); }
+.ib-people:before { -webkit-mask-image: var(--svg-people); mask-image: var(--svg-people); }
+.ib-person-add:before { -webkit-mask-image: var(--svg-person-add); mask-image: var(--svg-person-add); }
+.ib-trash:before { -webkit-mask-image: var(--svg-trash); mask-image: var(--svg-trash); }
+.ib-star:before { -webkit-mask-image: var(--svg-star); mask-image: var(--svg-star); }
+

@@ -1,3 +1,4 @@
+
 <% content_for :head do %>
 <%= javascript_import_module_tag "checkout" %>
 <% end %>
@@ -5,7 +6,7 @@
 <div class="row secondary-menu">
   <div class="columns small-12 medium-12 text-right">
     <span class="divider"></span>
-    <%= link_to "", new_contact_path, data: { turbo_frame: dom_id(Contact.new) }, class: "fi-plus" %>
+    <%= link_to "", new_contact_path, data: { turbo_frame: dom_id(Contact.new) }, class: "ib-person-add" %>
   </div>
 </div>
 
@@ -27,8 +28,7 @@
   </div>
 </div>
 
-<%= turbo_stream_from @contact %>
-
+<%= turbo_stream_from "contacts" %>
 <%= turbo_frame_tag "contacts" do %>
   <%= render "contacts" %>
 <% end %>

@@ -48,10 +48,8 @@ Pin turbo
 
 ## Mysql
 
-    alter table contacts add column created_at datetime;
-    alter table contacts add column updated_at datetime;
-
-    create view contacts_prisma as select *, created as created_at, updated as updated_at from contacts;
+    alter table contacts change created created_at datetime;
+    alter table contacts change updated updated_at datetime;
 
 ## Resources
 
