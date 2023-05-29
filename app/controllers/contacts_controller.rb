@@ -27,11 +27,11 @@ class ContactsController < ApplicationController
       if @contact.save
         format.html { redirect_to contacts_path, notice: "Contact was successfully created." }
         # Turbo-stream actions in separate file update.turbo_stream.erb
-        format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully created." }
-        format.json { render :show, status: :created, location: @contact } and return
+        #format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully created." }
+        #format.json { render :show, status: :created, location: @contact } and return
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
+        #format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
      # redirect_to root_path
     end
@@ -42,11 +42,11 @@ class ContactsController < ApplicationController
       if @contact.update(contact_params)
         format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
         # Turbo-stream actions in this block
-        format.turbo_stream { render turbo_stream: turbo_stream.replace("contact_#{@contact.id}", @contact) }
+        #format.turbo_stream { render turbo_stream: turbo_stream.replace("contact_#{@contact.id}", @contact) }
         format.json { render :show, status: :ok, location: @contact }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @contact.errors, status: :unprocessable_entity }
+        #format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -55,15 +55,15 @@ class ContactsController < ApplicationController
     @contact.destroy
 
     respond_to do |format|
-      format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully deleted." }
+      #format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully deleted." }
       format.html { redirect_to contacts_path, notice: "Contact was successfully destroyed." }
       format.json { head :no_content }
     end
   end
 
   def search
-    if params.dig(:name_search).present?
-      @contacts = Contact.where('name LIKE ?', "%#{params[:name_search]}%").order(updated: :desc)
+    if params.dig(:contact_search).present?
+      @contacts = Contact.where('name LIKE ?', "%#{params[:contact_search]}%").order(updated_at: :desc)
     else
       @contacts = []
     end

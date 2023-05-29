@@ -1,6 +1,9 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 
-//import "application"
 import "@hotwired/turbo-rails"
+import "@hotwired/stimulus"
+import "controllers"
 import "jquery"
+//
 //Turbo.session.drive = false
+
