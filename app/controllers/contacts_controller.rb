@@ -3,7 +3,9 @@ class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
 
   def index
-    @contacts = Contact.all.order("id desc").limit 10
+    @contacts = Contact.all.order("id desc").limit 100
+    @contacts = @contacts.where(starred: true) if params[:starred]
+    @contacts = @contacts.where("birthdate IS NOT NULL") if params[:birthdate]
   end
 
   def show
@@ -25,7 +27,7 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save
-        format.html { redirect_to contacts_path, notice: "Contact was successfully created." }
+        format.html { redirect_to @contact, notice: "Contact was successfully created." }
         # Turbo-stream actions in separate file update.turbo_stream.erb
         #format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully created." }
         #format.json { render :show, status: :created, location: @contact } and return

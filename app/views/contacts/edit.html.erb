@@ -1,6 +1,13 @@
-<div class="row">
-  <div class="columns">
-    <h1>Editing contact</h1>
+<div class="row secondary-menu">
+  <div class="columns small-6 medium-6">
+    <a href="" class="ib-star"></a>
+    <span class="divider"></span>
+    <span data-controller="contact" data-action="click->contact#prepareParams" class="ib-cloud-upload"></span>
+    <span class="divider"></span>
+  </div>
+  <div class="columns small-6 medium-6 text-right">
+    <span class="divider"></span>
+    <%= link_to "", contact_path(@contact, format: :html), data: {turbo_method: :delete}, class: "ib-trash" %>
   </div>
 </div>
 

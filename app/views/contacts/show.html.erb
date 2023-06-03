@@ -1,14 +1,14 @@
-
 <div class="row secondary-menu">
-  <div class="columns small-2 medium-2">
+  <div class="columns small-6 medium-6">
     <a href="" class="ib-star"></a>
     <span class="divider"></span>
     <%= link_to "", edit_contact_path(@contact), class: "ib-edit" %>
     <span class="divider"></span>
   </div>
-  <div class="columns small-10 medium-10 text-right">
+  <div class="columns small-6 medium-6 text-right">
     <span class="divider"></span>
-    <%= link_to "", contact_path(@contact, format: :html), data: {turbo_method: :delete}, class: "ib-trash" %>
+    <%= link_to "", contact_path(@contact, format: :html),
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure to delete?"}, class: "ib-trash" %>
   </div>
 </div>
 
@@ -19,25 +19,28 @@
 </div>
 <div class="row">
   <div class="medium-6 columns">
-    <label class="label-th">Phones</label>
+    <%= label_tag :phones, nil, class:"label-th" unless @contact.phones.include?("[]") %>
     <% JSON.parse(@contact.phones).each do | phone | %>
     <div class="row">
       <div class="medium-10 columns">
-        <%= label_tag phone["type"] %><br>
+        <%= label_tag phone["type"] %>
+        <span class="float-right ib-call medium-icon"></span>
         <%= phone["value"] %>
       </div>
       <div class="medium-2 columns fi-telephone large-icon"></div>
     </div>
     <% end %>
     <div>
-      <label class="label-th">Emails</label>
+      <%= label_tag :emails, nil, class:"label-th" unless @contact.emails.include?("[]") %>
       <% JSON.parse(@contact.emails).each do | email | %>
-        <%= email["type"] %>: <%= email["value"] %><br>
+        <%= email["type"] %>: <%= email["value"] %>
       <% end %>
     </div>
   </div>
   <div class="medium-6 columns">
     <label class="label-th">Notes</label>
+    <%= content_tag :pre, @contact.notes, id: "notes", class: "display-none" %>
+    <div data-controller="contact" id="markdown"></div>
   </div>
 </div>
 

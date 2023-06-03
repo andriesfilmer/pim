@@ -19,3 +19,21 @@ turbo-frame {
   display: block;
   border: 1px solid blue;
 }
+
+#markdown table {
+  border-collapse: collapse;
+  thead, tfoot {
+    border: 1px solid #f1f1f1;
+    background: #f8f8f8;
+    line-height: 2em;
+  }
+  tbody tr:nth-child(even) {
+    background-color: #f1f1f1;
+  }
+  width: 100%;
+  margin-bottom: 10px;
+  tr, td {
+    border: 1px solid #CBC1C1;
+    padding: 4px;
+  }
+}

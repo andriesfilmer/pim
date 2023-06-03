@@ -1,31 +1,28 @@
 <div class="row secondary-menu">
-  <div class="columns small-12 medium-12 text-right">
+  <div class="small-6 medium-6 columns">
+    <%= link_to "", contacts_path(starred: true), class: "ib-star" %>
     <span class="divider"></span>
+    <%= link_to "", contacts_path(birthdate: true), class: "ib-cake" %>
+    <span class="divider"></span>
+    <span data-controller="contact" data-action="click->contact#showSearch" class="ib-search"></span>
+    <span class="divider"></span>
+  </div>
+  <div class="small-6 medium-6 columns text-right">
     <%= link_to "", new_contact_path, data: { turbo_frame: dom_id(Contact.new) }, class: "ib-person-add" %>
+    <span class="divider"></span>
   </div>
 </div>
 
-<div class="row">
+<div id="show_search" class="row display-none">
   <div class="columns">
-    <h1>Contacts</h1>
-
-  <div data-controller="contact">
-    <input data-contact-target="name" type="text">
-    <button data-action="click->contact#greet">Greet</button>
-    <span data-contact-target="output"></span>
-  </div>
-
-  <hr>
-
   <%= form_with url: search_contacts_path, method: :contact do |form| %>
     <%= form.search_field :contact_search, placeholder: 'Search contacts',
       value: params[:contact_search], oninput: "this.form.requestSubmit()" %>
   <% end %>
-
-  <hr>
-
   </div>
 </div>
 
-<%= render "contacts" %>
+<%= render "contacts" unless params[:birthdate] || params[:starred] %>
+<%= render "starred" if params[:starred] %>
+<%= render "birthdates" if params[:birthdate] %>
 

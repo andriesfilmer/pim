@@ -1,12 +1,14 @@
 nav.top-bar {
-  font-size: 1.5em;
+  line-height: 2.5rem;
+  text-align: center;
   max-width: 100%;
   background-color: purple;
   color: #fff;
   a {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     color: #fff;
     vertical-align: middle;
+    span { font-size: 1.2rem; }
   }
 }
 
@@ -20,7 +22,6 @@ nav.top-bar {
 }
 
 label.label-th {
-  display: block;
   margin-top: 1rem;
   border-bottom: 1px solid #eee;
   font-size: 1.2rem;
@@ -33,10 +34,8 @@ label.label-th {
 .row-caption, .row-th, .odd-even {
   padding: 0.3em 0 0.3em 0.3em;
   line-height: 2em;
-  border-left: 0.1em solid #ddd;
-  border-right: 0.1em solid #ddd;
-  border-bottom: 0.1em solid #ddd;
   background-color: #fff;
+  border-radius: 5px;
 }
 
 .odd-even:nth-child(2n+1){ background-color: #f2f2f2; }
@@ -72,6 +71,11 @@ button, .button, .pagination, .user-select-none {
   user-select: none;
 }
 
+#contacts > [class*="ib-"]:before {
+  height: 2em;
+  color: orange;
+  font-size: 3rem;
+}
 // Rails overwrites
 //-----------------
 .field_with_errors {

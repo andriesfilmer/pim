@@ -1,9 +1,10 @@
-<div class="row">
-  <div class="columns">
-    <h1>New contact</h1>
+<div class="row secondary-menu">
+  <div class="columns small-11 medium-11">
+    <a href="" class="ib-star"></a>
+    <span class="divider"></span>
+    <span data-controller="contact" data-action="click->contact#prepareParams" class="ib-cloud-upload"></span>
+    <span class="divider"></span>
   </div>
 </div>
 
-<%= turbo_frame_tag @contact do %>
-  <%= render "form", contact: @contact %>
-<% end %>
+<%= render "form", contact: @contact %>
