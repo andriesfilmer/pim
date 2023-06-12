@@ -1,0 +1,123 @@
+@import 'mixin';
+
+label {
+  font-size: 0.875rem;
+  display: block;
+}
+
+[type='text'],
+[type='password'],
+[type='date'],
+[type='datetime'],
+[type='datetime-local'],
+[type='month'],
+[type='week'],
+[type='email'],
+[type='number'],
+[type='search'],
+[type='tel'],
+[type='time'],
+[type='url'],
+[type='color'],
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-size: 1rem;
+  font-family: inherit;
+  width: 100%;
+  height: 2.4375rem;
+  margin: 0 0 1rem;
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid #cacaca;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 2px #eee;
+  transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+  &:focus, &:active {
+    @include focus-visible-active;
+ }
+}
+
+input[type='submit'] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-family: inherit;
+}
+
+input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
+    background-color: #e6e6e6;
+    cursor: not-allowed;
+}
+
+select {
+  width: 100%;
+  height: 2.4375rem;
+  margin: 0 0 1rem;
+  padding: 0.5rem;
+  appearance: none;
+  border: 1px solid #cacaca;
+  border-radius: 5px;
+  background-color: #fefefe;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #0a0a0a;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb%28138, 138, 138%29"></polygon></svg>');
+  background-origin: content-box;
+  background-position: right -1rem center;
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  padding-right: 1.5rem;
+  transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
+  &:focus, &:active {
+    @include focus-visible-active;
+  }
+}
+
+textarea[rows] {
+  height: auto;
+  line-height: 1.4;
+  overflow-y: scroll;
+}
+
+// Checkbox and Radio boxes with label hack
+//-----------------------------------------
+
+input[type="checkbox"], input[type="radio"] {
+  position: absolute;
+  left: -999em;
+}
+input[type='checkbox'] + label, input[type='radio'] + label {
+  display: inline-flex;
+  margin: 0;
+}
+input[type="checkbox"] + label:before, input[type="radio"] + label:before {
+  margin: 0 5px 0 0;
+  border: 1px solid #bbb;;
+  min-width: .8em;
+  max-width: .8em;
+  height: .8em;
+  width: .8em;
+  font: 2.2em/.6 monospace;
+  vertical-align: middle;
+  content: "\a0"; // nbsp
+  background: #fff;
+}
+input[type="checkbox"] + label:before {
+  border-radius: 3px;
+}
+input[type="radio"] + label:before {
+  border-radius: 50%;
+}
+input[type="checkbox"]:checked + label:before, input[type="radio"]:checked + label:before {
+  content: "\2714"; // unicode heavy check mark
+}
+input[type="checkbox"]:checked + label.disabled:before, input[type="radio"]:checked + label.disabled:before {
+  color: #ddd; // when label disabled
+}
+
+input[type="checkbox"]:focus + label:before, input[type="radio"]:focus + label:before {
+  @include focus-visible-active;
+}
+

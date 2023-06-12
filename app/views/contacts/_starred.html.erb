@@ -1,0 +1,17 @@
+<div id="contacts" class="row">
+<% @contacts.each do |contact| %>
+  <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 text-center ib-star" do %>
+    <div class="starred-profile">
+    <%= contact.name %><br>
+    </div>
+    <% JSON.parse(contact.phones).each do | phone | %>
+    <div class="row">
+      <div class="medium-10 columns">
+        <%= label_tag phone["type"] %>
+        <%= phone["value"] %>
+      </div>
+    </div>
+    <% end %>
+  <% end %>
+<% end %>
+</div>

@@ -1,0 +1,11 @@
+<div id="contacts" class="row">
+<% @contacts.each do |contact| %>
+  <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 text-center ib-cake" do %>
+    <div class="birthdate-profile">
+    <%= contact.name %><br>
+    <%= contact.birthdate %>
+    (<%= contact.age(contact.birthdate) %>)
+    </div>
+  <% end %>
+<% end %>
+</div>
