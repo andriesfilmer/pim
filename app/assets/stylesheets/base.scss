@@ -61,6 +61,13 @@ label.label-th {
 }
 .large-icon { font-size: 2em; }
 
+[class$="-filled"]::before, [class*="ia-"]::after {
+  color: orange;
+}
+.save-form {
+  color: red;
+}
+
 .meta-data {
   font-size: 90%;
   color: #999;

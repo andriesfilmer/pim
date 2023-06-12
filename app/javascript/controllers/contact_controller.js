@@ -3,10 +3,25 @@ import { Controller } from "@hotwired/stimulus"
 import { marked } from 'marked';
 
 export default class extends Controller {
-  static targets = [ "name", "output" ]
 
   connect() {
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}));
+
+    $("form").on("input", function() {
+      $(".ib-cloud-upload").addClass("ib-cloud-upload-filled save-form");
+      $(".ib-cloud-upload").removeClass("ib-cloud-upload");
+    });
+
+    $(document).on("change", ".userinputs", function() {
+    });
+
+    // Prevent users from submitting a form by hitting Enter
+    $(document).on("keydown", ":input:not(textarea):not(:submit)", function(event) {
+      if(event.keyCode == 13) {
+        event.preventDefault()
+        return false
+      }
+    });
   }
 
   showSearch() {
@@ -14,8 +29,18 @@ export default class extends Controller {
     $("#contact_search").focus();
   }
 
-  greet() {
-    this.outputTarget.textContent = `Hello, ${this.nameTarget.value}!`
+  setStarred() {
+    if (document.getElementById('contact_starred').value == 'true') {
+      console.log("######## set starred false ");
+      document.getElementById('contact_starred').value = 'false';
+      $(".ib-star-filled").addClass("ib-star");
+      $(".ib-star-filled").removeClass("ib-star-filled");
+    } else {
+      console.log("######## set starred true ");
+      document.getElementById('contact_starred').value = 'true';
+      $(".ib-star").addClass("ib-star-filled");
+      $(".ib-star").removeClass("ib-star");
+    }
   }
 
   addPhone() {

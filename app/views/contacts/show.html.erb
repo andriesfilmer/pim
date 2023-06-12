@@ -1,8 +1,8 @@
 <div class="row secondary-menu">
   <div class="columns small-6 medium-6">
-    <a href="" class="ib-star"></a>
+    <span class="ib-star<%= @contact.starred? ? '-filled' : '' %>"></span>
     <span class="divider"></span>
-    <%= link_to "", edit_contact_path(@contact), class: "ib-edit" %>
+    <%= link_to "", edit_contact_path(@contact), data: { turbo: "false" }, class: "ib-edit" %>
     <span class="divider"></span>
   </div>
   <div class="columns small-6 medium-6 text-right">

@@ -17,7 +17,7 @@
 
   <div class="row">
     <div class="columns">
-      <%= form.label :name %>
+      <%= form.label :name, class: "userinputs" %>
     </div>
     <div class="columns">
       <%= form.text_field :name %>
@@ -54,5 +54,6 @@
     </div>
   </div>
   <%= form.hidden_field :phones %>
+  <%= form.hidden_field :starred %>
 <% end %>
 
