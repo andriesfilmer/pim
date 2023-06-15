@@ -7,31 +7,20 @@ import "jquery"
 //
 //Turbo.session.drive = false
 
-// Prevent users from submitting a form by hitting Enter
-$(document).on("keydown", ":input:not(textarea):not(:submit)", function(event) {
-  if(event.keyCode == 13) {
-    event.preventDefault();
-    return false;
-  }
-});
+//document.addEventListener("turbo:load", function() {
+//  console.log("######## turbo:load on application level")
+//})
 
-// If a user initiated navigation away from the page or tries to close the window.
-// Ask for additional confirmation if class '.userinputs' is changed.
-$(document).ready(function() {
-  let submitted = false;
-  let userinput = false;
+Turbo.setConfirmMethod((message, element) => {
+  //console.log(message, element)
+  let dialog = document.getElementById("turbo-confirm")
+  dialog.showModal()
+  dialog.querySelector("p").textContent = message
 
-  $("form").submit(function() {
-    submitted = true;
-  });
+  return new Promise((resolve, reject) => {
+    dialog.addEventListener("close", () => {
+      resolve(dialog.returnValue == "confirm")
+    }, { once: true })
+  })
+})
 
-  $(".userinputs").change(function() {
-    userinput = true;
-  });
-
-  window.onbeforeunload = function () {
-    if (userinput && !submitted) {
-      return false;
-    }
-  }
-});

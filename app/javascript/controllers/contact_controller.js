@@ -2,17 +2,31 @@
 import { Controller } from "@hotwired/stimulus"
 import { marked } from 'marked';
 
+    let submitted = false;
+    let userinput = false;
+
 export default class extends Controller {
 
+  //initialize() {
   connect() {
+    console.log("######## connect contacts controller");
+    console.log("########");
+    //
+    // Set cache control of current page to `no-cache`
+    //Turbo.cache.exemptPageFromCache()
+    //
+    //document.addEventListener("turbo:before-cache", function() {
+    //  console.log("######## before cache contacts controller");
+    //})
+    //
+    // Set cache control of current page to `no-preview`
+    //Turbo.cache.exemptPageFromPreview()
+
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}));
 
     $("form").on("input", function() {
       $(".ib-cloud-upload").addClass("ib-cloud-upload-filled save-form");
       $(".ib-cloud-upload").removeClass("ib-cloud-upload");
-    });
-
-    $(document).on("change", ".userinputs", function() {
     });
 
     // Prevent users from submitting a form by hitting Enter
@@ -22,6 +36,33 @@ export default class extends Controller {
         return false
       }
     });
+
+    $( "#contactForm" ).on( "submit", function( event ) {
+      console.log("######## connect-> submit contacForm");
+      submitted = true;
+    });
+
+    $(".userinputs").change(function() {
+      return userinput = true;
+    });
+
+    // If turbo off
+    window.onbeforeunload = function () {
+      if (userinput && !submitted) {
+        return false;
+      }
+    }
+    // If turbo on
+    addEventListener("turbo:before-visit", (event) => {
+      if (userinput && !submitted) {
+        let oke = confirm("Changes that you made may not be saved!");
+        if (oke) {
+        } else {
+          event.preventDefault()
+        }
+        return userinput = false
+      }
+    }, { once: true })
   }
 
   showSearch() {
@@ -44,6 +85,7 @@ export default class extends Controller {
   }
 
   addPhone() {
+    console.log("######## addPhone");
     const element = document.getElementById("phones");
     const divRow = document.createElement("div");
     const divColumn1 = document.createElement("div");
@@ -105,6 +147,7 @@ export default class extends Controller {
     });
     document.getElementById('contact_phones').value = '[' + test + ']';
     document.getElementById("contactForm").submit();
+    return userinput = false
   }
 
 }

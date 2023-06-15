@@ -2,13 +2,13 @@
   <div class="columns small-6 medium-6">
     <span class="ib-star<%= @contact.starred? ? '-filled' : '' %>"></span>
     <span class="divider"></span>
-    <%= link_to "", edit_contact_path(@contact), data: { turbo: "false" }, class: "ib-edit" %>
+    <%= link_to "", edit_contact_path(@contact), class: "ib-edit" %>
     <span class="divider"></span>
   </div>
   <div class="columns small-6 medium-6 text-right">
     <span class="divider"></span>
     <%= link_to "", contact_path(@contact, format: :html),
-      data: { turbo_method: :delete, turbo_confirm: "Are you sure to delete?"}, class: "ib-trash" %>
+      data: { turbo_method: :delete, turbo_confirm: "Are you sure to delete this contact?"}, class: "ib-trash" %>
   </div>
 </div>
 

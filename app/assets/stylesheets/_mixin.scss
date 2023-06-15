@@ -1,9 +1,10 @@
-/*
-* Prefixed by https://autoprefixer.github.io
-* PostCSS: v8.4.14,
-* Autoprefixer: v10.4.7
-* Browsers: last 4 version
-*/
+@mixin colors {
+  $main-color:     purple;
+  $button-color:   purple;
+  $success-color:  green;
+  $warnin-color:   orange;
+  $alert-color:    red;
+}
 
 @mixin xlarge-columns {
   .xlarge-1  { grid-column: span 1; }

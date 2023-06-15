@@ -1,16 +1,4 @@
-
-<div class="row">
-  <div class="columns">
-  <% if contact.errors.any? %>
-    <h2><%= pluralize(contact.errors.count, "error") %> prohibited this contact from being saved:</h2>
-    <ul>
-    <% contact.errors.each do |error| %>
-      <li><%= error.full_message %></li>
-    <% end %>
-    </ul>
-  <% end %>
-  </div>
-</div>
+<%= render "layouts/show_errors", target: @contact %>
 
 <%= form_with model: contact, id: "contactForm", class: "userinputs",
     data: {'controller': 'contact', 'action': 'submit->contact#prepareParams'} do |form| %>

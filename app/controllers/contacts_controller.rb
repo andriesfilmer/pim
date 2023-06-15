@@ -3,7 +3,7 @@ class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
 
   def index
-    @contacts = Contact.all.order("id desc").limit 100
+    @contacts = Contact.all.order("id desc").limit 10
     @contacts = @contacts.where(starred: true) if params[:starred]
     @contacts = @contacts.where("birthdate IS NOT NULL") if params[:birthdate]
   end
