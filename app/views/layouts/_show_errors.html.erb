@@ -1,0 +1,12 @@
+<div class="row">
+  <div class="columns">
+  <% if target.errors.any? %>
+    <%= pluralize(target.errors.count, "error") %> prohibited this contact from being saved:
+    <ul>
+    <% target.errors.each do |error| %>
+      <li><%= error.full_message %></li>
+    <% end %>
+    </ul>
+  <% end %>
+  </div>
+</div>
