@@ -2,14 +2,11 @@
 
 import "@hotwired/turbo-rails"
 import "@hotwired/stimulus"
-import "controllers"
 import "jquery"
+import "controllers"
+import "components"
 //
 //Turbo.session.drive = false
-
-//document.addEventListener("turbo:load", function() {
-//  console.log("######## turbo:load on application level")
-//})
 
 Turbo.setConfirmMethod((message, element) => {
   //console.log(message, element)

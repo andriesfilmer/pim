@@ -1,10 +1,11 @@
-<div class="row secondary-menu">
-  <div class="columns small-11 medium-11">
-    <a href="" class="ib-star"></a>
-    <span class="divider"></span>
-    <span data-controller="contact" data-action="click->contact#prepareParams" class="ib-cloud-upload"></span>
-    <span class="divider"></span>
+<div data-controller="contact">
+  <div class="row secondary-menu">
+    <div class="columns small-11 medium-11">
+      <a href="" class="ib-star"></a>
+      <span class="divider"></span>
+      <span data-action="click->contact#prepareParams" class="ib-cloud-upload"></span>
+      <span class="divider"></span>
+    </div>
   </div>
+  <%= render "form", contact: @contact %>
 </div>
-
-<%= render "form", contact: @contact %>

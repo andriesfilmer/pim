@@ -1,3 +1,5 @@
+/* Basic element styling classes for site */
+
 html, body {
   height: 100%;
   scroll-behavior: smooth;
@@ -192,40 +194,3 @@ code {
 legend { font-weight: bold; padding-left: 5px; padding-right: 5px; }
 
 iframe { border: 0; }
-
-// Helper classes
-//---------------
-.hide { display: none !important }
-.display-none { display: none; }
-.display-block { display: block; }
-.invisible { visibility: hidden; }
-.visible { visibility: visible; }
-.display-inline { display: inline-flex; }
-.display-inline-block { display: inline-block; }
-.display-flex { display: flex; }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
-.text-center { text-align: center; }
-.text-justify { text-align: justify; }
-.float-left { float: left !important; }
-.float-right { float: right; }
-.super { vertical-align:super !important; }
-.sub { padding-top: 6px; }
-.vertical-align-middle { vertical-align: middle; }
-.clear { clear: both; }
-.underlined { text-decoration: underline; }
-.cursor-pointer { cursor: pointer }
-.pointer-events-none { pointer-events: none; }
-.white-space-pre-wrap { white-space: pre-wrap; }
-.strong { font-weight: bold; }
-.hide { display: none; }
-.nobr { white-space:nowrap; overflow: hidden; }
-.h-space { margin: 1em 0; }
-
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-

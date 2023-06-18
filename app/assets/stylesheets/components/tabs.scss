@@ -1,0 +1,42 @@
+// Tabs component
+//---------------
+.tabs {
+  li { margin-right: 2px; }
+  margin: 0;
+  border-bottom: 1px solid #e6e6e6;
+  background: #fefefe;
+  list-style-type: none;
+  &:after { clear: both; }
+  .tabs-title {
+    float: left;
+    border: 1px solid #e6e6e6;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    a {
+      display: block;
+      padding: 1rem 1.5rem;
+    }
+    &.is-active a { background-color: #e6e6e6; }
+  }
+  &:before, &:after {
+    display: table;
+    content: ' ';
+    flex-basis: 0;
+    order: 1;
+  }
+}
+
+@media screen and (max-width: 1023px) { .tabs li { margin-right: 10px; margin-bottom: 10px; } }
+@media screen and (min-width: 1024px) { .tabs .tabs-title { border-bottom: 0px; } }
+
+.tabs-content {
+  border: 1px solid #e6e6e6;
+  border-top: 0;
+  background: #fefefe;
+  color: #0a0a0a;
+  .tabs-panel {
+    padding: 1rem;
+    &:not(.is-active) { display: none; }
+  }
+}
+

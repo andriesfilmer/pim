@@ -1,20 +1,19 @@
-<div data-controller="contact" class="row secondary-menu">
-  <div class="columns small-6 medium-6">
-    <span data-action="click->contact#setStarred"
-      class="cursor-pointer ib-star<%= @contact.starred? ? '-filled' : '' %>"></span>
-    <span class="divider"></span>
-    <span data-action="click->contact#prepareParams",
-      title="Save form!" class="ib-cloud-upload cursor-pointer"></span>
-    <span class="divider"></span>
-  </div>
-  <div class="columns small-6 medium-6 text-right">
-    <span class="divider"></span>
-    <%= link_to "", contact_path(@contact, format: :html),
-      data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this contact?'},
-      title: "Delete item!", class: "ib-trash" %>
-  </div>
+<div data-controller="contact">
+   <div class="row secondary-menu">
+     <div class="columns small-6 medium-6">
+       <span data-action="click->contact#setStarred"
+         class="cursor-pointer ib-star<%= @contact.starred? ? '-filled' : '' %>"></span>
+       <span class="divider"></span>
+       <span data-action="click->contact#prepareParams",
+         title="Save form!" class="ib-cloud-upload cursor-pointer"></span>
+       <span class="divider"></span>
+     </div>
+     <div class="columns small-6 medium-6 text-right">
+       <span class="divider"></span>
+       <%= link_to "", contact_path(@contact, format: :html),
+         data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this contact?'},
+         title: "Delete item!", class: "ib-trash" %>
+     </div>
+   </div>
+   <%= render "form", contact: @contact %>
 </div>
-
-
-<%= render "form", contact: @contact %>
-

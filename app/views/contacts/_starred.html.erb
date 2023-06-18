@@ -1,6 +1,6 @@
 <div id="contacts" class="row">
 <% @contacts.each do |contact| %>
-  <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 text-center ib-star" do %>
+  <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 text-center ib-star-filled" do %>
     <div class="starred-profile">
     <%= contact.name %><br>
     </div>

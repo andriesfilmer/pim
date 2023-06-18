@@ -1,0 +1,49 @@
+// Tooltip component
+//------------------
+
+.toolltip, .tooltip:after { background: var(--button-color) }
+
+// tooltip-hover is only for corporate-styles (premailer can't handle hovers)
+.tooltip-hover, .tooltip:after {
+
+  // Background-color is set in corporate scss.
+  content: attr(data-tooltip);
+  cursor: help;
+  font-size: 0.9rem;
+  font-weight: 100;
+  line-height: 1.5em;
+  color: #fff;
+  text-align: left;
+  padding: 8px;
+  min-width: 12em;
+  //max-width: 400px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 99;
+  display: block;
+  position: absolute;
+  visibility: visible;
+
+  // Reset margin-left form .hide-password
+  margin-left: 0;
+
+  // For tooltip on custom icon fi-lock-eye
+  font-family: Quicksand, "Helvetica Neue", Arial, sans-serif;
+}
+
+// On input elements add margins.
+.input-tip:after {
+  margin-top: -1em;
+}
+
+a[data-tooltip] {
+  cursor: pointer;
+}
+
+u[data-tooltip] {
+  text-decoration: none;
+  border-bottom: dotted 2px #8a8a8a;
+}
+
+@media screen and (min-width: 1024px) { .tooltip:after { max-width: 400px; } }
+

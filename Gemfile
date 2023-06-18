@@ -6,6 +6,7 @@ ruby "3.0.2"
 gem "mysql2"
 gem "rails", "~> 7.0.4"
 gem "sprockets-rails"
+gem "terser", "~> 1.1" # a fork based on uglifier
 gem "puma", "~> 5.0"
 gem "importmap-rails"
 gem "turbo-rails"
@@ -46,3 +47,4 @@ group :test do
   gem "selenium-webdriver"
   #gem "webdrivers"
 end
+

@@ -10,30 +10,29 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
- *= require_tree .
- *= require_self
+ *= require application.css
+ *= require basic.css
+ *= require grid.css
+ *= require helpers.css
+ *= require base.css
+ *= require forms.css
+ *= require icons.css
+ *= require_directory ./components
  */
 
 
+:root {
+  --main-color:     purple;
+  --button-color:   purple;
+  --notice-color:   lightblue;
+  --success-color:  green;
+  --warning-color:  orange;
+  --alert-color:    red;
+}
+
+/* testing */
 turbo-frame {
   display: block;
   border: 1px solid blue;
 }
 
-#markdown table {
-  border-collapse: collapse;
-  thead, tfoot {
-    border: 1px solid #f1f1f1;
-    background: #f8f8f8;
-    line-height: 2em;
-  }
-  tbody tr:nth-child(even) {
-    background-color: #f1f1f1;
-  }
-  width: 100%;
-  margin-bottom: 10px;
-  tr, td {
-    border: 1px solid #CBC1C1;
-    padding: 4px;
-  }
-}

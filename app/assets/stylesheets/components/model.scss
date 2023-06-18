@@ -1,0 +1,56 @@
+// Model component
+//----------------
+.modal {
+    position: fixed; /* Stay in place */
+    z-index: 99; /* Sit on top */
+    left: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: #444; /* Fallback color */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+    top: -100%;
+    opacity: 0;
+    transition: top 0.4s, opacity 0.4s;
+}
+.modal.show {
+    top: 0;
+    opacity: 1;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 3em auto; /* 10% from the top and centered */
+    padding: 1em;
+    border: 1px solid #888;
+    border-radius: 5px;
+    width: 90%; /* Could be more or less, depending on screen size */
+    max-width: 1024px;
+}
+
+.read-more {
+  max-height: 2em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: max-height 1s linear;
+}
+
+.read-more.open {
+  max-height: 100em;
+  white-space: unset;
+  transition: max-height 1s linear;
+}
+
+.read-more-btn::after, .read-less-btn:after {
+  content: ' »';
+  display: inline-block;
+  padding-left: 5px;
+  margin-left: 10px;
+  font-size: 20px;
+  margin-top: -5px;
+}
+.read-more-btn::after { transform: rotate(90deg); }
+.read-less-btn::after { transform: rotate(-90deg); }
+

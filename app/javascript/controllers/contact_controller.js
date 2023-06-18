@@ -1,19 +1,23 @@
 // contact_controller.js
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
+import { tooltip } from 'components';
 
-    let submitted = false;
-    let userinput = false;
+let submitted = false
+let userinput = false
+
+function saveForm() {
+  $(".ib-cloud-upload").addClass("ib-cloud-upload-filled alert-color")
+  $(".ib-cloud-upload").removeClass("ib-cloud-upload")
+}
 
 export default class extends Controller {
 
-  //initialize() {
   connect() {
-    console.log("######## connect contacts controller");
-    console.log("########");
+    console.log("######## connect contacts controller")
     //
     // Set cache control of current page to `no-cache`
-    //Turbo.cache.exemptPageFromCache()
+    Turbo.cache.exemptPageFromCache()
     //
     //document.addEventListener("turbo:before-cache", function() {
     //  console.log("######## before cache contacts controller");
@@ -22,11 +26,11 @@ export default class extends Controller {
     // Set cache control of current page to `no-preview`
     //Turbo.cache.exemptPageFromPreview()
 
-    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}));
+    tooltip()
+    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
     $("form").on("input", function() {
-      $(".ib-cloud-upload").addClass("ib-cloud-upload-filled save-form");
-      $(".ib-cloud-upload").removeClass("ib-cloud-upload");
+      saveForm()
     });
 
     // Prevent users from submitting a form by hitting Enter
@@ -55,7 +59,7 @@ export default class extends Controller {
     // If turbo on
     addEventListener("turbo:before-visit", (event) => {
       if (userinput && !submitted) {
-        let oke = confirm("Changes that you made may not be saved!");
+        let oke = confirm("Changes that you made may not be saved!")
         if (oke) {
         } else {
           event.preventDefault()
@@ -73,44 +77,45 @@ export default class extends Controller {
   setStarred() {
     if (document.getElementById('contact_starred').value == 'true') {
       console.log("######## set starred false ");
-      document.getElementById('contact_starred').value = 'false';
+      document.getElementById('contact_starred').value = 'false'
       $(".ib-star-filled").addClass("ib-star");
-      $(".ib-star-filled").removeClass("ib-star-filled");
+      $(".ib-star-filled").removeClass("ib-star-filled")
     } else {
       console.log("######## set starred true ");
-      document.getElementById('contact_starred').value = 'true';
+      document.getElementById('contact_starred').value = 'true'
       $(".ib-star").addClass("ib-star-filled");
       $(".ib-star").removeClass("ib-star");
     }
+    saveForm()
   }
 
   addPhone() {
     console.log("######## addPhone");
-    const element = document.getElementById("phones");
-    const divRow = document.createElement("div");
-    const divColumn1 = document.createElement("div");
-    const divColumn2 = document.createElement("div");
-    const divColumn3 = document.createElement("div");
-    const inputType = document.createElement("INPUT");
-    const inputValue = document.createElement("INPUT");
-    const spanTrash = document.createElement("span");
-    divRow.className = "row";
-    divColumn1.className = "small-5 medium-5";
-    divColumn2.className = "small-6 medium-6 columns";
-    divColumn3.className = "small-1 medium-1 columns";
-    divColumn3.setAttribute("data-action","click->contact#removePhone");
-    inputType.type = "text";
-    inputType.id = "contact_phone_type";
-    inputType.value = "Mobile";
-    inputType.placeholder = "Type...";
-    inputValue.type = "text";
-    inputValue.id = "contact_phone_value";
-    inputValue.placeholder = "+31......";
-    spanTrash.className = "ib-trash medium-icon";
+    const element = document.getElementById("phones")
+    const divRow = document.createElement("div")
+    const divColumn1 = document.createElement("div")
+    const divColumn2 = document.createElement("div")
+    const divColumn3 = document.createElement("div")
+    const inputType = document.createElement("INPUT")
+    const inputValue = document.createElement("INPUT")
+    const spanTrash = document.createElement("span")
+    divRow.className = "row"
+    divColumn1.className = "small-5 medium-5"
+    divColumn2.className = "small-6 medium-6 columns"
+    divColumn3.className = "small-1 medium-1 columns"
+    divColumn3.setAttribute("data-action","click->contact#removePhone")
+    inputType.type = "text"
+    inputType.id = "contact_phone_type"
+    inputType.value = "Mobile"
+    inputType.placeholder = "Type..."
+    inputValue.type = "text"
+    inputValue.id = "contact_phone_value"
+    inputValue.placeholder = "+31......"
+    spanTrash.className = "ib-trash icon-medium"
 
-    element.appendChild(divRow).appendChild(divColumn1).append(inputType);
-    element.appendChild(divRow).appendChild(divColumn2).append(inputValue);
-    element.appendChild(divRow).appendChild(divColumn3).append(spanTrash);
+    element.appendChild(divRow).appendChild(divColumn1).append(inputType)
+    element.appendChild(divRow).appendChild(divColumn2).append(inputValue)
+    element.appendChild(divRow).appendChild(divColumn3).append(spanTrash)
   }
 
   removePhone(e) {

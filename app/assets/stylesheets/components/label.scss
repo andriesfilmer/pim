@@ -1,0 +1,16 @@
+// Label component
+//---------------
+.label {
+  padding: 0.33333rem 0.5rem;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  &.secondary {
+    background-color: #f2f2f2;
+    color: #000;
+    &:hover {
+      color: #000;
+      background: #ddd;
+    }
+  }
+}

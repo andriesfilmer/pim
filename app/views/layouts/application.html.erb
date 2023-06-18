@@ -13,15 +13,14 @@
 
 <body>
 
-<nav class="top-bar">
-  <%= render  "layouts/menu" %>
-</nav>
-
-<div id="flash" class="flash">
-  <%= render "layouts/flash" %>
-</div>
+<%= render "layouts/menu" %>
+<%= render "layouts/flash" %>
 
 <%= yield %>
+
+<%= render "layouts/dialog" %>
+
+<%= javascript_include_tag "snippets", "data-turbo-track" => "reload" %>
 
 </body>
 </html>

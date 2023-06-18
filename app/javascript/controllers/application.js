@@ -1,4 +1,7 @@
 import { Application } from "@hotwired/stimulus"
+import { tooltip } from 'components'
+tooltip()
+
 
 const application = Application.start()
 

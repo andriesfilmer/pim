@@ -1,0 +1,18 @@
+// Pagination component
+//---------------------
+.pagination {
+  margin-bottom: 1rem;
+  .page {
+    padding: 4px 10px;
+    border-radius: 5px;
+    &:hover { background: #eee; }
+  }
+  .prev, .next {
+    padding-top: 0px;
+    border-radius: 5px;
+    font-size: 1.6em;
+  }
+  .active {
+  }
+}
+

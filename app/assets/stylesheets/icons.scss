@@ -1,3 +1,5 @@
+/* Icon classes i.o. svg icons for site */
+
 @import 'svg-icons';
 
 /**
@@ -87,5 +89,9 @@ $fs-escape-chars: (
     height: 2em;
   }
   vertical-align: middle;
+}
+
+[class$="-filled"]::before, [class*="-filled"]::after {
+  color: orange;
 }
 

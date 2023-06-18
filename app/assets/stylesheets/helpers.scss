@@ -1,0 +1,59 @@
+/* Helper classes for site */
+
+@import 'mixin';
+
+.hide { display: none !important }
+.display-none { display: none; }
+.display-block { display: block; }
+.invisible { visibility: hidden; }
+.visible { visibility: visible; }
+.display-inline { display: inline-flex; }
+.display-inline-block { display: inline-block; }
+.display-flex { display: flex; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+.text-justify { text-align: justify; }
+.float-left { float: left !important; }
+.float-right { float: right; }
+.super { vertical-align:super !important; }
+.sub { padding-top: 6px; }
+.vertical-align-middle { vertical-align: middle; }
+.clear { clear: both; }
+.underlined { text-decoration: underline; }
+.cursor-pointer { cursor: pointer }
+.pointer-events-none { pointer-events: none; }
+.white-space-pre-wrap { white-space: pre-wrap; }
+.strong { font-weight: bold; }
+.hide { display: none; }
+.nobr { white-space:nowrap; overflow: hidden; }
+.h-space { margin: 1em 0; }
+
+
+.notice-color { color: var(--notice-color); }
+.success-color { color: var(--success-color); }
+.warning-color { color: var(--warning-color); }
+.alert-color { color: var(--alert-color); }
+
+.odd-even:nth-child(2n+1){ background-color: #f2f2f2; }
+.odd-even { &:hover { background-color: #ddd; }}
+
+.disabled { color: #ccc; }
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta-data {
+  font-size: 90%;
+  color: #999;
+}
+
+// Don't let user select elements
+button, .button, .pagination, .user-select-none {
+  user-select: none;
+}
+

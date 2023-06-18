@@ -1,7 +1,7 @@
 <%= render "layouts/show_errors", target: @contact %>
 
 <%= form_with model: contact, id: "contactForm", class: "userinputs",
-    data: {'controller': 'contact', 'action': 'submit->contact#prepareParams'} do |form| %>
+    data: {'action': 'submit->contact#prepareParams'} do |form| %>
 
   <div class="row">
     <div class="columns">
@@ -13,7 +13,7 @@
   </div>
   <div class="row">
     <div class="small-11 medium-11 columns"><label class="label-th">Phone numbers</label></div>
-    <div class="small-1 medium-1"><span id="addPhone" data-action="click->contact#addPhone" class="ib-plus medium-icon"></div>
+    <div class="small-1 medium-1"><span id="addPhone" data-action="click->contact#addPhone" class="ib-plus icon-medium"></div>
   </div>
   <div class="row">
     <div class="columns" id="phones">
@@ -26,7 +26,7 @@
           <%= form.text_field "phone_value", value: [phone['value']] %>
         </div>
         <div data-action="click->contact#removePhone" class="columns small-1 medium-1">
-          <span class="ib-trash medium-icon"></span>
+          <span class="ib-trash icon-medium"></span>
         </div>
       </div>
       <% end %>
@@ -35,8 +35,9 @@
   <div class="row">
     <div class="columns" id="phones">
       <label class="label-th display-inline">Notes</label>
-      <span id="preview_bt" data-action="click->contact#showMarkdown" class="ib-preview medium-icon"></span>
-      <span id="edit_bt" data-action="click->contact#hideMarkdown" class="ib-edit medium-icon display-none"></span>
+      <span id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip
+        title="Click for preview" class="ib-preview cursor-pointer icon-medium"></span>
+      <span id="edit_bt" data-action="click->contact#hideMarkdown" class="ib-edit icon-medium display-none"></span>
       <%= form.text_area :notes, rows: '20' %>
       <div id="markdown"></div>
     </div>
