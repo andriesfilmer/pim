@@ -17,23 +17,43 @@
     <h3><%= @contact.name %></h3>
   </div>
 </div>
+
 <div class="row">
   <div class="medium-6 columns">
-    <%= label_tag :phones, nil, class:"label-th" unless @contact.phones.include?("[]") %>
-    <% JSON.parse(@contact.phones).each do | phone | %>
-    <div class="row">
-      <div class="medium-10 columns">
-        <%= label_tag phone["type"] %>
-        <span class="float-right ib-call icon-medium"></span>
-        <%= phone["value"] %>
+    <div class="medium-6 columns">
+      <%= label_tag :phones, nil, class:"label-th" unless @contact.phones.include?("[]") %>
+      <% JSON.parse(@contact.phones).each do | phone | %>
+      <div class="row">
+        <div class="medium-10 columns">
+          <%= label_tag phone["type"] %>
+          <span class="float-right ib-call icon-medium"></span>
+          <%= phone["value"] %>
+        </div>
       </div>
-      <div class="medium-2 columns fi-telephone large-icon"></div>
+      <% end %>
     </div>
-    <% end %>
-    <div>
+    <div class="medium-6 columns">
       <%= label_tag :emails, nil, class:"label-th" unless @contact.emails.include?("[]") %>
       <% JSON.parse(@contact.emails).each do | email | %>
-        <%= email["type"] %>: <%= email["value"] %>
+      <div class="row">
+        <div class="medium-10 columns">
+          <%= label_tag email["type"] %>
+          <span class="float-right ib-mail icon-medium"></span>
+          <%= email["value"] %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="medium-6 columns">
+      <%= label_tag :addresses, nil, class:"label-th" unless @contact.addresses.include?("[]") %>
+      <% JSON.parse(@contact.addresses).each do | address | %>
+      <div class="row">
+        <div class="medium-10 columns">
+          <%= label_tag addres["type"] %>
+          <span class="float-right ib-mail icon-medium"></span>
+          <%= addres["value"] %>
+        </div>
+      </div>
       <% end %>
     </div>
   </div>

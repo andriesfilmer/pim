@@ -11,29 +11,81 @@
       <%= form.text_field :name %>
     </div>
   </div>
+  <!-- Phones -->
   <div class="row">
     <div class="small-11 medium-11 columns"><label class="label-th">Phone numbers</label></div>
-    <div class="small-1 medium-1"><span id="addPhone" data-action="click->contact#addPhone" class="ib-plus icon-medium"></div>
+    <div class="small-1 medium-1"><span data-action="click->contact#addTypeValue"
+     data-value="phone" class="ib-plus icon-medium"></div>
   </div>
   <div class="row">
     <div class="columns" id="phones">
       <% JSON.parse(@contact.phones).each_with_index do | phone,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "phone_type", value: [phone['type']] %>
+          <%= form.text_field "phone_type", value: [phone['type']], data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "phone_value", value: [phone['value']] %>
+          <%= form.text_field "phone_value", value: [phone['value']], data: {tojson: '' } %>
         </div>
-        <div data-action="click->contact#removePhone" class="columns small-1 medium-1">
-          <span class="ib-trash icon-medium"></span>
+        <div class="columns small-1 medium-1">
+          <span data-action="click->contact#removeTypeValue" data-value="contact_phone" class="ib-trash icon-medium"></span>
         </div>
       </div>
       <% end %>
     </div>
   </div>
+
+  <!-- Emails -->
   <div class="row">
-    <div class="columns" id="phones">
+    <div class="small-11 medium-11 columns"><label class="label-th">Emails</label></div>
+    <div class="small-1 medium-1"><span data-action="click->contact#addTypeValue"
+     data-value="email" class="ib-plus icon-medium"></div>
+  </div>
+  <div class="row">
+    <div class="columns" id="emails">
+      <% JSON.parse(@contact.emails).each_with_index do | email,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "email_type", value: [email['type']], data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "email_value", value: [email['value']], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <span data-action="click->contact#removeTypeValue" data-value="contact_email" class="ib-trash icon-medium"></span>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Addresses -->
+  <div class="row">
+    <div class="small-11 medium-11 columns"><label class="label-th">Adresses</label></div>
+    <div class="small-1 medium-1"><span data-action="click->contact#addTypeValue"
+     data-value="addresse" class="ib-plus icon-medium"></div>
+  </div>
+  <div class="row">
+    <div class="columns" id="address">
+      <% JSON.parse(@contact.addresses).each_with_index do | addres,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "addres_type", value: [addres['type']], data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "addres_value", value: [addres['value']], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <span data-action="click->contact#removeTypeValue" data-value="contact_addres class="ib-trash icon-medium"></span>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- notes -->
+  <div class="row">
+    <div class="columns">
       <label class="label-th display-inline">Notes</label>
       <span id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip
         title="Click for preview" class="ib-preview cursor-pointer icon-medium"></span>
@@ -42,7 +94,8 @@
       <div id="markdown"></div>
     </div>
   </div>
-  <%= form.hidden_field :phones %>
+  <%= form.text_field :phones %>
+  <%= form.text_field :emails %>
   <%= form.hidden_field :starred %>
 <% end %>
 
