@@ -88,7 +88,7 @@ $fs-escape-chars: (
     width: 2em;
     height: 2em;
   }
-  vertical-align: middle;
+  vertical-align: sub;
 }
 
 [class$="-filled"]::before, [class*="-filled"]::after {

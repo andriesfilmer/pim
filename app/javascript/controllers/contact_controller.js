@@ -20,7 +20,38 @@ function prepareTypeValues(fieldId) {
        typeValues.push('"value"' + ':"' + div.value + '"}');
     }
   });
-  document.getElementById('contact_' + type + 's').value = '[' + typeValues + ']';
+
+  document.getElementById('contact_' + getPluralType(type)).value = '[' + typeValues + ']';
+}
+
+function getPluralType(type) {
+  let jsonString
+  if ( type == "phone" ) { jsonString = 'phones' }
+  if ( type == "email" ) { jsonString = 'emails' }
+  if ( type == "address" ) { jsonString = 'addresses' }
+  if ( type == "website" ) { jsonString = 'websites' }
+  if ( type == "company" ) { jsonString = 'companies' }
+  return jsonString
+}
+
+function getValueType(type) {
+  let valueType
+  if ( type == "phone" ) { valueType = 'Mobile' }
+  if ( type == "email" ) { valueType = 'Home' }
+  if ( type == "address" ) { valueType = 'Home' }
+  if ( type == "website" ) { valueType = 'Work' }
+  if ( type == "company" ) { valueType = 'Current' }
+  return valueType
+}
+
+function getPlaceholderValue(type) {
+  let placeholderValue
+  if ( type == "phone" ) { placeholderValue = '+31....' }
+  if ( type == "email" ) { placeholderValue = 'email@domain.nl' }
+  if ( type == "address" ) { placeholderValue = 'address, zipcode, city...' }
+  if ( type == "website" ) { placeholderValue = 'https://....' }
+  if ( type == "company" ) { placeholderValue = 'Companyname...' }
+  return placeholderValue
 }
 
 export default class extends Controller {
@@ -94,7 +125,7 @@ export default class extends Controller {
 
   addTypeValue(event) {
     let addRow = event.target.getAttribute("data-value")
-    const element = document.getElementById(addRow + "s")
+    const element = document.getElementById(getPluralType(addRow))
     const divRow = document.createElement("div")
     const divColumn1 = document.createElement("div")
     const divColumn2 = document.createElement("div")
@@ -106,18 +137,14 @@ export default class extends Controller {
     divColumn1.className = "small-5 medium-5"
     divColumn2.className = "small-6 medium-6 columns"
     divColumn3.className = "small-1 medium-1 columns"
-    if (addRow === "phone") {
-      inputType.value = "Mobile"
-    } else if (addRow === "email") {
-      inputType.value = "Email"
-    }
+    inputType.value = getValueType(addRow)
     inputType.type = "text"
     inputType.id = "contact_" + addRow + "_type"
     inputType.setAttribute("data-tojson","")
     inputValue.type = "text"
     inputValue.id = "contact_" + addRow + "_value"
     inputValue.setAttribute("data-tojson","")
-    inputValue.placeholder = "......"
+    inputValue.placeholder = getPlaceholderValue(addRow)
     spanTrash.className = "ib-trash icon-medium"
     spanTrash.setAttribute("data-action","click->contact#removeTypeValue")
     spanTrash.setAttribute("data-value","contact_" + addRow)

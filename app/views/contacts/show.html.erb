@@ -14,6 +14,8 @@
 
 <div class="row">
   <div class="columns">
+    <%= content_tag(:label, " #{get_birthday_age(@contact)}",
+      class: "ib-cake icon-medium float-right") if @contact.birthdate %>
     <h3><%= @contact.name %></h3>
   </div>
 </div>
@@ -49,9 +51,33 @@
       <% JSON.parse(@contact.addresses).each do | address | %>
       <div class="row">
         <div class="medium-10 columns">
-          <%= label_tag addres["type"] %>
-          <span class="float-right ib-mail icon-medium"></span>
-          <%= addres["value"] %>
+          <%= label_tag address["type"] %>
+          <span class="float-right ib-location-on icon-medium"></span>
+          <%= address["value"] %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="medium-6 columns">
+      <%= label_tag :companies, nil, class:"label-th" unless @contact.companies.include?("[]") %>
+      <% JSON.parse(@contact.companies).each do | company | %>
+      <div class="row">
+        <div class="medium-10 columns">
+          <%= label_tag company["type"] %>
+          <span class="float-right ib-apartment icon-medium"></span>
+          <%= company["value"] %>
+        </div>
+      </div>
+      <% end %>
+    </div>
+    <div class="medium-6 columns">
+      <%= label_tag :websites, nil, class:"label-th" unless @contact.websites.include?("[]") %>
+      <% JSON.parse(@contact.websites).each do | website | %>
+      <div class="row">
+        <div class="medium-10 columns">
+          <%= label_tag website["type"] %>
+          <span class="float-right ib-link icon-medium"></span>
+          <%= website["value"] %>
         </div>
       </div>
       <% end %>
@@ -66,6 +92,9 @@
 
 <div class="row">
   <div class="columns"><label class="label-th"></label></div>
-  <div class="columns small-6 medium-6 meta-data">Created: <%= @contact.created_at %></div>
-  <div class="columns small-6 medium-6 meta-data">Updated: <%= @contact.updated_at %></div>
+  <div class="columns small-6 medium-6 meta-data">Created: <%= l @contact.created_at, format: :long %></div>
+  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @contact.updated_at, format: :long %></div>
 </div>
+<%= form_with model: @contact, id: "contactForm" do |form| %>
+  <%= form.hidden_field :starred %>
+<% end %>

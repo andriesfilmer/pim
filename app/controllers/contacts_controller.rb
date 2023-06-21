@@ -9,6 +9,8 @@ class ContactsController < ApplicationController
   end
 
   def show
+    @contact.update(last_read: DateTime.now)
+
     #respond_to do |format|
     #  format.html
     #  format.json { render json: @contact.to_json } # else only id, created_at, updated_at
@@ -86,6 +88,6 @@ class ContactsController < ApplicationController
 
     def contact_params
       params.require(:contact).permit(:name, :phones, :emails, :addresses, :companies, :websites,
-        :name, :brithdate, :notes, :starred)
+        :name, :birthdate, :notes, :starred)
     end
 end

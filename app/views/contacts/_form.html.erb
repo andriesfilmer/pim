@@ -1,21 +1,25 @@
 <%= render "layouts/show_errors", target: @contact %>
 
-<%= form_with model: contact, id: "contactForm", class: "userinputs",
+<%= form_with model: @contact, id: "contactForm", class: "userinputs",
     data: {'action': 'submit->contact#prepareParams'} do |form| %>
 
   <div class="row">
     <div class="columns">
-      <%= form.label :name, class: "userinputs" %>
+      <%= form.label :name, class: "label-th" %>
     </div>
     <div class="columns">
       <%= form.text_field :name %>
     </div>
   </div>
+
   <!-- Phones -->
   <div class="row">
-    <div class="small-11 medium-11 columns"><label class="label-th">Phone numbers</label></div>
-    <div class="small-1 medium-1"><span data-action="click->contact#addTypeValue"
-     data-value="phone" class="ib-plus icon-medium"></div>
+    <div class="small-11 medium-11 columns">
+      <%= form.label :phones, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <span data-action="click->contact#addTypeValue" data-value="phone" class="ib-plus icon-medium">
+    </div>
   </div>
   <div class="row">
     <div class="columns" id="phones">
@@ -37,9 +41,12 @@
 
   <!-- Emails -->
   <div class="row">
-    <div class="small-11 medium-11 columns"><label class="label-th">Emails</label></div>
-    <div class="small-1 medium-1"><span data-action="click->contact#addTypeValue"
-     data-value="email" class="ib-plus icon-medium"></div>
+    <div class="small-11 medium-11 columns">
+      <%= form.label :emails, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <span data-action="click->contact#addTypeValue"  data-value="email" class="ib-plus icon-medium">
+    </div>
   </div>
   <div class="row">
     <div class="columns" id="emails">
@@ -61,41 +68,111 @@
 
   <!-- Addresses -->
   <div class="row">
-    <div class="small-11 medium-11 columns"><label class="label-th">Adresses</label></div>
-    <div class="small-1 medium-1"><span data-action="click->contact#addTypeValue"
-     data-value="addresse" class="ib-plus icon-medium"></div>
+    <div class="small-11 medium-11 columns">
+      <%= form.label :addresses, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <span data-action="click->contact#addTypeValue" data-value="address" class="ib-plus icon-medium">
+    </div>
   </div>
   <div class="row">
-    <div class="columns" id="address">
-      <% JSON.parse(@contact.addresses).each_with_index do | addres,index | %>
+    <div class="columns" id="addresses">
+      <% JSON.parse(@contact.addresses).each_with_index do | address,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "addres_type", value: [addres['type']], data: { tojson: '' } %>
+          <%= form.text_field "address_type", value: [address['type']], data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "addres_value", value: [addres['value']], data: { tojson: '' } %>
+          <%= form.text_field "address_value", value: [address['value']], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <span data-action="click->contact#removeTypeValue" data-value="contact_addres class="ib-trash icon-medium"></span>
+          <span data-action="click->contact#removeTypeValue" data-value="contact_address" class="ib-trash icon-medium"></span>
         </div>
       </div>
       <% end %>
     </div>
   </div>
 
+  <!-- Companies -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :companies, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <span data-action="click->contact#addTypeValue" data-value="company" class="ib-plus icon-medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="companies">
+      <% JSON.parse(@contact.companies).each_with_index do | company,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "company_type", value: [company['type']], data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "company_value", value: [company['value']], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <span data-action="click->contact#removeTypeValue" data-value="contact_company" class="ib-trash icon-medium"></span>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Websites -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :websites, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <span data-action="click->contact#addTypeValue" data-value="website" class="ib-plus icon-medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="websites">
+      <% JSON.parse(@contact.websites).each_with_index do | website,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "website_type", value: [website['type']], data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "website_value", value: [website['value']], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <span data-action="click->contact#removeTypeValue" data-value="contact_website" class="ib-trash icon-medium"></span>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- birthdate -->
+  <div class="row">
+    <div class="columns">
+      <%= form.label :birhtdate, class: "label-th" %>
+    </div>
+    <div class="columns">
+      <%= form.date_field :birthdate %>
+    </div>
+  </div>
+
   <!-- notes -->
   <div class="row">
     <div class="columns">
-      <label class="label-th display-inline">Notes</label>
+      <%= form.label :notes, class: "label-th display-inline" %>
       <span id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip
         title="Click for preview" class="ib-preview cursor-pointer icon-medium"></span>
       <span id="edit_bt" data-action="click->contact#hideMarkdown" class="ib-edit icon-medium display-none"></span>
-      <%= form.text_area :notes, rows: '20' %>
+      <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '20' %>
       <div id="markdown"></div>
     </div>
   </div>
-  <%= form.text_field :phones %>
-  <%= form.text_field :emails %>
+  <%= form.hidden_field :phones %>
+  <%= form.hidden_field :emails %>
+  <%= form.hidden_field :addresses %>
+  <%= form.hidden_field :companies %>
+  <%= form.hidden_field :websites %>
   <%= form.hidden_field :starred %>
 <% end %>
 
