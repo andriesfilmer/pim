@@ -5,7 +5,7 @@ class ContactsController < ApplicationController
   def index
     @contacts = Contact.all.order("id desc").limit 10
     @contacts = @contacts.where(starred: true) if params[:starred]
-    @contacts = @contacts.where("birthdate IS NOT NULL") if params[:birthdate]
+    @contacts = @contacts.where("birthdate IS NOT NULL").reorder("month(birthdate), day(birthdate)") if params[:birthdate]
   end
 
   def show
