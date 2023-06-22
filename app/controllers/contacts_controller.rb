@@ -9,7 +9,7 @@ class ContactsController < ApplicationController
   end
 
   def show
-    @contact.update(last_read: DateTime.now)
+    #@contact.update(last_read: DateTime.now)
 
     #respond_to do |format|
     #  format.html
@@ -42,9 +42,15 @@ class ContactsController < ApplicationController
   end
 
   def update
+    if params[:redirect] == "edit"
+      url = edit_contact_url(@contact)
+    else
+      url = contact_url(@contact)
+    end
+
     respond_to do |format|
       if @contact.update(contact_params)
-        format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
+        format.html { redirect_to url, notice: "Contact was successfully updated." }
         # Turbo-stream actions in this block
         #format.turbo_stream { render turbo_stream: turbo_stream.replace("contact_#{@contact.id}", @contact) }
         format.json { render :show, status: :ok, location: @contact }

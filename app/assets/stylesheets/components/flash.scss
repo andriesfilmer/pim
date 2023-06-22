@@ -1,26 +1,23 @@
+
 .flash {
-  position:fixed;
-  top: 5rem;
-  left: 50%;
-  transform: translateX(-50%);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-s);
-
-  max-width: 100%;
-  width: max-content;
-  padding: 0 var(--space-m);
-
+  display: block;
+  position: fixed;
+  right: 25px;
   &__message {
-    font-size: var(--font-size-s);
-    color: var(--color-white);
-    padding: var(--space-xs) var(--space-m);
-    background-color: var(--color-dark);
+    background-color: #FFF;
+    padding: 20px;
+    border: 1px solid var(--main-color);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
     animation: appear-then-fade 6s both;
-    border-radius: 999px;
   }
+  div.notice {
+    background: #eec8ee;
+  }
+}
+svg {
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 @keyframes appear-then-fade {

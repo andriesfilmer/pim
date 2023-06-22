@@ -1,6 +1,6 @@
-<div id="flash" class="flash">
+<div id="flash" class="flash text-center">
 <% flash.each do |flash_type, message| %>
-  <div class="flash__message">
+  <div class="flash__message <%= flash_type %>">
      <%= message %>
   </div>
 <% end %>

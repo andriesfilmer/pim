@@ -8,7 +8,6 @@ let userinput = false
 
 // Function for each type into a json object to store in one field in db.
 function prepareTypeValues(fieldId) {
-  console.log("######## fieldId: " + fieldId);
   let typeValues = [];
   let fieldIdArr = fieldId.split('_')
   let type = fieldIdArr[1]
@@ -79,7 +78,7 @@ export default class extends Controller {
       prepareTypeValues(event.target.id)
     })
 
-    //$(".userinputs").change(function() {
+    // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {
       saveFormAlert()
       return userinput = true;
@@ -109,18 +108,14 @@ export default class extends Controller {
     $("#contact_search").focus();
   }
 
+  // Set starred on icon click
   setStarred() {
     if (document.getElementById('contact_starred').value == 'true') {
       document.getElementById('contact_starred').value = 'false'
-      $(".ib-star-filled").addClass("ib-star");
-      $(".ib-star-filled").removeClass("ib-star-filled")
     } else {
       document.getElementById('contact_starred').value = 'true'
-      $(".ib-star").addClass("ib-star-filled");
-      $(".ib-star").removeClass("ib-star");
     }
-    saveFormAlert()
-    return userinput = true;
+    document.getElementById("starredForm").requestSubmit();
   }
 
   addTypeValue(event) {
@@ -132,7 +127,7 @@ export default class extends Controller {
     const divColumn3 = document.createElement("div")
     const inputType = document.createElement("INPUT")
     const inputValue = document.createElement("INPUT")
-    const spanTrash = document.createElement("span")
+    const iconTrash = document.createElement("img")
     divRow.className = "row"
     divColumn1.className = "small-5 medium-5"
     divColumn2.className = "small-6 medium-6 columns"
@@ -145,14 +140,14 @@ export default class extends Controller {
     inputValue.id = "contact_" + addRow + "_value"
     inputValue.setAttribute("data-tojson","")
     inputValue.placeholder = getPlaceholderValue(addRow)
-    spanTrash.className = "ib-trash icon-medium"
-    spanTrash.setAttribute("data-action","click->contact#removeTypeValue")
-    spanTrash.setAttribute("data-value","contact_" + addRow)
+    iconTrash.className = "icon medium"
+    iconTrash.setAttribute("src", "/assets/delete.svg")
+    iconTrash.setAttribute("data-action","click->contact#removeTypeValue")
+    iconTrash.setAttribute("data-value","contact_" + addRow)
 
     element.appendChild(divRow).appendChild(divColumn1).append(inputType)
     element.appendChild(divRow).appendChild(divColumn2).append(inputValue)
-    element.appendChild(divRow).appendChild(divColumn3).append(spanTrash)
-    prepareTypeValues('contact_email_type')
+    element.appendChild(divRow).appendChild(divColumn3).append(iconTrash)
   }
 
   removeTypeValue(event) {
@@ -177,7 +172,7 @@ export default class extends Controller {
   }
 
   submitForm(event) {
-    document.getElementById("contactForm").submit();
+    document.getElementById("contactForm").requestSubmit();
     return userinput = false
   }
 

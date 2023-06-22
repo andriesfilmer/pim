@@ -7,7 +7,7 @@ nav.top-bar {
   background-color: var(--main-color);
   color: #fff;
   a {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     color: #fff;
     vertical-align: middle;
     span { font-size: 1.2rem; }
@@ -55,9 +55,3 @@ label.label-th {
   color: red;
 }
 
-/* For starred and birthdate index lists */
-#contacts > [class*="ib-"]:before {
-  height: 2em;
-  color: orange;
-  font-size: 3rem;
-}

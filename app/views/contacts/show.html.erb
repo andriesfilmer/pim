@@ -1,21 +1,11 @@
-<div class="row secondary-menu">
-  <div class="columns small-6 medium-6">
-    <span class="ib-star<%= @contact.starred? ? '-filled' : '' %>"></span>
-    <span class="divider"></span>
-    <%= link_to "", edit_contact_path(@contact), class: "ib-edit" %>
-    <span class="divider"></span>
-  </div>
-  <div class="columns small-6 medium-6 text-right">
-    <span class="divider"></span>
-    <%= link_to "", contact_path(@contact, format: :html),
-      data: { turbo_method: :delete, turbo_confirm: "Are you sure to delete this contact?"}, class: "ib-trash" %>
-  </div>
-</div>
+<%= render "secondary_menu" %>
 
 <div class="row">
   <div class="columns">
-    <%= content_tag(:label, " #{get_birthday_age(@contact)}",
-      class: "ib-cake icon-medium float-right") if @contact.birthdate %>
+    <%= content_tag :label, class: "float-right" do %>
+      <%= image_tag "cake.svg", class: "icon small" %>
+      <%= get_birthday_age(@contact) %>
+    <% end if @contact.birthdate %>
     <h3><%= @contact.name %></h3>
   </div>
 </div>
@@ -28,7 +18,7 @@
       <div class="row">
         <div class="medium-10 columns">
           <%= label_tag phone["type"] %>
-          <span class="float-right ib-call icon-medium"></span>
+          <%= image_tag "call.svg", class: "icon medium float-right" %>
           <%= phone["value"] %>
         </div>
       </div>
@@ -40,7 +30,7 @@
       <div class="row">
         <div class="medium-10 columns">
           <%= label_tag email["type"] %>
-          <span class="float-right ib-mail icon-medium"></span>
+          <%= image_tag "mail.svg", class: "icon medium float-right" %>
           <%= email["value"] %>
         </div>
       </div>
@@ -52,7 +42,7 @@
       <div class="row">
         <div class="medium-10 columns">
           <%= label_tag address["type"] %>
-          <span class="float-right ib-location-on icon-medium"></span>
+          <%= image_tag "location-on.svg", class: "icon medium float-right" %>
           <%= address["value"] %>
         </div>
       </div>
@@ -64,7 +54,7 @@
       <div class="row">
         <div class="medium-10 columns">
           <%= label_tag company["type"] %>
-          <span class="float-right ib-apartment icon-medium"></span>
+          <%= image_tag "apartment.svg", class: "icon medium float-right" %>
           <%= company["value"] %>
         </div>
       </div>
@@ -76,7 +66,7 @@
       <div class="row">
         <div class="medium-10 columns">
           <%= label_tag website["type"] %>
-          <span class="float-right ib-link icon-medium"></span>
+          <%= image_tag "link.svg", class: "icon medium float-right" %>
           <%= website["value"] %>
         </div>
       </div>
@@ -84,7 +74,7 @@
     </div>
   </div>
   <div class="medium-6 columns">
-    <label class="label-th">Notes</label>
+    <%= label_tag :notes, nil, class:"label-th" unless @contact.notes.blank? %>
     <%= content_tag :pre, @contact.notes, id: "notes", class: "display-none" %>
     <div data-controller="contact" id="markdown"></div>
   </div>

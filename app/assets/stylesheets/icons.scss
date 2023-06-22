@@ -1,97 +1,13 @@
-/* Icon classes i.o. svg icons for site */
 
-@import 'svg-icons';
-
-/**
-* Source: https://css-tricks.com/how-i-made-an-icon-system-out-of-css-custom-properties/
-*--------------------------------------------------------------------------------------
-* Characters to escape from SVGs
-* This list allows you to have inline CSS in your SVG code as well
-*/
-$fs-escape-chars: (
-  ' ': '%20',
-  '\'': '%22',
-  '"': '%27',
-  '#': '%23',
-  '/': '%2F',
-  ':': '%3A',
-  '(': '%28',
-  ')': '%29',
-  '%': '%25',
-  '<': '%3C',
-  '>': '%3E',
-  '\\': '%5C',
-  '^': '%5E',
-  '{': '%7B',
-  '|': '%7C',
-  '}': '%7D',
-);
-
-/* Sass function to encode the icons */
-@function svg($name) {
-  // Check if icon exists
-  @if not map-has-key($svg-icons, $name) {
-    @error 'icon “#{$name}” does not exists in $svg-icons map';
-    @return false;
-  }
-
-  // Get icon data
-  $icon-map: map-get($svg-icons, $name);
-
-  $escaped-string: '';
-  $unquote-icon: unquote($icon-map);
-  // Loop through each character in string
-  @for $i from 1 through str-length($unquote-icon) {
-    $char: str-slice($unquote-icon, $i, $i);
-
-    // Check if character is in symbol map
-    $char-lookup: map-get($fs-escape-chars, $char);
-
-    // If it is, use escaped version
-    @if $char-lookup != null {
-        $char: $char-lookup;
-    }
-
-    // Append character to escaped string
-    $escaped-string: $escaped-string + $char;
-  }
-
-  // Return inline SVG data
-  @return url('data:image/svg+xml, #{$escaped-string} ');
-}
-
-
-/* Store each icon into a custom property */
-:root {
-  @each $name, $code in $svg-icons {
-    --svg-#{$name}: #{svg($name)};
-  }
-}
-
-[class*="ib-"]::before, [class*="ia-"]::after {
-  content: "";
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-  -webkit-mask-position: center;
-  mask-position: center;
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  background: currentColor;
-  &.icon-medium {
-    width: 1.5em;
-    height: 1.5em;
-  }
-  &.icon-large {
-    width: 2em;
-    height: 2em;
-  }
+.icon {
   vertical-align: sub;
-}
+  &.small { width: 18px; height: 18px; }
+  &.medium { width: 24px; height: 24px; }
+  &.large { width: 36px; height: 36px; }
 
-[class$="-filled"]::before, [class*="-filled"]::after {
-  color: orange;
-}
+  &.white { filter: invert(100%) sepia(100%) saturate(38%) hue-rotate(321deg) brightness(110%) contrast(110%); }
+  &.alert { filter: invert(14%) sepia(100%) saturate(7154%) hue-rotate(4deg) brightness(114%) contrast(115%); }
+  &.warning { filter: invert(65%) sepia(58%) saturate(1804%) hue-rotate(359deg) brightness(100%) contrast(106%); }
 
+
+}

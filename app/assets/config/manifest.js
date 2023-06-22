@@ -5,6 +5,9 @@
 // Images
 //= link_tree ../images
 
+// Icons
+//= link_tree ../icons
+
 // Stylesheets
 //= link application.css
 

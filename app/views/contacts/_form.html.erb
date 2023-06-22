@@ -1,7 +1,6 @@
 <%= render "layouts/show_errors", target: @contact %>
 
-<%= form_with model: @contact, id: "contactForm", class: "userinputs",
-    data: {'action': 'submit->contact#prepareParams'} do |form| %>
+<%= form_with model: @contact, id: "contactForm", class: "userinputs" do |form| %>
 
   <div class="row">
     <div class="columns">
@@ -18,7 +17,7 @@
       <%= form.label :phones, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <span data-action="click->contact#addTypeValue" data-value="phone" class="ib-plus icon-medium">
+      <img src="/assets/add.svg" data-action="click->contact#addTypeValue" data-value="phone" class="icon medium">
     </div>
   </div>
   <div class="row">
@@ -32,7 +31,7 @@
           <%= form.text_field "phone_value", value: [phone['value']], data: {tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <span data-action="click->contact#removeTypeValue" data-value="contact_phone" class="ib-trash icon-medium"></span>
+          <img src="/assets/delete.svg"data-action="click->contact#removeTypeValue" data-value="contact_phone" class="icon medium">
         </div>
       </div>
       <% end %>
@@ -45,7 +44,7 @@
       <%= form.label :emails, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <span data-action="click->contact#addTypeValue"  data-value="email" class="ib-plus icon-medium">
+      <img src="/assets/add.svg" data-action="click->contact#addTypeValue"  data-value="email" class="icon medium">
     </div>
   </div>
   <div class="row">
@@ -59,7 +58,7 @@
           <%= form.text_field "email_value", value: [email['value']], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <span data-action="click->contact#removeTypeValue" data-value="contact_email" class="ib-trash icon-medium"></span>
+          <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_email" class="icon medium">
         </div>
       </div>
       <% end %>
@@ -72,7 +71,7 @@
       <%= form.label :addresses, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <span data-action="click->contact#addTypeValue" data-value="address" class="ib-plus icon-medium">
+      <img src="/assets/add.svg" data-action="click->contact#addTypeValue" data-value="address" class="icon medium">
     </div>
   </div>
   <div class="row">
@@ -86,7 +85,7 @@
           <%= form.text_field "address_value", value: [address['value']], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <span data-action="click->contact#removeTypeValue" data-value="contact_address" class="ib-trash icon-medium"></span>
+          <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_address" class="icon medium">
         </div>
       </div>
       <% end %>
@@ -99,7 +98,7 @@
       <%= form.label :companies, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <span data-action="click->contact#addTypeValue" data-value="company" class="ib-plus icon-medium">
+      <img src="/assets/add.svg" data-action="click->contact#addTypeValue" data-value="company" class="icon medium">
     </div>
   </div>
   <div class="row">
@@ -113,7 +112,7 @@
           <%= form.text_field "company_value", value: [company['value']], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <span data-action="click->contact#removeTypeValue" data-value="contact_company" class="ib-trash icon-medium"></span>
+          <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_company" class="icon medium">
         </div>
       </div>
       <% end %>
@@ -126,7 +125,7 @@
       <%= form.label :websites, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <span data-action="click->contact#addTypeValue" data-value="website" class="ib-plus icon-medium">
+      <img src="/assets/add.svg" data-action="click->contact#addTypeValue" data-value="website" class="icon medium">
     </div>
   </div>
   <div class="row">
@@ -140,7 +139,7 @@
           <%= form.text_field "website_value", value: [website['value']], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <span data-action="click->contact#removeTypeValue" data-value="contact_website" class="ib-trash icon-medium"></span>
+          <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_website" class="icon medium">
         </div>
       </div>
       <% end %>
@@ -161,9 +160,9 @@
   <div class="row">
     <div class="columns">
       <%= form.label :notes, class: "label-th display-inline" %>
-      <span id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip
-        title="Click for preview" class="ib-preview cursor-pointer icon-medium"></span>
-      <span id="edit_bt" data-action="click->contact#hideMarkdown" class="ib-edit icon-medium display-none"></span>
+      <img src="/assets/preview.svg" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip
+        title="Click for preview" class="cursor-pointer icon medium">
+      <img src="/assets/edit.svg" id="edit_bt" data-action="click->contact#hideMarkdown" class="icon medium cursor-pointer display-none">
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '20' %>
       <div id="markdown"></div>
     </div>
@@ -173,6 +172,5 @@
   <%= form.hidden_field :addresses %>
   <%= form.hidden_field :companies %>
   <%= form.hidden_field :websites %>
-  <%= form.hidden_field :starred %>
 <% end %>
 
