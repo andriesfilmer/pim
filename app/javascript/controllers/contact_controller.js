@@ -39,7 +39,7 @@ function getValueType(type) {
   if ( type == "email" ) { valueType = 'Home' }
   if ( type == "address" ) { valueType = 'Home' }
   if ( type == "website" ) { valueType = 'Work' }
-  if ( type == "company" ) { valueType = 'Current' }
+  if ( type == "company" ) { valueType = 'Function' }
   return valueType
 }
 
@@ -133,6 +133,7 @@ export default class extends Controller {
     divColumn2.className = "small-6 medium-6 columns"
     divColumn3.className = "small-1 medium-1 columns"
     inputType.value = getValueType(addRow)
+    inputType.placeholder = getValueType(addRow)
     inputType.type = "text"
     inputType.id = "contact_" + addRow + "_type"
     inputType.setAttribute("data-tojson","")

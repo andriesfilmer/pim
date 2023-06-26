@@ -25,10 +25,10 @@
       <% JSON.parse(@contact.phones).each_with_index do | phone,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "phone_type", value: [phone['type']], data: { tojson: '' } %>
+          <%= select_tag "contact_phone_type", options_for_select([["Mobile", "CELL" ],["Work","WORK"],["Home","HOME"]], phone['type']), data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "phone_value", value: [phone['value']], data: {tojson: '' } %>
+          <%= form.text_field "phone_value", value: phone['value'], data: {tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
           <img src="/assets/delete.svg"data-action="click->contact#removeTypeValue" data-value="contact_phone" class="icon medium">
@@ -52,10 +52,10 @@
       <% JSON.parse(@contact.emails).each_with_index do | email,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "email_type", value: [email['type']], data: { tojson: '' } %>
+          <%= form.text_field "email_type", value: email['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "email_value", value: [email['value']], data: { tojson: '' } %>
+          <%= form.text_field "email_value", value: email['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
           <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_email" class="icon medium">
@@ -79,10 +79,10 @@
       <% JSON.parse(@contact.addresses).each_with_index do | address,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "address_type", value: [address['type']], data: { tojson: '' } %>
+          <%= form.text_field "address_type", value: address['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "address_value", value: [address['value']], data: { tojson: '' } %>
+          <%= form.text_field "address_value", value: address['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
           <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_address" class="icon medium">
@@ -106,10 +106,10 @@
       <% JSON.parse(@contact.companies).each_with_index do | company,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "company_type", value: [company['type']], data: { tojson: '' } %>
+          <%= form.text_field "company_type", value: company['type'], placeholder: 'Function', data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "company_value", value: [company['value']], data: { tojson: '' } %>
+          <%= form.text_field "company_value", value: company['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
           <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_company" class="icon medium">
@@ -133,10 +133,10 @@
       <% JSON.parse(@contact.websites).each_with_index do | website,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= form.text_field "website_type", value: [website['type']], data: { tojson: '' } %>
+          <%= form.text_field "website_type", value: website['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
-          <%= form.text_field "website_value", value: [website['value']], data: { tojson: '' } %>
+          <%= form.text_field "website_value", value: website['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
           <img src="/assets/delete.svg" data-action="click->contact#removeTypeValue" data-value="contact_website" class="icon medium">

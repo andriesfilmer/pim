@@ -17,7 +17,7 @@
       <% JSON.parse(@contact.phones).each do | phone | %>
       <div class="row">
         <div class="medium-10 columns">
-          <%= label_tag phone["type"] %>
+          <%= label_tag phone["type"].to_s.gsub(/CELL/, "Mobile") %>
           <%= image_tag "call.svg", class: "icon medium float-right" %>
           <%= phone["value"] %>
         </div>

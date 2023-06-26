@@ -50,6 +50,8 @@ Pin turbo
 
     alter table contacts change created created_at datetime;
     alter table contacts change updated updated_at datetime;
+    update contacts set created_at = updated_at where created_at = '0000-00-00 00:00:00';
+
 
 ## Resources
 
