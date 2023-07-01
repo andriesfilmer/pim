@@ -11,23 +11,42 @@
  * It is generally better to create a new file per style scope.
  *
  *= require application.css
- *= require basic.css
- *= require grid.css
- *= require base.css
- *= require icons.css
- *= require_directory ./components
- *= require helpers.css
+ * require basic.css
+ * require grid.css
+ * require base.css
+ * require icons.css
+ * require_directory ./components
+ * require helpers.css
  */
 
+$main-color:     purple;
+$button-color:   purple;
+$notice-color:   lightblue;
+$success-color:  green;
+$warning-color:  orange;
+$alert-color:    red;
 
-:root {
-  --main-color:     purple;
-  --button-color:   purple;
-  --notice-color:   lightblue;
-  --success-color:  green;
-  --warning-color:  orange;
-  --alert-color:    red;
-}
+
+@import 'mixin';
+@import 'colors';
+@import 'basic';
+@import 'grid';
+@import 'base';
+@import 'icons';
+@import 'components/forms';
+@import 'components/button';
+@import 'components/callout';
+@import 'components/dialog';
+@import 'components/diff';
+@import 'components/flash';
+@import 'components/forms';
+@import 'components/label';
+@import 'components/markdown';
+@import 'components/model';
+@import 'components/pagination';
+@import 'components/tabs';
+@import 'components/tooltip';
+@import 'helpers';
 
 /* testing */
 turbo-frame {
