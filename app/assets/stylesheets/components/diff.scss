@@ -1,0 +1,16 @@
+.diff {
+  li { list-style: none; }
+  .unchanged {
+    display: none;
+  }
+  del {
+    text-decoration: none;
+    background-color: #edacac;
+    padding: 4px;
+  }
+  ins {
+    text-decoration: none;
+    background-color: #bef3be;
+    padding: 4px;
+  }
+}
