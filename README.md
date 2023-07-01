@@ -1,58 +1,26 @@
-# README
-
-    git clone git@github.com:andriesfilmer/pim-rails.git
-
-# New rail app
+# Ruby on Rails - PIM (Personal Information Management)
 
 Rails 7.0.4.3
 
-    rails new pim-app
+## Install
 
-## Turbo
+    git clone git@github.com:andriesfilmer/pim-rails.git
+    bundle install
+    npm install
 
-    rails turbo:install
+Start the server
 
-## importmap
+    rails s
 
-    rails importmap:install
-`
-Add Importmap include tags in application layout
+## Private PIM with:
 
-      insert  app/views/layouts/application.html.erb
+* Register/Login/Logout users - With reset password.
+* Posts/Notes/Articles
+* Personal calendar (Appointments, Memos), Timezone awarenss.
+* Contacts (Add unlimited Phonenumbers, Companies, Relations, E-mailaddresses, Websites, Addresses and notes)
+* Bookmarks (With tags and notes)
 
-Create application.js module as entrypoint
-
-      create  app/javascript/application.js
-
-Use vendor/javascript for downloaded pins
-
-      create  vendor/javascript
-
-Ensure JavaScript files are in the Sprocket manifest
-
-      append  app/assets/config/manifest.js
-
-Configure importmap paths in config/importmap.rb
-
-      create  config/importmap.rb
-
-Copying binstub
-
-      create  bin/importmap
-
-Pin turbo
-
-    ./bin/importmap pin application
-    ./bin/importmap pin @hotwired/turbo-rails
-    ./bin/importmap pin jquery --download
-
-## Mysql
-
-    alter table contacts change created created_at datetime;
-    alter table contactversions change created created_at datetime;
-    alter table contacts change updated updated_at datetime;
-    update contacts set created_at = updated_at where created_at = '0000-00-00 00:00:00';
-
+Take a look on <https://pim.filmer.nl>
 
 ## Resources
 
@@ -63,5 +31,16 @@ Pin turbo
 * [Example turbo todos](https://github.com/tf-jlemasters/turbo-todos)
 
 ## In depth
+
 * [Tag builder turbo](https://github.com/hotwired/turbo-rails/blob/main/app/models/turbo/streams/tag_builder.rb)
+
+# Temporary notes
+
+## Mysql
+
+    alter table contacts change created created_at datetime;
+    alter table contactversions change created created_at datetime;
+    alter table contacts change updated updated_at datetime;
+    update contacts set created_at = updated_at where created_at = '0000-00-00 00:00:00';
+
 
