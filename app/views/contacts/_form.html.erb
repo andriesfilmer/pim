@@ -25,7 +25,7 @@
       <% JSON.parse(@contact.phones).each_with_index do | phone,index | %>
       <div class="row">
         <div class="small-5 medium-5">
-          <%= select_tag "contact_phone_type", options_for_select([["Mobile", "CELL" ],["Work","WORK"],["Home","HOME"]], phone['type']), data: { tojson: '' } %>
+          <%= select_tag "contact_phone_type", options_for_select(["Mobile","Work","Home","Other"], phone['type']), data: { tojson: '' } %>
         </div>
         <div class="small-6 medium-6 columns">
           <%= form.text_field "phone_value", value: phone['value'], data: {tojson: '' } %>

@@ -37,7 +37,10 @@ class ContactsController < ApplicationController
         format.html { render :new, status: :unprocessable_entity }
         #format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
-     # redirect_to root_path
+
+    # Create a copy for versions management.
+    add_version(@contact)
+
     end
   end
 
@@ -47,6 +50,9 @@ class ContactsController < ApplicationController
     else
       url = contact_url(@contact)
     end
+
+    # Create a copy for versions management.
+    add_version(@contact)
 
     respond_to do |format|
       if @contact.update(contact_params)
@@ -87,6 +93,15 @@ class ContactsController < ApplicationController
   end
 
   private
+
+  def add_version(contact)
+    # Create a copy for versions management.
+    @contactversion = Contactversion.new(contact_params.except("id","mongo_id", "created_at","updated_at"))
+    @contactversion.org_id = contact.id
+    @contactversion.user_id = contact.user_id
+    @contactversion.save
+  end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_contact
       @contact = Contact.find(params[:id])

@@ -38,9 +38,30 @@
 
 .button.disabled, .button[disabled] {
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 span.button {
   margin-bottom: 0;
+}
+
+#add-back-arrow {
+   .back-arrow {
+     float: left;
+     padding-left: 10px;
+     margin-top: 3px;
+     font-size: 1.8em;
+     cursor: pointer;
+     &:after { content: '\02794'; }
+     transform: rotate(180deg);
+   }
+ }
+ .row-caption #add-back-arrow {
+   margin-top: 0;
+   .back-arrow {
+     color: #fff;
+     font-size: 1.4rem;
+     margin-top: 2px;
+  }
 }
 

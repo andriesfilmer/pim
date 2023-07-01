@@ -11,18 +11,25 @@
     <% end if @contact.id %>
     <%= content_tag :span, '', class: "divider" if @contact.id %>
 
-    <%= link_to edit_contact_path(@contact) do %>
+    <%= link_to edit_contact_path(@contact), title: "Edit contact" do %>
       <%= image_tag "edit.svg", class: "icon large" %>
     <% end if action_name == "show" %>
     <%= content_tag :span, '', class: "divider" if action_name == "show" %>
 
-    <%= link_to contact_path(@contact) do %>
+    <%= link_to contact_path(@contact), title: "Show contact" do %>
       <%= image_tag "visibility.svg", class: "icon large" %>
     <% end if action_name == "edit" %>
     <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
+
     <img src="/assets/cloud-upload.svg" id="cloud-upload" data-action="click->contact#submitForm",
-       title="Save", class="icon large cursor-pointer">
+       title="Save contact", class="icon large cursor-pointer">
     <%= content_tag :span, '', class: "divider" if @contact.id %>
+
+    <%= link_to contactversions_path(org_id: @contact.id), title: "Versions of this contact" do %>
+      <img src="/assets/restore.svg" class="icon large">
+    <% end if @contact.id %>
+    <%= content_tag :span, '', class: "divider" if @contact.id %>
+
   </div>
   <div class="columns small-2 medium-2 text-right">
     <%= content_tag :span, '', class: "divider" if @contact.id %>

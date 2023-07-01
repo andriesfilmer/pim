@@ -18,7 +18,7 @@ nav.top-bar {
   font-size: 2rem;
   padding-bottom: 1rem;
   .divider {
-    margin: 1rem;
+    margin: 0.5rem;
     border-right: 1px solid #eee;
   }
 }
@@ -29,14 +29,18 @@ label.label-th {
   font-size: 1.2rem;
 }
 .row-caption {
+  background: var(--main-color);
   color: #fff;
   a {color: #fff;} a:hover { color: #ddd} a:focus { color: #eee; }
   font-weight: bold;
 }
+.row-th {
+  background-color: var(--main-color);
+  color: #fff;
+}
 .row-caption, .row-th, .odd-even {
   padding: 0.3em 0 0.3em 0.3em;
   line-height: 2em;
-  background-color: #fff;
   border-radius: 5px;
 }
 

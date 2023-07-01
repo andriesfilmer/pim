@@ -1,5 +1,5 @@
 <div class="row secondary-menu">
-  <div class="small-6 medium-6 columns">
+  <div class="small-10 medium-10 columns">
     <%= link_to contacts_path(starred: true)  do %>
       <%= image_tag "star.svg", class: "icon large" %>
     <% end %>
@@ -11,7 +11,7 @@
     <img src="/assets/search.svg" data-controller="contact" data-action="click->contact#showSearch" class="icon large">
     <span class="divider"></span>
   </div>
-  <div class="small-6 medium-6 columns text-right">
+  <div class="small-2 medium-2 columns text-right">
     <%= link_to new_contact_path, data: { turbo_frame: dom_id(Contact.new) } do %>
       <%= image_tag "person-add.svg", class: "icon large" %>
     <% end %>

@@ -177,4 +177,46 @@ export default class extends Controller {
     return userinput = false
   }
 
+  compareVersions(event) {
+
+    // Two checkbox must be selected
+    let required = $('.checkBoxClass');
+    let compareIds = [];
+
+    // Bind change for all click and keyup for all checkboxes
+    required.unbind("change keyup").bind("change keyup", function() {
+
+      let flags = 0;
+      // Check every checkboxes in collection
+      required.each(function() {
+        if ($(this).is(":checked")) {
+          compareIds.push(this.id)
+          flags++;
+        }
+      });
+
+      // Set value in hidden input field.
+      $("[name=ids]").val(compareIds);
+
+      required.each(function() {
+        if (flags == 2 && !$(this).is(":checked")) {
+          $(this).css("display","none");
+        } else {
+          $(this).css("display","inline");
+        }
+
+      });
+
+      // Number of nonempty (nonchecked) fields
+      if (flags == 2) {
+        $("#compare_btn").prop("disabled", false);
+        $("#compare_btn").removeClass("disabled");
+      } else {
+        $("#compare_btn").prop("disabled", true);
+        $("#compare_btn").addClass("disabled");
+      }
+    });
+
+  }
+
 }

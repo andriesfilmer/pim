@@ -1,14 +1,18 @@
-<%= render "secondary_menu" %>
+<%= render "contacts/secondary_menu" unless @contact.try(:org_id) %>
+<%= render "contacts/restore_menu" if @contact.try(:org_id) %>
 
 <div class="row">
-  <div class="columns">
-    <%= content_tag :label, class: "float-right" do %>
+  <div class="small-12 medium-6 columns">
+    <h3><%= @contact.name %></h3>
+  </div>
+  <div class="small-12 medium-6 columns">
+    <%= content_tag :label do %>
       <%= image_tag "cake.svg", class: "icon small" %>
       <%= get_birthday_age(@contact) %>
     <% end if @contact.birthdate %>
-    <h3><%= @contact.name %></h3>
   </div>
 </div>
+
 
 <div class="row">
   <div class="medium-6 columns">
@@ -17,7 +21,7 @@
       <% JSON.parse(@contact.phones).each do | phone | %>
       <div class="row">
         <div class="medium-10 columns">
-          <%= label_tag phone["type"].to_s.gsub(/CELL/, "Mobile") %>
+          <%= label_tag phone["type"] %>
           <%= image_tag "call.svg", class: "icon medium float-right" %>
           <%= phone["value"] %>
         </div>

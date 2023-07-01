@@ -1,1 +1,1 @@
-//= require snippets/blaat.js
+//= require snippets/add-back-arrow.js
