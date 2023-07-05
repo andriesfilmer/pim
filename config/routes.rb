@@ -4,13 +4,16 @@ Rails.application.routes.draw do
   root "contacts#index"
 
   post "contactrestore", to: "contactversions#restore", as: "contactrestore"
+  post "contacts/search", to: "contacts#search"
   get "contactversions/compare", to: "contactversions#compare"
 
+  post "postrestore", to: "postversions#restore", as: "postrestore"
+  post "posts/search", to: "posts#search"
+  get "postversions/compare", to: "postversions#compare"
+
   resources :contactversions
-  resources :contacts do
-    collection do
-      post 'search'
-    end
-  end
+  resources :contacts
+  resources :posts
+  resources :postversions
 
 end

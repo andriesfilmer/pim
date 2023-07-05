@@ -1,0 +1,22 @@
+<%= render "posts/secondary_menu" unless @post.try(:org_id) %>
+<%= render "posts/restore_menu" if @post.try(:org_id) %>
+
+<div class="row">
+  <div class="columns">
+    <h3><%= @post.title %></h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns">
+    <%= label_tag :content, nil, class:"label-th" unless @post.content.blank? %>
+    <%= content_tag :pre, @post.content, id: "content", class: "display-none" %>
+    <div data-controller="post" id="markdown"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns"><label class="label-th"></label></div>
+  <div class="columns small-6 medium-6 meta-data">Created: <%= l @post.created_at, format: :long %></div>
+  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @post.updated_at, format: :long %></div>
+</div>

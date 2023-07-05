@@ -1,0 +1,20 @@
+<div id="posts" class="col-12">
+<div class="row row-th">
+  <div class="medium-8 columns">Title</div>
+  <div class="medium-2 columns">Created</div>
+  <div class="medium-2 columns">Updated</div>
+</div>
+<% @posts.each do |post| %>
+  <%= link_to post_path(post), class: "row odd-even" do %>
+  <div class="medium-8 columns">
+    <%= post.title %>
+  </div>
+  <div class="medium-2 columns">
+    <%= l post.created_at, format: "%Y-%m-%d" %>
+  </div>
+  <div class="medium-2 columns">
+    <%= l post.updated_at, format: "%Y-%m-%d" %>
+  </div>
+  <% end %>
+<% end %>
+</div>

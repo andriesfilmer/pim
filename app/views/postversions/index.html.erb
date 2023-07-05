@@ -1,4 +1,4 @@
-<div data-controller="contact">
+<div data-controller="post">
   <div class="row">
     <div class="columns" id="add-back-arrow">
       <img src="/assets/restore.svg" class="icon large float-left">
@@ -10,16 +10,16 @@
     <div class="medium-8 columns">Created</div>
     <div class="medium-4 columns text-right">Select version</div>
   </div>
-  <% @contactversions.each do |contactversion| %>
+  <% @postversions.each do |postversion| %>
   <div id="versions" class="row odd-even">
     <div class="small-8 medium-8 columns">
-      <%= link_to (l contactversion.created_at, format: :long), contactversion_path(contactversion) %>
+      <%= link_to (l postversion.created_at, format: :long), postversion_path(postversion) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
       <img src="assets/difference.svg" class="icon large">
-      <%= check_box_tag "version_ids[]", contactversion.id, false, id: contactversion.id,
-        data: { action: "click->contact#versions" }, class: "checkBoxClass" %>
-      <%= content_tag :span, contactversion.id %>
+      <%= check_box_tag "version_ids[]", postversion.id, false, id: postversion.id,
+        data: { action: "click->post#versions" }, class: "checkBoxClass" %>
+      <%= content_tag :span, postversion.id %>
     </div>
   </div>
   <% end %>
@@ -29,7 +29,7 @@
     <div class="medium-2 columns text-right">
       &nbsp;
 
-      <%= button_to "Compare versions", contactversions_compare_path, id: "compare_btn", class: "button disabled", disabled: true,
+      <%= button_to "Compare versions", postversions_compare_path, id: "compare_btn", class: "button disabled", disabled: true,
         params: { ids: "" }, data: { turbo: false }, method: :get %>
 
     </div>

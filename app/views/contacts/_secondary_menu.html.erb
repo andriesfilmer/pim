@@ -1,5 +1,7 @@
 <div class="row secondary-menu">
   <div class="columns small-10 medium-10">
+    <img src="/assets/person.svg" class="icon large">
+    <span class="divider"></span>
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>
       <span>
         <img src="/assets/star<%= @contact.starred? ? '-filled' : '' %>.svg"
@@ -21,9 +23,9 @@
     <% end if action_name == "edit" %>
     <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
 
-    <img src="/assets/cloud-upload.svg" id="cloud-upload" data-action="click->contact#submitForm",
-       title="Save contact", class="icon large cursor-pointer">
-    <%= content_tag :span, '', class: "divider" if @contact.id %>
+    <%= image_tag "cloud-upload.svg", id: "cloud-upload", data: { action: "click->contact#submitForm" },
+       title: "Save contact", class:"icon large cursor-pointer" if action_name != "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name != "show" && @contact.id %>
 
     <%= link_to contactversions_path(org_id: @contact.id), title: "Versions of this contact" do %>
       <img src="/assets/restore.svg" class="icon large">

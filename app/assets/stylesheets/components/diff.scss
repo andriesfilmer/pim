@@ -1,16 +1,18 @@
 .diff {
+  .symbol { padding-right: 1em; }
   li { list-style: none; }
   .unchanged {
     display: none;
   }
-  del {
+  del, ins {
+    display: flex;
     text-decoration: none;
-    background-color: #edacac;
     padding: 4px;
   }
+  del {
+    background-color: #edacac;
+  }
   ins {
-    text-decoration: none;
     background-color: #bef3be;
-    padding: 4px;
   }
 }

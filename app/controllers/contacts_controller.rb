@@ -69,7 +69,6 @@ class ContactsController < ApplicationController
 
   def destroy
     @contact.destroy
-
     respond_to do |format|
       #format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully deleted." }
       format.html { redirect_to contacts_path, notice: "Contact was successfully destroyed." }
@@ -102,13 +101,14 @@ class ContactsController < ApplicationController
     @contactversion.save
   end
 
-    # Use callbacks to share common setup or constraints between actions.
-    def set_contact
-      @contact = Contact.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_contact
+    @contact = Contact.find(params[:id])
+  end
 
-    def contact_params
-      params.require(:contact).permit(:name, :phones, :emails, :addresses, :companies, :websites,
-        :name, :birthdate, :notes, :starred)
-    end
+  def contact_params
+    params.require(:contact).permit(:name, :phones, :emails, :addresses, :companies, :websites,
+      :name, :birthdate, :notes, :starred)
+  end
+
 end

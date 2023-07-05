@@ -1,0 +1,28 @@
+<%= render "layouts/show_errors", target: @post %>
+
+<%= form_with model: @post, id: "postForm", class: "userinputs" do |form| %>
+
+  <div class="row">
+    <div class="columns">
+      <%= form.label :title, class: "label-th" %>
+    </div>
+    <div class="columns">
+      <%= form.text_field :title, placeholder: "New post title" %>
+    </div>
+  </div>
+
+  <!-- content -->
+  <div class="row">
+    <div class="columns">
+      <%= form.label :content, class: "label-th display-inline" %>
+      <img src="/assets/preview.svg" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip
+        title="Click for preview" class="cursor-pointer icon medium">
+      <img src="/assets/edit.svg" id="edit_bt" data-action="click->post#hideMarkdown" class="icon medium cursor-pointer display-none">
+      <%= form.text_area :content, placeholder: 'You can use markdown for content', rows: '30' %>
+      <div id="markdown"></div>
+    </div>
+  </div>
+  <%= form.hidden_field :kind %>
+  <%= form.hidden_field :tags %>
+<% end %>
+

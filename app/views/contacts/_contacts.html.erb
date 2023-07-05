@@ -1,7 +1,12 @@
 <div id="contacts" class="col-12">
+<div class="row row-th">
+  <div class="medium-1 columns hide-for-small-only">Starred</div>
+  <div class="medium-5 columns">Name</div>
+  <div class="medium-6 columns hide-for-small-only">Company</div>
+</div>
 <% @contacts.each do |contact| %>
   <%= link_to contact_path(contact), class: "row odd-even" do %>
-  <div class="small-1 medium-1 column">
+  <div class="small-1 medium-1 column text-center">
     <%= image_tag "star-filled.svg", class: "icon medium warning" if contact.starred %>
   </div>
   <div class="small-11 medium-5 column">

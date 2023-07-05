@@ -1,0 +1,95 @@
+class PostsController < ApplicationController
+
+  before_action :set_post, only: %i[ show edit update destroy ]
+
+  # GET /posts or /posts.json
+  def index
+    @posts = Post.all.order("id desc").limit 10
+  end
+
+  # GET /posts/new
+  def new
+    @post = Post.new
+  end
+
+  # POST /posts or /posts.json
+  def create
+    @post = Post.new(post_params)
+
+    respond_to do |format|
+      if @post.save
+        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.json { render :show, status: :created, location: @post }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+
+    # Create a copy for versions management.
+    add_version(@post)
+
+  end
+
+  # PATCH/PUT /posts/1 or /posts/1.json
+  def update
+    respond_to do |format|
+      if @post.update(post_params)
+        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
+        format.json { render :show, status: :ok, location: @post }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @post.errors, status: :unprocessable_entity }
+      end
+    end
+
+    # Create a copy for versions management.
+    add_version(@post)
+
+  end
+
+  def destroy
+    @post.destroy
+    respond_to do |format|
+      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
+
+  def search
+    if params.dig(:post_search).present?
+      @posts = Post.where('title LIKE ? OR content LIKE ?', "%#{params[:post_search]}%", "%#{params[:post_search]}%")
+                   .order(updated_at: :desc)
+    else
+      @posts = []
+    end
+    respond_to do |format|
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.update("posts", partial: "posts", locals: { posts: @posts })
+        ]
+      end
+    end
+  end
+
+  private
+
+  def add_version(post)
+    # Create a copy for versions management.
+    @postversion = Postversion.new(post_params.except("id","created_at","updated_at"))
+    @postversion.org_id = post.id
+    @postversion.user_id = post.user_id
+    @postversion.save
+  end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_post
+    @post = Post.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def post_params
+    params.require(:post).permit(:title, :content, :kind, :tags)
+  end
+
+end

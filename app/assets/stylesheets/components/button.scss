@@ -15,7 +15,7 @@
   text-align: center;
   cursor: pointer;
   &.alert {
-    background-color: var(--alert-color);
+    background-color: $alert-color;
   }
   &.secondary {
     background-color: #767676;

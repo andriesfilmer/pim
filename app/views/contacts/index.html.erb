@@ -1,5 +1,7 @@
 <div class="row secondary-menu">
   <div class="small-10 medium-10 columns">
+    <img src="/assets/group.svg" class="icon large">
+    <span class="divider"></span>
     <%= link_to contacts_path(starred: true)  do %>
       <%= image_tag "star.svg", class: "icon large" %>
     <% end %>
@@ -21,7 +23,7 @@
 
 <div id="show_search" class="row display-none">
   <div class="columns">
-  <%= form_with url: search_contacts_path do |form| %>
+  <%= form_with url: contacts_search_path do |form| %>
     <%= form.search_field :contact_search, placeholder: 'Search contacts',
       value: params[:contact_search], oninput: "this.form.requestSubmit()" %>
   <% end %>

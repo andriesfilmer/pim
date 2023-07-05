@@ -1,0 +1,32 @@
+<div class="row secondary-menu">
+  <div class="columns small-10 medium-10">
+    <img src="/assets/article.svg" class="icon large">
+    <span class="divider"></span>
+    <%= link_to edit_post_path(@post), title: "Edit post" do %>
+      <%= image_tag "edit.svg", class: "icon large" %>
+    <% end if action_name == "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name == "show" %>
+
+    <%= link_to post_path(@post), title: "Show post" do %>
+      <%= image_tag "visibility.svg", class: "icon large" %>
+    <% end if action_name == "edit" %>
+    <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
+
+    <%= image_tag "cloud-upload.svg", id: "cloud-upload", data: { action: "click->post#submitForm" },
+       title: "Save post", class:"icon large cursor-pointer" if action_name != "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name != "show" && @post.id %>
+
+    <%= link_to postversions_path(org_id: @post.id), title: "Versions of this post" do %>
+      <img src="/assets/restore.svg" class="icon large">
+    <% end if @post.id %>
+    <%= content_tag :span, '', class: "divider" if @post.id %>
+
+  </div>
+  <div class="columns small-2 medium-2 text-right">
+    <%= content_tag :span, '', class: "divider" if @post.id %>
+    <%= link_to post_path(@post), data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this post?'},
+      title: "Delete item!" do %>
+      <%= image_tag "delete.svg", class: "icon large" %>
+    <% end if @post.id %>
+  </div>
+</div>
