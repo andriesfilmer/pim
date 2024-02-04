@@ -10,6 +10,7 @@ Rails 7.0.4.3
 
 Start the server
 
+    rails assets:clobber # if previous builds
     rails s
 
 ## Private PIM with:

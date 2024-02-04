@@ -81,3 +81,14 @@ export function compareVersions() {
 
 }
 
+export function modalComponent() {
+  $('[data-modal-open]').on('click', function() {
+    let modal = event.target.dataset.modalOpen;
+    $("#" + modal).addClass("show");
+  });
+
+  $('[data-modal-close]').on('click', function() {
+    let modal = event.target.dataset.modalClose;
+    $("#" + modal).removeClass("show");
+  });
+}
