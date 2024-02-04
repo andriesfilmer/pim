@@ -2,3 +2,44 @@
   <%= render "secondary_menu" %>
   <%= render "form", post: @post %>
 </div>
+
+<div class="modal" id="addPicture">
+  <%= form_with model: @post, id: "postForm" do |form| %>
+    <div class="modal-content">
+
+    <div class="row">
+      <div class="columns">
+    <span class="close-button" data-modal-close="addPicture">&#215;</span>
+      </div>
+    </div>
+
+    <div class="row row-th">
+      <div class="columns">Upload picture</div>
+    </div>
+    <div class="row">
+      <div class="columns">
+        <br>
+        <%= form.file_field :picture %>
+        <%= form.submit "Upload", class: "button" %>
+      </div>
+    </div>
+
+    <div class="row row-th">
+      <div class="columns">Select picture</div>
+    </div>
+    <% @files.each do |file| %>
+    <div class="row odd-even">
+      <div class="medium-10 columns"><%= file %></div>
+      <div class="medium-1 columns">
+        <img src="/assets/visibility.svg" class="icon large">
+      </div>
+      <div class="medium-1 columns">
+        <img src="/assets/photo-add.svg" class="icon large">
+      </div>
+    </div>
+  <% end %>
+
+  </div>
+  <% end %>
+</div>
+

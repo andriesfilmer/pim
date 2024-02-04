@@ -16,6 +16,9 @@
        title: "Save post", class:"icon large cursor-pointer" if action_name != "show" %>
     <%= content_tag :span, '', class: "divider" if action_name != "show" && @post.id %>
 
+    <%= image_tag "photo-add.svg", class: "icon large", data: { modal_open: "addPicture" } if @post.id && action_name == "edit" %>
+    <%= content_tag :span, '', class: "divider" if @post.id && action_name == "edit" %>
+
     <%= link_to postversions_path(org_id: @post.id), title: "Versions of this post" do %>
       <img src="/assets/restore.svg" class="icon large">
     <% end if @post.id %>

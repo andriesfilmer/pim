@@ -12,6 +12,12 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
+  def edit
+    path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
+    FileUtils.mkdir_p(path) unless Dir.exists?(path)
+    @files = Dir.children(path)
+  end
+
   # POST /posts or /posts.json
   def create
     @post = Post.new(post_params)
@@ -46,6 +52,15 @@ class PostsController < ApplicationController
     # Create a copy for versions management.
     add_version(@post)
 
+    uploaded_file = params[:post][:picture]
+    if uploaded_file.present?
+      path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
+      FileUtils.mkdir_p(path) unless Dir.exists?(path)
+      File.open(Rails.root.join('public', 'uploads','posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
+        file.write(uploaded_file.read)
+       end
+    end
+
   end
 
   def destroy
@@ -76,7 +91,7 @@ class PostsController < ApplicationController
 
   def add_version(post)
     # Create a copy for versions management.
-    @postversion = Postversion.new(post_params.except("id","created_at","updated_at"))
+    @postversion = Postversion.new(post_params.except("id","created_at","updated_at","picture"))
     @postversion.org_id = post.id
     @postversion.user_id = post.user_id
     @postversion.save
@@ -89,7 +104,7 @@ class PostsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def post_params
-    params.require(:post).permit(:title, :content, :kind, :tags)
+    params.require(:post).permit(:title, :content, :picture, :kind, :tags)
   end
 
 end
