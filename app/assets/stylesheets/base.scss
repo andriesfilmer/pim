@@ -59,3 +59,10 @@ label.label-th {
   color: red;
 }
 
+a.fc-event {
+  &.holiday { color: #fff; background-color: green; }
+  &.memo { color: #fff; background-color: orange; }
+  &.import { color: #fff; background-color: purple; }
+  &.task { color: #fff; background-color: red; }
+  &.business { color: #fff; background-color: yellow; }
+}

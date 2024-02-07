@@ -37,6 +37,11 @@ Take a look on <https://pim.filmer.nl>
 
 # Temporary notes
 
+## Importmaps
+
+    ./bin/importmap json # see whats imported.
+
+
 ## Mysql
 
     alter table contacts change created created_at datetime;

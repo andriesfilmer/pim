@@ -1,0 +1,18 @@
+<div id="events" class="col-12">
+<div class="row row-th">
+  <div class="medium-5 columns">Name</div>
+</div>
+<% @events.each do |event| %>
+  <%= link_to event_path(event), class: "row odd-even" do %>
+  <div class="small-6 medium-6 columns">
+    <%= event.title %>
+  </div>
+  <div class="small-3 medium-3 columns">
+    <%= event.start %>
+  </div>
+  <div class="small-3 medium-3 columns">
+    <%= event.end %>
+  </div>
+  <% end %>
+<% end %>
+</div>

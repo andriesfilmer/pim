@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
 
   # Defines the root path route ("/")
-  root "contacts#index"
+  root "events#index"
+
+  post "eventrestore", to: "eventversions#restore", as: "eventrestore"
+  post "events/search", to: "events#search"
+  get "eventversions/compare", to: "eventversions#compare"
 
   post "contactrestore", to: "contactversions#restore", as: "contactrestore"
   post "contacts/search", to: "contacts#search"
@@ -11,8 +15,10 @@ Rails.application.routes.draw do
   post "posts/search", to: "posts#search"
   get "postversions/compare", to: "postversions#compare"
 
-  resources :contactversions
+  resources :events
+  resources :eventversions
   resources :contacts
+  resources :contactversions
   resources :posts
   resources :postversions
 

@@ -1,0 +1,171 @@
+<%= render "layouts/show_errors", target: @event %>
+
+<%= form_with model: @event, id: "eventForm", class: "userinputs" do |form| %>
+
+  <div class="row">
+    <div class="columns">
+      <%= form.label :name, class: "label-th" %>
+    </div>
+    <div class="columns">
+      <%= form.text_field :name, placeholder: "Fullname of event"%>
+    </div>
+  </div>
+
+  <!-- Phones -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :phones, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <img src="/assets/add.svg" data-action="click->event#addTypeValue" data-value="phone" class="icon medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="phones">
+      <% JSON.parse(@event.phones).each_with_index do | phone,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= select_tag "event_phone_type", options_for_select(["Mobile","Work","Home","Other"], phone['type']), data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "phone_value", value: phone['value'], data: {tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <img src="/assets/delete.svg"data-action="click->event#removeTypeValue" data-value="event_phone" class="icon medium">
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Emails -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :emails, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <img src="/assets/add.svg" data-action="click->event#addTypeValue"  data-value="email" class="icon medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="emails">
+      <% JSON.parse(@event.emails).each_with_index do | email,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "email_type", value: email['type'], placeholder: 'Label', data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "email_value", value: email['value'], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <img src="/assets/delete.svg" data-action="click->event#removeTypeValue" data-value="event_email" class="icon medium">
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Addresses -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :addresses, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <img src="/assets/add.svg" data-action="click->event#addTypeValue" data-value="address" class="icon medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="addresses">
+      <% JSON.parse(@event.addresses).each_with_index do | address,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "address_type", value: address['type'], placeholder: 'Label', data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "address_value", value: address['value'], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <img src="/assets/delete.svg" data-action="click->event#removeTypeValue" data-value="event_address" class="icon medium">
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Companies -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :companies, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <img src="/assets/add.svg" data-action="click->event#addTypeValue" data-value="company" class="icon medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="companies">
+      <% JSON.parse(@event.companies).each_with_index do | company,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "company_type", value: company['type'], placeholder: 'Function', data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "company_value", value: company['value'], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <img src="/assets/delete.svg" data-action="click->event#removeTypeValue" data-value="event_company" class="icon medium">
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Websites -->
+  <div class="row">
+    <div class="small-11 medium-11 columns">
+      <%= form.label :websites, class: "label-th" %>
+    </div>
+    <div class="small-1 medium-1">
+      <img src="/assets/add.svg" data-action="click->event#addTypeValue" data-value="website" class="icon medium">
+    </div>
+  </div>
+  <div class="row">
+    <div class="columns" id="websites">
+      <% JSON.parse(@event.websites).each_with_index do | website,index | %>
+      <div class="row">
+        <div class="small-5 medium-5">
+          <%= form.text_field "website_type", value: website['type'], placeholder: 'Label', data: { tojson: '' } %>
+        </div>
+        <div class="small-6 medium-6 columns">
+          <%= form.text_field "website_value", value: website['value'], data: { tojson: '' } %>
+        </div>
+        <div class="columns small-1 medium-1">
+          <img src="/assets/delete.svg" data-action="click->event#removeTypeValue" data-value="event_website" class="icon medium">
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- birthdate -->
+  <div class="row">
+    <div class="columns">
+      <%= form.label :birhtdate, class: "label-th" %>
+    </div>
+    <div class="columns">
+      <%= form.date_field :birthdate %>
+    </div>
+  </div>
+
+  <!-- notes -->
+  <div class="row">
+    <div class="columns">
+      <%= form.label :notes, class: "label-th display-inline" %>
+      <img src="/assets/preview.svg" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip
+        title="Click for preview" class="cursor-pointer icon medium">
+      <img src="/assets/edit.svg" id="edit_bt" data-action="click->event#hideMarkdown" class="icon medium cursor-pointer display-none">
+      <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '20' %>
+      <div id="markdown"></div>
+    </div>
+  </div>
+<% end %>
+
