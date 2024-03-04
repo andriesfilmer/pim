@@ -6,7 +6,7 @@
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 
-<%= javascript_include_tag '/static/fullcalendar-6.1.10.js' if controller_name == "events" && action_name == "index" %>
+<%= javascript_include_tag '/static/fullcalendar-6.1.10.js' if controller_name == "events" %>
 <%= javascript_importmap_tags %>
 <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 <%= yield(:head) %>

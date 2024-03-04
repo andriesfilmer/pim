@@ -1,0 +1,59 @@
+<%= render "events/secondary_menu" unless @event.try(:org_id) %>
+<%= render "events/restore_menu" if @event.try(:org_id) %>
+
+<%= form_with model: @event do |form| %>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <h3><%= @event.title %></h3>
+  </div>
+</div>
+
+<div class="row">
+  <div class="medium-12 columns display-none tz-warning">Created or edited in different timezone!</div>
+  <div class="medium-3 columns sub display-none tz-warning">
+    <%= form.text_field :tz, class: "event-show-date-time" %>
+  </div>
+  <div class="medium-3 columns sub display-inline">
+    <%= text_field :label, '', id: "event_start_date", class: "event-show-date-time" %>
+    <%= text_field :label, '', id: "event_start_time", class: "event-show-date-time" %>
+  </div>
+  <div class="medium-1 columns"><img src="/assets/arrow-forward.svg" class="icon large"></div>
+  <div class="medium-3 columns sub display-inline">
+    <%= text_field :label, '', id: "event_end_date", class: "event-show-date-time" %>
+    <%= text_field :label, '', id: "event_end_time", class: "event-show-date-time" %>
+  </div>
+  <div class="medium-1 columns"></div>
+
+  <div class="medium-12 columns display-none tz-warning">Current timezone</div>
+  <div class="medium-3 columns sub display-none tz-warning">
+    <%= text_field :label, '', id: "tzBrowser", class: "event-show-date-time" %>
+  </div>
+  <div class="medium-3 columns sub display-none tz-warning"><%= form.text_field :start, class: "event-show-date-time" %></div>
+  <div class="medium-1 columns display-none tz-warning"><img src="/assets/arrow-forward.svg" class="icon large"></div>
+  <div class="medium-3 columns sub display-none tz-warning"><%= form.text_field :end, class: "event-show-date-time" %></div>
+  <div class="medium-2 columns"></div>
+</div>
+
+<div class="row">
+  <div class="columns">Allday: <%= @event.allDay %></div>
+</div>
+
+<div class="row">
+  <div class="medium-6 columns">
+    <%= label_tag :description, nil, class:"label-th" unless @event.description.blank? %>
+    <%= content_tag :pre, @event.description, id: "notes", class: "display-none" %>
+    &nbsp;
+    <div data-controller="event" id="markdown"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns"><label class="label-th"></label></div>
+  <div class="columns small-6 medium-6 meta-data">Created: <%= l @event.created_at, format: :long %></div>
+  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @event.updated_at, format: :long %></div>
+</div>
+  <%= form.text_field :tz %>
+  <%= form.text_field :start %>
+  <%= form.text_field :end %>
+<% end %>

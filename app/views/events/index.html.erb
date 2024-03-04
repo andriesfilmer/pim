@@ -1,13 +1,19 @@
 <div class="row secondary-menu">
-  <div class="small-10 medium-10 columns">
-    <img src="/assets/calendar-month.svg" class="icon large">
+  <div class="small-10 medium-10 columns" data-controller="event">
+    <img src="/assets/calendar-month.svg" title="Year grid" data-action="click->event#showMonthView" class="icon large">
     <span class="divider"></span>
-    <img src="/assets/search.svg" data-controller="event" data-action="click->event#showSearch" class="icon large">
+    <img src="/assets/calendar-view-week.svg" title="Week grid" data-action="click->event#showWeekView" class="icon large">
+    <span class="divider"></span>
+    <img src="/assets/calendar-list-month.svg" title="List month" data-action="click->event#showListMonth" class="icon large">
+    <span class="divider"></span>
+    <img src="/assets/calendar-today.svg" title="Goto Today" data-action="click->event#gotoToday" class="icon large">
+    <span class="divider"></span>
+    <img src="/assets/search.svg" data-action="click->event#showSearch" class="icon large">
     <span class="divider"></span>
   </div>
   <div class="small-2 medium-2 columns text-right">
     <%= link_to new_event_path do %>
-      <%= image_tag "add.svg", class: "icon large" %>
+      <%= image_tag "calendar-add.svg", class: "icon large" %>
     <% end %>
     <span class="divider"></span>
   </div>

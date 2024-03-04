@@ -1,0 +1,34 @@
+<div class="row secondary-menu">
+  <div class="columns small-10 medium-10">
+    <img src="/assets/event-note.svg" class="icon large">
+    <span class="divider"></span>
+    <%= content_tag :span, '', class: "divider" if @event.id %>
+
+    <%= link_to edit_event_path(@event), title: "Edit event" do %>
+      <%= image_tag "edit.svg", class: "icon large" %>
+    <% end if action_name == "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name == "show" %>
+
+    <%= link_to event_path(@event), title: "Show event" do %>
+      <%= image_tag "visibility.svg", class: "icon large" %>
+    <% end if action_name == "edit" %>
+    <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
+
+    <%= image_tag "cloud-upload.svg", id: "cloud-upload", data: { action: "click->event#submitForm" },
+       title: "Save event", class:"icon large cursor-pointer" if action_name != "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name != "show" && @event.id %>
+
+    <%= link_to eventversions_path(org_id: @event.id), title: "Versions of this event" do %>
+      <img src="/assets/restore.svg" class="icon large">
+    <% end if @event.id %>
+    <%= content_tag :span, '', class: "divider" if @event.id %>
+
+  </div>
+  <div class="columns small-2 medium-2 text-right">
+    <%= content_tag :span, '', class: "divider" if @event.id %>
+    <%= link_to event_path(@event), data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this event?'},
+      title: "Delete item!" do %>
+      <%= image_tag "delete.svg", class: "icon large" %>
+    <% end if @event.id %>
+  </div>
+</div>

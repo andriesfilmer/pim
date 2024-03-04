@@ -24,16 +24,7 @@ class EventsController < ApplicationController
     #end
   end
 
-  def new
-    @event = Event.new
-  end
-
-  def edit
-  end
-
   def create
-    @event = Event.new(event_params)
-
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: "Event was successfully created." }
@@ -52,18 +43,10 @@ class EventsController < ApplicationController
   end
 
   def update
-    if params[:redirect] == "edit"
-      url = edit_event_url(@event)
-    else
-      url = event_url(@event)
-    end
-
-    # Create a copy for versions management.
-    add_version(@event)
 
     respond_to do |format|
       if @event.update(event_params)
-        format.html { redirect_to url, notice: "Event was successfully updated." }
+        format.html { redirect_to events_path, notice: "Event was successfully updated." }
         # Turbo-stream actions in this block
         #format.turbo_stream { render turbo_stream: turbo_stream.replace("event_#{@event.id}", @event) }
         format.json { render :show, status: :ok, location: @event }
@@ -72,6 +55,10 @@ class EventsController < ApplicationController
         #format.json { render json: @event.errors, status: :unprocessable_entity }
       end
     end
+
+    # Create a copy for versions management.
+    add_version(@event)
+
   end
 
   def destroy
@@ -85,14 +72,14 @@ class EventsController < ApplicationController
 
   def search
     if params.dig(:event_search).present?
-      @events = Event.where('name LIKE ?', "%#{params[:event_search]}%").order(updated_at: :desc)
+      @events = Event.where('title LIKE ?', "%#{params[:event_search]}%").order(updated_at: :desc)
     else
       @events = []
     end
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.update("events", partial: "events", locals: { events: @events })
+          turbo_stream.update("calendar", partial: "events", locals: { events: @events })
         ]
       end
     end
@@ -102,7 +89,7 @@ class EventsController < ApplicationController
 
   def add_version(event)
     # Create a copy for versions management.
-    @eventversion = Eventversion.new(event_params.except("id","mongo_id", "created_at","updated_at"))
+    @eventversion = Eventversion.new(event_params.except("id","mongo_id", "created_at","updated_at", "start_date", "start_time", "end_date", "end_time"))
     @eventversion.org_id = event.id
     @eventversion.user_id = event.user_id
     @eventversion.save
@@ -114,8 +101,7 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:name, :phones, :emails, :addresses, :companies, :websites,
-      :name, :birthdate, :notes, :starred)
+    params.require(:event).permit(:title, :description, :start, :end, :classNames, :allDay, :tz)
   end
 
 end

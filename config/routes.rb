@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   # Defines the root path route ("/")
-  root "events#index"
+  root "base#index"
 
   post "eventrestore", to: "eventversions#restore", as: "eventrestore"
   post "events/search", to: "events#search"

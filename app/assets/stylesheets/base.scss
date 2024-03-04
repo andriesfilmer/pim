@@ -59,6 +59,18 @@ label.label-th {
   color: red;
 }
 
+// FullCalendar overwrites
+//////////////////////////
+.fc-direction-ltr .fc-toolbar > * > :not(:first-child) { margin-left: 0 !important; }
+.fc--button,
+.fc-dayGridMonth-button,
+.fc-listMonth-button,
+.fc-listWeek-button,
+.fc-multiMonthYear-button,
+.fc-today-button,
+.fc-timeGridWeek-button {
+  display: none !important;
+}
 a.fc-event {
   &.holiday { color: #fff; background-color: green; }
   &.memo { color: #fff; background-color: orange; }
@@ -66,3 +78,5 @@ a.fc-event {
   &.task { color: #fff; background-color: red; }
   &.business { color: #fff; background-color: yellow; }
 }
+// End FullCalendar overwrites.
+///////////////////////////////

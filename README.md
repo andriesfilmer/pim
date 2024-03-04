@@ -30,6 +30,7 @@ Take a look on <https://pim.filmer.nl>
 * [The Turbo Rails Tutorial](https://www.hotrails.dev/)
 * [Flash messages with Hotwire](https://www.hotrails.dev/turbo-rails/flash-messages-hotwire)
 * [Example turbo todos](https://github.com/tf-jlemasters/turbo-todos)
+* [icons](https://fonts.google.com/icons)
 
 ## In depth
 
@@ -43,6 +44,11 @@ Take a look on <https://pim.filmer.nl>
 
 
 ## Mysql
+
+    alter table events change created created_at datetime;
+    alter table events change updated updated_at datetime;
+    update events set created_at = updated_at where created_at = '0000-00-00 00:00:00';
+    alter table eventversions change created created_at datetime;
 
     alter table contacts change created created_at datetime;
     alter table contacts change updated updated_at datetime;
@@ -58,5 +64,6 @@ Take a look on <https://pim.filmer.nl>
     ALTER TABLE postversions drop PRIMARY KEY;
     ALTER TABLE postversions change id id INT PRIMARY KEY AUTO_INCREMENT;
 
+    UPDATE events SET created_at=REPLACE(created_at,'00 00:00:00','01 00:00:00') WHERE created_at like '%-00 00:00:00';
 
 

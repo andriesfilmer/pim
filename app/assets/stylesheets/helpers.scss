@@ -57,3 +57,16 @@ button, .button, .pagination, .user-select-none {
   user-select: none;
 }
 
+.event-show-date-time {
+  border: none;
+  box-shadow: none;
+  background-color: #eee;
+  pointer-events: none;
+  margin-right: 1em;
+  text-align: center;
+  height: 30px;
+}
+
+div.row:has(> .tz-warning) {
+  padding-top: 1em;
+}
