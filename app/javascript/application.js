@@ -21,3 +21,10 @@ Turbo.setConfirmMethod((message, element) => {
   })
 })
 
+// Hide flash messages
+$(document).on('turbo:load', function() {
+  $("#flash").click(function(event) {
+    $( event.target ).closest( ".flash" ).hide('slow');
+  });
+});
+

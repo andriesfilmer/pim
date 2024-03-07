@@ -3,7 +3,7 @@ class ContactsController < ApplicationController
   before_action :set_contact, only: %i[ show edit update destroy ]
 
   def index
-    @contacts = Contact.all.order("id desc").limit 10
+    @contacts = Contact.where(user_id: current_user.id).order("id desc").limit 10
     @contacts = @contacts.where(starred: true) if params[:starred]
     @contacts = @contacts.where("birthdate IS NOT NULL").reorder("month(birthdate), day(birthdate)") if params[:birthdate]
   end
@@ -103,7 +103,7 @@ class ContactsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_contact
-    @contact = Contact.find(params[:id])
+    @contact = Contact.where.(id: params[:id])
   end
 
   def contact_params
