@@ -4,10 +4,9 @@ class PostsController < ApplicationController
 
   # GET /posts or /posts.json
   def index
-    @posts = Post.all.order("id desc").limit 10
+    @posts = Post.where(user_id: current_user.id).order("id desc").limit 10
   end
 
-  # GET /posts/new
   def new
     @post = Post.new
   end
@@ -18,9 +17,9 @@ class PostsController < ApplicationController
     @files = Dir.children(path)
   end
 
-  # POST /posts or /posts.json
   def create
     @post = Post.new(post_params)
+    @post.user_id = current_user.id
 
     respond_to do |format|
       if @post.save
@@ -99,7 +98,7 @@ class PostsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_post
-    @post = Post.find(params[:id])
+    @post = Post.where(user_id: current_user.id).where(id: params[:id]).take
   end
 
   # Only allow a list of trusted parameters through.

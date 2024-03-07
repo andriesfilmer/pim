@@ -1,7 +1,7 @@
 class Contact < ApplicationRecord
 
 
-  #after_create_commit -> { broadcast_prepend_to "contacts", partial: "contacts/contact", locals: { quote: self }, target: "contacts" }
+  #after_create_commit -> { broadcast_prepend_to "contacts", partial: "contacts/contact", locals: { quote: self }, rersource: :contacts }
   #after_create_commit { broadcast_append_to contact }
   #after_create_commit -> { broadcast_prepend_to "contacts" }
   #after_update_commit -> { broadcast_replace_to "contacts" }

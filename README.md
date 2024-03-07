@@ -45,6 +45,9 @@ Take a look on <https://pim.filmer.nl>
 
 ## Mysql
 
+    rails db:migrate
+    insert into users (id,email,created_at,updated_at) select id,email,now(),now() from user;
+
     alter table events change created created_at datetime;
     alter table events change updated updated_at datetime;
     update events set created_at = updated_at where created_at = '0000-00-00 00:00:00';

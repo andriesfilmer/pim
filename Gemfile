@@ -13,6 +13,8 @@ gem "turbo-rails"
 gem "redis" # https://github.com/redis/redis-rb
 gem "stimulus-rails"
 gem "jbuilder" # Simple DSL for declaring JSON structures
+
+gem "devise"
 gem "diffy"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]

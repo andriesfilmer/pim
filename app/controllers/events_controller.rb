@@ -5,14 +5,18 @@ class EventsController < ApplicationController
   def index
     if params[:start] && params[:end]
       # Needs session id to implement.
-      @events = Event.where("user_id=?", 1).where("start > ?", params[:start]).where("end < ?", params[:end]).limit 100
+      @events = Event.where("user_id=?", current_user.id).where("start > ?", params[:start]).where("end < ?", params[:end]).limit 100
     else
-      @events = Event.all.order("id desc").limit 10
+      @events = Event.where(user_id: current_user.id).order("id desc").limit 10
     end
     respond_to do |format|
       format.html
       format.json { render json: @events }
     end
+  end
+
+  def new
+    @event = Event.new
   end
 
   def show
@@ -25,6 +29,9 @@ class EventsController < ApplicationController
   end
 
   def create
+    @event = Event.new(event_params)
+    @event.user_id = current_user.id
+
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: "Event was successfully created." }
@@ -72,7 +79,7 @@ class EventsController < ApplicationController
 
   def search
     if params.dig(:event_search).present?
-      @events = Event.where('title LIKE ?', "%#{params[:event_search]}%").order(updated_at: :desc)
+      @events = Event.where('title LIKE ?', "%#{params[:event_search]}%").order(updated_at: :desc).where(user_id: current_user.id)
     else
       @events = []
     end
@@ -91,13 +98,14 @@ class EventsController < ApplicationController
     # Create a copy for versions management.
     @eventversion = Eventversion.new(event_params.except("id","mongo_id", "created_at","updated_at", "start_date", "start_time", "end_date", "end_time"))
     @eventversion.org_id = event.id
-    @eventversion.user_id = event.user_id
+    @eventversion.user_id = current_user.id
     @eventversion.save
   end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event
-    @event = Event.find(params[:id])
+    @event = Event.where(user_id: current_user.id).where(id: params[:id]).take
+    #redirect_to events_path, alert: "Event does not exists (anymore)" if @event.blank?
   end
 
   def event_params

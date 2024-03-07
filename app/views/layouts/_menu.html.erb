@@ -9,7 +9,7 @@
   <div class="small-2 medium-2 columns">
     <a href="/events">
       <%= image_tag "calendar-month.svg", class: "icon medium white" %>
-      <span class="show-for-large" data-turbo="false"> Calendar</span>
+      <span class="show-for-large"> Calendar</span>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
@@ -25,16 +25,16 @@
     </a>
   </div>
   <div class="small-2 medium-2 columns">
-    <a href="/bookmarks">
-      <%= image_tag "bookmarks.svg", class: "icon medium white" %>
-      <span class="show-for-large"> Bookmarks</span>
-    </a>
-  </div>
-  <div class="small-2 medium-2 columns">
     <a href="/keys">
       <%= image_tag "lock.svg", class: "icon medium white" %>
       <span class="show-for-large"> Keys</span>
     </a>
+  </div>
+  <div class="small-2 medium-2 columns">
+    <%= link_to destroy_user_session_path, data: { turbo_method: :delete } do %>
+      <%= image_tag "logout.svg", class: "icon medium white" %>
+      <span class="show-for-large"> Sign out</span>
+    <% end %>
   </div>
 </div>
 </nav>

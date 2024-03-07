@@ -22,7 +22,11 @@
       <div id="markdown"></div>
     </div>
   </div>
-  <%= form.hidden_field :kind %>
+  <div class="row">
+    <div class="columns">
+      <%= form.select :kind, options_for_select([ "article", "hobby", "note", "todo", "other"], @post.kind) %>
+    </div>
+  </div>
   <%= form.hidden_field :tags %>
 <% end %>
 
