@@ -16,16 +16,18 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = Event.new
+    @event = Event.new(start: params[:start], end: params[:end])
   end
 
   def show
     #@event.update(last_read: DateTime.now)
 
-    #respond_to do |format|
-    #  format.html
-    #  format.json { render json: @event.to_json } # else only id, created_at, updated_at
-    #end
+    redirect_to events_path, alert: "Event does not exists (anymore)" unless @event
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @event.to_json } # else only id, created_at, updated_at
+    end
   end
 
   def create
@@ -44,7 +46,9 @@ class EventsController < ApplicationController
       end
 
     # Create a copy for versions management.
-    add_version(@event)
+    if @event.errors.empty?
+     add_version(@event)
+    end
 
     end
   end
@@ -64,7 +68,9 @@ class EventsController < ApplicationController
     end
 
     # Create a copy for versions management.
-    add_version(@event)
+    if @event.errors.empty?
+      add_version(@event)
+    end
 
   end
 
@@ -72,7 +78,7 @@ class EventsController < ApplicationController
     @event.destroy
     respond_to do |format|
       #format.turbo_stream { flash.now[:notice] = "Turbo event was successfully deleted." }
-      format.html { redirect_to events_path, notice: "Event was successfully destroyed." }
+      format.html { redirect_to events_path, notice: "Event was successfully deleted." }
       format.json { head :no_content }
     end
   end

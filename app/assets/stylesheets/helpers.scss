@@ -3,13 +3,13 @@
 @import 'mixin';
 
 .hide { display: none !important }
-.display-none { display: none; }
 .display-block { display: block; }
 .invisible { visibility: hidden; }
 .visible { visibility: visible; }
 .display-inline { display: inline-flex; }
 .display-inline-block { display: inline-block; }
 .display-flex { display: flex; }
+.display-none { display: none; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 .text-center { text-align: center; }

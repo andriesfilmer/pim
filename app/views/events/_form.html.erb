@@ -8,19 +8,27 @@
     </div>
   </div>
 
+  <div class="row tz-browser display-none">
+    <div class="columns small-4 medium-2 tz-warning">Timezone</div>
+    <div class="small-8 medium-10 columns">
+      <%= form.select(:tz, ActiveSupport::TimeZone.all.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{tz.name}", tz.tzinfo.name]},
+          { prompt: "" }, { data: { action: 'event#changeTz' }}) %>
+    </div>
+  </div>
+
   <!-- date -->
   <div class="row">
     <div class="columns small-4 medium-2">Start</div>
-    <div class="columns small-4 medium-6"><%= form.date_field :start_date %></div>
+    <div class="columns small-4 medium-6"><%= form.date_field :start_date, data: { action: "event#changeStartTime" } %></div>
     <div class="columns small-4 medium-4">
-      <%= form.time_field :start_time, data: { action: "event#changeStartTime" }, class: "display-non" %>
+      <%= form.time_field :start_time, data: { action: "event#changeStartTime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
   <div class="row">
     <div class="columns small-4 medium-2">End</div>
-    <div class="columns small-4 medium-6"><%= form.date_field :end_date %></div>
+    <div class="columns small-4 medium-6"><%= form.date_field :end_date, data: { action: "event#changeEndTime" } %></div>
     <div class="columns small-4 medium-4">
-      <%= form.time_field :end_time, data: { action: "event#changeEndTime" }, class: "display-non" %>
+      <%= form.time_field :end_time, data: { action: "event#changeEndTime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
   <div class="row">
@@ -28,14 +36,6 @@
     <div class="columns small-12 medium-10">
       <%= form.label :allDay, class: "switch-paddle" %>
       <%= form.check_box :allDay, checked: @event.allDay, class: "switch-paddle", data: { action: "click->event#toggleAllDay" } %>
-    </div>
-  </div>
-
-  <div class="row display-none" id="row_event_tz">
-    <div class="columns small-4 medium-2">Timezone</div>
-    <div class="small-8 medium-10 columns tz-warning">
-      <%= form.select :tz, ActiveSupport::TimeZone.all.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{tz.name}", tz.tzinfo.name]},
-        { default: "Europe/Amsterdam" } %>
     </div>
   </div>
 
@@ -51,6 +51,7 @@
     </div>
   </div>
 
+  tzBrowser
   <%= text_field_tag :tzBrowser %>
   <%= form.text_field :start %>
   <%= form.text_field :end %>

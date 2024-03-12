@@ -22,6 +22,7 @@ module Pim
     # Default datetime is saved to database in UTC.
     # But all history datetime is saved to 'Europe/Amsterdam'.
     # Later update all entries to UTC and remove this config.time_zone.
-    config.time_zone = 'Europe/Amsterdam'
+    #config.time_zone = 'Europe/Amsterdam'
+    #config.active_record.default_timezone = :local
   end
 end

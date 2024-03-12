@@ -2,7 +2,6 @@
   <div class="columns small-10 medium-10">
     <img src="/assets/event-note.svg" class="icon large">
     <span class="divider"></span>
-    <%= content_tag :span, '', class: "divider" if @event.id %>
 
     <%= link_to edit_event_path(@event), title: "Edit event" do %>
       <%= image_tag "edit.svg", class: "icon large" %>
@@ -22,6 +21,10 @@
       <img src="/assets/restore.svg" class="icon large">
     <% end if @event.id %>
     <%= content_tag :span, '', class: "divider" if @event.id %>
+
+    <%= image_tag "more-time.svg", data: { action: "click->event#showTimezones" },
+       title: "Timezones", class:"timezones icon large cursor-pointer" if action_name != "show" %>
+    <%= content_tag :span, '', class: "timezones divider" if action_name != "show" %>
 
   </div>
   <div class="columns small-2 medium-2 text-right">

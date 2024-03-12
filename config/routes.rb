@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "base#about"
 
+  get "home", to: "base#index"
   get "welcome", to: "base#welcome"
   post "eventrestore", to: "eventversions#restore", as: "eventrestore"
   post "events/search", to: "events#search"
