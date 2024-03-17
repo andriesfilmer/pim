@@ -8,11 +8,6 @@
     <% end if action_name == "show" %>
     <%= content_tag :span, '', class: "divider" if action_name == "show" %>
 
-    <%= link_to event_path(@event), title: "Show event" do %>
-      <%= image_tag "visibility.svg", class: "icon large" %>
-    <% end if action_name == "edit" %>
-    <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
-
     <%= image_tag "cloud-upload.svg", id: "cloud-upload", data: { action: "click->event#submitForm" },
        title: "Save event", class:"icon large cursor-pointer" if action_name != "show" %>
     <%= content_tag :span, '', class: "divider" if action_name != "show" && @event.id %>

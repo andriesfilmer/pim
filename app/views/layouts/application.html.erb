@@ -6,7 +6,8 @@
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 
-<%= javascript_include_tag '/static/fullcalendar-6.1.10.js' %>
+<%= javascript_include_tag '/static/fullcalendar-6.1.10.min.js' %>
+<%= javascript_include_tag '/static/moment.min.js' %>
 <%= javascript_importmap_tags %>
 <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
 <%= yield(:head) %>

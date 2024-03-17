@@ -8,27 +8,27 @@
     </div>
   </div>
 
-  <div class="row tz-browser display-none">
+  <div class="row show-timezones display-none">
     <div class="columns small-4 medium-2 tz-warning">Timezone</div>
     <div class="small-8 medium-10 columns">
       <%= form.select(:tz, ActiveSupport::TimeZone.all.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{tz.name}", tz.tzinfo.name]},
-          { prompt: "" }, { data: { action: 'event#changeTz' }}) %>
+          { selected: @event.tz }, { data: { action: 'event#changeTz' }}) %>
     </div>
   </div>
 
   <!-- date -->
   <div class="row">
     <div class="columns small-4 medium-2">Start</div>
-    <div class="columns small-4 medium-6"><%= form.date_field :start_date, data: { action: "event#changeStartTime" } %></div>
+    <div class="columns small-4 medium-6"><%= form.date_field :start_date, data: { action: "event#changeDatetime" } %></div>
     <div class="columns small-4 medium-4">
-      <%= form.time_field :start_time, data: { action: "event#changeStartTime" }, class: ("display-none" if @event.allDay) %>
+      <%= form.time_field :start_time, data: { action: "event#changeDatetime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
   <div class="row">
     <div class="columns small-4 medium-2">End</div>
-    <div class="columns small-4 medium-6"><%= form.date_field :end_date, data: { action: "event#changeEndTime" } %></div>
+    <div class="columns small-4 medium-6"><%= form.date_field :end_date, data: { action: "event#changeDatetime" } %></div>
     <div class="columns small-4 medium-4">
-      <%= form.time_field :end_time, data: { action: "event#changeEndTime" }, class: ("display-none" if @event.allDay) %>
+      <%= form.time_field :end_time, data: { action: "event#changeDatetime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
   <div class="row">
@@ -50,9 +50,6 @@
       <div id="markdown"></div>
     </div>
   </div>
-
-  tzBrowser
-  <%= text_field_tag :tzBrowser %>
   <%= form.text_field :start %>
   <%= form.text_field :end %>
 <% end %>

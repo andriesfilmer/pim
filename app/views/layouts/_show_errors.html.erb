@@ -1,7 +1,7 @@
 <% if resource.errors.any? %>
 <div class="row">
   <div class="columns callout alert">
-    <%= pluralize(resource.errors.count, "error") %> prohibited this contact from being saved:
+    <%= pluralize(resource.errors.count, "error") %> prohibited this <%= resource.model_name %> from being saved:
     <ul>
     <% resource.errors.each do |error| %>
       <li><%= error.full_message %></li>

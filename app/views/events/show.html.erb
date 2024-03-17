@@ -23,7 +23,7 @@
     <%= text_field :label, '', id: "event_end_date", class: "event-show-date-time" %>
     <%= text_field :label, '', id: "event_end_time", class: (@event.allDay ? "display-none" : "event-show-date-time") %>
   </div>
-  <div class="medium-4 columns">
+  <div class="medium-2 columns">
     <%= image_tag "/assets/allday.svg", class: "icon #{@event.allDay ? 'columns' : 'display-none'}" %>
   </div>
 
