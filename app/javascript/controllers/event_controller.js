@@ -106,6 +106,7 @@ export default class extends Controller {
 
     // Show tooltips for this controller
     tooltip()
+    $("#markdown").html(marked.parse($("#description").text(),{ mangle: false, headerIds: false}))
 
     // On each input change prepare the values  to store in db.
     $(document).on('input', '[data-tojson]', function() {
@@ -165,7 +166,7 @@ export default class extends Controller {
   }
 
   showTimezones() {
-    $(".show-timezones").removeClass("display-none");
+    document.getElementById("show-timezones").classList.toggle("display-none");
   }
 
   changeTz() {

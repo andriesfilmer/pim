@@ -18,7 +18,7 @@
     <%= content_tag :span, '', class: "divider" if @event.id %>
 
     <%= image_tag "more-time.svg", data: { action: "click->event#showTimezones" },
-       title: "Timezones", class:"timezones icon large cursor-pointer" if action_name != "show" %>
+       title: "Toggle timezones", class:"icon large cursor-pointer" if action_name != "show" %>
     <%= content_tag :span, '', class: "timezones divider" if action_name != "show" %>
 
   </div>

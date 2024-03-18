@@ -45,7 +45,6 @@
 
 <div class="row">
   <div class="columns">
-    <%= label_tag :description, nil, class:"label-th" unless @event.description.blank? %>
     <%= content_tag :pre, @event.description, id: "description", class: "display-none" %>
     <div data-controller="event" id="markdown"></div>
   </div>
@@ -56,7 +55,6 @@
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @event.created_at, format: :long %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @event.updated_at, format: :long %></div>
 </div>
-  <%= form.text_field :tz %>
-  <%= form.text_field :start %>
-  <%= form.text_field :end %>
+  <%= form.hidden_field :start %>
+  <%= form.hidden_field :end %>
 <% end %>
