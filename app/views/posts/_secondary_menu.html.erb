@@ -1,6 +1,7 @@
 <div class="row secondary-menu">
   <div class="columns small-10 medium-10">
-    <img src="/assets/article.svg" class="icon large">
+    <%= image_tag "article.svg", class: "icon large" unless @post.id %>
+    <%= link_to (image_tag "article.svg", class: "icon large"), post_path(@post) if @post.id %>
     <span class="divider"></span>
     <%= link_to edit_post_path(@post), title: "Edit post" do %>
       <%= image_tag "edit.svg", class: "icon large" %>

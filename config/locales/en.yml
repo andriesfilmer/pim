@@ -1,33 +1,141 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
-# than English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# The following keys must be escaped otherwise they will not be retrieved by
-# the default I18n backend:
-#
-# true, false, on, off, yes, no
-#
-# Instead, surround them with single quotes.
-#
-# en:
-#   "true": "foo"
-#
-# To learn more, please read the Rails Internationalization guide
-# available at https://guides.rubyonrails.org/i18n.html.
-
+# Template https://github.com/svenfuchs/rails-i18n/blob/master/rails/locale/en.yml
 en:
-  hello: "Hello world"
+  Monday: " Monday"
+  Tuesday: " Tuesday"
+  Wednesday: " Wednesday"
+  Thursday: " Thursday"
+  Friday: " Friday"
+  Saturday: " Saturday"
+  Sunday: " Sunday"
+  Mon: " Mo"
+  Tue: " Tu"
+  Wed: " We"
+  Thu: " Th"
+  Fri: " Fr"
+  Sat: " Sa"
+  Sun: " Su"
+  time: "Time"
+  day: "Day"
+  days: "Days"
+  weeks: "Weeks"
+  months: "Months"
+  year: "Year"
+  years: "Years"
+  date:
+    day_names: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday]
+    abbr_day_names: [Sun, Mon, Tue, Wed, Thu, Fri, Sat]
+    # Don't forget the nil at the beginning; there's no such thing as a 0th month
+    month_names: [~, January, February, March, April, May, June, July, August, September, October, November, December]
+    abbr_month_names: [~, Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec]
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%a %Y-%m-%d'
+      verylong: ! '%A %e %B %Y'
+      short: ! '%e %b'
+      longday: ! '%A'
+    order:
+    - :year
+    - :month
+    - :day
+  datetime:
+    prompts:
+      second: second
+      minute: minute
+      hour: hour
+      day: day
+      month: month
+      year: year
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      accepted: must be accepted
+      blank: must be specified
+      confirmation: doesn't match %{attribute}
+      empty: can't be empty
+      equal_to: must be equal to %{count}
+      even: must be even
+      exclusion: is reserved
+      greater_than: must be greater than %{count}
+      greater_than_or_equal_to: must be greater than or equal to %{count}
+      inclusion: is not included in the list
+      invalid: is invalid
+      less_than: must be less than %{count}
+      less_than_or_equal_to: must be less than or equal to %{count}
+      model_invalid: 'Validation failed: %{errors}'
+      not_a_number: is not a number
+      not_an_integer: must be an integer
+      odd: must be odd
+      other_than: must be other than %{count}
+      present: must be blank
+      required: must exist
+      taken: has already been taken
+      too_long:
+        one: is too long (maximum is 1 character)
+        other: is too long (maximum is %{count} characters)
+      too_short:
+        one: is too short (minimum is 1 character)
+        other: is too short (minimum is %{count} characters)
+      wrong_length:
+        one: is the wrong length (should be 1 character)
+        other: is the wrong length (should be %{count} characters)
+  number:
+    currency:
+      format:
+        delimiter: .
+        format: ! '%u%n'
+        precision: 2
+        separator: ! ','
+        significant: false
+        strip_insignificant_zeros: false
+        unit: €
+    format:
+      delimiter: .
+      precision: 2
+      separator: ! ','
+      significant: false
+      strip_insignificant_zeros: false
+    human:
+      decimal_units:
+        format: ! '%n %u'
+        units:
+          billion: Billion
+          million: Million
+          quadrillion: Quadrillion
+          thousand: Thousand
+          trillion: Trillion
+          unit: ''
+      format:
+        delimiter: ''
+        precision: 3
+        significant: true
+        strip_insignificant_zeros: true
+      storage_units:
+        format: ! '%n %u'
+        units:
+          byte:
+            one: Byte
+            other: Bytes
+          gb: GB
+          kb: KB
+          mb: MB
+          tb: TB
+    percentage:
+      format:
+        delimiter: ''
+    precision:
+      format:
+        delimiter: ''
+  support:
+    array:
+      last_word_connector: ! ' and '
+      two_words_connector: ! ' and '
+      words_connector: ! ', '
+  time:
+    am: ! "morning"
+    formats:
+      year: ! '%Y-%m-%d'
+      default: ! '%Y-%m-%d %H:%M'
+      long: ! '%A, %B %e, %Y at %H:%M'
+      longnotime: ! '%A, %B %e, %Y'
+      short: ! '%H:%M'
+    pm: ! "afternoon"

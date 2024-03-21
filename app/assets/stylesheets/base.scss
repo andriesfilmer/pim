@@ -63,8 +63,22 @@ label.label-th {
   color: red;
 }
 
+.event-show-date-time {
+  background-color: var(--main-color);
+  color: #fff;
+  padding: 5px;
+  margin: 0 1em;
+  border-radius: 5px;
+}
+
+//div.row:has(> .tz-warning:not(> .display-none)) {
+div.row:has(> .tz-warning) {
+  padding: 1em 0;
+  margin-bottom: 1em;
+}
+
 // FullCalendar overwrites
-//////////////////////////
+//------------------------
 .fc-direction-ltr .fc-toolbar > * > :not(:first-child) { margin-left: 0 !important; }
 .fc--button,
 .fc-dayGridMonth-button,
@@ -82,5 +96,3 @@ a.fc-event {
   &.task { color: #fff; background-color: red; }
   &.business { color: #fff; background-color: yellow; }
 }
-// End FullCalendar overwrites.
-///////////////////////////////

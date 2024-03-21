@@ -1,7 +1,5 @@
 /* Helper classes for site */
 
-@import 'mixin';
-
 .hide { display: none !important }
 .display-block { display: block; }
 .invisible { visibility: hidden; }
@@ -18,6 +16,7 @@
 .float-right { float: right; }
 .super { vertical-align:super !important; }
 .sub { padding-top: 6px; }
+.radius { border-radius: 5px; }
 .vertical-align-middle { vertical-align: middle; }
 .clear { clear: both; }
 .underlined { text-decoration: underline; }
@@ -34,6 +33,7 @@
 .success-color { color: var(--success-color); }
 .warning-color { color: var(--warning-color); }
 .alert-color { color: var(--alert-color); }
+.alert-color-bg { background-color: var(--alert-color); }
 
 .odd-even:nth-child(2n+1){ background-color: #f2f2f2; }
 .odd-even { &:hover { background-color: #ddd; }}
@@ -57,16 +57,3 @@ button, .button, .pagination, .user-select-none {
   user-select: none;
 }
 
-.event-show-date-time {
-  border: none;
-  box-shadow: none;
-  background-color: #eee;
-  pointer-events: none;
-  margin-right: 1em;
-  text-align: center;
-  height: 30px;
-}
-
-div.row:has(> .tz-warning) {
-  padding-top: 1em;
-}

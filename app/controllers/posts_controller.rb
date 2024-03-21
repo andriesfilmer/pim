@@ -2,7 +2,6 @@ class PostsController < ApplicationController
 
   before_action :set_post, only: %i[ show edit update destroy ]
 
-  # GET /posts or /posts.json
   def index
     @posts = Post.where(user_id: current_user.id).order("id desc").limit 10
   end
@@ -36,7 +35,6 @@ class PostsController < ApplicationController
 
   end
 
-  # PATCH/PUT /posts/1 or /posts/1.json
   def update
     respond_to do |format|
       if @post.update(post_params)

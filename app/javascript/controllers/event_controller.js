@@ -1,66 +1,40 @@
 // event_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from "marked";
-//import moment from 'moment';
 import { tooltip, saveFormAlert, compareVersions } from "components";
 
 let submitted = false
 let userinput = false
 
-function getTZDiff(timeZone1, timeZone2) {
+function showTimezoneAlert() {
 
-  // Get current date and time in each time zone
-  const date1 = new Date().toLocaleString("en-US", { timeZone: timeZone1 });
-  const date2 = new Date().toLocaleString("en-US", { timeZone: timeZone2 });
-
-  // Convert the dates to Date objects
-  const dateObj1 = new Date(date1);
-  const dateObj2 = new Date(date2);
-
-  // Calculate the absolute time difference in milliseconds
-  const timeDifference = Math.abs(dateObj1 - dateObj2);
-
-  // Determine the earlier time zone
-  let minutesDifference;
-  if (dateObj1 < dateObj2) {
-    // Convert milliseconds to minutes positive
-    minutesDifference = Math.floor(timeDifference / 1000 / 60);
-  } else {
-    // Convert milliseconds to minutes negative
-    minutesDifference = Math.floor(timeDifference / 1000 / 60) * -1;
-  }
-
-  return minutesDifference;
-}
-
-function setDatetimeForm(loadDateTime = 0) {
-
-  let tz = document.getElementById("event_tz").value
   let tzBrowser = Intl.DateTimeFormat().resolvedOptions().timeZone
-  console.log("######## tz: " + tz);
-  console.log("######## tzBrowser: " + tzBrowser);
+  let tzInput = document.getElementById("event_tz");
+  let tz = tzInput.value || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  tzInput.value = tz;
 
-  if (loadDateTime) {
-    console.log("######## loadDateTime");
-    let offset = getTZDiff(tz, "UTC")
-    let start = document.getElementById("event_start_date").value + ' ' + document.getElementById("event_start_time").value
-    let end = document.getElementById("event_end_date").value + ' ' + document.getElementById("event_end_time").value
-    document.getElementById("event_start").value = moment(start).minutes(offset).format("YYYY-MM-DD HH:mm") + ' ' + 'UTC'
-    document.getElementById("event_end").value = moment(end).minutes(offset).format("YYYY-MM-DD HH:mm") + ' ' +  'UTC'
-  } else {
-    console.log("######## changeDatetime");
-    let offset = getTZDiff("UTC", tz)
-    let start = moment(new Date(document.getElementById("event_start").value)).utc()
-    let end = moment(new Date(document.getElementById("event_end").value)).utc()
-    document.getElementById("event_start_date").value = moment(start).minutes(offset).format('YYYY-MM-DD')
-    document.getElementById("event_start_time").value = moment(start).minutes(offset).format('HH:mm')
-    document.getElementById("event_end_date").value = moment(end).minutes(offset).format('YYYY-MM-DD')
-    document.getElementById("event_end_time").value = moment(end).minutes(offset).format('HH:mm')
-  }
   if (tzBrowser !== tz) {
-    $(".tz-warning").removeClass("display-none")
+
+    if (document.getElementById("tzBrowser")) {
+      let start = document.getElementById("event_start").value
+      let end = document.getElementById("event_end").value
+      let start_date = new Date(start).toLocaleString('en',
+        { weekday: "long", year: "numeric",  month: "long",  day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false});
+      let end_date = new Date(end).toLocaleString('en',
+        { weekday: "long", year: "numeric",  month: "long",  day: "numeric", hour: "2-digit", minute: "2-digit", hour12: false});
+
+      document.getElementById("tzBrowser").innerHTML = tzBrowser
+      document.getElementById("browserEventStart").innerHTML = start_date
+      document.getElementById("browserEventEnd").innerHTML = end_date
+    }
+
+    // Show form select tz
+    $("#tz").removeClass("display-none")
+    // Show warning border
     $(".tz-warning").parent().css("border", "solid 2px orange")
-    $(".show-timezones").removeClass("display-none");
+    $(".tz-warning").removeClass("display-none")
+    $(".tz-warning").addClass("display-inline") // Labels on show page need display-inline
+
   }
 }
 
@@ -94,7 +68,7 @@ export default class extends Controller {
     }
 
     if (document.getElementById("event_tz")) {
-      setDatetimeForm()
+      showTimezoneAlert()
     }
 
   }
@@ -108,10 +82,11 @@ export default class extends Controller {
     tooltip()
     $("#markdown").html(marked.parse($("#description").text(),{ mangle: false, headerIds: false}))
 
-    // On each input change prepare the values  to store in db.
-    $(document).on('input', '[data-tojson]', function() {
-      prepareTypeValues(event.target.id)
-    })
+    // Show a warning if form data is changed.
+    $(document).on('input', '.userinputs', function() {
+      saveFormAlert()
+      return userinput = true;
+    });
 
     // If turbo off
     window.onbeforeunload = function () {
@@ -159,18 +134,15 @@ export default class extends Controller {
   }
 
   changeDatetime() {
-    let loadDateTime = 1
-    setDatetimeForm(loadDateTime)
     saveFormAlert()
     return userinput = true
   }
 
   showTimezones() {
-    document.getElementById("show-timezones").classList.toggle("display-none");
+    document.getElementById("tz").classList.toggle("display-none");
   }
 
   changeTz() {
-    setDatetimeForm()
     saveFormAlert()
     return userinput = true
   }
@@ -187,8 +159,6 @@ export default class extends Controller {
       $('#event_end_time').removeClass('display-none')
       $('#event_end_time').val("09:00")
     }
-    let loadDateTime = 1
-    setDatetimeForm(loadDateTime)
     saveFormAlert()
     return userinput = true
   }

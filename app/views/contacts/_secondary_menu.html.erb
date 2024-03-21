@@ -1,6 +1,7 @@
 <div class="row secondary-menu">
   <div class="columns small-10 medium-10">
-    <img src="/assets/person.svg" class="icon large">
+    <%= image_tag "person.svg", class: "icon large" unless @contact.id %>
+    <%= link_to (image_tag "person.svg", class: "icon large"), contact_path(@contact) if @contact.id %>
     <span class="divider"></span>
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>
       <span>

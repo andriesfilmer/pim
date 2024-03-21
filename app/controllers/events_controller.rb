@@ -31,8 +31,11 @@ class EventsController < ApplicationController
   end
 
   def create
+    params[:event][:start] = params[:event][:start_date] + " " + params[:event][:start_time]
+    params[:event][:end] = params[:event][:end_date] + " " + params[:event][:end_time]
     @event = Event.new(event_params)
     @event.user_id = current_user.id
+    Time.zone = params[:event][:tz]
 
     respond_to do |format|
       if @event.save
@@ -54,6 +57,9 @@ class EventsController < ApplicationController
   end
 
   def update
+    params[:event][:start] = params[:event][:start_date] + " " + params[:event][:start_time]
+    params[:event][:end] = params[:event][:end_date] + " " + params[:event][:end_time]
+    Time.zone = params[:event][:tz]
 
     respond_to do |format|
       if @event.update(event_params)
@@ -111,7 +117,8 @@ class EventsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_event
     @event = Event.where(user_id: current_user.id).where(id: params[:id]).take
-    #redirect_to events_path, alert: "Event does not exists (anymore)" if @event.blank?
+    redirect_to events_path, alert: "Event does not exists (anymore)" and return if @event.blank?
+    Time.zone = @event.tz
   end
 
   def event_params

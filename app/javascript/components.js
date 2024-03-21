@@ -35,8 +35,10 @@ export function tooltip() {
 }
 
 export function saveFormAlert() {
-  $("#cloud-upload").attr("src","/assets/cloud-upload-filled.svg")
-  $("#cloud-upload").addClass("icon alert")
+  $(":input").change(function(){ //triggers change in all input fields including text type
+    $("#cloud-upload").attr("src","/assets/cloud-upload-filled.svg")
+    $("#cloud-upload").addClass("icon alert")
+  });
 }
 
 export function compareVersions() {

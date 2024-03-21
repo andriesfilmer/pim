@@ -8,11 +8,11 @@
     </div>
   </div>
 
-  <div class="row display-none" id="show-timezones">
+  <div class="row display-none" id="tz">
     <div class="columns small-4 medium-2 tz-warning">Timezone</div>
-    <div class="small-8 medium-10 columns">
+    <div class="columns small-8 medium-10">
       <%= form.select(:tz, ActiveSupport::TimeZone.all.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{tz.name}", tz.tzinfo.name]},
-          { selected: @event.tz }, { data: { action: 'event#changeTz' }}) %>
+          { selected: @event.tz, prompt: '' }, { data: { action: 'event#changeTz' }}) %>
     </div>
   </div>
 
@@ -50,6 +50,4 @@
       <div id="markdown"></div>
     </div>
   </div>
-  <%= form.hidden_field :start %>
-  <%= form.hidden_field :end %>
 <% end %>

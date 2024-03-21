@@ -10,37 +10,23 @@
 </div>
 
 <div class="row">
-  <div class="medium-12 columns tz-warning display-none">Created or edited in different timezone!</div>
-  <div class="medium-3 columns sub tz-warning display-none">
-    <%= form.text_field :tz, class: "event-show-date-time" %>
+  <div class="columns tz-warning display-none">Created or edited in different timezone!</div>
+  <div class="columns display-inline">
+    <%= content_tag :label, @event.tz, class: "event-show-date-time tz display-none" %>
+    <%= content_tag :label, l(@event.start, format: :longnotime), class: "event-show-date-time" if @event.allDay  %>
+    <%= content_tag :label, l(@event.start, format: :long), class: "event-show-date-time" unless @event.allDay %>
+    <span class="sup">-</span>
+    <%= content_tag :label, l(@event.end, format: :longnotime), class: "event-show-date-time" if @event.allDay %>
+    <%= content_tag :label, l(@event.end, format: :long), class: "event-show-date-time" unless @event.allDay %>
+    <%= content_tag :label, "Allday", class: "event-show-date-time" if @event.allDay %>
   </div>
-  <div class="medium-3 columns sub display-inline">
-    <%= text_field :label, '', id: "event_start_date", class: "event-show-date-time" %>
-    <%= text_field :label, '', id: "event_start_time", class: (@event.allDay ? "display-none" : "event-show-date-time") %>
+  <div class="columns tz-warning display-none">Browser timezone</div>
+  <div class="columns tz-warning display-none">
+    <%= content_tag :label, "", id: "tzBrowser", class: "event-show-date-time" %>
+    <%= content_tag :label, "", id: "browserEventStart", class: "event-show-date-time" %>
+    <span class="sup">-</span>
+    <%= content_tag :label, "", id: "browserEventEnd", class: "event-show-date-time" %>
   </div>
-  <div class="medium-1 columns"><img src="/assets/arrow-forward.svg" class="icon large"></div>
-  <div class="medium-3 columns sub display-inline">
-    <%= text_field :label, '', id: "event_end_date", class: "event-show-date-time" %>
-    <%= text_field :label, '', id: "event_end_time", class: (@event.allDay ? "display-none" : "event-show-date-time") %>
-  </div>
-  <div class="medium-2 columns">
-    <%= image_tag "/assets/allday.svg", class: "icon #{@event.allDay ? 'columns' : 'display-none'}" %>
-  </div>
-
-  <div class="medium-12 columns tz-browser display-none">Browser timezone</div>
-  <div class="medium-3 columns sub tz-browser display-none">
-    <%= text_field :label, '', id: "tzBrowser", class: "event-show-date-time" %>
-  </div>
-  <div class="medium-3 columns sub tz-browser display-inline display-none">
-    <%= text_field :label, '', id: "event_start_date_tzBrowser", class: "event-show-date-time" %>
-    <%= text_field :label, '', id: "event_start_time_tzBrowser", class: "event-show-date-time" %>
-  </div>
-  <div class="medium-1 columns tz-browser display-none"><img src="/assets/arrow-forward.svg" class="icon large"></div>
-  <div class="medium-3 columns sub tz-browser display-inline display-none">
-    <%= text_field :label, '', id: "event_end_date_tzBrowser", class: "event-show-date-time" %>
-    <%= text_field :label, '', id: "event_end_time_tzBrowser", class: "event-show-date-time" %>
-  </div>
-  <div class="medium-1 columns tz-browser display-none"></div>
 </div>
 
 <div class="row">
@@ -55,6 +41,7 @@
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @event.created_at, format: :long %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @event.updated_at, format: :long %></div>
 </div>
+  <%= form.hidden_field :tz %>
   <%= form.hidden_field :start %>
   <%= form.hidden_field :end %>
 <% end %>

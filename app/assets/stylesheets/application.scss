@@ -31,7 +31,6 @@ $alert-color:    red;
 @import 'colors';
 @import 'basic';
 @import 'grid';
-@import 'base';
 @import 'icons';
 @import 'components/forms';
 @import 'components/button';
@@ -47,6 +46,7 @@ $alert-color:    red;
 @import 'components/tabs';
 @import 'components/tooltip';
 @import 'helpers';
+@import 'base';
 
 /* testing */
 turbo-frame {

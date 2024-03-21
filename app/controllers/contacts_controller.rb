@@ -103,7 +103,7 @@ class ContactsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_contact
-    @contact = Contact.where.(id: params[:id])
+    @contact = Contact.where(id: params[:id]).take
   end
 
   def contact_params
