@@ -78,7 +78,9 @@ class ContactsController < ApplicationController
 
   def search
     if params.dig(:contact_search).present?
-      @contacts = Contact.where('name LIKE ?', "%#{params[:contact_search]}%").order(updated_at: :desc)
+      search = "%#{params[:contact_search]}%"
+      @contacts = Contact.where("name LIKE ? OR notes LIKE ? OR tags LIKE ?", search, search, search)
+                         .order(updated_at: :desc)
     else
       @contacts = []
     end
@@ -108,7 +110,7 @@ class ContactsController < ApplicationController
 
   def contact_params
     params.require(:contact).permit(:name, :phones, :emails, :addresses, :companies, :websites,
-      :name, :birthdate, :notes, :starred)
+      :name, :birthdate, :notes, :tags, :starred)
   end
 
 end

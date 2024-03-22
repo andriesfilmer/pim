@@ -85,6 +85,13 @@
 </div>
 
 <div class="row">
+  <div class="columns">
+    <%= content_tag :div, '', id: "tagsContainer" if @contact.tags.present? %>
+    <%= hidden_field_tag "contact_tags", @contact.tags %>
+  </div>
+</div>
+
+<div class="row">
   <div class="columns"><label class="label-th"></label></div>
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @contact.created_at, format: :long %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @contact.updated_at, format: :long %></div>

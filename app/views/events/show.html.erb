@@ -12,7 +12,7 @@
 <div class="row">
   <div class="columns tz-warning display-none">Created or edited in different timezone!</div>
   <div class="columns display-inline">
-    <%= content_tag :label, @event.tz, class: "event-show-date-time tz display-none" %>
+    <%= content_tag :label, @event.tz, class: "event-show-date-time tz-show display-none" %>
     <%= content_tag :label, l(@event.start, format: :longnotime), class: "event-show-date-time" if @event.allDay  %>
     <%= content_tag :label, l(@event.start, format: :long), class: "event-show-date-time" unless @event.allDay %>
     <span class="sup">-</span>
@@ -33,6 +33,13 @@
   <div class="columns">
     <%= content_tag :pre, @event.description, id: "description", class: "display-none" %>
     <div data-controller="event" id="markdown"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns">
+    <%= content_tag :div, '', id: "tagsContainer" if @event.tags.present? %>
+    <%= form.hidden_field :tags %>
   </div>
 </div>
 

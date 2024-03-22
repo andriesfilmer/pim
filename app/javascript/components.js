@@ -41,6 +41,36 @@ export function saveFormAlert() {
   });
 }
 
+export function showTags(model) {
+
+  if (document.getElementById("tagsContainer")) {
+    let input = document.getElementById(model)
+    writeTags(input.value);
+
+    input.addEventListener('keyup', () => {
+      writeTags(input.value);
+    });
+
+    function writeTags(value) {
+      // Split the string into an array using ', ' as the delimiter
+      let tagsArray = value.split(',');
+
+      // Select the HTML element where you want to display the tags
+      let tagsContainer = document.getElementById("tagsContainer");
+
+      // Clear any existing content in the container
+      tagsContainer.innerHTML = "";
+
+      // Loop through the array and create a span element for each tag
+      tagsArray.forEach(function(tag) {
+          let tagSpan = document.createElement("span");
+          tagSpan.textContent = tag.trim();
+          tagsContainer.appendChild(tagSpan);
+      });
+    }
+  }
+}
+
 export function compareVersions() {
 
   // Two checkbox must be selected

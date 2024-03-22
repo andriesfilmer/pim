@@ -51,12 +51,16 @@ Take a look on <https://pim.filmer.nl>
     alter table events change created created_at datetime;
     alter table events change updated updated_at datetime;
     update events set created_at = updated_at where created_at = '0000-00-00 00:00:00';
+    alter table events add tags varchar(255) default null after className;
+    alter table eventversions add tags varchar(255) default null after className;
     alter table eventversions change created created_at datetime;
 
     alter table contacts change created created_at datetime;
     alter table contacts change updated updated_at datetime;
     update contacts set created_at = updated_at where created_at = '0000-00-00 00:00:00';
     alter table contactversions change created created_at datetime;
+    alter table contacts add tags varchar(255) default null after notes;
+    alter table contactversions add tags varchar(255) default null after notes;
 
     alter table posts change created created_at datetime;
     alter table posts change updated updated_at datetime;

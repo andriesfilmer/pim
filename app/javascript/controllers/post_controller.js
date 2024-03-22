@@ -1,7 +1,7 @@
 // post_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
-import { tooltip, saveFormAlert, compareVersions, modalComponent } from 'components';
+import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent } from 'components';
 
 let submitted = false
 let userinput = false
@@ -16,7 +16,11 @@ export default class extends Controller {
 
     // Show tooltips for this controller
     tooltip()
+
     modalComponent()
+
+    // Show tagsContainer
+    showTags("post_tags")
 
     $("#markdown").html(marked.parse($("#content").text(),{ mangle: false, headerIds: false}))
 

@@ -1,7 +1,7 @@
 // event_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from "marked";
-import { tooltip, saveFormAlert, compareVersions } from "components";
+import { tooltip, saveFormAlert, showTags, compareVersions } from "components";
 
 let submitted = false
 let userinput = false
@@ -34,6 +34,7 @@ function showTimezoneAlert() {
     $(".tz-warning").parent().css("border", "solid 2px orange")
     $(".tz-warning").removeClass("display-none")
     $(".tz-warning").addClass("display-inline") // Labels on show page need display-inline
+    $(".tz-show").removeClass("display-none")
 
   }
 }
@@ -78,8 +79,12 @@ export default class extends Controller {
     // Set cache control of current page to `no-cache`
     Turbo.cache.exemptPageFromCache()
 
-    // Show tooltips for this controller
+    // Show tooltips
     tooltip()
+
+    // Show tagsContainer
+    showTags("event_tags")
+
     $("#markdown").html(marked.parse($("#description").text(),{ mangle: false, headerIds: false}))
 
     // Show a warning if form data is changed.

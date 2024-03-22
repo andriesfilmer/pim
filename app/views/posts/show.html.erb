@@ -16,6 +16,13 @@
 </div>
 
 <div class="row">
+  <div class="columns">
+    <%= content_tag :div, '', id: "tagsContainer" if @post.tags %>
+    <%= hidden_field_tag "post_tags", @post.tags.present? %>
+  </div>
+</div>
+
+<div class="row">
   <div class="columns"><label class="label-th"></label></div>
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @post.created_at, format: :long %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @post.updated_at, format: :long %></div>

@@ -1,7 +1,7 @@
 // contact_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
-import { tooltip, saveFormAlert, compareVersions } from 'components';
+import { tooltip, saveFormAlert, showTags, compareVersions } from 'components';
 
 let submitted = false
 let userinput = false
@@ -70,6 +70,9 @@ export default class extends Controller {
 
     // Show tooltips for this controller
     tooltip()
+
+    // Show tagsContainer
+    showTags("contact_tags")
 
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 

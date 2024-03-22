@@ -3,5 +3,9 @@
 .dialog {
   border: solid 0px;
   border-radius: 5px;
-
+  &::backdrop {
+    background-color: purple;
+    opacity: 0.55;
+    filter: blur(100px);
+  }
 }
