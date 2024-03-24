@@ -5,7 +5,7 @@
 
 <div class="row">
   <div class="columns">
-    <h3 class="th"><%= @event.title %></h3>
+    <h2 class="th"><%= @event.title %></h2>
   </div>
 </div>
 
@@ -31,7 +31,7 @@
 
 <div class="row">
   <div class="columns">
-    <%= content_tag :pre, @event.description, id: "description", class: "display-none" %>
+    <%= content_tag :pre, @event.notes, id: "notes", class: "display-none" %>
     <div data-controller="event" id="markdown"></div>
   </div>
 </div>

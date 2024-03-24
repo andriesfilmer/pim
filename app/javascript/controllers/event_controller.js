@@ -119,7 +119,7 @@ export default class extends Controller {
     // Show tagsContainer
     showTags("event_tags")
 
-    $("#markdown").html(marked.parse($("#description").text(),{ mangle: false, headerIds: false}))
+    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
     // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {
@@ -222,18 +222,18 @@ export default class extends Controller {
   }
 
   showMarkdown() {
-    $("#markdown").html(marked.parse($("#event_description").val(),{ mangle: false, headerIds: false}));
+    $("#markdown").html(marked.parse($("#event_notes").val(),{ mangle: false, headerIds: false}));
     $("#markdown").removeClass("display-none");
     $("#edit_bt").removeClass("display-none");
     $("#preview_bt").addClass("display-none");
-    $("#event_description").addClass("display-none");
+    $("#event_notes").addClass("display-none");
   }
 
   hideMarkdown() {
     $("#markdown").addClass("display-none");
     $("#edit_bt").addClass("display-none");
     $("#preview_bt").removeClass("display-none");
-    $("#event_description").removeClass("display-none");
+    $("#event_notes").removeClass("display-none");
   }
 
   submitForm(event) {

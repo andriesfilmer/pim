@@ -66,7 +66,7 @@ Take a look on <https://pim.filmer.nl>
     alter table posts change created created_at datetime;
     alter table posts change updated updated_at datetime;
     alter table posts change type kind enum('article','hobby','note','todo','other');
-    alter table postversions change type kind varchar(20);
+    alter table postversions change type category varchar(20);
     alter table postversions change created created_at datetime;
     alter table postversions change id id int(11) primary;
     ALTER TABLE postversions drop PRIMARY KEY;
@@ -74,4 +74,9 @@ Take a look on <https://pim.filmer.nl>
 
     UPDATE events SET created_at=REPLACE(created_at,'00 00:00:00','01 00:00:00') WHERE created_at like '%-00 00:00:00';
 
+### Todo
+
+After old pim offline
+
+    alter table events change column description notes;
 
