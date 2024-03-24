@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="columns medium-6" id="add-back-arrow">
+    <img src="/assets/restore.svg" class="icon">
+    <%= content_tag :span, '', class: "divider" if @passkey.id %>
+  </div>
+  <div class="columns medium-6 text-right" id="add-back-arrow">
+    Version <%= @passkey.id %>
+    <%= button_to "Restore (html)", passkeyrestore_path,
+      params: { version_id: @passkey.id} , class: "button" if @passkey.id %>
+  </div>
+</div>

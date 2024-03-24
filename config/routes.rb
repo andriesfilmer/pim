@@ -21,11 +21,17 @@ Rails.application.routes.draw do
   post "posts/search", to: "posts#search"
   get "postversions/compare", to: "postversions#compare"
 
+  post "passkeyrestore", to: "passkeyversions#restore", as: "passkeyrestore"
+  post "passkeys/search", to: "passkeys#search"
+  get "passkeyversions/compare", to: "passkeyversions#compare"
+
   resources :events
   resources :eventversions
   resources :contacts
   resources :contactversions
   resources :posts
   resources :postversions
+  resources :passkeys
+  resources :passkeyversions
 
 end

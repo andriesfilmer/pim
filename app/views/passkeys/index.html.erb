@@ -1,0 +1,25 @@
+<div class="row secondary-menu">
+  <div class="small-10 medium-10 columns">
+    <img src="/assets/lock.svg" class="icon large">
+    <span class="divider"></span>
+    <img src="/assets/search.svg" data-controller="passkey" data-action="click->passkey#showSearch" class="icon large">
+    <span class="divider"></span>
+  </div>
+  <div class="small-2 medium-2 columns text-right">
+    <%= link_to new_passkey_path, data: { turbo_frame: dom_id(Passkey.new) } do %>
+      <%= image_tag "lock-add.svg", class: "icon large" %>
+    <% end %>
+    <span class="divider"></span>
+  </div>
+</div>
+
+<div id="show_search" class="row display-none">
+  <div class="columns">
+  <%= form_with url: passkeys_search_path do |form| %>
+    <%= form.search_field :passkey_search, placeholder: 'Search passkeys',
+      value: params[:passkey_search], oninput: "this.form.requestSubmit()" %>
+  <% end %>
+  </div>
+</div>
+
+<%= render "passkeys" %>

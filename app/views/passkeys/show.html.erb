@@ -1,0 +1,35 @@
+<%= render "passkeys/secondary_menu" unless @passkey.try(:org_id) %>
+<%= render "passkeys/restore_menu" if @passkey.try(:org_id) %>
+
+<div class="row">
+  <div class="columns">
+    <h3><%= @passkey.title %></h3>
+  </div>
+  <div class="columns">
+    <%= @passkey.password %>
+  </div>
+  <div class="columns">
+    <%= link_to @passkey.url, @passkey.url %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns">
+    <%= label_tag :note, nil, class:"label-th" unless @passkey.notes.blank? %>
+    <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
+    <div data-controller="passkey" id="markdown"></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns">
+    <%= content_tag :div, '', id: "tagsContainer" if @passkey.tags %>
+    <%= hidden_field_tag "passkey_tags", @passkey.tags.present? %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="columns"><label class="label-th"></label></div>
+  <div class="columns small-6 medium-6 meta-data">Created: <%= l @passkey.created_at, format: :default %></div>
+  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @passkey.updated_at, format: :default %></div>
+</div>

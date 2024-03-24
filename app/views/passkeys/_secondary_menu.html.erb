@@ -1,0 +1,33 @@
+<div class="row secondary-menu">
+  <div class="columns small-10 medium-10">
+    <%= image_tag "lock.svg", class: "icon large" unless @passkey.id %>
+    <%= link_to (image_tag "article.svg", class: "icon large"), passkey_path(@passkey) if @passkey.id %>
+    <span class="divider"></span>
+    <%= link_to edit_passkey_path(@passkey), title: "Edit passkey" do %>
+      <%= image_tag "edit.svg", class: "icon large" %>
+    <% end if action_name == "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name == "show" %>
+
+    <%= link_to passkey_path(@passkey), title: "Show passkey" do %>
+      <%= image_tag "visibility.svg", class: "icon large" %>
+    <% end if action_name == "edit" %>
+    <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
+
+    <%= image_tag "cloud-upload.svg", id: "cloud-upload", data: { action: "click->passkey#submitForm" },
+       title: "Save passkey", class:"icon large cursor-pointer" if action_name != "show" %>
+    <%= content_tag :span, '', class: "divider" if action_name != "show" && @passkey.id %>
+
+    <%= link_to passkeyversions_path(org_id: @passkey.id), title: "Versions of this passkey" do %>
+      <img src="/assets/restore.svg" class="icon large">
+    <% end if @passkey.id %>
+    <%= content_tag :span, '', class: "divider" if @passkey.id %>
+
+  </div>
+  <div class="columns small-2 medium-2 text-right">
+    <%= content_tag :span, '', class: "divider" if @passkey.id %>
+    <%= link_to passkey_path(@passkey), data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this passkey?'},
+      title: "Delete item!" do %>
+      <%= image_tag "delete.svg", class: "icon large" %>
+    <% end if @passkey.id %>
+  </div>
+</div>

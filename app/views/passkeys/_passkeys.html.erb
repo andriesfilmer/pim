@@ -1,0 +1,20 @@
+<div id="passkeys" class="col-12">
+<div class="row row-th">
+  <div class="medium-8 columns">Title</div>
+  <div class="medium-2 columns">Created</div>
+  <div class="medium-2 columns">Updated</div>
+</div>
+<% @passkeys.each do |passkey| %>
+  <%= link_to passkey_path(passkey), class: "row odd-even" do %>
+  <div class="medium-8 columns">
+    <%= passkey.title %>
+  </div>
+  <div class="medium-2 columns">
+    <%= l passkey.created_at, format: "%Y-%m-%d" %>
+  </div>
+  <div class="medium-2 columns">
+    <%= l passkey.updated_at, format: "%Y-%m-%d" %>
+  </div>
+  <% end %>
+<% end %>
+</div>
