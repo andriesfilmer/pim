@@ -7,8 +7,10 @@ Rails.application.routes.draw do
 
   get "home", to: "base#index"
   get "welcome", to: "base#welcome"
-  post "eventrestore", to: "eventversions#restore", as: "eventrestore"
+
+  get "events/drag", to: "events#drag"
   post "events/search", to: "events#search"
+  post "eventrestore", to: "eventversions#restore", as: "eventrestore"
   get "eventversions/compare", to: "eventversions#compare"
 
   post "contactrestore", to: "contactversions#restore", as: "contactrestore"

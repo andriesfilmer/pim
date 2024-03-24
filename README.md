@@ -46,7 +46,8 @@ Take a look on <https://pim.filmer.nl>
 ## Mysql
 
     rails db:migrate
-    insert into users (id,email,created_at,updated_at) select id,email,now(),now() from user;
+    alter table users add name varchar(255) default null after id;
+    insert into users (id,name,email,created_at,updated_at) select id,name,email,now(),now() from user;
 
     alter table events change created created_at datetime;
     alter table events change updated updated_at datetime;

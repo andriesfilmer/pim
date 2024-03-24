@@ -8,10 +8,10 @@
     <%= event.title %>
   </div>
   <div class="small-3 medium-3 columns">
-    <%= event.start %>
+    <%= content_tag :label, l(event.start, format: :long), class: "event-show-date-time" %>
   </div>
   <div class="small-3 medium-3 columns">
-    <%= event.end %>
+    <%= content_tag :label, l(event.end, format: :long), class: "event-show-date-time" %>
   </div>
   <% end %>
 <% end %>

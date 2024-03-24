@@ -1,6 +1,23 @@
 <div class="row">
   <div class="columns">
-    <h3>Upcomming events</h3>
+    <h3><%= image_tag "account-circle.svg", class: "icon large" %> My page </h3>
   </div>
 </div>
-<%= render "/events/events" %>
+<div class="row odd-even">
+  <div class="columns">
+    <label>Name</label>
+    <%= content_tag :div, @user.name %>
+  </div>
+</div>
+<div class="row odd-even">
+  <div class="columns">
+    <label>Email</label>
+    <%= content_tag :div, @user.email %>
+  </div>
+</div>
+<div class="row odd-even">
+  <div class="columns">
+    <label>Last Sign In</label>
+    <%= content_tag :div, l(@user.last_sign_in_at, format: :long) %>
+  </div>
+</div>

@@ -6,6 +6,32 @@ import { tooltip, saveFormAlert, showTags, compareVersions } from "components";
 let submitted = false
 let userinput = false
 
+function tzOffset(timeZone1,timeZone2) {
+
+  // Get current date and time in each time zone
+  const date1 = new Date().toLocaleString("en-US", { timeZone: timeZone1 });
+  const date2 = new Date().toLocaleString("en-US", { timeZone: timeZone2 });
+
+  // Convert the dates to Date objects
+  const dateObj1 = new Date(date1);
+  const dateObj2 = new Date(date2);
+
+  // Calculate the absolute time difference in milliseconds
+  const timeDifference = Math.abs(dateObj1 - dateObj2);
+
+  // Determine the earlier time zone
+  let minutesDifference;
+  if (dateObj1 < dateObj2) {
+    // Convert milliseconds to minutes positive
+    minutesDifference = Math.floor(timeDifference / 1000 / 60);
+  } else {
+    // Convert milliseconds to minutes negative
+    minutesDifference = Math.floor(timeDifference / 1000 / 60) * -1;
+  }
+
+  return minutesDifference;
+}
+
 function showTimezoneAlert() {
 
   let tzBrowser = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -13,8 +39,9 @@ function showTimezoneAlert() {
   let tz = tzInput.value || Intl.DateTimeFormat().resolvedOptions().timeZone;
   tzInput.value = tz;
 
-  if (tzBrowser !== tz) {
+  if (tzOffset(tzBrowser, tz) !== 0) {
 
+    // Show timezone info if element 'tzBrowser' exists.
     if (document.getElementById("tzBrowser")) {
       let start = document.getElementById("event_start").value
       let end = document.getElementById("event_end").value
@@ -44,28 +71,35 @@ export default class extends Controller {
   initialize() {
     console.log("######## init event controller");
     if (document.getElementById("calendar")) {
-    let calendarEl = document.getElementById('calendar');
-    let calendar = new FullCalendar.Calendar(calendarEl, {
-      events: '/events.json',
-      initialView: 'dayGridMonth',
-      navLinks: true, // can click day/week names to navigate views
-      editable: true,
-      weekNumbers: true,
-      headerToolbar: {
-        left: 'prevYear, prev',
-        center: 'title',
-        right: 'next, nextYear multiMonthYear, dayGridMonth, listMonth, timeGridWeek, listWeek, today'
-      },
-      dateClick: function(info) {
-        window.location.href = '/events/new?start=' + info.dateStr + '&end=' + info.dateStr;
-      },
-      eventClick: function(arg) {
-        console.dir(arg);
-        console.log("######## arg.event.id: " + arg.event.id);
-        location.href = "/events/" + arg.event.id;
-      }
-    });
-    calendar.render();
+      let calendarEl = document.getElementById('calendar');
+      let calendar = new FullCalendar.Calendar(calendarEl, {
+        events: '/events.json',
+        initialView: 'dayGridMonth',
+        navLinks: true, // can click day/week names to navigate views
+        editable: true,
+        weekNumbers: true,
+        headerToolbar: {
+          left: 'prevYear, prev',
+          center: 'title',
+          right: 'next, nextYear multiMonthYear, dayGridMonth, listMonth, timeGridWeek, listWeek, today'
+        },
+        editable: false,
+        //eventDrop: function(info) {
+        //  console.dir(info.event.id);
+        //  console.dir(info.event._instance.range.start);
+        //  console.dir(info.event._instance.range.end);
+        //  Turbo.visit('/events/' + info.event.id + '/edit?start=' + info.event._instance.range.start + '&end=' + info.event._instance.range.end);
+        //},
+        dateClick: function(info) {
+          window.location.href = '/events/new?start=' + info.dateStr + '&end=' + info.dateStr;
+        },
+        eventClick: function(arg) {
+          console.dir(arg);
+          console.log("######## arg.event.id: " + arg.event.id);
+          location.href = "/events/" + arg.event.id;
+        }
+      });
+      calendar.render();
     }
 
     if (document.getElementById("event_tz")) {
@@ -139,6 +173,25 @@ export default class extends Controller {
   }
 
   changeDatetime() {
+    let start_date = document.getElementById("event_start_date").value
+    let start_time = document.getElementById("event_start_time").value.substring(0,5)
+    let end_date = document.getElementById("event_end_date").value
+    let end_time = document.getElementById("event_end_time").value.substring(0,5)
+
+    if( start_date >= end_date ) {
+      let dateObject = new Date(start_date);
+      dateObject.setDate(dateObject.getDate());
+      var formattedDate = dateObject.toISOString().split('T')[0];
+      document.getElementById("event_end_date").value = formattedDate;
+    }
+
+    if (start_time >= end_time) {
+      let [hours, minutes] = start_time.split(':').map(Number);
+      hours = (hours + 1) % 24;
+      let formattedTime = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+      document.getElementById("event_end_time").value = formattedTime;
+    }
+
     saveFormAlert()
     return userinput = true
   }
