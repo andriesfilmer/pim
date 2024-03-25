@@ -22,7 +22,7 @@ export default class extends Controller {
     // Show tagsContainer
     showTags("post_tags")
 
-    $("#markdown").html(marked.parse($("#content").text(),{ mangle: false, headerIds: false}))
+    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
     // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {

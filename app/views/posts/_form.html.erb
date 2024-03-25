@@ -11,14 +11,14 @@
     </div>
   </div>
 
-  <!-- content -->
+  <!-- notes -->
   <div class="row">
     <div class="columns">
-      <%= form.label :content, class: "label-th display-inline" %>
+      <%= form.label :notes, class: "label-th display-inline" %>
       <img src="/assets/preview.svg" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip
         title="Click for preview" class="cursor-pointer icon medium">
       <img src="/assets/edit.svg" id="edit_bt" data-action="click->post#hideMarkdown" class="icon medium cursor-pointer display-none">
-      <%= form.text_area :content, placeholder: 'You can use markdown for content', rows: '30' %>
+      <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '30' %>
       <div id="markdown"></div>
     </div>
   </div>

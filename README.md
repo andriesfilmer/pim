@@ -45,6 +45,7 @@ Take a look on <https://pim.filmer.nl>
 
 ## Mysql
 
+    mysql pim < db/passkey.sql
     rails db:migrate
     alter table users add name varchar(255) default null after id;
     insert into users (id,name,email,created_at,updated_at) select id,name,email,now(),now() from user;
@@ -65,7 +66,15 @@ Take a look on <https://pim.filmer.nl>
 
     alter table posts change created created_at datetime;
     alter table posts change updated updated_at datetime;
-    alter table posts change type kind enum('article','hobby','note','todo','other');
+    alter table posts change type category varchar(255);
+    alter table posts change tags tags varchar(255);
+    alter table posts drop column mongo_id;
+    alter table posts drop column description;
+    update posts set public = '1' where public = 'true';
+    update posts set public = '0' where public = 'false' or public is null or public = '';
+    alter table posts change public public tinyint(1);
+
+
     alter table postversions change type category varchar(20);
     alter table postversions change created created_at datetime;
     alter table postversions change id id int(11) primary;
@@ -79,4 +88,7 @@ Take a look on <https://pim.filmer.nl>
 After old pim offline
 
     alter table events change column description notes;
+    update posts set tags = REGEXP_REPLACE(tags, '\\[|\\]|"|#', '');
+    rename table posts to notes;
+
 

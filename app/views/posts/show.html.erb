@@ -1,6 +1,7 @@
 <%= render "posts/secondary_menu" unless @post.try(:org_id) %>
 <%= render "posts/restore_menu" if @post.try(:org_id) %>
 
+<%= form_with model: @post do |form| %>
 <div class="row">
   <div class="columns">
     <h2><%= @post.title %></h2>
@@ -9,16 +10,17 @@
 
 <div class="row">
   <div class="columns">
-    <%= label_tag :content, nil, class:"label-th" unless @post.content.blank? %>
-    <%= content_tag :pre, @post.content, id: "content", class: "display-none" %>
+    <%= label_tag :notes, nil, class:"label-th" unless @post.notes.blank? %>
+    <%= content_tag :pre, @post.notes, id: "notes", class: "display-none" %>
     <div data-controller="post" id="markdown"></div>
   </div>
 </div>
 
 <div class="row">
   <div class="columns">
-    <%= content_tag :div, '', id: "tagsContainer" if @post.tags %>
-    <%= hidden_field_tag "post_tags", @post.tags.present? %>
+    <%= content_tag :div, '', id: "tagsContainer" if @post.tags.present? %>
+    <%= form.hidden_field :tags %>
+
   </div>
 </div>
 
@@ -27,3 +29,4 @@
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @post.created_at, format: :default %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @post.updated_at, format: :default %></div>
 </div>
+<% end %>
