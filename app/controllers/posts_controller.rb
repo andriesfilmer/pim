@@ -73,10 +73,11 @@ class PostsController < ApplicationController
   end
 
   def search
-    if params.dig(:post_search).present?
-      search = "%#{params[:post_search]}%"
+    if params.dig(:search).present?
+      search = "%#{params[:search]}%"
       @posts = Post.where("title LIKE ? OR content LIKE ? OR tags LIKE ?", search, search, search)
                    .order(updated_at: :desc)
+      cookies[:search] = params[:search]
     else
       @posts = []
     end

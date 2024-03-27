@@ -61,10 +61,11 @@ class PasskeysController < ApplicationController
   end
 
   def search
-    if params.dig(:passkey_search).present?
-      search = "%#{params[:passkey_search]}%"
+    if params.dig(:search).present?
+      search = "%#{params[:search]}%"
       @passkeys = Passkey.where("title LIKE ? OR url LIKE ? OR tags LIKE ?", search, search, search)
                    .order(updated_at: :desc)
+      cookies[:search] = params[:search]
     else
       @passkeys = []
     end

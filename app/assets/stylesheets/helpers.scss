@@ -35,7 +35,7 @@
 .alert-color { color: var(--alert-color); }
 .alert-color-bg { background-color: var(--alert-color); }
 
-.odd-even:nth-child(2n+1){ background-color: #f2f2f2; }
+.odd-even:nth-child(odd){ background-color: #eee; }
 .odd-even { &:hover { background-color: #ddd; }}
 
 .disabled { color: #ccc; }

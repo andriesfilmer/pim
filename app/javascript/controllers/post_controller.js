@@ -51,7 +51,11 @@ export default class extends Controller {
 
   showSearch() {
     $("#show_search").removeClass("display-none");
-    $("#post_search").focus();
+    $("#search").focus();
+  }
+
+  search() {
+    document.getElementById("search-form").requestSubmit()
   }
 
   showMarkdown() {

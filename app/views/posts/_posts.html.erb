@@ -1,10 +1,4 @@
 <div id="posts" class="col-12">
-<div class="row row-th">
-  <div class="medium-6 columns">Title</div>
-  <div class="medium-2 columns hide-for-small-only">Last read</div>
-  <div class="medium-2 columns hide-for-small-only">Updated</div>
-  <div class="medium-2 columns hide-for-small-only">Created</div>
-</div>
 <% @posts.each do |post| %>
   <%= link_to post_path(post), class: "row odd-even" do %>
   <div class="medium-6 columns">

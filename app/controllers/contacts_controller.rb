@@ -77,8 +77,8 @@ class ContactsController < ApplicationController
   end
 
   def search
-    if params.dig(:contact_search).present?
-      search = "%#{params[:contact_search]}%"
+    if params.dig(:search).present?
+      search = "%#{params[:search]}%"
       @contacts = Contact.where("name LIKE ? OR notes LIKE ? OR tags LIKE ?", search, search, search)
                          .order(updated_at: :desc)
     else

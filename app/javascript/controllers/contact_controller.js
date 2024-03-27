@@ -107,8 +107,12 @@ export default class extends Controller {
   }
 
   showSearch() {
-    $("#show_search").removeClass("display-none");
-    $("#contact_search").focus();
+    $("#show_search").removeClass("display-none")
+    $("#search").focus()
+  }
+
+  search() {
+    document.getElementById("search-form").requestSubmit()
   }
 
   // Set starred on icon click

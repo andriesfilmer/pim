@@ -52,7 +52,11 @@ export default class extends Controller {
 
   showSearch() {
     $("#show_search").removeClass("display-none");
-    $("#passkey_search").focus();
+    $("#search").focus();
+  }
+
+  search() {
+    document.getElementById("search-form").requestSubmit()
   }
 
   copyUsername() {

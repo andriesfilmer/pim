@@ -21,10 +21,20 @@ Turbo.setConfirmMethod((message, element) => {
   })
 })
 
-// Hide flash messages
 $(document).on('turbo:load', function() {
+
+  // Hide flash messages
   $("#flash").click(function(event) {
     $( event.target ).closest( ".flash" ).hide('slow');
   });
-});
 
+  // Clear search box
+  document.getElementById('search').addEventListener('input', (e) => {
+    console.log(`Search value: "${e.currentTarget.value}"`);
+    if ( e.currentTarget.value === "") {
+      console.log("######## cleared cookie: ");
+      document.cookie = "search="
+    }
+  });
+
+});

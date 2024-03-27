@@ -170,7 +170,11 @@ export default class extends Controller {
 
   showSearch() {
     $("#show_search").removeClass("display-none");
-    $("#event_search").focus();
+    $("#search").focus();
+  }
+
+  search() {
+    document.getElementById("search-form").requestSubmit()
   }
 
   changeDatetime() {

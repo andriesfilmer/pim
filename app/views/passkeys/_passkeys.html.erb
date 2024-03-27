@@ -1,23 +1,17 @@
 <div id="passkeys" class="col-12">
-<div class="row row-th">
-  <div class="medium-6 columns">Title</div>
-  <div class="medium-2 columns hide-for-small-only">Last read</div>
-  <div class="medium-2 columns hide-for-small-only">Updated</div>
-  <div class="medium-2 columns hide-for-small-only">Created</div>
-</div>
 <% @passkeys.each do |passkey| %>
   <%= link_to passkey_path(passkey), class: "row odd-even" do %>
   <div class="medium-6 columns">
     <%= passkey.title %>
   </div>
   <div class="medium-2 columns hide-for-small-only">
-    <%= l passkey.last_read, format: "%Y-%m-%d" %>
+    <%= content_tag :label, (l passkey.last_read, format: "%Y-%m-%d"), class: "label-button notice-color display-inline" %>
   </div>
   <div class="medium-2 columns hide-for-small-only">
-    <%= l passkey.updated_at, format: "%Y-%m-%d" %>
+    <%= content_tag :label, (l passkey.updated_at, format: "%Y-%m-%d") %>
   </div>
   <div class="medium-2 columns hide-for-small-only">
-    <%= l passkey.created_at, format: "%Y-%m-%d" %>
+    <%= content_tag :label, (l passkey.created_at, format: "%Y-%m-%d") %>
   </div>
   <% end %>
 <% end %>

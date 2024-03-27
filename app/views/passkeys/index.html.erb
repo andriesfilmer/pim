@@ -15,11 +15,17 @@
 
 <div id="show_search" class="row display-none">
   <div class="columns">
-  <%= form_with url: passkeys_search_path do |form| %>
-    <%= form.search_field :passkey_search, placeholder: 'Search passkeys',
-      value: params[:passkey_search], oninput: "this.form.requestSubmit()" %>
+  <%= form_with url: passkeys_search_path, id: "search-form" do |form| %>
+    <%= form.search_field :search, placeholder: 'Search passkeys', value: cookies[:search],
+      data: { controller: "passkey", action: "focus->passkey#search input->passkey#search" } %>
   <% end %>
   </div>
 </div>
 
+<div class="row row-th hide-for-small-only">
+  <div class="medium-6 columns">Title</div>
+  <div class="medium-2 columns">Last read</div>
+  <div class="medium-2 columns">Updated</div>
+  <div class="medium-2 columns">Created</div>
+</div>
 <%= render "passkeys" %>
