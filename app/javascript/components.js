@@ -124,3 +124,11 @@ export function modalComponent() {
     $("#" + modal).removeClass("show");
   });
 }
+
+export function copyContent(content) {
+    navigator.clipboard.writeText(content).then(() => {
+      console.log('Content copied to clipboard successfully!');
+    }).catch(err => {
+      console.error('Failed to copy content: ', err);
+    });
+}

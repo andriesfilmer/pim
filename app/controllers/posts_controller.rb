@@ -3,7 +3,11 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy ]
 
   def index
-    @posts = Post.where(user_id: current_user.id).order("id desc").limit 10
+    @posts = Post.where(user_id: current_user.id).order("last_read desc").limit 10
+  end
+
+  def show
+    @post.update_column(:last_read,DateTime.now)
   end
 
   def new
@@ -102,7 +106,7 @@ class PostsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def post_params
-    params.require(:post).permit(:title, :content, :picture, :category, :tags)
+    params.require(:post).permit(:title, :notes, :picture, :category, :tags)
   end
 
 end

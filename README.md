@@ -46,7 +46,20 @@ Take a look on <https://pim.filmer.nl>
 ## Mysql
 
     mysql pim < db/passkey.sql
+
+    LOAD DATA LOCAL INFILE '/home/andries/Nextcloud/Private/Backup/Keepass/keepass.csv'
+    INTO TABLE passkeys
+    FIELDS TERMINATED BY ','
+    ENCLOSED BY '"'
+    LINES TERMINATED BY '\n'
+    IGNORE 1 ROWS
+    (title, username, password, url, @notes, @updated_at, @created_at)
+    SET notes = REPLACE(@notes, '\\n', '\n'), updated_at = SUBSTRING(@updated_at, 1,16), created_at = SUBSTRING(@created_at, 1,16) ;
+    update passkeys set user_id=1;
+
+    rails c -> Passkey.encryptPasskeyUp
     rails db:migrate
+
     alter table users add name varchar(255) default null after id;
     insert into users (id,name,email,created_at,updated_at) select id,name,email,now(),now() from user;
 

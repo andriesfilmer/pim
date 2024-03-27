@@ -3,7 +3,11 @@ class PasskeysController < ApplicationController
   before_action :set_passkey, only: %i[ show edit update destroy ]
 
   def index
-    @passkeys = Passkey.where(user_id: current_user.id).order("id desc").limit 10
+    @passkeys = Passkey.where(user_id: current_user.id).order("last_read desc").limit 10
+  end
+
+  def show
+    @passkey.update_column(:last_read,DateTime.now)
   end
 
   def new
@@ -59,7 +63,7 @@ class PasskeysController < ApplicationController
   def search
     if params.dig(:passkey_search).present?
       search = "%#{params[:passkey_search]}%"
-      @passkeys = Passkey.where("title LIKE ? OR notes LIKE ? OR tags LIKE ?", search, search, search)
+      @passkeys = Passkey.where("title LIKE ? OR url LIKE ? OR tags LIKE ?", search, search, search)
                    .order(updated_at: :desc)
     else
       @passkeys = []
@@ -89,7 +93,7 @@ class PasskeysController < ApplicationController
   end
 
   def passkey_params
-    params.require(:passkey).permit(:title, :password, :url, :notes, :tags)
+    params.require(:passkey).permit(:title, :username, :password, :url, :notes, :tags)
   end
 
 end

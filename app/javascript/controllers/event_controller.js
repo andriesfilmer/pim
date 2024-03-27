@@ -78,6 +78,7 @@ export default class extends Controller {
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         weekNumbers: true,
+        height: 650,
         headerToolbar: {
           left: 'prevYear, prev',
           center: 'title',

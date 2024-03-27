@@ -18,23 +18,22 @@
 
   <!-- date -->
   <div class="row">
-    <div class="columns small-4 medium-2">Start</div>
-    <div class="columns small-4 medium-6"><%= form.date_field :start_date, data: { action: "event#changeDatetime" } %></div>
-    <div class="columns small-4 medium-4">
+    <div class="columns small-2 medium-2">Start</div>
+    <div class="columns small-5 medium-6"><%= form.date_field :start_date, data: { action: "event#changeDatetime" } %></div>
+    <div class="columns small-5 medium-4">
       <%= form.time_field :start_time, data: { action: "event#changeDatetime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
   <div class="row">
-    <div class="columns small-4 medium-2">End</div>
-    <div class="columns small-4 medium-6"><%= form.date_field :end_date, data: { action: "event#changeDatetime" } %></div>
-    <div class="columns small-4 medium-4">
+    <div class="columns small-2 medium-2">End</div>
+    <div class="columns small-5 medium-6"><%= form.date_field :end_date, data: { action: "event#changeDatetime" } %></div>
+    <div class="columns small-5 medium-4">
       <%= form.time_field :end_time, data: { action: "event#changeDatetime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
   <div class="row">
-    <div class="columns small-4 medium-2">Allday</div>
-    <div class="columns small-12 medium-10">
-      <%= form.label :allDay, class: "switch-paddle" %>
+    <div class="columns small-2 medium-2">Allday</div>
+    <div class="columns small-10 medium-10">
       <%= form.check_box :allDay, checked: @event.allDay, class: "switch-paddle", data: { action: "click->event#toggleAllDay" } %>
     </div>
   </div>
@@ -54,9 +53,9 @@
   <!-- tags -->
   <div class="row">
     <div class="columns">
-      <div id="tagsContainer"></div>
       <%= form.label :tags, class: "label-th display-inline" %>
       <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
+      <div id="tagsContainer"></div>
     </div>
   </div>
 <% end %>

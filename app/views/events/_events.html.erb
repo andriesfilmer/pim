@@ -1,17 +1,15 @@
 <div id="events" class="col-12">
-<div class="row row-th">
-  <div class="medium-5 columns">Name</div>
-</div>
 <% @events.each do |event| %>
   <%= link_to event_path(event), class: "row odd-even" do %>
-  <div class="small-6 medium-6 columns">
+  <div class="small-6 medium-8 columns">
     <%= event.title %>
   </div>
-  <div class="small-3 medium-3 columns">
-    <%= content_tag :label, l(event.start, format: :long), class: "event-show-date-time" %>
+  <div class="small-4 medium-3 columns hide-for-small-only">
+    <%= content_tag :label, l(event.start, format: :longnotime) %>
   </div>
-  <div class="small-3 medium-3 columns">
-    <%= content_tag :label, l(event.end, format: :long), class: "event-show-date-time" %>
+  <div class="small-2 medium-1 columns hide-for-small-only text-center">
+    <%= content_tag :label, (event.allDay? ? "Allday" : l(event.start, format: :short)),
+     class: event.allDay? ? "label-button display-inline notice-color" : "" %>
   </div>
   <% end %>
 <% end %>

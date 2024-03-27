@@ -92,7 +92,7 @@ class EventsController < ApplicationController
   def search
     if params.dig(:event_search).present?
       search = "%#{params[:event_search]}%"
-      @events = Event.where("title LIKE ? OR notes LIKE ? OR tags LIKE ?", search, search, search)
+      @events = Event.where("title LIKE ? OR description LIKE ? OR tags LIKE ?", search, search, search)
                      .order(updated_at: :desc).where(user_id: current_user.id)
     else
       @events = []

@@ -24,9 +24,6 @@
 
   </div>
   <div class="columns small-3 medium-3 text-right">
-
-    <%= content_tag :span, @event.category, class: "divider" if @event.id %>
-    <%= content_tag :span, '', class: "divider" if @event.id %>
     <%= link_to event_path(@event), data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this event?'},
       title: "Delete item!" do %>
       <%= image_tag "delete.svg", class: "icon large" %>

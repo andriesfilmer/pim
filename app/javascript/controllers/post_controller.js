@@ -55,18 +55,18 @@ export default class extends Controller {
   }
 
   showMarkdown() {
-    $("#markdown").html(marked.parse($("#post_content").val(),{ mangle: false, headerIds: false}));
+    $("#markdown").html(marked.parse($("#post_notes").val(),{ mangle: false, headerIds: false}));
     $("#markdown").removeClass("display-none");
     $("#edit_bt").removeClass("display-none");
     $("#preview_bt").addClass("display-none");
-    $("#post_content").addClass("display-none");
+    $("#post_notes").addClass("display-none");
   }
 
   hideMarkdown() {
     $("#markdown").addClass("display-none");
     $("#edit_bt").addClass("display-none");
     $("#preview_bt").removeClass("display-none");
-    $("#post_content").removeClass("display-none");
+    $("#post_notes").removeClass("display-none");
   }
 
   submitForm(event) {

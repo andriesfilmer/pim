@@ -12,20 +12,20 @@
 <div class="row">
   <div class="columns tz-warning display-none">Created or edited in different timezone!</div>
   <div class="columns display-inline">
-    <%= content_tag :label, @event.tz, class: "event-show-date-time tz-show display-none" %>
-    <%= content_tag :label, l(@event.start, format: :longnotime), class: "event-show-date-time" if @event.allDay  %>
-    <%= content_tag :label, l(@event.start, format: :long), class: "event-show-date-time" unless @event.allDay %>
+    <%= content_tag :label, @event.tz, class: "label-button tz-show display-none notice-color" %>
+    <%= content_tag :label, l(@event.start, format: :mediumnotime), class: "label-button notice-color" if @event.allDay  %>
+    <%= content_tag :label, l(@event.start, format: :medium), class: "label-button notice-color" unless @event.allDay %>
     <span class="sup">-</span>
-    <%= content_tag :label, l(@event.end, format: :longnotime), class: "event-show-date-time" if @event.allDay %>
-    <%= content_tag :label, l(@event.end, format: :long), class: "event-show-date-time" unless @event.allDay %>
-    <%= content_tag :label, "Allday", class: "event-show-date-time" if @event.allDay %>
+    <%= content_tag :label, l(@event.end, format: :mediumnotime), class: "label-button notice-color" if @event.allDay %>
+    <%= content_tag :label, l(@event.end, format: :medium), class: "label-button notice-color" unless @event.allDay %>
+    <%= content_tag :label, "Allday", class: "label-button notice-color" if @event.allDay %>
   </div>
   <div class="columns tz-warning display-none">Browser timezone</div>
   <div class="columns tz-warning display-none">
-    <%= content_tag :label, "", id: "tzBrowser", class: "event-show-date-time" %>
-    <%= content_tag :label, "", id: "browserEventStart", class: "event-show-date-time" %>
+    <%= content_tag :label, "", id: "tzBrowser", class: "label-button notice-color" %>
+    <%= content_tag :label, "", id: "browserEventStart", class: "label-button notice-color" %>
     <span class="sup">-</span>
-    <%= content_tag :label, "", id: "browserEventEnd", class: "event-show-date-time" %>
+    <%= content_tag :label, "", id: "browserEventEnd", class: "label-button notice-color" %>
   </div>
 </div>
 

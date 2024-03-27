@@ -31,11 +31,22 @@ h1.th, h2.th, h3.th, h4.th {
   margin-top: 1rem;
   border-bottom: 1px solid #eee;
 }
-label.label-th {
+.label-th {
   margin-top: 1rem;
   border-bottom: 1px solid #eee;
   font-size: 1.2rem;
 }
+.label-button {
+  padding: 0.4rem;
+  margin: 0 0.4rem;
+  font-size: .8rem;
+  height: 2em;
+  line-height: 1;
+  border-radius: 5px;
+  color: #fefefe;
+  &.notice-color { background-color: var(--notice-color); }
+}
+
 .row-caption {
   background: var(--main-color);
   color: #fff;
@@ -63,16 +74,9 @@ label.label-th {
   &:hover { color: #888; }
 }
 
+
 .save-form-alert {
   color: red;
-}
-
-.event-show-date-time {
-  background-color: var(--main-color);
-  color: #fff;
-  padding: 5px;
-  margin: 0 1em;
-  border-radius: 5px;
 }
 
 //div.row:has(> .tz-warning:not(> .display-none)) {
@@ -99,4 +103,23 @@ a.fc-event {
   &.import { color: #fff; background-color: purple; }
   &.task { color: #fff; background-color: red; }
   &.business { color: #fff; background-color: yellow; }
+}
+.fc {
+  .fc-button-primary, .fc .fc-button-primary:focus,  .fc-button-primary:hover,  {
+    background: #eee;
+    border: none;
+    color: #000;
+    padding: 5px;
+  }
+  .fc-toolbar-title { font-size: large }
+}
+
+@media screen and (max-width: 639px) {
+  #calendar {
+    height: 650px !important;
+  }
+
+  .fc-daygrid-week-number {
+    display: none;
+  }
 }

@@ -3,7 +3,7 @@
   vertical-align: sub;
   &.small { width: 18px; height: 18px; }
   &.medium { width: 24px; height: 24px; }
-  &.large { width: 36px; height: 36px; margin-top: 7px;}
+  &.large { width: 30px; height: 30px; margin-top: 5px;}
 
   &.white { filter: invert(100%) sepia(100%) saturate(38%) hue-rotate(321deg) brightness(110%) contrast(110%); }
   &.alert { filter: invert(14%) sepia(100%) saturate(7154%) hue-rotate(4deg) brightness(114%) contrast(115%); }

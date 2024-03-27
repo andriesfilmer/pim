@@ -2,8 +2,8 @@
 :root {
   --main-color:     purple;
   --button-color:   purple;
-  --notice-color:   lightblue;
-  --success-color:  green;
+  --notice-color:   #21acd9;
+  --success-color:  #17bd17;
   --warning-color:  orange;
   --alert-color:    $alert-color;
   --alert-color-bg: lighten($alert-color, 10%);

@@ -1,6 +1,6 @@
 // Markdown model
 //---------------
-#markdown table {
+#markdown {
   border-collapse: collapse;
   thead, tfoot {
     border: 1px solid #f1f1f1;
@@ -16,4 +16,8 @@
     border: 1px solid #CBC1C1;
     padding: 4px;
   }
+
+  // Show markdown hearder smaller
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1rem; }
 }

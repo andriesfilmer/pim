@@ -1,30 +1,52 @@
 <%= render "passkeys/secondary_menu" unless @passkey.try(:org_id) %>
 <%= render "passkeys/restore_menu" if @passkey.try(:org_id) %>
 
-<div class="row">
+<div class="row" data-controller="passkey">
   <div class="columns">
     <h2><%= @passkey.title %></h2>
   </div>
   <div class="columns">
-    <%= @passkey.password %>
+    <%= label_tag :username, nil, class: "label-th" %>
+  </div>
+  <div class="columns small-10 medium-11">
+    <%= content_tag :div, @passkey.username, id: "username" %>
+  </div>
+  <div class="columns small-2 medium-1">
+    <div data-action="click->passkey#copyUsername" class="label-button display-inline notice-color">Copy</div>
   </div>
   <div class="columns">
-    <%= link_to @passkey.url, @passkey.url %>
+    <%= label_tag :password, nil, class: "label-th display-inline" %>
+    <%= image_tag "visibility.svg", id: "passwordToggle", class: "icon medium",
+      data: { "action": "click->passkey#togglePassword" } %>
+  </div>
+  <div class="columns small-10 medium-11">
+    <%= password_field_tag 'password', @passkey.password,
+      data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
+  </div>
+  <div class="columns small-2 medium-1">
+    <div data-action="click->passkey#copyPassword" class="label-button display-inline notice-color">Copy</div>
+  </div>
+  <div class="columns">
+    <%= label_tag :url, nil, class: "label-th" %>
+    <%= link_to @passkey.url, @passkey.url, target: "_blank" %>
   </div>
 </div>
 
-<div class="row">
+<%= content_tag :div, class: "row", data: { controller: "passkey" } do %>
   <div class="columns">
-    <%= label_tag :note, nil, class:"label-th" unless @passkey.notes.blank? %>
+    <%= label_tag :notes, nil, class:"label-th display-inline" %>
+    <%= image_tag "visibility.svg", id: "notesToggle", class: "icon medium",
+      data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
-    <div data-controller="passkey" id="markdown"></div>
+    <div id="markdown" class="callout hide-notes" style="background:#eee;color: #000;"
+      data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Toggle visibility notes</div>
   </div>
-</div>
+<% end if @passkey.notes.present? %>
 
 <div class="row">
   <div class="columns">
-    <%= content_tag :div, '', id: "tagsContainer" if @passkey.tags %>
-    <%= hidden_field_tag "passkey_tags", @passkey.tags.present? %>
+    <%= content_tag :div, '', id: "tagsContainer" if @passkey.tags.present? %>
+    <%= hidden_field_tag "passkey_tags", @passkey.tags %>
   </div>
 </div>
 

@@ -21,7 +21,7 @@
     <%= content_tag :span, '', class: "divider" if @post.id && action_name == "edit" %>
 
     <%= link_to postversions_path(org_id: @post.id), title: "Versions of this post" do %>
-      <img src="/assets/restore.svg" class="icon large">
+      <img src="/assets/restore-page.svg" class="icon large">
     <% end if @post.id %>
     <%= content_tag :span, '', class: "divider" if @post.id %>
 

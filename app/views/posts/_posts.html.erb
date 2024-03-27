@@ -1,19 +1,23 @@
 <div id="posts" class="col-12">
 <div class="row row-th">
-  <div class="medium-8 columns">Title</div>
-  <div class="medium-2 columns">Created</div>
-  <div class="medium-2 columns">Updated</div>
+  <div class="medium-6 columns">Title</div>
+  <div class="medium-2 columns hide-for-small-only">Last read</div>
+  <div class="medium-2 columns hide-for-small-only">Updated</div>
+  <div class="medium-2 columns hide-for-small-only">Created</div>
 </div>
 <% @posts.each do |post| %>
   <%= link_to post_path(post), class: "row odd-even" do %>
-  <div class="medium-8 columns">
+  <div class="medium-6 columns">
     <%= post.title %>
   </div>
-  <div class="medium-2 columns">
-    <%= l post.created_at, format: "%Y-%m-%d" %>
+  <div class="medium-2 columns hide-for-small-only">
+    <%= content_tag :label, (l post.last_read, format: "%Y-%m-%d"), class: "label-button display-inline notice-color" %>
   </div>
-  <div class="medium-2 columns">
-    <%= l post.updated_at, format: "%Y-%m-%d" %>
+  <div class="medium-2 columns hide-for-small-only">
+    <%= content_tag :label, (l post.updated_at, format: "%Y-%m-%d") %>
+  </div>
+  <div class="medium-2 columns hide-for-small-only">
+    <%= content_tag :label, (l post.created_at, format: "%Y-%m-%d") %>
   </div>
   <% end %>
 <% end %>

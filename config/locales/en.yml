@@ -135,6 +135,8 @@ en:
     formats:
       year: ! '%Y-%m-%d'
       default: ! '%Y-%m-%d %H:%M'
+      medium: ! '%a, %b %e, %Y at %H:%M'
+      mediumnotime: ! '%a, %b %e, %Y'
       long: ! '%A, %B %e, %Y at %H:%M'
       longnotime: ! '%A, %B %e, %Y'
       short: ! '%H:%M'

@@ -1,16 +1,19 @@
 // passkey_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
-import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent } from 'components';
+import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, copyContent } from 'components';
 
 let submitted = false
 let userinput = false
 
 export default class extends Controller {
 
+  static targets = [ "passwordToggle", "notesToggle" ]
+
   connect() {
+
     console.log("######## connect passkey controller")
-    //
+
     // Set cache control of current page to `no-cache`
     Turbo.cache.exemptPageFromCache()
 
@@ -21,8 +24,6 @@ export default class extends Controller {
 
     // Show tagsContainer
     showTags("passkey_tags")
-
-    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
     // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {
@@ -52,6 +53,41 @@ export default class extends Controller {
   showSearch() {
     $("#show_search").removeClass("display-none");
     $("#passkey_search").focus();
+  }
+
+  copyUsername() {
+    copyContent(document.getElementById('username').innerHTML)
+  }
+
+  copyPassword() {
+    copyContent(document.getElementById('password').value)
+  }
+
+  togglePassword() {
+    if (this.passwordToggleTarget.type === "text") {
+      this.passwordToggleTarget.type = "password"
+      this.passwordToggleTarget.style.background = ""
+    } else {
+      this.passwordToggleTarget.type = "text"
+      this.passwordToggleTarget.style.background = "orange"
+    }
+  }
+
+  toggleNotes() {
+    console.log("######## this.notesToggleTarget.value: " + this.notesToggleTarget.textContent);
+    console.dir(this.notesToggleTarget)
+    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
+
+    if (this.notesToggleTarget.classList.toggle("hide-notes")) {
+      this.notesToggleTarget.style.color = "#eee"
+      this.notesToggleTarget.style.background = "#eee"
+    } else {
+      this.notesToggleTarget.style.color = "#000"
+      this.notesToggleTarget.style.background = "#fff"
+    }
+    if (this.notesToggleTarget.textContent === "" ) {
+      this.notesToggleTarget.textContent = "No notes yet..."
+    }
   }
 
   showMarkdown() {

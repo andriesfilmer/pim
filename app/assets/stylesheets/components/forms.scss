@@ -87,3 +87,9 @@ input[type="checkbox"], input[type="radio"] {
   width: 1.8em;
   height: 1.8em;
 }
+
+// Show input as normal text.
+input[data-passkey-target] {
+  border: none;
+  margin: 0;
+}

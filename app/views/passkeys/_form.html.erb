@@ -7,19 +7,25 @@
       <%= form.label :title, class: "label-th" %>
     </div>
     <div class="columns">
-      <%= form.text_field :title, placeholder: "New title" %>
+      <%= form.text_field :title, placeholder: "Enter title" %>
+    </div>
+    <div class="columns">
+      <%= form.label :username %>
+    </div>
+    <div class="columns">
+      <%= form.text_field :username, placeholder: "Enter username" %>
+    </div>
+    <div class="columns">
+      <%= form.label :password %>
+    </div>
+    <div class="columns">
+      <%= form.text_field :password, placeholder: "Enter password" %>
     </div>
     <div class="columns">
       <%= form.label :url %>
     </div>
     <div class="columns">
       <%= form.text_field :url, placeholder: "New url" %>
-    </div>
-    <div class="columns">
-      <%= form.label :password %>
-    </div>
-    <div class="columns">
-      <%= form.text_field :password, placeholder: "New passkey password" %>
     </div>
   </div>
 
@@ -38,9 +44,9 @@
   <!-- tags -->
   <div class="row">
     <div class="columns">
-      <div id="tagsContainer"></div>
       <%= form.label :tags, class: "label-th display-inline" %>
       <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
+      <div id="tagsContainer"></div>
     </div>
   </div>
 <% end %>
