@@ -1,21 +1,49 @@
 /* Base classes i.o. custom classes for site */
 
-nav.top-bar {
+body {
+  color: var(--text-color);
+  background-color: var(--body-color);
+}
+nav.nav-bar {
   line-height: 2.5em;
   text-align: center;
+  background-color: var(--navbar-color);
   max-width: 100%;
-  background-color: var(--main-color);
   color: #fff;
   font-size: 1.2em;
   a {
-    color: #fff;
+    color: #eee;
   }
   button {
-    background-color: var(--main-color);
+    background-color: var(--navbar-color);
     border: none;
-    color: #fff;
+    color: #eee;
     font-size: 1em;
   }
+}
+a {
+  color: var(--text-color);
+  &:hover { color: var(--text-color) };
+}
+
+#start {
+  background-image: url(/static/images/bg-pim.jpg);
+  background-position: 0 0;
+  background-repeat: repeat-x;
+  animation: animatedBackground 30s linear infinite;
+}
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+div.start p {
+    font-size: 1.5rem;
+    color: #fff;
+    opacity: .8;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80%;
 }
 
 .secondary-menu {
@@ -23,8 +51,15 @@ nav.top-bar {
   padding-bottom: 1rem;
   .divider {
     margin: 0.5rem;
-    border-right: 1px solid #eee;
+    border-right: 1px solid #8b8b8b;
   }
+}
+
+h1.home {
+  font-size: 2rem;
+  letter-spacing: 5px;
+  margin-bottom: 0;
+  text-shadow: -2px 2px 3px #b8b2b5;
 }
 
 h1.th, h2.th, h3.th, h4.th {
@@ -36,25 +71,14 @@ h1.th, h2.th, h3.th, h4.th {
   border-bottom: 1px solid #eee;
   font-size: 1.2rem;
 }
-.label-button {
-  padding: 0.4rem;
-  margin: 0 0.4rem;
-  font-size: .8rem;
-  height: 2em;
-  line-height: 1;
-  border-radius: 5px;
-  color: #fefefe;
-  &.notice-color { background-color: var(--notice-color); }
-}
-
 .row-caption {
-  background: var(--main-color);
+  background: var(--primary-color);
   color: #fff;
-  a {color: #fff;} a:hover { color: #ddd} a:focus { color: #eee; }
+  a {color: #fff;} a:hover { color: #ddd} a:focus { color: var(--text-color); }
   font-weight: bold;
 }
 .row-th {
-  background-color: var(--main-color);
+  background-color: var(--primary-color);
   color: #fff;
 }
 .row-caption, .row-th, .odd-even {
@@ -84,41 +108,3 @@ div.row:has(> .tz-warning) {
   margin-bottom: 1em;
 }
 
-// FullCalendar overwrites
-//------------------------
-.fc-direction-ltr .fc-toolbar > * > :not(:first-child) { margin-left: 0 !important; }
-.fc--button,
-.fc-dayGridMonth-button,
-.fc-listMonth-button,
-.fc-listWeek-button,
-.fc-multiMonthYear-button,
-.fc-today-button,
-.fc-timeGridWeek-button {
-  display: none !important;
-}
-a.fc-event {
-  &.holiday { color: #fff; background-color: green; }
-  &.memo { color: #fff; background-color: orange; }
-  &.import { color: #fff; background-color: purple; }
-  &.task { color: #fff; background-color: red; }
-  &.business { color: #fff; background-color: yellow; }
-}
-.fc {
-  .fc-button-primary, .fc .fc-button-primary:focus,  .fc-button-primary:hover,  {
-    background: #eee;
-    border: none;
-    color: #000;
-    padding: 5px;
-  }
-  .fc-toolbar-title { font-size: large }
-}
-
-@media screen and (max-width: 639px) {
-  #calendar {
-    height: 650px !important;
-  }
-
-  .fc-daygrid-week-number {
-    display: none;
-  }
-}

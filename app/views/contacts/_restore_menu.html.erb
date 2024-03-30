@@ -4,8 +4,7 @@
     <%= content_tag :span, '', class: "divider" if @contact.id %>
   </div>
   <div class="columns medium-6 text-right" id="add-back-arrow">
-    Version <%= @contact.id %>
-    <%= button_to "Restore (html)", contactrestore_path,
-      params: { version_id: @contact.id} , class: "button" if @contact.id %>
+    <p><%= button_to "Restore version #{@contact.id}", contactrestore_path,
+      params: { version_id: @contact.id} , class: "button" if @contact.id %></p>
   </div>
 </div>

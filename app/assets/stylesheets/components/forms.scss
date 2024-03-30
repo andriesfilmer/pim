@@ -22,6 +22,8 @@ label {
 [type='url'],
 [type='color'],
 textarea {
+  background-color: var(--body-color);
+  color: var(--text-color);
   -webkit-appearance: none;
   -moz-appearance: none;
   font-size: 1rem;
@@ -30,10 +32,9 @@ textarea {
   height: 2.4375rem;
   margin: 0 0 1rem;
   padding: 0.5rem;
-  background: #fff;
   border: 1px solid #cacaca;
   border-radius: 5px;
-  box-shadow: inset 0 1px 2px #eee;
+  //box-shadow: inset 0 1px 2px #eee;
   transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
   &:focus, &:active {
     @include focus-visible-active;
@@ -52,6 +53,7 @@ input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
 }
 
 select {
+  color: var(--text-color);
   width: 100%;
   height: 2.4375rem;
   margin: 0 0 1rem;
@@ -64,12 +66,12 @@ select {
   font-size: 1rem;
   font-weight: normal;
   line-height: 1.5;
-  color: #0a0a0a;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="32" height="24" viewBox="0 0 32 24"><polygon points="0,0 32,0 16,24" style="fill: rgb%28138, 138, 138%29"></polygon></svg>');
   background-origin: content-box;
   background-position: right -1rem center;
   background-repeat: no-repeat;
   background-size: 12px 12px;
+  background-color: var(--body-color);
   padding-right: 1.5rem;
   transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
   &:focus, &:active {

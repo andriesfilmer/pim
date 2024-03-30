@@ -1,7 +1,5 @@
-<%= render "layouts/show_errors", resource: @contact %>
-
 <%= form_with model: @contact, id: "contactForm", class: "userinputs" do |form| %>
-
+  <%= render "layouts/show_errors", resource: @contact %>
   <div class="row">
     <div class="columns">
       <%= form.label :name, class: "label-th" %>

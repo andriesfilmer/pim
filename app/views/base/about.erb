@@ -1,5 +1,94 @@
 <div class="row">
-  <div class="columns">
-    <h2>About</h2>
+  <div class="columns small-12 medium-8">
+    <h1 class="home">PIM</h1><span class="home meta-data">Personal Information Manager</span>
+  </div>
+  <div class="columns small-12 medium-4 text-right">
+    <p>
+    <%= link_to "Log in", new_user_session_path, class: "button" %>
+    <%= link_to "Sign up", new_user_registration_path, class: "button notice" %>
+    </p>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12 start" id="start">
+    <p class="radius">Keep your personal information private</p>
+    <%= link_to "Calendar", events_path, class: "button" %>
+    <%= link_to "Contacts", contacts_path, class: "button" %>
+    <%= link_to "Notes", posts_path, class: "button" %>
+    <%= link_to "Keys", passkeys_path, class: "button" %>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12">
+    <h2 class="fi-lock"> Access to your data</h2>
+    <p>Access your data wherever you are, whenever you need it, all under your control.</p>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12 medium-6">
+    <h2> Pros</h2>
+    <p>
+    Independent of Google, iCloud, Facebook or other installed app/provider who can peek into your data.
+    Contact data is not linked to native addressbook, calendar or notes.
+    Its is a very fast and lightweight app unlike Nextcloud.
+    You can install this service on you own server or use&nbsp;<a href="https://pim.filmer.nl">pim.filmer.nl</a>.
+    </p>
+  </div>
+  <div class="column small-12 medium-6">
+    <h2> Cons</h2>
+    <p>
+    This web-app is not installed and therefore not link to incomming calls on your smartphone.</p>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12">
+    <h2> General features</h2>
+    <ul>
+      <li>This 'Web App' has a responsive design so you can use it on your mobile, tablet or desktop.</li>
+      <li>All main items has interactive searches.</li>
+      <li><a href="http://showdownjs.github.io/demo/" target="_blank">Markdown is integrated.</a>so you can style your text easily.</li>
+      <li>Revisions, all information is stored with revisions and can be viewed and restored.</i></li>
+      <li>Open source and the code has <a href="http://opensource.org/licenses/MIT" target="_blank">MIT License</a>,
+        see full source code on <a href="https://github.com/andriesfilmer/pim" target="_blank"> Github.</a></li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12">
+    <h2> Calendar</h2>
+    <ul>
+      <li>The calendar has month, day and list view.</li>
+      <li>Calendar is timezone aware.</li>
+      <li>Get reminders by e-mail (crontab script included).</li>
+    </ul>
+    <h2> Contacts</h2>
+    <ul>
+      <li>Create contacts and add unlimited phonenumbers, companies, relations, e-mailaddresses, websites, addresses.</li>
+      <li>There is a starred, birthdates and list view.</li>
+      <li>Add a birthdate to a contact and get a reminder by e-mail.</li>
+    </ul>
+    <h2> Notes</h2>
+    <ul>
+      <li>Make a small note, todo or a big article with Markdown.</li>
+      <li>Auto-generate a table of contents (TOC) on a large articles.</li>
+    </ul>
+    <h2> Keys</h2>
+    <ul>
+      <li>Use this pim as you password manager.</li>
+      <li>Username, password en notes wil be encrypted in the database.</li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12 medium-12">
+    <h2> Install this web app</h2>
+    <p>If you want a icon on your tablet or smartphone homescreen like a real App.</p>
+  </div>
+</div>
+<div class="row">
+  <div class="column small-12">
+    <hr>
+    <p>PIM Version: 0.1.0. See full source code on <a href="https://github.com/andriesfilmer/pim-rails" target="_blank"> Github</a>.
+    The code has a&nbsp;<a href="http://opensource.org/licenses/MIT" target="_blank">MIT License.</a></p>
   </div>
 </div>

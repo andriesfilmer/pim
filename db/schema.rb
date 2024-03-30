@@ -37,14 +37,13 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_134459) do
     t.string "name", limit: 100, null: false
     t.date "birthdate"
     t.text "notes"
-    t.string "tags"
     t.string "phones_fax", limit: 50
     t.boolean "starred", default: false
     t.string "photo", limit: 100
     t.integer "times_read", default: 0
     t.datetime "last_read", precision: nil, default: -> { "current_timestamp()" }
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+    t.datetime "created", precision: nil, default: -> { "current_timestamp()" }
+    t.datetime "updated", precision: nil, default: -> { "current_timestamp()" }
     t.index ["user_id"], name: "user_id"
   end
 
@@ -59,13 +58,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_134459) do
     t.string "name", limit: 100, null: false
     t.date "birthdate"
     t.text "notes"
-    t.string "tags"
     t.string "phones_fax", limit: 50
     t.boolean "starred", default: false
     t.string "photo", limit: 100
     t.integer "times_read", default: 0
     t.datetime "last_read", precision: nil
-    t.datetime "created_at", precision: nil
+    t.datetime "created", precision: nil, default: -> { "current_timestamp()" }
     t.index ["org_id"], name: "org_id"
   end
 
@@ -76,11 +74,10 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_134459) do
     t.datetime "start", precision: nil
     t.datetime "end", precision: nil
     t.string "className", limit: 1024, default: "appointment"
-    t.string "tags"
     t.boolean "allDay", default: true
     t.string "tz", limit: 100
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+    t.datetime "created", precision: nil, default: -> { "current_timestamp()" }
+    t.datetime "updated", precision: nil, default: -> { "current_timestamp()" }
     t.index ["user_id"], name: "user_id"
   end
 
@@ -92,10 +89,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_134459) do
     t.datetime "start", precision: nil
     t.datetime "end", precision: nil
     t.string "className", limit: 1024, default: "appointment"
-    t.string "tags"
     t.boolean "allDay", default: true
     t.string "tz", limit: 100
-    t.datetime "created_at", precision: nil
+    t.datetime "created", precision: nil, default: -> { "current_timestamp()" }
     t.index ["org_id"], name: "org_id"
   end
 
@@ -128,29 +124,32 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_134459) do
   end
 
   create_table "posts", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.string "mongo_id", limit: 100
     t.integer "user_id", default: 0, null: false
     t.string "title", limit: 100, null: false
+    t.string "description", limit: 1024
     t.text "content"
-    t.string "category"
-    t.string "tags"
+    t.column "type", "enum('article','hobby','note','todo','other')"
+    t.string "tags", limit: 1024
     t.string "lang"
-    t.boolean "public"
+    t.string "public", limit: 100
     t.integer "times_read", default: 0
-    t.datetime "created_at", precision: nil
-    t.datetime "updated_at", precision: nil
+    t.datetime "created", precision: nil, default: -> { "current_timestamp()" }
+    t.datetime "updated", precision: nil
     t.datetime "last_read", precision: nil, default: -> { "current_timestamp()" }
     t.index ["user_id"], name: "user_id"
   end
 
-  create_table "postversions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+  create_table "postversions", id: false, charset: "utf8mb4", collation: "utf8mb4_general_ci", options: "ENGINE=MyISAM", force: :cascade do |t|
+    t.integer "id", null: false, auto_increment: true
     t.integer "org_id", null: false
     t.integer "user_id", null: false
     t.string "title", limit: 100, null: false
     t.string "description", limit: 1024
     t.text "content"
-    t.string "category", limit: 20
+    t.string "type"
     t.string "tags", limit: 1024, default: "[]"
-    t.datetime "created_at", precision: nil
+    t.datetime "created", precision: nil, default: -> { "current_timestamp()" }
     t.index ["id"], name: "id"
     t.index ["org_id"], name: "org_id"
   end
@@ -163,7 +162,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_134459) do
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.string "name"
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

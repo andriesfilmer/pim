@@ -6,6 +6,8 @@ class Event < ApplicationRecord
   alias_attribute :end_time, :end
   alias_attribute :notes, :description
   alias_attribute :category, :className
+  alias_attribute :created_at, :created
+  alias_attribute :updated_at, :updated
 
   validates :title, presence: true
   validates :start, presence: true

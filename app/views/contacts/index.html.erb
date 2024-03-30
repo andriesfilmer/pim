@@ -1,6 +1,6 @@
 <div class="row secondary-menu">
   <div class="small-10 medium-10 columns">
-    <img src="/assets/group.svg" class="icon large">
+    <%= link_to (image_tag "group.svg", class: "icon large"), contacts_path %>
     <span class="divider"></span>
     <%= link_to contacts_path(starred: true)  do %>
       <%= image_tag "star.svg", class: "icon large" %>

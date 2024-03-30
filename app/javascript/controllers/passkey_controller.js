@@ -78,8 +78,6 @@ export default class extends Controller {
   }
 
   toggleNotes() {
-    console.log("######## this.notesToggleTarget.value: " + this.notesToggleTarget.textContent);
-    console.dir(this.notesToggleTarget)
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
     if (this.notesToggleTarget.classList.toggle("hide-notes")) {
@@ -87,7 +85,7 @@ export default class extends Controller {
       this.notesToggleTarget.style.background = "#eee"
     } else {
       this.notesToggleTarget.style.color = "#000"
-      this.notesToggleTarget.style.background = "#fff"
+      this.notesToggleTarget.style.background = "orange"
     }
     if (this.notesToggleTarget.textContent === "" ) {
       this.notesToggleTarget.textContent = "No notes yet..."

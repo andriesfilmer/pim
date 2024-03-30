@@ -9,7 +9,7 @@
   </div>
   <div class="small-2 medium-1 columns hide-for-small-only text-center">
     <%= content_tag :label, (event.allDay? ? "Allday" : l(event.start, format: :short)),
-     class: event.allDay? ? "label-button display-inline notice-color" : "" %>
+     class: event.allDay? ? "button tiny" : "" %>
   </div>
   <% end %>
 <% end %>

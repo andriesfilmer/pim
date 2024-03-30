@@ -10,10 +10,6 @@
     cursor: pointer;
     margin-top: -0.5em;
   }
-  div.notice { background: $notice-color; }
-  div.success { background: $success-color; }
-  div.warning { background: lighten($warning-color, 30%) }
-  div.alert { background: lighten($alert-color, 30%) }
 }
 
 svg {

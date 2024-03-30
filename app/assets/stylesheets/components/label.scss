@@ -6,11 +6,12 @@
   font-size: 0.8rem;
   white-space: nowrap;
   &.secondary {
-    background-color: #f2f2f2;
-    color: #000;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
     &:hover {
       color: #000;
       background: #ddd;
     }
   }
 }
+

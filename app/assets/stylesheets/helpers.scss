@@ -29,14 +29,20 @@
 .h-space { margin: 1em 0; }
 
 
-.notice-color { color: var(--notice-color); }
-.success-color { color: var(--success-color); }
-.warning-color { color: var(--warning-color); }
-.alert-color { color: var(--alert-color); }
-.alert-color-bg { background-color: var(--alert-color); }
+.primary-color   { background-color: var(--primary-color); }
+.secondary-color { background-color: var(--secondary-color); }
+.accent-color    { background-color: var(--accent-color); }
+.notice-color    { background-color: var(--notice-color); }
 
-.odd-even:nth-child(odd){ background-color: #eee; }
-.odd-even { &:hover { background-color: #ddd; }}
+.success-color { background-color: var(--success-color); }
+.success-font  { color: var(--success-color); }
+.warning-color { background-color: var(--warning-color); }
+.warning-font  { color: var(--warning-color); }
+.alert-color   { background-color: var(--alert-color); }
+.alert-font    { color: var(--alert-color); }
+
+.odd-even:nth-child(odd){ background-color: var(--secondary-color); }
+.odd-even { &:hover { background-color: var(--accent-color) }}
 
 .disabled { color: #ccc; }
 

@@ -1,7 +1,5 @@
-<%= render "layouts/show_errors", resource: @event %>
-
 <%= form_with model: @event, id: "eventForm", class: "userinputs" do |form| %>
-
+  <%= render "layouts/show_errors", resource: @event %>
   <div class="row">
     <div class="columns">
       <%= form.text_field :title, placeholder: "Title of event"%>

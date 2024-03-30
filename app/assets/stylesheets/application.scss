@@ -19,16 +19,41 @@
  * require helpers.css
  */
 
-$main-color:     purple;
-$button-color:   purple;
-$notice-color:   lightblue;
-$success-color:  green;
-$warning-color:  orange;
-$alert-color:    red;
+//}
 
+@import 'light_theme';
+.light-theme {
+  --body-color: #{$body-color};
+  --text-color: #{$text-color};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --accent-color: #{$accent-color};
+  --navbar-color: #{$navbar-color};
+  --button-color: #{$button-color};
+  --icon-filter: #{$icon-filter};
+  --notice-color: #{$notice-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --alert-color: #{$alert-color};
+}
+
+@import 'dark_theme';
+.dark-theme {
+  --body-color: #{$body-color};
+  --text-color: #{$text-color};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --accent-color: #{$accent-color};
+  --navbar-color: #{$navbar-color};
+  --button-color: #{$button-color};
+  --icon-filter: #{$icon-filter};
+  --notice-color: #{$notice-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --alert-color: #{$alert-color};
+}
 
 @import 'mixin';
-@import 'colors';
 @import 'basic';
 @import 'grid';
 @import 'icons';
@@ -39,6 +64,7 @@ $alert-color:    red;
 @import 'components/diff';
 @import 'components/flash';
 @import 'components/forms';
+@import 'components/fullcalendar';
 @import 'components/label';
 @import 'components/markdown';
 @import 'components/model';
@@ -53,5 +79,6 @@ $alert-color:    red;
 turbo-frame {
   display: inline-block;
   border: 1px solid blue;
+  width: 100%;
 }
 

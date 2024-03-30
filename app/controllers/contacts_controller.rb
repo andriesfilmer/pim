@@ -10,11 +10,6 @@ class ContactsController < ApplicationController
 
   def show
     @contact.update_column(:last_read,DateTime.now)
-
-    #respond_to do |format|
-    #  format.html
-    #  format.json { render json: @contact.to_json } # else only id, created_at, updated_at
-    #end
   end
 
   def new
@@ -30,12 +25,11 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.save
         format.html { redirect_to @contact, notice: "Contact was successfully created." }
-        # Turbo-stream actions in separate file update.turbo_stream.erb
-        #format.turbo_stream { flash.now[:notice] = "Turbo contact was successfully created." }
-        #format.json { render :show, status: :created, location: @contact } and return
       else
         format.html { render :new, status: :unprocessable_entity }
-        #format.json { render json: @contact.errors, status: :unprocessable_entity }
+        format.turbo_stream {
+           render turbo_stream: turbo_stream.replace("contactForm", partial: "contacts/form", locals: { resource: @contact })
+        }
       end
 
     # Create a copy for versions management.
@@ -45,26 +39,23 @@ class ContactsController < ApplicationController
   end
 
   def update
-    if params[:redirect] == "edit"
-      url = edit_contact_url(@contact)
-    else
-      url = contact_url(@contact)
-    end
-
-    # Create a copy for versions management.
-    add_version(@contact)
-
     respond_to do |format|
       if @contact.update(contact_params)
-        format.html { redirect_to url, notice: "Contact was successfully updated." }
-        # Turbo-stream actions in this block
-        #format.turbo_stream { render turbo_stream: turbo_stream.replace("contact_#{@contact.id}", @contact) }
+        format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
         format.json { render :show, status: :ok, location: @contact }
       else
         format.html { render :edit, status: :unprocessable_entity }
-        #format.json { render json: @contact.errors, status: :unprocessable_entity }
+        format.turbo_stream {
+           render turbo_stream: turbo_stream.replace("contactForm", partial: "contacts/form", locals: { resource: @contact })
+        }
       end
     end
+
+    # Create a copy for versions management.
+    if @contact.errors.empty?
+      add_version(@contact)
+    end
+
   end
 
   def destroy
@@ -81,6 +72,7 @@ class ContactsController < ApplicationController
       search = "%#{params[:search]}%"
       @contacts = Contact.where("name LIKE ? OR notes LIKE ? OR tags LIKE ?", search, search, search)
                          .order(updated_at: :desc)
+      cookies[:search] = params[:search]
     else
       @contacts = []
     end

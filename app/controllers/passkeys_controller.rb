@@ -24,10 +24,10 @@ class PasskeysController < ApplicationController
     respond_to do |format|
       if @passkey.save
         format.html { redirect_to passkey_url(@passkey), notice: "Key was successfully created." }
-        format.json { render :show, status: :created, location: @passkey }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @passkey.errors, status: :unprocessable_entity }
+        format.turbo_stream {
+           render turbo_stream: turbo_stream.replace("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
+        }
       end
     end
 
@@ -40,10 +40,10 @@ class PasskeysController < ApplicationController
     respond_to do |format|
       if @passkey.update(passkey_params)
         format.html { redirect_to passkey_url(@passkey), notice: "Key was successfully updated." }
-        format.json { render :show, status: :ok, location: @passkey }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @passkey.errors, status: :unprocessable_entity }
+        format.turbo_stream {
+           render turbo_stream: turbo_stream.replace("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
+        }
       end
     end
 

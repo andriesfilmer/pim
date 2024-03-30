@@ -40,12 +40,10 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.save
         format.html { redirect_to @event, notice: "Event was successfully created." }
-        # Turbo-stream actions in separate file update.turbo_stream.erb
-        #format.turbo_stream { flash.now[:notice] = "Turbo event was successfully created." }
-        #format.json { render :show, status: :created, location: @event } and return
       else
-        format.html { render :new, status: :unprocessable_entity }
-        #format.json { render json: @event.errors, status: :unprocessable_entity }
+        format.turbo_stream {
+           render turbo_stream: turbo_stream.replace("eventForm", partial: "events/form", locals: { resource: @event })
+        }
       end
 
     # Create a copy for versions management.
@@ -63,13 +61,12 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.update(event_params)
+        flash.now[:notice] = "Event was successfully updated."
         format.html { redirect_to events_path, notice: "Event was successfully updated." }
-        # Turbo-stream actions in this block
-        #format.turbo_stream { render turbo_stream: turbo_stream.replace("event_#{@event.id}", @event) }
-        format.json { render :show, status: :ok, location: @event }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        #format.json { render json: @event.errors, status: :unprocessable_entity }
+        format.turbo_stream {
+           render turbo_stream: turbo_stream.replace("eventForm", partial: "events/form", locals: { resource: @event })
+        }
       end
     end
 
@@ -94,6 +91,7 @@ class EventsController < ApplicationController
       search = "%#{params[:search]}%"
       @events = Event.where("title LIKE ? OR description LIKE ? OR tags LIKE ?", search, search, search)
                      .order(updated_at: :desc).where(user_id: current_user.id)
+      cookies[:search] = params[:search]
     else
       @events = []
     end

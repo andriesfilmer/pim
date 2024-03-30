@@ -1,6 +1,5 @@
-<%= render "layouts/show_errors", resource: @passkey %>
-
 <%= form_with model: @passkey, id: "passkeyForm", class: "userinputs" do |form| %>
+  <%= render "layouts/show_errors", resource: @passkey %>
 
   <div class="row">
     <div class="columns">

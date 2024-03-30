@@ -1,0 +1,44 @@
+
+// FullCalendar overwrites
+//------------------------
+.fc-direction-ltr .fc-toolbar > * > :not(:first-child) { margin-left: 0 !important; }
+.fc--button,
+.fc-dayGridMonth-button,
+.fc-listMonth-button,
+.fc-listWeek-button,
+.fc-multiMonthYear-button,
+.fc-today-button,
+.fc-timeGridWeek-button {
+  display: none !important;
+}
+a.fc-event {
+  &.holiday { color: #fff; background-color: var(--success-color); }
+  &.memo { color: #fff; background-color: var(--warning-color); }
+  &.import { color: #fff; background-color: purple; }
+  &.task { color: #fff; background-color: var(--alert-color); }
+  &.business { color: #fff; background-color: var(--secondary-color); }
+}
+.fc {
+  .fc-button-primary, .fc .fc-button-primary:focus,  .fc-button-primary:hover,  {
+    background-color: var(--secondary-color);
+    border: none;
+    color: #000;
+    padding: 5px;
+  }
+  .fc-toolbar-title { font-size: large }
+}
+
+.fc-h-event {
+  background: var(--notice-color);
+  border: none;
+}
+
+@media screen and (max-width: 639px) {
+  #calendar {
+    height: 650px !important;
+  }
+
+  .fc-daygrid-week-number {
+    display: none;
+  }
+}

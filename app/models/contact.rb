@@ -1,5 +1,7 @@
 class Contact < ApplicationRecord
 
+  alias_attribute :created_at, :created
+  alias_attribute :updated_at, :updated
 
   #after_create_commit -> { broadcast_prepend_to "contacts", partial: "contacts/contact", locals: { quote: self }, rersource: :contacts }
   #after_create_commit { broadcast_append_to contact }

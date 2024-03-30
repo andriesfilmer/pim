@@ -1,7 +1,7 @@
 // Tooltip component
 //------------------
 
-.toolltip, .tooltip:after { background: var(--button-color) }
+.toolltip, .tooltip:after { background: $button-color }
 
 // tooltip-hover is only for corporate-styles (premailer can't handle hovers)
 .tooltip-hover, .tooltip:after {

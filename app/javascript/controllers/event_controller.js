@@ -70,6 +70,7 @@ export default class extends Controller {
 
   initialize() {
     console.log("######## init event controller");
+
     if (document.getElementById("calendar")) {
       let calendarEl = document.getElementById('calendar');
       let calendar = new FullCalendar.Calendar(calendarEl, {
@@ -78,7 +79,6 @@ export default class extends Controller {
         navLinks: true, // can click day/week names to navigate views
         editable: true,
         weekNumbers: true,
-        height: 650,
         headerToolbar: {
           left: 'prevYear, prev',
           center: 'title',

@@ -12,7 +12,7 @@
     <%= content_tag :div, @passkey.username, id: "username" %>
   </div>
   <div class="columns small-2 medium-1">
-    <div data-action="click->passkey#copyUsername" class="label-button display-inline notice-color">Copy</div>
+    <div data-action="click->passkey#copyUsername" class="button tiny">Copy</div>
   </div>
   <div class="columns">
     <%= label_tag :password, nil, class: "label-th display-inline" %>
@@ -24,7 +24,7 @@
       data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
   </div>
   <div class="columns small-2 medium-1">
-    <div data-action="click->passkey#copyPassword" class="label-button display-inline notice-color">Copy</div>
+    <div data-action="click->passkey#copyPassword" class="button tiny">Copy</div>
   </div>
   <div class="columns">
     <%= label_tag :url, nil, class: "label-th" %>
@@ -39,7 +39,7 @@
       data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
     <div id="markdown" class="callout hide-notes" style="background:#eee;color: #000;"
-      data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Toggle visibility notes</div>
+      data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Click to show notes</div>
   </div>
 <% end if @passkey.notes.present? %>
 

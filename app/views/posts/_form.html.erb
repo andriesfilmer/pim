@@ -1,6 +1,5 @@
-<%= render "layouts/show_errors", resource: @post %>
-
 <%= form_with model: @post, id: "postForm", class: "userinputs" do |form| %>
+  <%= render "layouts/show_errors", resource: @post %>
 
   <div class="row">
     <div class="columns">
