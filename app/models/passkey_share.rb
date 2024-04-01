@@ -1,4 +1,4 @@
-class Passkeyshare < ApplicationRecord
+class PasskeyShare < ApplicationRecord
 
   validates :passkey_id, presence: true
   validates :user_id, presence: true

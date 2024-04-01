@@ -5,7 +5,7 @@ class Passkey < ApplicationRecord
   encrypts :password
   encrypts :notes, deterministic: true #, previous: { deterministic: false }
 
-  has_many :passkeyshares, dependent: :destroy
+  has_many :passkey_shares, dependent: :destroy
 
   validates :title, presence: true
 

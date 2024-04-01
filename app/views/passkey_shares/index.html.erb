@@ -7,8 +7,8 @@
   <div class="columns medium-2 row-th hide-for-small-only">Created</div>
   <div class="columns medium-2 row-th hide-for-small-only">Updated</div>
 </div>
-<div id="passkeyshares" class="col-12">
-<% @passkeyshares.each do | share | %>
+<div id="passkey_shares" class="col-12">
+<% @passkey_shares.each do | share | %>
   <%= link_to passkey_path(share.passkey_id), class: "row odd-even" do %>
      <%= content_tag :div, share.passkey.title , class: "columns medium-4" %>
      <%= content_tag :div, share.email , class: "columns medium-4" %>

@@ -8,26 +8,26 @@ class PasskeysController < ApplicationController
 
   def show
     @passkey.update_column(:last_read,DateTime.now)
-    @passkeyshare = Passkeyshare.new(passkey_id: @passkey.id)
-    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
+    @passkey_share = PasskeyShare.new(passkey_id: @passkey.id)
+    @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
   end
 
   def new
     @passkey = Passkey.new
-    @passkeyshare = Passkeyshare.new
-    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
+    @passkey_share = PasskeyShare.new
+    @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
   end
 
   def edit
-    @passkeyshare = Passkeyshare.new(passkey_id: @passkey.id)
-    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
+    @passkey_share = PasskeyShare.new(passkey_id: @passkey.id)
+    @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
   end
 
   def create
     @passkey = Passkey.new(passkey_params)
     @passkey.user_id = current_user.id
-    @passkeyshare = Passkeyshare.new
-    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
+    @passkey_share = PasskeyShare.new
+    @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
 
     respond_to do |format|
       if @passkey.save

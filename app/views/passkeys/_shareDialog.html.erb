@@ -8,14 +8,14 @@
   <div id="dialog_flash">
     <%= render "layouts/dialog_flash" %>
   </div>
-  <div id="passkeysharesForm">
-    <%= render "passkeyshares" %>
+  <div id="passkey_sharesForm">
+    <%= render "passkey_shares" %>
   </div>
   <div class="row">
     <div class="columns">
       <hr>
       <p>Share this passkey with other users in this PIM.</p>
-      <%= form_with url: passkeyshares_path, model: @passkeyshare do |form| %>
+      <%= form_with url: passkey_shares_path, model: @passkey_share do |form| %>
         <%= form.hidden_field :passkey_id %>
 
         <%= label_tag :email, "Emailaddress" %>

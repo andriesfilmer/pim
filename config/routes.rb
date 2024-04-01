@@ -33,6 +33,6 @@ Rails.application.routes.draw do
   resources :postversions
   resources :passkeys
   resources :passkeyversions
-  resources :passkeyshares
+  resources :passkey_shares
 
 end
