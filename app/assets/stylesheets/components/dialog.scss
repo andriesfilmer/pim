@@ -3,9 +3,18 @@
 .dialog {
   border: solid 0px;
   border-radius: 5px;
+  padding: 0;
+  cursor: pointer;
   &::backdrop {
     background-color: purple;
     opacity: 0.55;
     filter: blur(100px);
   }
+  .close {
+    font-size: 2em;
+  }
+}
+#turbo-confirm {
+  padding: 1em;
+  border: solid 1px;
 }

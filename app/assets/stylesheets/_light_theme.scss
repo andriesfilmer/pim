@@ -2,6 +2,7 @@
 // Light theme
 $body-color:      #ffffff;
 $text-color:      #121212;
+$text-color-diap: #fff;
 
 $primary-color:   #6fa688;
 $secondary-color: #bed7c9;
@@ -12,6 +13,23 @@ $button-color:    #a66f8d;
 $icon-filter:     invert(100%) brightness(10%) contrast(100%);
 
 $notice-color:    #30b8cb;
-$success-color:   #17bd17;
-$warning-color:   #f7a40b;
+$success-color:   #85db85;
+$warning-color:   #fac054;
 $alert-color:     #e90707;
+
+.light-theme {
+  --body-color: #{$body-color};
+  --text-color: #{$text-color};
+  --text-color-diap: #{$text-color-diap};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --accent-color: #{$accent-color};
+  --navbar-color: #{$navbar-color};
+  --button-color: #{$button-color};
+  --icon-filter: #{$icon-filter};
+  --notice-color: #{$notice-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --alert-color: #{$alert-color};
+}
+

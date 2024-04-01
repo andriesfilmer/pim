@@ -1,0 +1,28 @@
+<dialog id="shareDialog" class="dialog" data-controller="passkey">
+  <div class="row row-th">
+    <div class="columns small-10 medium-11">Share this key</div>
+    <div class="columns small-2 medium-1 text-right">
+      <span class="close" data-action="click->passkey#closeShareDialog">&times;</span>
+    </div>
+  </div>
+  <div id="dialog_flash">
+    <%= render "layouts/dialog_flash" %>
+  </div>
+  <div id="passkeysharesForm">
+    <%= render "passkeyshares" %>
+  </div>
+  <div class="row">
+    <div class="columns">
+      <hr>
+      <p>Share this passkey with other users in this PIM.</p>
+      <%= form_with url: passkeyshares_path, model: @passkeyshare do |form| %>
+        <%= form.hidden_field :passkey_id %>
+
+        <%= label_tag :email, "Emailaddress" %>
+        <%= form.email_field :email, placeholder: "Add other emailaddress to share with" %>
+
+        <p><%= form.submit "Save", class: "button" %></p>
+      <% end %>
+    </div>
+  </div>
+</dialog>

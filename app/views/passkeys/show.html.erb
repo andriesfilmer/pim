@@ -2,33 +2,42 @@
 <%= render "passkeys/restore_menu" if @passkey.try(:org_id) %>
 
 <div class="row" data-controller="passkey">
-  <div class="columns">
-    <h2><%= @passkey.title %></h2>
+  <div class="medium-6">
+    <div class="row">
+      <div class="columns">
+        <h2><%= @passkey.title %></h2>
+      </div>
+      <div class="columns">
+        <%= label_tag :username, nil, class: "label-th" %>
+      </div>
+      <div class="columns small-10 medium-11">
+        <%= content_tag :div, @passkey.username, id: "username" %>
+      </div>
+      <div class="columns small-2 medium-1">
+        <div data-action="click->passkey#copyUsername" class="button tiny">Copy</div>
+      </div>
+      <div class="columns">
+        <%= label_tag :password, nil, class: "label-th display-inline" %>
+        <%= image_tag "visibility.svg", id: "passwordToggle", class: "icon medium",
+          data: { "action": "click->passkey#togglePassword" } %>
+      </div>
+      <div class="columns small-10 medium-11">
+        <%= password_field_tag 'password', @passkey.password,
+          data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
+      </div>
+      <div class="columns small-2 medium-1">
+        <div data-action="click->passkey#copyPassword" class="button tiny">Copy</div>
+      </div>
+      <div class="columns">
+        <%= label_tag :url, nil, class: "label-th" %>
+        <%= link_to @passkey.url, @passkey.url, target: "_blank" %>
+      </div>
+    </div>
   </div>
-  <div class="columns">
-    <%= label_tag :username, nil, class: "label-th" %>
-  </div>
-  <div class="columns small-10 medium-11">
-    <%= content_tag :div, @passkey.username, id: "username" %>
-  </div>
-  <div class="columns small-2 medium-1">
-    <div data-action="click->passkey#copyUsername" class="button tiny">Copy</div>
-  </div>
-  <div class="columns">
-    <%= label_tag :password, nil, class: "label-th display-inline" %>
-    <%= image_tag "visibility.svg", id: "passwordToggle", class: "icon medium",
-      data: { "action": "click->passkey#togglePassword" } %>
-  </div>
-  <div class="columns small-10 medium-11">
-    <%= password_field_tag 'password', @passkey.password,
-      data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
-  </div>
-  <div class="columns small-2 medium-1">
-    <div data-action="click->passkey#copyPassword" class="button tiny">Copy</div>
-  </div>
-  <div class="columns">
-    <%= label_tag :url, nil, class: "label-th" %>
-    <%= link_to @passkey.url, @passkey.url, target: "_blank" %>
+  <div class="columns medium-6">
+    <%= content_tag :div, id: "passkeyshares" do %>
+     <%= render "passkeyshares", resource: @passkeyshares %>
+    <% end if @passkeyshares.any?%>
   </div>
 </div>
 
@@ -38,7 +47,7 @@
     <%= image_tag "visibility.svg", id: "notesToggle", class: "icon medium",
       data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
-    <div id="markdown" class="callout hide-notes" style="background:#eee;color: #000;"
+    <div id="markdown" class="callout hide-notes disabled"
       data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Click to show notes</div>
   </div>
 <% end if @passkey.notes.present? %>
@@ -55,3 +64,5 @@
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @passkey.created_at, format: :default %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @passkey.updated_at, format: :default %></div>
 </div>
+
+<%= render "shareDialog", resource: @passkey %>

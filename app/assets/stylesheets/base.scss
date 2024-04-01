@@ -79,11 +79,11 @@ h1.th, h2.th, h3.th, h4.th {
 }
 .row-th {
   background-color: var(--primary-color);
-  color: #fff;
+  color: var(--text-color-diap);
 }
 .row-caption, .row-th, .odd-even {
   padding: 0.3em 0 0.3em 0.3em;
-  line-height: 2em;
+  line-height: 1.6em;
 }
 
 .close-button {

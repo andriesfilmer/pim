@@ -70,10 +70,10 @@ export default class extends Controller {
   togglePassword() {
     if (this.passwordToggleTarget.type === "text") {
       this.passwordToggleTarget.type = "password"
-      this.passwordToggleTarget.style.background = ""
+      this.passwordToggleTarget.classList.remove("warning-color")
     } else {
       this.passwordToggleTarget.type = "text"
-      this.passwordToggleTarget.style.background = "orange"
+      this.passwordToggleTarget.classList.add("warning-color")
     }
   }
 
@@ -81,11 +81,12 @@ export default class extends Controller {
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
     if (this.notesToggleTarget.classList.toggle("hide-notes")) {
-      this.notesToggleTarget.style.color = "#eee"
-      this.notesToggleTarget.style.background = "#eee"
+      this.notesToggleTarget.textContent = "Click to show notes"
+      this.notesToggleTarget.classList.remove("warning-color");
+      this.notesToggleTarget.classList.add("disabled");
     } else {
-      this.notesToggleTarget.style.color = "#000"
-      this.notesToggleTarget.style.background = "orange"
+      this.notesToggleTarget.classList.remove("disabled");
+      this.notesToggleTarget.classList.add("warning-color");
     }
     if (this.notesToggleTarget.textContent === "" ) {
       this.notesToggleTarget.textContent = "No notes yet..."
@@ -115,4 +116,15 @@ export default class extends Controller {
   versions() {
     compareVersions()
   }
+
+  openShareDialog() {
+    let dialog = document.getElementById("shareDialog")
+    dialog.showModal();
+  }
+
+  closeShareDialog() {
+    let dialog = document.getElementById("shareDialog")
+    dialog.close();
+  }
+
 }

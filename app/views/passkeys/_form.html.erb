@@ -6,7 +6,7 @@
       <%= form.label :title, class: "label-th" %>
     </div>
     <div class="columns">
-      <%= form.text_field :title, placeholder: "Enter title" %>
+      <%= form.text_field :title, placeholder: "Enter title for this key" %>
     </div>
     <div class="columns">
       <%= form.label :username %>
@@ -50,3 +50,4 @@
   </div>
 <% end %>
 
+<%= render "shareDialog", resource: @passkey %>

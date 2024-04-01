@@ -40,7 +40,7 @@ function loadFunction() {
   }
 
   // Hide flash messages
-  $("#flash").click(function(event) {
+  $("#flash, #dialog_flash").click(function(event) {
     $( event.target ).closest( ".flash" ).hide('slow');
   });
 

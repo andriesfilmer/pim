@@ -29,17 +29,34 @@
 .h-space { margin: 1em 0; }
 
 
-.primary-color   { background-color: var(--primary-color); }
-.secondary-color { background-color: var(--secondary-color); }
-.accent-color    { background-color: var(--accent-color); }
-.notice-color    { background-color: var(--notice-color); }
-
-.success-color { background-color: var(--success-color); }
-.success-font  { color: var(--success-color); }
-.warning-color { background-color: var(--warning-color); }
-.warning-font  { color: var(--warning-color); }
-.alert-color   { background-color: var(--alert-color); }
-.alert-font    { color: var(--alert-color); }
+.primary-color {
+  background-color: var(--primary-color);
+  color: var(--success-color-diap);
+}
+.secondary-color {
+  background-color: var(--secondary-color);
+  color: var(--success-color-diap);
+}
+.accent-color {
+  background-color: var(--accent-color);
+  color: var(--success-color-diap);
+ }
+.notice-color  {
+  background-color: var(--notice-color);
+  color: var(--success-color-diap);
+}
+.success-color {
+  background-color: var(--success-color);
+  color: var(--success-color-diap);
+}
+.warning-color {
+  background-color: var(--warning-color);
+  color: var(--success-color-diap);
+}
+.alert-color   {
+  background-color: var(--alert-color);
+  color: var(--success-color-diap);
+}
 
 .odd-even:nth-child(odd){ background-color: var(--secondary-color); }
 .odd-even { &:hover { background-color: var(--accent-color) }}

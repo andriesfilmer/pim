@@ -2,6 +2,7 @@
 // Dark theme
 $body-color:      #352d37;
 $text-color:      #b9b5b5;
+$text-color-diap: #e5e5e5;
 
 $primary-color:   #282828;
 $secondary-color: #717171;
@@ -15,3 +16,20 @@ $notice-color:    #1076ad;
 $success-color:   #17bd17;
 $warning-color:   #af7409;
 $alert-color:     red;
+
+.dark-theme {
+  --body-color: #{$body-color};
+  --text-color: #{$text-color};
+  --text-color-diap: #{$text-color-diap};
+  --primary-color: #{$primary-color};
+  --secondary-color: #{$secondary-color};
+  --accent-color: #{$accent-color};
+  --navbar-color: #{$navbar-color};
+  --button-color: #{$button-color};
+  --icon-filter: #{$icon-filter};
+  --notice-color: #{$notice-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
+  --alert-color: #{$alert-color};
+}
+

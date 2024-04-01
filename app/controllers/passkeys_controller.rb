@@ -8,25 +8,33 @@ class PasskeysController < ApplicationController
 
   def show
     @passkey.update_column(:last_read,DateTime.now)
+    @passkeyshare = Passkeyshare.new(passkey_id: @passkey.id)
+    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
   end
 
   def new
     @passkey = Passkey.new
+    @passkeyshare = Passkeyshare.new
+    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
   end
 
   def edit
+    @passkeyshare = Passkeyshare.new(passkey_id: @passkey.id)
+    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
   end
 
   def create
     @passkey = Passkey.new(passkey_params)
     @passkey.user_id = current_user.id
+    @passkeyshare = Passkeyshare.new
+    @passkeyshares = Passkeyshare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
 
     respond_to do |format|
       if @passkey.save
         format.html { redirect_to passkey_url(@passkey), notice: "Key was successfully created." }
       else
         format.turbo_stream {
-           render turbo_stream: turbo_stream.replace("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
+           render turbo_stream: turbo_stream.update("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
         }
       end
     end
@@ -42,7 +50,7 @@ class PasskeysController < ApplicationController
         format.html { redirect_to passkey_url(@passkey), notice: "Key was successfully updated." }
       else
         format.turbo_stream {
-           render turbo_stream: turbo_stream.replace("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
+           render turbo_stream: turbo_stream.update("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
         }
       end
     end

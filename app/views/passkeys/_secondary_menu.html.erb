@@ -22,9 +22,11 @@
     <% end if @passkey.id %>
     <%= content_tag :span, '', class: "divider" if @passkey.id %>
 
+    <%= image_tag "share.svg", id: "share", data: { controller: "passkey", action: "click->passkey#openShareDialog" },
+       title: "Share passkey", class:"icon large cursor-pointer" if @passkey.id %>
+
   </div>
   <div class="columns small-2 medium-2 text-right">
-    <%= content_tag :span, '', class: "divider" if @passkey.id %>
     <%= link_to passkey_path(@passkey), data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this passkey?'},
       title: "Delete item!" do %>
       <%= image_tag "delete.svg", class: "icon large" %>

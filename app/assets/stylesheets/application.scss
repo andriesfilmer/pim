@@ -22,37 +22,7 @@
 //}
 
 @import 'light_theme';
-.light-theme {
-  --body-color: #{$body-color};
-  --text-color: #{$text-color};
-  --primary-color: #{$primary-color};
-  --secondary-color: #{$secondary-color};
-  --accent-color: #{$accent-color};
-  --navbar-color: #{$navbar-color};
-  --button-color: #{$button-color};
-  --icon-filter: #{$icon-filter};
-  --notice-color: #{$notice-color};
-  --success-color: #{$success-color};
-  --warning-color: #{$warning-color};
-  --alert-color: #{$alert-color};
-}
-
 @import 'dark_theme';
-.dark-theme {
-  --body-color: #{$body-color};
-  --text-color: #{$text-color};
-  --primary-color: #{$primary-color};
-  --secondary-color: #{$secondary-color};
-  --accent-color: #{$accent-color};
-  --navbar-color: #{$navbar-color};
-  --button-color: #{$button-color};
-  --icon-filter: #{$icon-filter};
-  --notice-color: #{$notice-color};
-  --success-color: #{$success-color};
-  --warning-color: #{$warning-color};
-  --alert-color: #{$alert-color};
-}
-
 @import 'mixin';
 @import 'basic';
 @import 'grid';
