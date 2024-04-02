@@ -1,4 +1,6 @@
-class Eventversion < ApplicationRecord
+class EventVersion < ApplicationRecord
+
+  self.table_name = 'eventversions'
 
   # We use the show view form 'event'. There we need updated_at attribute.
   attr_accessor :updated_at

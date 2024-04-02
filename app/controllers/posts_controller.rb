@@ -95,10 +95,10 @@ class PostsController < ApplicationController
 
   def add_version(post)
     # Create a copy for versions management.
-    @postversion = Postversion.new(post_params.except("id","created_at","updated_at","picture"))
-    @postversion.org_id = post.id
-    @postversion.user_id = post.user_id
-    @postversion.save
+    @post_version = PostVersion.new(post_params.except("id","created_at","updated_at","picture"))
+    @post_version.org_id = post.id
+    @post_version.user_id = post.user_id
+    @post_version.save
   end
 
   # Use callbacks to share common setup or constraints between actions.

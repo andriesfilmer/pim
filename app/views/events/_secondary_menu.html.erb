@@ -13,7 +13,7 @@
        title: "Save event", class:"icon large cursor-pointer" if action_name != "show" %>
     <%= content_tag :span, '', class: "divider" if action_name != "show" && @event.id %>
 
-    <%= link_to eventversions_path(org_id: @event.id), title: "Versions of this event" do %>
+    <%= link_to event_versions_path(org_id: @event.id), title: "Versions of this event" do %>
       <img src="/assets/restore.svg" class="icon large">
     <% end if @event.id %>
     <%= content_tag :span, '', class: "divider" if @event.id %>

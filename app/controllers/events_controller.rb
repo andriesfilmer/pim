@@ -108,10 +108,10 @@ class EventsController < ApplicationController
 
   def add_version(event)
     # Create a copy for versions management.
-    @eventversion = Eventversion.new(event_params.except("id","mongo_id", "created_at","updated_at", "start_date", "start_time", "end_date", "end_time"))
-    @eventversion.org_id = event.id
-    @eventversion.user_id = current_user.id
-    @eventversion.save
+    @event_version = EventVersion.new(event_params.except("id","mongo_id", "created_at","updated_at", "start_date", "start_time", "end_date", "end_time"))
+    @event_version.org_id = event.id
+    @event_version.user_id = current_user.id
+    @event_version.save
   end
 
   # Use callbacks to share common setup or constraints between actions.

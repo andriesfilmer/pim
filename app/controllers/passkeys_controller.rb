@@ -90,10 +90,10 @@ class PasskeysController < ApplicationController
 
   def add_version(passkey)
     # Create a copy for versions management.
-    @passkeyversion = Passkeyversion.new(passkey_params.except("id","created_at","updated_at","picture"))
-    @passkeyversion.org_id = passkey.id
-    @passkeyversion.user_id = passkey.user_id
-    @passkeyversion.save
+    @passkey_version = PasskeyVersion.new(passkey_params.except("id","created_at","updated_at","picture"))
+    @passkey_version.org_id = passkey.id
+    @passkey_version.user_id = passkey.user_id
+    @passkey_version.save
   end
 
   # Use callbacks to share common setup or constraints between actions.

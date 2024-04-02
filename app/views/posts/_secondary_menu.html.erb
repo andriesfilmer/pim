@@ -20,7 +20,7 @@
     <%= image_tag "photo-add.svg", class: "icon large", data: { modal_open: "addPicture" } if @post.id && action_name == "edit" %>
     <%= content_tag :span, '', class: "divider" if @post.id && action_name == "edit" %>
 
-    <%= link_to postversions_path(org_id: @post.id), title: "Versions of this post" do %>
+    <%= link_to post_versions_path(org_id: @post.id), title: "Versions of this post" do %>
       <img src="/assets/restore-page.svg" class="icon large">
     <% end if @post.id %>
     <%= content_tag :span, '', class: "divider" if @post.id %>

@@ -5,12 +5,12 @@ class User < ApplicationRecord
     :validatable, :confirmable, :lockable, :trackable
 
   has_many :contacts, dependent: :destroy
-  has_many :contactversions, dependent: :destroy
+  has_many :contact_versions, dependent: :destroy
   has_many :events, dependent: :destroy
-  has_many :eventversions, dependent: :destroy
+  has_many :event_versions, dependent: :destroy
   has_many :passkeys, dependent: :destroy
-  has_many :passkeyversions, dependent: :destroy
+  has_many :passkey_versions, dependent: :destroy
   has_many :posts, dependent: :destroy
-  has_many :postversions, dependent: :destroy
+  has_many :post_versions, dependent: :destroy
 
 end

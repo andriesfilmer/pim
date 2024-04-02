@@ -4,8 +4,7 @@
     <%= content_tag :span, '', class: "divider" if @post.id %>
   </div>
   <div class="columns medium-6 text-right" id="add-back-arrow">
-    Version <%= @post.id %>
-    <%= button_to "Restore (html)", postrestore_path,
-      params: { version_id: @post.id} , class: "button" if @post.id %>
+   <p><%= button_to "Restore version #{@post.id}", postrestore_path,
+     params: { version_id: @post.id} , class: "button" if @post.id %></p>
   </div>
 </div>

@@ -10,29 +10,29 @@ Rails.application.routes.draw do
 
   get "events/drag", to: "events#drag"
   post "events/search", to: "events#search"
-  post "eventrestore", to: "eventversions#restore", as: "eventrestore"
-  get "eventversions/compare", to: "eventversions#compare"
+  post "eventrestore", to: "event_versions#restore", as: "eventrestore"
+  get "event_versions/compare", to: "event_versions#compare"
 
-  post "contactrestore", to: "contactversions#restore", as: "contactrestore"
+  post "contactrestore", to: "contact_versions#restore", as: "contactrestore"
   post "contacts/search", to: "contacts#search"
-  get "contactversions/compare", to: "contactversions#compare"
+  get "contact_versions/compare", to: "contact_versions#compare"
 
-  post "postrestore", to: "postversions#restore", as: "postrestore"
+  post "postrestore", to: "post_versions#restore", as: "postrestore"
   post "posts/search", to: "posts#search"
-  get "postversions/compare", to: "postversions#compare"
+  get "post_versions/compare", to: "post_versions#compare"
 
-  post "passkeyrestore", to: "passkeyversions#restore", as: "passkeyrestore"
+  post "passkeyrestore", to: "passkey_versions#restore", as: "passkeyrestore"
   post "passkeys/search", to: "passkeys#search"
-  get "passkeyversions/compare", to: "passkeyversions#compare"
+  get "passkey_versions/compare", to: "passkey_versions#compare"
 
   resources :events
-  resources :eventversions
+  resources :event_versions
   resources :contacts
-  resources :contactversions
+  resources :contact_versions
   resources :posts
-  resources :postversions
+  resources :post_versions
   resources :passkeys
-  resources :passkeyversions
+  resources :passkey_versions
   resources :passkey_shares
 
 end

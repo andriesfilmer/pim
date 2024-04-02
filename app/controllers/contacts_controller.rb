@@ -89,10 +89,10 @@ class ContactsController < ApplicationController
 
   def add_version(contact)
     # Create a copy for versions management.
-    @contactversion = Contactversion.new(contact_params.except("id","mongo_id", "created_at","updated_at"))
-    @contactversion.org_id = contact.id
-    @contactversion.user_id = contact.user_id
-    @contactversion.save
+    @contact_version = ContactVersion.new(contact_params.except("id","mongo_id", "created_at","updated_at"))
+    @contact_version.org_id = contact.id
+    @contact_version.user_id = contact.user_id
+    @contact_version.save
   end
 
   # Use callbacks to share common setup or constraints between actions.

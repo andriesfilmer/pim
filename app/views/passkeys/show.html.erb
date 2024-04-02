@@ -65,4 +65,4 @@
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @passkey.updated_at, format: :default %></div>
 </div>
 
-<%= render "shareDialog", resource: @passkey %>
+<%= render "/passkeys/shareDialog", resource: @passkey %>

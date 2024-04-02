@@ -10,16 +10,16 @@
     <div class="medium-8 columns">Created</div>
     <div class="medium-4 columns text-right">Select version</div>
   </div>
-  <% @eventversions.each do |eventversion| %>
+  <% @event_versions.each do |event_version| %>
   <div id="versions" class="row odd-even">
     <div class="small-8 medium-8 columns">
-      <%= link_to (l eventversion.created_at, format: :long), eventversion_path(eventversion) %>
+      <%= link_to (l event_version.created_at, format: :long), event_version_path(event_version) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
       <img src="assets/difference.svg" class="icon large">
-      <%= check_box_tag "version_ids[]", eventversion.id, false, id: eventversion.id,
+      <%= check_box_tag "version_ids[]", event_version.id, false, id: event_version.id,
         data: { action: "click->event#versions" }, class: "checkBoxClass" %>
-      <%= content_tag :span, eventversion.id %>
+      <%= content_tag :span, event_version.id %>
     </div>
   </div>
   <% end %>
@@ -29,7 +29,7 @@
     <div class="medium-2 columns text-right">
       &nbsp;
 
-      <%= button_to "Compare versions", eventversions_compare_path, id: "compare_btn", class: "button disabled", disabled: true,
+      <%= button_to "Compare versions", event_versions_compare_path, id: "compare_btn", class: "button disabled", disabled: true,
         params: { ids: "" }, data: { turbo: false }, method: :get %>
 
     </div>

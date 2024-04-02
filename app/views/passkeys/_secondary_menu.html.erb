@@ -17,7 +17,7 @@
        title: "Save passkey", class:"icon large cursor-pointer" if action_name != "show" %>
     <%= content_tag :span, '', class: "divider" if action_name != "show" && @passkey.id %>
 
-    <%= link_to passkeyversions_path(org_id: @passkey.id), title: "Versions of this passkey" do %>
+    <%= link_to passkey_versions_path(org_id: @passkey.id), title: "Versions of this passkey" do %>
       <img src="/assets/restore.svg" class="icon large">
     <% end if @passkey.id %>
     <%= content_tag :span, '', class: "divider" if @passkey.id %>

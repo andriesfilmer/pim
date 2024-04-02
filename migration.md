@@ -36,6 +36,7 @@ Migration info from old pim to new pim.
 
     alter table posts drop column mongo_id;
     alter table posts drop column description;
+    alter table postversions drop column description;
     update posts set public = '1' where public = 'true';
     update posts set public = '0' where public = 'false' or public is null or public = '';
     alter table posts change public public tinyint(1);
@@ -50,10 +51,33 @@ Migration info from old pim to new pim.
     #ALTER TABLE postversions drop PRIMARY KEY;
     ALTER TABLE postversions change id id INT PRIMARY KEY AUTO_INCREMENT;
 
+### xversions -> x_versions
 
-### Todo
+find app/ | grep -i versions
 
-After old pim offline
+mv app/models/contactversion.rb app/models/contact_version.rb
+mv app/models/eventversion.rb app/models/event_version.rb
+mv app/models/postversion.rb app/models/post_version.rb
+mv app/models/passkeyversion.rb app/models/passkey_version.rb
+mv app/controllers/postversions_controller.rb app/controllers/post_versions_controller.rb
+mv app/controllers/contactversions_controller.rb app/controllers/contact_versions_controller.rb
+mv app/controllers/passkeyversions_controller.rb app/controllers/passkey_versions_controller.rb
+mv app/controllers/eventversions_controller.rb app/controllers/event_versions_controller.rb
+mv app/views/eventversions app/views/event_versions
+mv app/views/passkeyversions app/views/passkey_versions
+mv app/views/postversions app/views/post_versions
+mv app/views/contactversions app/views/contact_versions
+
+find app -type f | xargs perl -pi -e 's/Contactversion/ContactVersion/g'
+find app -type f | xargs perl -pi -e 's/contactversion/contact_version/g'
+find app -type f | xargs perl -pi -e 's/Eventversion/EventVersion/g'
+find app -type f | xargs perl -pi -e 's/eventversion/event_version/g'
+find app -type f | xargs perl -pi -e 's/Postversion/PostVersion/g'
+find app -type f | xargs perl -pi -e 's/postversion/post_version/g'
+find app -type f | xargs perl -pi -e 's/Passkeyversion/PasskeyVersion/g'
+find app -type f | xargs perl -pi -e 's/passkeyversion/passkey_version/g'
+
+### Todo after old pim offline
 
     alter table events change column description notes;
     alter table posts change type category varchar(255);
@@ -61,6 +85,10 @@ After old pim offline
     alter table postversions change type category varchar(20);
 
     update posts set tags = REGEXP_REPLACE(tags, '\\[|\\]|"|#', '');
+    rename table contactversions to contact_versions;
+    rename table eventversions to event_versions;
+    rename table postversions to post_versions;
     rename table posts to notes;
 
 **REMOVE** alias_attribute(s) from models;
+**REMOVE** self.table_name(s) from models;

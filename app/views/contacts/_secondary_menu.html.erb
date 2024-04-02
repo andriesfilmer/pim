@@ -28,7 +28,7 @@
        title: "Save contact", class:"icon large cursor-pointer" if action_name != "show" %>
     <%= content_tag :span, '', class: "divider" if action_name != "show" && @contact.id %>
 
-    <%= link_to contactversions_path(org_id: @contact.id), title: "Versions of this contact" do %>
+    <%= link_to contact_versions_path(org_id: @contact.id), title: "Versions of this contact" do %>
       <img src="/assets/restore.svg" class="icon large">
     <% end if @contact.id %>
     <%= content_tag :span, '', class: "divider" if @contact.id %>
