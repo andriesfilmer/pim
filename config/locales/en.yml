@@ -46,7 +46,6 @@ en:
       month: month
       year: year
   errors:
-    format: "%{attribute} %{message}"
     messages:
       accepted: must be accepted
       blank: must be specified
@@ -141,3 +140,10 @@ en:
       longnotime: ! '%A, %B %e, %Y'
       short: ! '%H:%M'
     pm: ! "afternoon"
+  activerecord:
+    errors:
+      models:
+        passkey_share:
+          attributes:
+            linked_user_id:
+              taken: ", there's already a group with the name '%{value}', maybe a inactive group?"

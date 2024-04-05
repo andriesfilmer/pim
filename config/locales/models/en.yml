@@ -1,0 +1,18 @@
+en:
+  activerecord:
+    errors:
+      messages:
+        email: "is not a valid emailaddress"
+        invalid_date: "%{value} is not the right format (yyyy-mm-dd)"
+        record_invalid: '%{errors}'
+        record_not_unique: 'Duplicate entry "%{value}" voor column "%{column}"'
+        restrict_dependent_destroy:
+          has_one: "Cannot delete record because a dependent %{record} exists"
+          has_many: "Cannot delete record because dependent %{record} exist"
+        show_error: "Oops, one mistake"
+        show_errors: "Oops, %{count} mistakes"
+      models:
+        passkey_share:
+          attributes:
+            linked_user_id:
+              blank: " not found with this emailaddress"

@@ -1,7 +1,7 @@
 <div id="contacts" class="row">
 <% @contacts.each do |contact| %>
   <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 text-center" do %>
-    <img src="/assets/cake-filled.svg" class="icon warning"><br>
+    <img src="/assets/cake-filled.svg" class="icon warning-filter"><br>
     <%= contact.name %><br>
     <%= get_birthday_age(contact) %>
   <% end %>

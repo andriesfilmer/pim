@@ -2,15 +2,13 @@
   <div class="columns small-12 medium-8">
     <h1 class="home">PIM</h1><span class="home meta-data">Personal Information Manager</span>
   </div>
-  <div class="columns small-12 medium-4 text-right">
-    <p>
+  <%= content_tag :div, class: "columns small-12 medium-4 text-right padding-1em" do %>
     <%= link_to "Log in", new_user_session_path, class: "button" %>
     <%= link_to "Sign up", new_user_registration_path, class: "button notice" %>
-    </p>
-  </div>
+  <% end unless current_user %>
 </div>
 <div class="row">
-  <div class="column small-12 start" id="start">
+  <div class="column small-12 start padding-1em" id="start">
     <p class="radius">Keep your personal information private</p>
     <%= link_to "Calendar", events_path, class: "button" %>
     <%= link_to "Contacts", contacts_path, class: "button" %>

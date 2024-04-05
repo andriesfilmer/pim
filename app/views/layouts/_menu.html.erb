@@ -1,38 +1,38 @@
 <nav class="nav-bar">
 <div class="row">
   <div class="small-2 medium-2 columns">
-    <a href="/home">
-      <%= image_tag "account-circle.svg", class: "icon medium white" %>
+    <a href="/">
+      <%= image_tag "account-circle.svg", class: "icon medium white-filter" %>
       <span class="show-for-large"> My page</span>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/events">
-      <%= image_tag "calendar-month.svg", class: "icon medium white" %>
+      <%= image_tag "calendar-month.svg", class: "icon medium white-filter" %>
       <span class="show-for-large"> Calendar</span>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/contacts">
-      <%= image_tag "group.svg", class: "icon medium white" %>
+      <%= image_tag "group.svg", class: "icon medium white-filter" %>
       <span class="show-for-large"> Contacts</span>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/posts">
-      <%= image_tag "article.svg", class: "icon medium white" %>
+      <%= image_tag "article.svg", class: "icon medium white-filter" %>
       <span class="show-for-large"> Notes</span>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/passkeys">
-      <%= image_tag "lock.svg", class: "icon medium white" %>
+      <%= image_tag "lock.svg", class: "icon medium white-filter" %>
       <span class="show-for-large"> Keys</span>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false } do %>
-      <%= image_tag "logout.svg", class: "icon medium white" %>
+      <%= image_tag "logout.svg", class: "icon medium white-filter" %>
       <span class="show-for-large"> Sign out</span>
     <% end %>
   </div>

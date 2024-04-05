@@ -11,6 +11,7 @@ $accent-color:    #a6c9b5;
 $navbar-color:    #7c4c66;
 $button-color:    #a66f8d;
 $icon-filter:     invert(100%) brightness(10%) contrast(100%);
+$grey-accent:     #d1d0d0;
 
 $notice-color:    #30b8cb;
 $success-color:   #85db85;
@@ -27,6 +28,7 @@ $alert-color:     #e90707;
   --navbar-color: #{$navbar-color};
   --button-color: #{$button-color};
   --icon-filter: #{$icon-filter};
+  --grey-accent: #{$grey-accent};
   --notice-color: #{$notice-color};
   --success-color: #{$success-color};
   --warning-color: #{$warning-color};

@@ -1,7 +1,7 @@
 // passkey_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
-import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, copyContent } from 'components';
+import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, copyContent, genPassword } from 'components';
 
 let submitted = false
 let userinput = false
@@ -61,6 +61,10 @@ export default class extends Controller {
 
   copyUsername() {
     copyContent(document.getElementById('username').innerHTML)
+  }
+
+  newPassword() {
+    document.getElementById("passkey_password").value = genPassword()
   }
 
   copyPassword() {

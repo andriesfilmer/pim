@@ -27,48 +27,16 @@
 .hide { display: none; }
 .nobr { white-space:nowrap; overflow: hidden; }
 .h-space { margin: 1em 0; }
-
-
-.primary-color {
-  background-color: var(--primary-color);
-  color: var(--success-color-diap);
-}
-.secondary-color {
-  background-color: var(--secondary-color);
-  color: var(--success-color-diap);
-}
-.accent-color {
-  background-color: var(--accent-color);
-  color: var(--success-color-diap);
- }
-.notice-color  {
-  background-color: var(--notice-color);
-  color: var(--success-color-diap);
-}
-.success-color {
-  background-color: var(--success-color);
-  color: var(--success-color-diap);
-}
-.warning-color {
-  background-color: var(--warning-color);
-  color: var(--success-color-diap);
-}
-.alert-color   {
-  background-color: var(--alert-color);
-  color: var(--success-color-diap);
-}
-
-.odd-even:nth-child(odd){ background-color: var(--secondary-color); }
-.odd-even { &:hover { background-color: var(--accent-color) }}
-
 .disabled { color: #ccc; }
-
 .truncate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.padding-05em { padding: 0.5em; }
+.padding-1em { padding: 1em; }
 
 .meta-data {
   font-size: 90%;
@@ -78,5 +46,58 @@
 // Don't let user select elements
 button, .button, .pagination, .user-select-none {
   user-select: none;
+}
+
+// Color helpers
+.odd-even:nth-child(odd){ background-color: var(--secondary-color); }
+.odd-even { &:hover { background-color: var(--accent-color) }}
+
+.primary {
+  color: var(--text-color-diap);
+  background-color: var(--primary-color);
+}
+.secondary {
+  color: var(--text-color-diap);
+  background-color: var(--secondary-color);
+}
+.accent {
+  color: var(--text-color-diap);
+  background-color: var(--accent-color);
+ }
+.notice {
+  color: var(--text-color-diap);
+  background-color: var(--notice-color);
+}
+.success {
+  color: var(--text-color-diap);
+  background-color: var(--success-color);
+}
+.warning {
+  color: var(--text-color-diap);
+  background-color: var(--warning-color);
+}
+.alert   {
+  color: var(--text-color-diap);
+  background-color: var(--alert-color);
+}
+
+// Category colors
+div.appointment, #events a.appointment {
+  border-right: 8px var(--notice-color) solid;
+}
+div.holiday, #events a.holiday {
+  border-right: 8px var(--success-color) solid;
+}
+div.memo, #events a.memo {
+  border-right: 8px var(--warning-color) solid;
+}
+div.import, #events a.import {
+  border-right: 8px var(--primary-color) solid;
+}
+div.task, #events a.task {
+  border-right: 8px var(--alert-color) solid;
+}
+div.business, #events a.business {
+  border-right: 8px var(--navbar-color) solid;
 }
 

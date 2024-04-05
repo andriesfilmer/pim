@@ -37,7 +37,7 @@ export function tooltip() {
 export function saveFormAlert() {
   $(":input").change(function(){ //triggers change in all input fields including text type
     $("#cloud-upload").attr("src","/assets/cloud-upload-filled.svg")
-    $("#cloud-upload").addClass("icon alert")
+    $("#cloud-upload").addClass("icon alert-filter")
   });
 }
 
@@ -131,4 +131,15 @@ export function copyContent(content) {
     }).catch(err => {
       console.error('Failed to copy content: ', err);
     });
+}
+
+export  function genPassword() {
+  var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var passwordLength = 12;
+  var password = "";
+  for (var i = 0; i <= passwordLength; i++) {
+    var randomNumber = Math.floor(Math.random() * chars.length);
+    password += chars.substring(randomNumber, randomNumber +1);
+  }
+  return password;
 }

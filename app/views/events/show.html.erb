@@ -4,14 +4,14 @@
 <%= form_with model: @event do |form| %>
 
 <div class="row">
-  <div class="columns">
+  <div class="columns appointment">
     <h2 class="th"><%= @event.title %></h2>
   </div>
 </div>
 
 <div class="row">
-  <div class="columns tz-warning display-none">Created or edited in different timezone!</div>
-  <div class="columns display-inline">
+  <div class="columns tz-warning display-none appointment">Created or edited in different timezone!</div>
+  <div class="columns display-inline appointment">
     <%= content_tag :label, @event.tz, class: "button tiny primary-color tz-show display-none" %>
     <%= content_tag :label, l(@event.start, format: :mediumnotime), class: "button tiny primary-color" if @event.allDay  %>
     <%= content_tag :label, l(@event.start, format: :medium), class: "button tiny primary-color" unless @event.allDay %>
@@ -20,8 +20,8 @@
     <%= content_tag :label, l(@event.end, format: :medium), class: "button tiny primary-color" unless @event.allDay %>
     <%= content_tag :label, "Allday", class: "button tiny primary-color" if @event.allDay %>
   </div>
-  <div class="columns tz-warning display-none">Browser timezone</div>
-  <div class="columns tz-warning display-none">
+  <div class="columns tz-warning display-none appointment">Browser timezone</div>
+  <div class="columns tz-warning display-none appointment">
     <%= content_tag :label, "", id: "tzBrowser", class: "button tiny primary-color" %>
     <%= content_tag :label, "", id: "browserEventStart", class: "button tiny primary-color" %>
     <span class="sup">-</span>
@@ -30,7 +30,7 @@
 </div>
 
 <div class="row">
-  <div class="columns">
+  <div class="columns appointment">
     <%= content_tag :pre, @event.notes, id: "notes", class: "display-none" %>
     <div data-controller="event" id="markdown"></div>
   </div>

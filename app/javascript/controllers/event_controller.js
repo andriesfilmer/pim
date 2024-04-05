@@ -58,7 +58,7 @@ function showTimezoneAlert() {
     // Show form select tz
     $("#tz").removeClass("display-none")
     // Show warning border
-    $(".tz-warning").parent().css("border", "solid 2px orange")
+    $(".tz-warning").parent().css("background-color", "var(--warning-color)").css("padding", "1em 0")
     $(".tz-warning").removeClass("display-none")
     $(".tz-warning").addClass("display-inline") // Labels on show page need display-inline
     $(".tz-show").removeClass("display-none")
@@ -164,9 +164,9 @@ export default class extends Controller {
     $(".fc-timeGridWeek-button").click();
   }
 
-  gotoToday() {
-    $(".fc-today-button").click();
-  }
+  //gotoToday() {
+  //  $(".fc-today-button").click();
+  //}
 
   showSearch() {
     $("#show_search").removeClass("display-none");

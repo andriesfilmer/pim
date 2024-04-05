@@ -4,7 +4,8 @@
   </div>
 </div>
 
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+<%= form_for(resource, as: resource_name, url: password_path(resource_name),
+    data: { turbo: false}, html: { method: :put }) do |f| %>
   <%= render "layouts/show_errors", resource: resource %>
   <%= f.hidden_field :reset_password_token %>
 
@@ -28,6 +29,7 @@
   </div>
 <% end %>
   <div class="columns medium-6">
-    <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name), class: "button float-right" if resource.errors.any? %>
+    <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name),
+      class: "button float-right" if resource.errors.any? %>
   </div>
 </div>

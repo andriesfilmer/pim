@@ -1,11 +1,16 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  #devise_for :users
+  devise_for :users, controllers: { registrations: 'registrations' }
 
-  # Defines the root path route ("/")
-  root "base#about"
+  authenticated  do
+    root "base#index", as: 'unauthenticated_user'
+  end
+  unauthenticated do
+    root "base#about"
+  end
 
-  get "home", to: "base#index"
+  get "about", to: "base#about"
   get "welcome", to: "base#welcome"
 
   get "events/drag", to: "events#drag"

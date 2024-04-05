@@ -16,3 +16,8 @@
   <% end %>
 <% end %>
 </div>
+
+<%= content_tag :div, class: "row" do %>
+  <div class="columns">No notes yet, you can creat one with the + icon.</div>
+<% end unless @posts.any? %>
+

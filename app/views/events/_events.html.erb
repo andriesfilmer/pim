@@ -1,13 +1,13 @@
 <div id="events" class="col-12">
 <% @events.each do |event| %>
-  <%= link_to event_path(event), class: "row odd-even" do %>
-  <div class="small-6 medium-8 columns">
+  <%= link_to event_path(event), class: "row odd-even #{event.category}" do %>
+  <div class="small-12 medium-8 columns">
     <%= event.title %>
   </div>
-  <div class="small-4 medium-3 columns hide-for-small-only">
+  <div class="small-8 medium-3 columns">
     <%= content_tag :label, l(event.start, format: :longnotime) %>
   </div>
-  <div class="small-2 medium-1 columns hide-for-small-only text-center">
+  <div class="small-4 medium-1 columns text-center">
     <%= content_tag :label, (event.allDay? ? "Allday" : l(event.start, format: :short)),
      class: event.allDay? ? "button tiny" : "" %>
   </div>

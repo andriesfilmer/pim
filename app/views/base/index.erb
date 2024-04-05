@@ -1,40 +1,22 @@
 <div class="row">
   <div class="columns small-8 medium-10">
-    <h1 class="home">PIM</h1><span class="home meta-data">Personal Information Manager</span>
+    <h1 class="home">PIM</h1>
   </div>
-  <div class="columns small-4 medium-2 text-right">
-    <p>
-    <%= link_to "Edit profile", edit_user_registration_path, class: "button primary-color" %>
-    </p>
+  <div class="columns small-4 medium-2 text-right padding-1em">
+    <%= link_to "Edit profile", edit_user_registration_path, class: "button small" %>
   </div>
 </div>
 <div class="row">
   <div class="columns">
-    <h2><%= image_tag "account-circle.svg", class: "icon large" %> My page </h2>
+    <%= content_tag :span, @user.name %>
+    <span class="home meta-data">Personal Information Manager</span>
   </div>
 </div>
-<div class="row odd-even">
+
+<div class="row">
   <div class="columns">
-    <label>Name</label>
-    <%= content_tag :div, @user.name %>
+    <h3><%= image_tag "event-note.svg", class: "icon large" %> Upcomming events </h3>
   </div>
 </div>
-<div class="row odd-even">
-  <div class="columns">
-    <label>Email</label>
-    <%= content_tag :div, @user.email %>
-  </div>
-</div>
-<div class="row odd-even">
-  <div class="columns">
-    <label>Last Sign In</label>
-    <%= content_tag :div, l(@user.last_sign_in_at, format: :long) %>
-  </div>
-</div>
-<div class="row odd-even" data-controller="user">
-  <div class="columns">
-    <label>Theme settings</label>
-    <%= radio_button_tag "theme", "light", true, data: { action: "click->user#setTheme" } %> Light<br>
-    <%= radio_button_tag "theme", "dark", nil, data: { action: "click->user#setTheme" } %> Dark
-  </div>
-</div>
+
+<%= render "events/events" %>

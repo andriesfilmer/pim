@@ -34,7 +34,7 @@ class PasskeysController < ApplicationController
         format.html { redirect_to passkey_url(@passkey), notice: "Key was successfully created." }
       else
         format.turbo_stream {
-           render turbo_stream: turbo_stream.update("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
+           render turbo_stream: turbo_stream.replace("passkeyForm", partial: "passkeys/form", locals: { resource: @passkey })
         }
       end
     end

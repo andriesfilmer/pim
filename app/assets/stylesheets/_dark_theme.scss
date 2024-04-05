@@ -8,14 +8,15 @@ $primary-color:   #282828;
 $secondary-color: #717171;
 $accent-color:    #3f3f3f;
 
-$navbar-color:    #575757;
+$navbar-color:    #7c4c66;
 $button-color:    #725858;
-$icon-filter:     invert(60%) brightness(100%) contrast(100%);
+$icon-filter:     invert(60%) brightness(80%) contrast(100%);
+$grey-accent:     #797575;
 
-$notice-color:    #1076ad;
-$success-color:   #17bd17;
+$notice-color:    #1f688f;
+$success-color:   #259525;
 $warning-color:   #af7409;
-$alert-color:     red;
+$alert-color:     #e13232;
 
 .dark-theme {
   --body-color: #{$body-color};
@@ -27,6 +28,7 @@ $alert-color:     red;
   --navbar-color: #{$navbar-color};
   --button-color: #{$button-color};
   --icon-filter: #{$icon-filter};
+  --grey-accent: #{$grey-accent};
   --notice-color: #{$notice-color};
   --success-color: #{$success-color};
   --warning-color: #{$warning-color};

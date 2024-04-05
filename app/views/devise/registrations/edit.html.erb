@@ -8,41 +8,78 @@
   </div>
 </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name),
-    data: { turbo: false }, html: { method: :put }) do |f| %>
-
 <div class="row">
-  <div class="columns">
-    <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+  <fieldset class="col-12">
+    <legenda class="strong">Name and password</legenda>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name),
+        data: { turbo: false }, html: { method: :put }) do |f| %>
 
-  <div class="columns">
-    <%= f.label :password, class: "display-inline" %>
-    <%= content_tag :em,"(#{@minimum_password_length} characters minimum)", class: "meta-data" if @minimum_password_length %>
-    <i class="meta-data">Leave blank if you don't want to change it</i>
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+    <div class="row">
+      <div class="columns">
+        <%= f.label :name %>
+        <%= f.text_field :name, autofocus: true, autocomplete: "name" %>
+      </div>
 
-  <div class="columns">
-    <%= f.label :password_confirmation %>
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+      <div class="columns">
+        <%= f.label :email %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      </div>
 
-  <div class="columns">
-    <%= f.label :current_password, class: "display-inline" %> <i class="meta-data">(we need your current password to confirm your changes)</i>
-    <%= f.password_field :current_password, autocomplete: "off" %>
-  </div>
+      <div class="columns">
+        <%= f.label :password, class: "display-inline" %>
+        <%= content_tag :em,"(#{@minimum_password_length} characters minimum)", class: "meta-data" if @minimum_password_length %>
+        <i class="meta-data">Leave blank if you don't want to change it</i>
+        <%= f.password_field :password, autocomplete: "new-password" %>
+      </div>
 
-  <div class="columns">
-    <%= f.submit "Update", class: "button" %>
-  </div>
+      <div class="columns">
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+      </div>
+
+      <div class="columns">
+        <%= f.label :current_password, class: "display-inline" %> <i class="meta-data">(we need your current password to confirm your changes)</i>
+        <%= f.password_field :current_password, autocomplete: "off" %>
+      </div>
+
+      <div class="columns">
+        <%= f.submit "Update", class: "button" %>
+      </div>
+    </div>
+    <% end %>
+  </fieldset>
 </div>
-<% end %>
 
 <div class="row">
-  <div class="columns">
-    <p><%= button_to "Delete my account", registration_path(resource_name), data: { confirm: "Are you sure?",
-      turbo_confirm: "Are you sure?" }, method: :delete, class: "button alert-color" %></p>
-  </div>
+  <fieldset class="col-12">
+    <legenda class="strong">Theme settings</legenda>
+    <div class="row padding-1em" data-controller="user">
+      <div class="columns medium-3">
+        <label>Light mode</label>
+        <%= label_tag "theme_light", class: "switch" do %>
+          <%= radio_button_tag "theme", "light", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
+          <span class="slider round"></span>
+        <% end %>
+      </div>
+      <div class="columns medium-9">
+        <label>Dark mode</label>
+        <%= label_tag "theme_dark", class: "switch" do %>
+          <%= radio_button_tag "theme", "dark", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
+          <span class="slider round"></span>
+        <% end %>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<div class="row">
+  <fieldset class="col-12">
+    <legenda class="strong">Delete my account</legenda>
+    <div class="row padding-1em">
+      <div class="columns">
+        <%= button_to "Delete", registration_path(resource_name), data: { confirm: "Are you sure?",
+          turbo_confirm: "Are you sure?" }, method: :delete, class: "button alert" %>
+      </div>
+    </div>
+  </fieldset>
 </div>

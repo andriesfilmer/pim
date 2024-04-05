@@ -9,7 +9,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   # Add password checking to account update parameters
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:email, :password, :password_confirmation, :current_password])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name, :email, :password, :password_confirmation, :current_password])
   end
 
   # Override the update_resource method to require the current password when the email is changed

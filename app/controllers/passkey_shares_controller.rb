@@ -10,17 +10,16 @@ class PasskeySharesController < ApplicationController
     @passkey_share.user_id = current_user.id
     @passkey_shares = PasskeyShare.where(passkey_id: params[:passkey_share][:passkey_id]).where(user_id: current_user.id)
 
+    # Check linked_user_id in db from email
     linked_user = User.where(email: params[:passkey_share][:email]).take
-    linked_user_exits = PasskeyShare.where(passkey_id: params[:passkey_share][:passkey_id])
-                                    .where(linked_user_id: linked_user.try(:id))
-                                    .where(user_id: current_user.id).take
-    if linked_user_exits
-      flash.now[:alert] = "#{linked_user.name} already has this keypass share!"
-    elsif linked_user
-      flash.now[:success] = "#{linked_user.name} can now read this keypass"
-      @passkey_share.linked_user_id = linked_user.id
+    @passkey_share.linked_user_id = linked_user.try(:id)
+
+    # We use the (small) dialog form and don't write standard show_errors partial
+    # We show only the first error if exists.
+    if !@passkey_share.valid?
+      flash.now[:alert] = @passkey_share.errors.to_a.first
     else
-      flash.now[:alert] = "User with email #{params[:passkey_share][:email]} does not exists"
+      flash.now[:success] = "#{linked_user.name} can now read this keypass"
     end
 
     respond_to do |format|
@@ -36,11 +35,9 @@ class PasskeySharesController < ApplicationController
       else
         format.turbo_stream do
           render turbo_stream: [
-            # Show errors turbo stream is not present in html, but viewable in Devtools -> network -> preview.
+            # First turbo stream is not present in html, but viewable in Devtools -> network -> preview.
             turbo_stream.update("show_errors", partial: "layouts/show_errors", locals: {resource: @passkey_share} ),
             turbo_stream.update("dialog_flash", partial: "layouts/dialog_flash"),
-            turbo_stream.update("passkey_shares", partial: "/passkeys/passkey_shares", locals: { resource: @passkey_share }),
-            turbo_stream.update("passkey_sharesForm", partial: "/passkeys/passkey_shares", locals: { resource: @passkey_share })
           ]
         end
       end
@@ -69,6 +66,5 @@ class PasskeySharesController < ApplicationController
   def passkey_share_params
     params.require(:passkey_share).permit(:passkey_id, :email, :linked_user_id)
   end
-
 
 end

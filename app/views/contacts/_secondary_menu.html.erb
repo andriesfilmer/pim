@@ -6,7 +6,7 @@
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>
       <span>
         <img src="/assets/star<%= @contact.starred? ? '-filled' : '' %>.svg"
-         class="icon large cursor-pointer <%= @contact.starred? ? 'warning' : '' %>"
+         class="icon large cursor-pointer <%= @contact.starred? ? 'warning-filter' : '' %>"
          data-controller="contact" data-action="click->contact#setStarred">
         <%= hidden_field_tag :redirect , action_name %>
         <%= form.hidden_field :starred, { onchange: "this.form.requestSubmit()" } %>

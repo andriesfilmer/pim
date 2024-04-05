@@ -7,6 +7,7 @@ class EventVersion < ApplicationRecord
 
   alias_attribute :notes, :description
   alias_attribute :created_at, :created
+  alias_attribute :category, :className
 
   validates :title, presence: true
 end
