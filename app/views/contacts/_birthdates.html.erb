@@ -1,7 +1,11 @@
+<div class="row">
+  <div class="columns strong">
+    <h3><img src="/assets/cake-filled.svg" class="icon large warning-filter"> Anniversaries</h3>
+  </div>
+</div>
 <div id="contacts" class="row">
 <% @contacts.each do |contact| %>
-  <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 text-center" do %>
-    <img src="/assets/cake-filled.svg" class="icon warning-filter"><br>
+  <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 callout text-center" do %>
     <%= contact.name %><br>
     <%= get_birthday_age(contact) %>
   <% end %>

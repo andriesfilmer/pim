@@ -17,6 +17,6 @@
 <% end %>
 </div>
 
-<%= content_tag :div, class: "row" do %>
-  <div class="columns">No passkeys yet, you can creat one with the + icon.</div>
+<%= content_tag :div, class: "columns" do %>
+  <div class="padding-1em">No passkeys yet, create one with the + icon.</div>
 <% end unless @passkeys.any? %>

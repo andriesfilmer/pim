@@ -54,14 +54,14 @@
   <fieldset class="col-12">
     <legenda class="strong">Theme settings</legenda>
     <div class="row padding-1em" data-controller="user">
-      <div class="columns medium-3">
+      <div class="columns medium-3 padding-1em">
         <label>Light mode</label>
         <%= label_tag "theme_light", class: "switch" do %>
           <%= radio_button_tag "theme", "light", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
           <span class="slider round"></span>
         <% end %>
       </div>
-      <div class="columns medium-9">
+      <div class="columns medium-9 padding-1em">
         <label>Dark mode</label>
         <%= label_tag "theme_dark", class: "switch" do %>
           <%= radio_button_tag "theme", "dark", nil, data: { action: "click->user#setTheme" }, class: "switch" %>

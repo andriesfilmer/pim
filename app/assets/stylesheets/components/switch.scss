@@ -4,8 +4,8 @@
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 4rem;
+  height: 1.5rem;
 }
 
 /* Hide default HTML checkbox */
@@ -23,7 +23,13 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #a79c9c;
+  width: 3.5rem;
+  background-color: var(--grey-accent);
+//  &.task { background-color: var(--alert-color) }
+//  &.appointment { background-color: var(--notice-color); }
+//  &.memo { background-color: var(--warning-color); }
+//  &.business { background-color: var(--navbar-color); }
+//  &.holiday { background-color: var(--accent-color); }
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -31,18 +37,25 @@
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
+  height: 2rem;
+  width: 2rem;
+  left: 0;
+  bottom: -0.2rem;
+  background-color: darkgrey;
+  box-shadow: 0 0.1rem 0.25rem 0rem rgba(0, 0, 0, 0.3);
   -webkit-transition: .4s;
   transition: .4s;
 }
 
 input:checked + .slider {
   background-color: var(--success-color);
-  &.task { background-color: var(--accent-color); }
+  &:before { background-color: var(--success-color) }
+//  &.task { background-color: var(--alert-color); }
+//  &.appointment { background-color: var(--notice-color); }
+//  &.memo { background-color: var(--warning-color); }
+//  &.business { background-color: var(--navbar-color); }
+//  &.holiday { background-color: var(--accent-color); }
+//  &:before { background-color: lightgreen }
 }
 
 input:focus + .slider {
@@ -50,9 +63,9 @@ input:focus + .slider {
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+  -webkit-transform: translateX(2rem);
+  -ms-transform: translateX(2rem);
+  transform: translateX(2rem);
 }
 
 /* Rounded sliders */

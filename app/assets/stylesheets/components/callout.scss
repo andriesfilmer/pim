@@ -6,12 +6,12 @@
     padding: 0.5rem;
     border: 1px solid var(--grey-accent);
     border-radius: 5px;
-    color: var(--grey-accent);
+    color: var(--text-color);
     &.secondary { background-color: #f2f2f2; }
-    &.notice { background-color: lighten($notice-color, 20%) }
-    &.success { background-color: lighten($success-color, 20%) }
-    &.warning { background-color: lighten($warning-color, 30%) }
-    &.alert { background-color: lighten($alert-color, 30%) }
+    &.notice { background-color: lighten($notice-color, 10%) }
+    &.success { background-color: lighten($success-color, 10%) }
+    &.warning { background-color: lighten($warning-color, 10%) }
+    &.alert { background-color: lighten($alert-color, 10%) }
 }
 
 
