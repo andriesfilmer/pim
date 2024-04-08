@@ -1,15 +1,33 @@
 class PasskeysController < ApplicationController
 
-  before_action :set_passkey, only: %i[ show edit update destroy ]
+  before_action :set_passkey, only: %i[ edit update destroy ]
 
   def index
-    @passkeys = Passkey.where(user_id: current_user.id).order("last_read desc").limit 10
+    @passkeys = Passkey.left_joins(:passkey_shares)
+      .where("(passkeys.user_id = #{current_user.id}) OR (passkey_shares.linked_user_id = #{current_user.id})")
+      .order(last_read: :desc)
   end
 
   def show
+    # Activerecord way.
+    #@passkey = Passkey.left_joins(:passkey_shares).where(user_id: current_user.id).where(id: params[:id])
+    #  .or(PasskeyShare.where(linked_user_id: current_user.id).merge(PasskeyShare.where(passkey_id: params[:id]))).take
+    # Semi raw sql
+    @passkey = Passkey.left_joins(:passkey_shares).where("(passkeys.user_id = #{current_user.id} AND passkeys.id = ?)
+      OR (passkey_shares.passkey_id = ? AND passkey_shares.linked_user_id = #{current_user.id})", params[:id], params[:id]).take
+
+    redirect_to passkeys_url, alert: "Key not found." and return if @passkey.blank?
+    # Don't show edit, update and share items in show if it's a shared key
+    @passkey.user_id == current_user.id ? @passkey_readonly = false : @passkey_readonly = true
+
     @passkey.update_column(:last_read,DateTime.now)
-    @passkey_share = PasskeyShare.new(passkey_id: @passkey.id)
-    @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
+
+    unless @passkey_readonly
+      @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
+
+      # Needed for form @passkey_share to add new shares.
+      @passkey_share = PasskeyShare.new(passkey_id: @passkey.id)
+    end
   end
 
   def new
@@ -26,8 +44,6 @@ class PasskeysController < ApplicationController
   def create
     @passkey = Passkey.new(passkey_params)
     @passkey.user_id = current_user.id
-    @passkey_share = PasskeyShare.new
-    @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
 
     respond_to do |format|
       if @passkey.save
@@ -61,18 +77,26 @@ class PasskeysController < ApplicationController
   end
 
   def destroy
-    @passkey.destroy
+    passkey = Passkey.where(id: params[:id]).where(user_id: current_user.id).take
     respond_to do |format|
-      format.html { redirect_to passkeys_url, notice: "Key was successfully destroyed." }
-      format.json { head :no_content }
+      if passkey
+        passkey.destroy
+        format.html { redirect_to passkeys_url, notice: "Key was successfully destroyed." }
+      else
+        format.html { redirect_to passkeys_url, alert: "Key not found." }
+      end
     end
   end
 
   def search
-    if params.dig(:search).present?
+    if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
-      @passkeys = Passkey.where("title LIKE ? OR url LIKE ? OR tags LIKE ?", search, search, search)
-                   .order(updated_at: :desc)
+      @passkeys = Passkey.left_joins(:passkey_shares).where(
+         "(passkeys.user_id = #{current_user.id} AND (title LIKE ? OR notes LIKE ? OR tags LIKE ?))
+       OR
+         (passkey_shares.linked_user_id = #{current_user.id} AND (title LIKE ? OR notes LIKE ? OR tags LIKE ?))",
+         search, search, search, search, search, search)
+
       cookies[:search] = params[:search]
     else
       @passkeys = []
@@ -96,9 +120,9 @@ class PasskeysController < ApplicationController
     @passkey_version.save
   end
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_passkey
     @passkey = Passkey.where(user_id: current_user.id).where(id: params[:id]).take
+    redirect_to passkeys_url, alert: "Key not found." and return if @passkey.blank?
   end
 
   def passkey_params

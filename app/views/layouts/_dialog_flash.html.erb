@@ -1,7 +1,6 @@
 <div class="flash text-center">
 <% flash.each do |flash_type, message| %>
   <div class="flash__message <%= flash_type %>">
-     <span class="float-right">×</span>
      <%= message %>
   </div>
 <% end %>

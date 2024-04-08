@@ -1,22 +1,25 @@
 <div id="passkeys" class="col-12">
 <% @passkeys.each do |passkey| %>
   <%= link_to passkey_path(passkey), class: "row odd-even" do %>
-  <div class="medium-6 columns">
+  <div class="medium-7 columns">
     <%= passkey.title %>
   </div>
-  <div class="medium-2 columns hide-for-small-only">
-    <%= content_tag :label, (l passkey.last_read, format: "%Y-%m-%d"), class: "button tiny display-inline" %>
+  <div class="medium-2 columns">
+    <%= content_tag :span, User.find(passkey.user_id).email unless passkey.user_id == current_user.id %>
   </div>
-  <div class="medium-2 columns hide-for-small-only">
+  <div class="medium-1 columns hide-for-small-only">
+    <%= content_tag :label, (passkey.user_id == current_user.id ? (l passkey.last_read, format: "%Y-%m-%d") : "Read only"), class: "button tiny display-inline" %>
+  </div>
+  <div class="medium-1 columns hide-for-small-only">
     <%= content_tag :label, (l passkey.updated_at, format: "%Y-%m-%d") %>
   </div>
-  <div class="medium-2 columns hide-for-small-only">
+  <div class="medium-1 columns hide-for-small-only">
     <%= content_tag :label, (l passkey.created_at, format: "%Y-%m-%d") %>
   </div>
   <% end %>
 <% end %>
 </div>
 
-<%= content_tag :div, class: "columns" do %>
-  <div class="padding-1em">No passkeys yet, create one with the + icon.</div>
+<%= content_tag :div, class: "row" do %>
+  <div class="columns p-2">No passkeys yet, create one with the + icon.</div>
 <% end unless @passkeys.any? %>

@@ -1,6 +1,12 @@
+// Tailwind compateble
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.hidden { display: none }
+
 /* Helper classes for site */
 
-.hide { display: none !important }
 .display-block { display: block; }
 .invisible { visibility: hidden; }
 .visible { visibility: visible; }
@@ -34,9 +40,6 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-.padding-05em { padding: 0.5em; }
-.padding-1em { padding: 1em; }
 
 .meta-data {
   font-size: 90%;

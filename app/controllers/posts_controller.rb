@@ -74,7 +74,7 @@ class PostsController < ApplicationController
   end
 
   def search
-    if params.dig(:search).present?
+    if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
       @posts = Post.where("title LIKE ? OR content LIKE ? OR tags LIKE ?", search, search, search)
                    .order(updated_at: :desc)

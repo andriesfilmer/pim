@@ -1,4 +1,4 @@
-<%= render "passkeys/secondary_menu" unless @passkey.try(:org_id) %>
+<%= render "passkeys/secondary_menu" unless @passkey.try(:org_id) || @passkey_readonly == true %>
 <%= render "passkeys/restore_menu" if @passkey.try(:org_id) %>
 
 <div class="row" data-controller="passkey">
@@ -36,8 +36,8 @@
   </div>
   <div class="columns medium-6">
     <%= content_tag :div, id: "passkey_shares" do %>
-     <%= render "passkey_shares", resource: @passkey_shares %>
-    <% end if @passkey_shares.any?%>
+     <%= render "passkey_shares", resource: @passkey_shares unless @passkey_readonly || @passkey_shares && @passkey_shares.none?%>
+    <% end  %>
   </div>
 </div>
 
@@ -65,4 +65,4 @@
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @passkey.updated_at, format: :default %></div>
 </div>
 
-<%= render "/passkeys/shareDialog", resource: @passkey %>
+<%= render "/passkeys/shareDialog", resource: @passkey if @passkey_shares %>
