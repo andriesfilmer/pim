@@ -5,6 +5,9 @@
   border-radius: 5px;
   padding: 0;
   cursor: pointer;
+  color: var(--text-color);
+  font-size: smaller;
+  background-color: var(--body-color);
   &::backdrop {
     background-color: var(--warning-color);
     opacity: 0.55;

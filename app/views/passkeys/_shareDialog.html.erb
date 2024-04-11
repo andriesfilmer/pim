@@ -13,8 +13,7 @@
   </div>
   <div class="row">
     <div class="columns">
-      <hr>
-      <p>Share this passkey with other users in this PIM.</p>
+      <p class="py-4">Share with other users in this PIM.</p>
       <%= form_with url: passkey_shares_path, model: @passkey_share do |form| %>
         <%= form.hidden_field :passkey_id %>
 

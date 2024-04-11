@@ -1,7 +1,7 @@
 // post_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
-import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent } from 'components';
+import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, markdownToc } from 'components';
 
 let submitted = false
 let userinput = false
@@ -9,6 +9,7 @@ let userinput = false
 export default class extends Controller {
 
   connect() {
+
     console.log("######## connect post controller")
     //
     // Set cache control of current page to `no-cache`
@@ -22,7 +23,20 @@ export default class extends Controller {
     // Show tagsContainer
     showTags("post_tags")
 
-    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
+
+    if (document.getElementById("notes")) {
+
+      let content = document.getElementById("notes").innerHTML;
+      let toc = markdownToc(content);
+
+      if (toc) {
+        document.getElementById("toc").innerHTML = marked.parse(toc, { mangle: false, headerIds: false})
+      } else {
+        document.getElementById("tocFieldset").remove();
+      }
+      $("#markdown").html(marked.parse(content, { mangle: false, headerIds: true }))
+    }
+
 
     // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {

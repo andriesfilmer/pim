@@ -10,8 +10,11 @@
 
 <div class="row">
   <div class="columns">
-    <%= label_tag :notes, nil, class:"label-th" unless @post.notes.blank? %>
     <%= content_tag :pre, @post.notes, id: "notes", class: "display-none" %>
+    <fieldset id="tocFieldset">
+      <legend>Content</legend>
+      <div id="toc"></div>
+    </fieldset>
     <div data-controller="post" id="markdown"></div>
   </div>
 </div>

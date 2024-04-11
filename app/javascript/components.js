@@ -143,3 +143,50 @@ export  function genPassword() {
   }
   return password;
 }
+
+export function markdownToc(data) {
+
+ // Inspiration from Eugene Datsky
+ // https://raw.githubusercontent.com/princed/table-of-contents-preprocessor/master/toc.js
+
+  var indents = [""];
+  for(var i = 1; i < 10; i++) {
+      indents.push(indents[i-1] + " ");
+  }
+
+  if (data !== undefined) {
+
+    var lines = data.trimRight().split('\n');
+    var titles = [];
+    var toc = [];
+    var depths = [];
+    var minDepth = 1000000;
+
+    for(var j = 0; j < lines.length; j++) {
+      var line = lines[j];
+      var m = line.match(/^(#+)(.*)$/);
+      if (!m) continue;
+      minDepth = Math.min(minDepth, m[1].length);
+      depths.push(m[1].length);
+
+      let title = m[2];
+      let uri = title.trim().toLowerCase().replace(/[^-0-9a-z]/g, '-');
+      titles.push({title: title, uri: uri});
+    }
+
+    for(var k = 0; k < depths.length; k++) {
+      depths[k] -= minDepth;
+    }
+
+    for(var l = 0; l < depths.length; l++) {
+      toc.push(indents[depths[l]] + '- <a href="#' + titles[l].uri + '">' + titles[l].title + '</a>');
+    }
+
+    // Show TOC if we have more then 3 titles.
+    if (titles.length <= 3) {
+      return false;
+    } else {
+      return toc.join('\n');
+    }
+  }
+}

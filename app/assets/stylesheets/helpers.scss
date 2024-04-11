@@ -1,9 +1,16 @@
 // Tailwind compateble
-.p-1 { padding: 0.25rem; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 0.75rem; }
-.p-4 { padding: 1rem; }
+.p-1 { padding: 0.25rem }
+.p-2 { padding: 0.5rem }
+.p-3 { padding: 0.75rem }
+.p-4 { padding: 1rem }
+.py-1	{ padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.py-2	{ padding-top: 0.50rem; padding-bottom: 0.50rem; }
+.py-3	{ padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4	{ padding-top: 1rem; padding-bottom: 1rem; }
+
 .hidden { display: none }
+.whitespace-nowrap { white-space: nowrap; }
+.overflow-hidden { overflow: hidden; }
 
 /* Helper classes for site */
 
@@ -30,8 +37,6 @@
 .pointer-events-none { pointer-events: none; }
 .white-space-pre-wrap { white-space: pre-wrap; }
 .strong { font-weight: bold; }
-.hide { display: none; }
-.nobr { white-space:nowrap; overflow: hidden; }
 .h-space { margin: 1em 0; }
 .disabled { color: #ccc; }
 .truncate {
