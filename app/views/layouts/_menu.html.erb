@@ -1,39 +1,44 @@
-<nav class="nav-bar">
+<nav class="bg-color-500 pt-2 text-xl text-color-diap">
 <div class="row">
   <div class="small-2 medium-2 columns">
     <a href="/">
-      <%= image_tag "account-circle.svg", class: "icon medium white-filter" %>
-      <span class="show-for-large"> My page</span>
+      <%= content_tag :div, class: "icon icon-account-circle filter-white" do %>
+        <span class="show-for-large pl-1 text-color-diap">My page</span>
+      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/events">
-      <%= image_tag "calendar-month.svg", class: "icon medium white-filter" %>
-      <span class="show-for-large"> Calendar</span>
+      <%= content_tag :div, class: "icon icon-calendar-month filter-white" do %>
+        <span class="show-for-large pl-1 text-color-diap">Calendar</span>
+      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/contacts">
-      <%= image_tag "group.svg", class: "icon medium white-filter" %>
-      <span class="show-for-large"> Contacts</span>
+      <%= content_tag :div, class: "icon icon-group filter-white" do %>
+        <span class="show-for-large pl-1 text-color-diap">Contacts</span>
+      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/posts">
-      <%= image_tag "article.svg", class: "icon medium white-filter" %>
-      <span class="show-for-large"> Notes</span>
+      <%= content_tag :div, class: "icon icon-article filter-white" do %>
+      <span class="show-for-large pl-1 text-color-diap">Notes</span>
+      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/passkeys">
-      <%= image_tag "lock.svg", class: "icon medium white-filter" %>
-      <span class="show-for-large"> Keys</span>
+      <%= content_tag :div, class: "icon icon-lock filter-white" do %>
+        <span class="show-for-large pl-1 text-color-diap">Keys</span>
+      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
-    <%= button_to destroy_user_session_path, method: :delete, data: { turbo: false } do %>
-      <%= image_tag "logout.svg", class: "icon medium white-filter" %>
-      <span class="show-for-large"> Sign out</span>
+    <%= link_to destroy_user_session_path, data: { turbo_method: :delete, turbo: false },
+      class: "icon icon-logout filter-white text-lg text-light" do %>
+      <span class="show-for-large pl-1 text-color-diap"> Sign out</span>
     <% end %>
   </div>
 </div>

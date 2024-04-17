@@ -24,12 +24,7 @@
   right: 0;
   bottom: 0;
   width: 3.5rem;
-  background-color: var(--grey-accent);
-//  &.task { background-color: var(--alert-color) }
-//  &.appointment { background-color: var(--notice-color); }
-//  &.memo { background-color: var(--warning-color); }
-//  &.business { background-color: var(--navbar-color); }
-//  &.holiday { background-color: var(--accent-color); }
+  background-color: lightgray;
   -webkit-transition: .4s;
   transition: .4s;
 }
@@ -48,14 +43,13 @@
 }
 
 input:checked + .slider {
-  background-color: var(--success-color);
-  &:before { background-color: var(--success-color) }
-//  &.task { background-color: var(--alert-color); }
-//  &.appointment { background-color: var(--notice-color); }
-//  &.memo { background-color: var(--warning-color); }
-//  &.business { background-color: var(--navbar-color); }
-//  &.holiday { background-color: var(--accent-color); }
-//  &:before { background-color: lightgreen }
+  background-color: var(--bg-success);
+  &:before { background-color: var(--bg-success) }
+  &.appointment, &.appointment:before { background-color: var(--bg-notice); }
+  &.memo, &.memo:before { background-color: var(--color-warning); }
+  &.task, &.task:before { background-color: var(--color-alert); }
+  &.business, &.business:before { background-color: var(--color-notice); }
+  &.holiday, &.holiday:before { background-color: var(--color-success); }
 }
 
 input:focus + .slider {
@@ -76,3 +70,24 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+// Category colors
+div.appointment, #events a.appointment {
+  border-right: 8px var(--bg-notice) solid;
+}
+div.memo, #events a.memo {
+  border-right: 8px var(--color-warning) solid;
+}
+div.task, #events a.task {
+  border-right: 8px var(--color-alert) solid;
+}
+div.holiday, #events a.holiday {
+  border-right: 8px var(--color-success) solid;
+}
+div.business, #events a.business {
+  border-right: 8px var(--color-notice) solid;
+}
+div.import, #events a.import {
+  border-right: 8px purple solid;
+}
+

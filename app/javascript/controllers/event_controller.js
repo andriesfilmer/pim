@@ -58,7 +58,10 @@ function showTimezoneAlert() {
     // Show form select tz
     $("#tz").removeClass("display-none")
     // Show warning border
-    $(".tz-warning").parent().css("background-color", "var(--warning-color)").css("padding", "1em 0")
+    $(".tz-warning").parent()
+      .css("background-color", "var(--bg-warning)")
+      .css("padding", "1em 0")
+      .css("border-radius", "1rem")
     $(".tz-warning").removeClass("display-none")
     $(".tz-warning").addClass("display-inline") // Labels on show page need display-inline
     $(".tz-show").removeClass("display-none")
@@ -118,7 +121,12 @@ export default class extends Controller {
     tooltip()
 
     // Show tagsContainer
-    showTags("event_tags")
+    if (document.getElementById("event_tags")) {
+      showTags("event_tags")
+    }
+    if (document.getElementById("event_version_tags")) {
+      showTags("event_version_tags")
+    }
 
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 

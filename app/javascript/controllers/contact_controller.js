@@ -72,7 +72,12 @@ export default class extends Controller {
     tooltip()
 
     // Show tagsContainer
-    showTags("contact_tags")
+    if (document.getElementById("contact_tags")) {
+      showTags("contact_tags")
+    }
+    if (document.getElementById("contact_version_tags")) {
+      showTags("contact_version_tags")
+    }
 
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 
@@ -134,7 +139,7 @@ export default class extends Controller {
     const divColumn3 = document.createElement("div")
     const inputType = document.createElement("INPUT")
     const inputValue = document.createElement("INPUT")
-    const iconTrash = document.createElement("img")
+    const iconTrash = document.createElement("div")
     divRow.className = "row"
     divColumn1.className = "small-5 medium-5"
     divColumn2.className = "small-6 medium-6 columns"
@@ -148,8 +153,7 @@ export default class extends Controller {
     inputValue.id = "contact_" + addRow + "_value"
     inputValue.setAttribute("data-tojson","")
     inputValue.placeholder = getPlaceholderValue(addRow)
-    iconTrash.className = "icon medium"
-    iconTrash.setAttribute("src", "/assets/delete.svg")
+    iconTrash.className = "icon icon-delete"
     iconTrash.setAttribute("data-action","click->contact#removeTypeValue")
     iconTrash.setAttribute("data-value","contact_" + addRow)
 

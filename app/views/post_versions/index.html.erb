@@ -1,11 +1,11 @@
 <div data-controller="post">
   <div class="row">
     <div class="columns" id="add-back-arrow">
-      <h2>Note versions</h2>
+      <h2 class="icon icon-arrow-back md cursor-pointer">Versions</h2>
     </div>
   </div>
 
-  <div class="row row-th hide-for-small-only">
+  <div class="row bg-color-300 p-2 hide-for-small-only">
     <div class="medium-8 columns">Created</div>
     <div class="medium-4 columns text-right">Select version</div>
   </div>
@@ -15,7 +15,7 @@
       <%= link_to (l post_version.created_at, format: :long), post_version_path(post_version) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
-      <img src="assets/difference.svg" class="icon large">
+      <div class="icon icon-difference md p-2"></div>
       <%= check_box_tag "version_ids[]", post_version.id, false, id: post_version.id,
         data: { action: "click->post#versions" }, class: "checkBoxClass" %>
       <%= content_tag :span, post_version.id %>

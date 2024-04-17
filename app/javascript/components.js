@@ -37,7 +37,7 @@ export function tooltip() {
 export function saveFormAlert() {
   $(":input").change(function(){ //triggers change in all input fields including text type
     $("#cloud-upload").attr("src","/assets/cloud-upload-filled.svg")
-    $("#cloud-upload").addClass("icon alert-filter")
+    $("#cloud-upload").addClass("filter-red")
   });
 }
 

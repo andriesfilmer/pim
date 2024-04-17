@@ -26,7 +26,7 @@
 @import 'mixin';
 @import 'basic';
 @import 'grid';
-@import 'icons';
+@import 'components/icons';
 @import 'components/forms';
 @import 'components/button';
 @import 'components/callout';
@@ -43,6 +43,7 @@
 @import 'components/tabs';
 @import 'components/tags';
 @import 'components/tooltip';
+@import 'tailwind';
 @import 'helpers';
 @import 'base';
 

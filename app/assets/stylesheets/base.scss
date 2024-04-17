@@ -1,25 +1,8 @@
 /* Base classes i.o. custom classes for site */
 
 body {
-  color: var(--text-color);
-  background-color: var(--body-color);
-}
-nav.nav-bar {
-  line-height: 2.5em;
-  text-align: center;
-  background-color: var(--navbar-color);
-  max-width: 100%;
-  color: #fff;
-  font-size: 1.2em;
-  a {
-    color: #eee;
-  }
-  button {
-    background-color: var(--navbar-color);
-    border: none;
-    color: #eee;
-    font-size: 1em;
-  }
+  color: var(--color-text);
+  background-color: var(--color-body);
 }
 a {
   color: var(--text-color);
@@ -46,14 +29,6 @@ div.start p {
     width: 80%;
 }
 
-.secondary-menu {
-  font-size: 2rem;
-  padding-bottom: 1rem;
-  .divider {
-    margin: 0.5rem;
-    border-right: 1px solid #8b8b8b;
-  }
-}
 
 h1.home {
   font-size: 2rem;
@@ -66,11 +41,6 @@ h1.th, h2.th, h3.th, h4.th {
   margin-top: 1rem;
   border-bottom: 1px solid #eee;
 }
-.label-th {
-  margin-top: 1rem;
-  border-bottom: 1px solid #eee;
-  font-size: 1.2rem;
-}
 .row-caption {
   background: var(--primary-color);
   color: #fff;
@@ -78,7 +48,7 @@ h1.th, h2.th, h3.th, h4.th {
   font-weight: bold;
 }
 .row-th {
-  background-color: var(--primary-color);
+  background-color: var(--color-500);
   color: var(--text-color-diap);
 }
 .row-caption, .row-th, .odd-even {

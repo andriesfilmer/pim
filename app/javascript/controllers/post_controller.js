@@ -21,7 +21,12 @@ export default class extends Controller {
     modalComponent()
 
     // Show tagsContainer
-    showTags("post_tags")
+    if (document.getElementById("post_tags")) {
+      showTags("post_tags")
+    }
+    if (document.getElementById("post_version_tags")) {
+      showTags("post_version_tags")
+    }
 
 
     if (document.getElementById("notes")) {

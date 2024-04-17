@@ -1,4 +1,4 @@
-<%= render "passkeys/secondary_menu" unless @passkey.try(:org_id) || @passkey_readonly == true %>
+<%= render "passkeys/secondary_menu" %>
 <%= render "passkeys/restore_menu" if @passkey.try(:org_id) %>
 
 <div class="row" data-controller="passkey">

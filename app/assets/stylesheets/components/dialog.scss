@@ -7,9 +7,9 @@
   cursor: pointer;
   color: var(--text-color);
   font-size: smaller;
-  background-color: var(--body-color);
+  background-color: var(--color-body);
   &::backdrop {
-    background-color: var(--warning-color);
+    background-color: var(--color-300);
     opacity: 0.55;
     filter: blur(100px);
   }

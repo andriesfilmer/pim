@@ -7,11 +7,10 @@
     border: 1px solid var(--grey-accent);
     border-radius: 5px;
     color: var(--text-color);
-    &.secondary { background-color: #f2f2f2; }
-    &.notice { background-color: lighten($notice-color, 10%) }
-    &.success { background-color: lighten($success-color, 10%) }
-    &.warning { background-color: lighten($warning-color, 10%) }
-    &.alert { background-color: lighten($alert-color, 10%) }
+    &.notice    { background-color: var(--bg-notice) }
+    &.success   { background-color: var(--bg-success) }
+    &.warning   { background-color: var(--bg-warning) }
+    &.alert     { background-color: var(--bg-alert) }
 }
 
 

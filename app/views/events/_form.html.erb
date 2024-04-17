@@ -29,27 +29,29 @@
       <%= form.time_field :end_time, data: { action: "event#changeDatetime" }, class: ("display-none" if @event.allDay) %>
     </div>
   </div>
-  <div class="row">
+  <div class="row pb-4">
     <div class="columns small-2 medium-2">Allday</div>
     <div class="columns small-10 medium-10">
-      <%= form.check_box :allDay, checked: @event.allDay, class: "switch-paddle", data: { action: "click->event#toggleAllDay" } %>
+      <%= form.label :allDay, class: "switch" do %>
+        <%= form.check_box :allDay, checked: @event.allDay, class: "switch-paddle", data: { action: "click->event#toggleAllDay" } %>
+        <span class="slider round"></span>
+      <% end %>
     </div>
   </div>
 
   <!-- notes -->
   <div class="row">
     <div class="columns">
-      <%= form.label :notes, class: "label-th display-inline" %>
-      <img src="/assets/preview.svg" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip
-        title="Click for preview" class="cursor-pointer icon medium">
-      <img src="/assets/edit.svg" id="edit_bt" data-action="click->event#hideMarkdown" class="icon medium cursor-pointer display-none">
+      <%= form.label :notes, class: "display-inline" %>
+      <div class="icon icon-preview align-bottom" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip title="Click for preview"></div>
+      <div class="icon icon-edit align-bottom display-none" id="edit_bt" data-action="click->event#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '10' %>
       <div id="markdown"></div>
     </div>
   </div>
 
   <div class="row">
-    <div class="columns medium-6">
+    <div class="medium-6">
     <fieldset>
       <legenda class="strong">Category</legenda>
       <div class="row p-4">

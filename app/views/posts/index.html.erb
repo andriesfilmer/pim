@@ -1,13 +1,11 @@
-<div class="row secondary-menu">
+<div class="row bg-color-700 mb-6">
   <div class="small-10 medium-10 columns">
-    <img src="/assets/article.svg" class="icon large">
-    <span class="divider"></span>
-    <img src="/assets/search.svg" data-controller="post" data-action="click->post#showSearch" class="icon large">
+    <div class="icon icon-article md pr-2 border-right-dashed"></div>
+    <div class="icon icon-search md p-2" data-controller="post" data-action="click->post#showSearch"></div>
   </div>
   <div class="small-2 medium-2 columns text-right">
-    <%= link_to new_post_path, data: { turbo_frame: dom_id(Post.new) } do %>
-      <%= image_tag "note-add.svg", class: "icon large" %>
-    <% end %>
+    <%= link_to (content_tag :div, '', class: "icon icon-note-add md p-2"),
+      new_post_path, data: { turbo_frame: dom_id(Post.new) } %>
   </div>
 </div>
 
@@ -20,7 +18,7 @@
   </div>
 </div>
 
-<div class="row row-th hide-for-small-only">
+<div class="row hide-for-small-only p-2 bg-color-300">
   <div class="medium-6 columns">Title</div>
   <div class="medium-2 columns">Last read</div>
   <div class="medium-2 columns">Updated</div>

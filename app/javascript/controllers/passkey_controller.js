@@ -23,7 +23,13 @@ export default class extends Controller {
     modalComponent()
 
     // Show tagsContainer
-    showTags("passkey_tags")
+    if (document.getElementById("passkey_tags")) {
+      showTags("passkey_tags")
+    }
+    if (document.getElementById("passkey_version_tags")) {
+      showTags("passkey_version_tags")
+    }
+
 
     // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {
@@ -74,10 +80,10 @@ export default class extends Controller {
   togglePassword() {
     if (this.passwordToggleTarget.type === "text") {
       this.passwordToggleTarget.type = "password"
-      this.passwordToggleTarget.classList.remove("warning-color")
+      this.passwordToggleTarget.classList.remove("color-warning")
     } else {
       this.passwordToggleTarget.type = "text"
-      this.passwordToggleTarget.classList.add("warning-color")
+      this.passwordToggleTarget.classList.add("color-warning")
     }
   }
 
@@ -86,11 +92,11 @@ export default class extends Controller {
 
     if (this.notesToggleTarget.classList.toggle("hide-notes")) {
       this.notesToggleTarget.textContent = "Click to show notes"
-      this.notesToggleTarget.classList.remove("warning-color");
+      this.notesToggleTarget.classList.remove("color-warning");
       this.notesToggleTarget.classList.add("disabled");
     } else {
       this.notesToggleTarget.classList.remove("disabled");
-      this.notesToggleTarget.classList.add("warning-color");
+      this.notesToggleTarget.classList.add("color-warning");
     }
     if (this.notesToggleTarget.textContent === "" ) {
       this.notesToggleTarget.textContent = "No notes yet..."

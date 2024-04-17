@@ -1,37 +1,75 @@
 
-// Dark theme
-$body-color:      #352d37;
-$text-color:      #b9b5b5;
-$text-color-diap: #e5e5e5;
-
-$primary-color:   #282828;
-$secondary-color: #717171;
-$accent-color:    #3f3f3f;
-
-$navbar-color:    #7c4c66;
-$button-color:    #725858;
-$icon-filter:     invert(60%) brightness(80%) contrast(100%);
-$grey-accent:     #797575;
-
-$notice-color:    #1f688f;
-$success-color:   #259525;
-$warning-color:   #af7409;
-$alert-color:     #e13232;
-
 .dark-theme {
-  --body-color: #{$body-color};
-  --text-color: #{$text-color};
-  --text-color-diap: #{$text-color-diap};
-  --primary-color: #{$primary-color};
-  --secondary-color: #{$secondary-color};
-  --accent-color: #{$accent-color};
-  --navbar-color: #{$navbar-color};
-  --button-color: #{$button-color};
-  --icon-filter: #{$icon-filter};
-  --grey-accent: #{$grey-accent};
-  --notice-color: #{$notice-color};
-  --success-color: #{$success-color};
-  --warning-color: #{$warning-color};
-  --alert-color: #{$alert-color};
-}
 
+  // https://uicolors.app/create
+  --color-950: hsl(240deg 4% 70%);
+  --color-900: hsl(240deg 4% 65%);
+  --color-800: hsl(240deg 4% 60%);
+  --color-700: hsl(240deg 4% 55%);
+  --color-600: hsl(240deg 4% 50%);
+  --color-500: hsl(240deg 4% 45%); // #71717a
+  --color-400: hsl(240deg 4% 40%);
+  --color-300: hsl(240deg 4% 35%);
+  --color-200: hsl(240deg 4% 30%);
+  --color-100: hsl(240deg 4% 25%);
+  --color-50:  hsl(240deg 4% 20%);
+
+  --color-primary: hsl(240deg 4% 50%);
+  --color-secondary: hsl(240deg 4% 50%);
+  --color-body: hsl(240deg 4% 20%);
+  --color-text: hsl(240deg 4% 85%);
+
+  --color-notice  : var(--color-800);
+  --bg-notice  : var(--color-200);
+
+  --color-success : hsl(140 46% 55%);
+  --bg-success: hsl(140deg 46% 50%);;
+
+  --color-warning: hsl(40, 100%, 40%);
+  --bg-warning : hsl(40, 100%, 80%);
+
+  --color-alert   : hsl(0, 100%, 40%);
+  --bg-alert: hsl(0deg 50% 43%);
+
+  // In dark theme filter white is black!
+  //--filter-white:  invert(100%) sepia(0%) saturate(7500%) hue-rotate(343deg) brightness(103%) contrast(103%);
+  --filter-white:  invert(0%) sepia(94%) saturate(0%) hue-rotate(179deg) brightness(108%) contrast(106%);
+  --filter-orange: invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
+  --filter-red:    invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
+
+  // Helper classes for colors
+  //--------------------------
+  .text-color       { color: var(--color-text) }
+  .text-color-diap  { color: var(--color-text-diap) }
+  .text-light       { color: var(--color-text) }
+  .text-dark        { color: var(--color-text-diap) }
+
+  .color-50         { color: var(--color-50) }
+  .color-100        { color: var(--color-100) }
+  .color-200        { color: var(--color-200) }
+  .color-300        { color: var(--color-300) }
+  .color-400        { color: var(--color-400) }
+  .color-500        { color: var(--color-500) }
+  .color-600        { color: var(--color-600) }
+  .color-700        { color: var(--color-700) }
+  .color-800        { color: var(--color-800) }
+  .color-900        { color: var(--color-900) }
+  .color-950        { color: var(--color-950) }
+
+  .bg-color-50      { background-color: var(--color-50) }
+  .bg-color-100     { background-color: var(--color-100) }
+  .bg-color-200     { background-color: var(--color-200) }
+  .bg-color-300     { background-color: var(--color-300) }
+  .bg-color-400     { background-color: var(--color-400) }
+  .bg-color-500     { background-color: var(--color-500) }
+  .bg-color-600     { background-color: var(--color-600) }
+  .bg-color-700     { background-color: var(--color-700) }
+  .bg-color-800     { background-color: var(--color-800) }
+  .bg-color-900     { background-color: var(--color-900) }
+  .bg-color-950     { background-color: var(--color-950) }
+
+  .notice           { color: var(--color-notice); background-color: var(--bg-notice) }
+  .success          { color: var(--color-success); background-color: var(--bg-success) }
+  .warning          { color: var(--color-warning); background-color: var(--bg-warning) }
+  .alert            { color: var(--color-alert); background-color: var(--bg-alert) }
+}

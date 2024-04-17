@@ -1,8 +1,5 @@
 <div class="row">
-  <div class="columns medium-6" id="add-back-arrow">
-    <img src="/assets/restore.svg" class="icon">
-    <%= content_tag :span, '', class: "divider" if @contact.id %>
-  </div>
+  <div class="columns medium-6" id="add-back-arrow cursor-pointer"></div>
   <div class="columns medium-6 text-right" id="add-back-arrow">
     <p><%= button_to "Restore version #{@contact.id}", contactrestore_path,
       params: { version_id: @contact.id} , class: "button" if @contact.id %></p>

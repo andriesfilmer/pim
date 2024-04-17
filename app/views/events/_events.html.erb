@@ -1,6 +1,6 @@
 <div id="events" class="col-12">
 <% @events.each do |event| %>
-  <%= link_to event_path(event), class: "row odd-even #{event.category}" do %>
+  <%= link_to event_path(event), class: "row odd p-2 #{event.category}" do %>
   <div class="small-12 medium-8 columns">
     <%= event.title %>
   </div>

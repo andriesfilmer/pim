@@ -1,6 +1,6 @@
 <div id="passkeys" class="col-12">
 <% @passkeys.each do |passkey| %>
-  <%= link_to passkey_path(passkey), class: "row odd-even" do %>
+  <%= link_to passkey_path(passkey), class: "row even p-2" do %>
   <div class="small-6 medium-7 columns">
     <%= passkey.title %>
   </div>

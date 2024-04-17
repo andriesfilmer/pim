@@ -32,7 +32,7 @@ textarea {
   height: 2.4375rem;
   margin: 0 0 1rem;
   padding: 0.5rem;
-  border: 1px solid var(--grey-accent);
+  border: 1px solid var(--color-300);
   border-radius: 5px;
   //box-shadow: inset 0 1px 2px #eee;
   transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
@@ -48,7 +48,7 @@ input[type='submit'] {
 }
 
 input:disabled, input[readonly], textarea:disabled, textarea[readonly] {
-    background-color: var(--grey-accent);
+    background-color: var(--color-100);
     cursor: not-allowed;
 }
 
@@ -61,7 +61,7 @@ select {
   appearance: none;
   border: 1px solid #cacaca;
   border-radius: 5px;
-  background-color: #fefefe;
+  background-color: var(--color-300);
   font-family: inherit;
   font-size: 1rem;
   font-weight: normal;

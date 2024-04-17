@@ -1,13 +1,13 @@
 // Callout component
 //------------------
 #tagsContainer {
-  margin-top: 1em;
+  margin: 1em 0;
   span {
     font-size: 0.9em;
     margin: 3px;
     padding: 6px;
     border-radius: 5px;
-    background-color: $success-color;
+    background-color: var(--color-500);
     color: #fff;
   }
 }

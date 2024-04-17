@@ -1,8 +1,8 @@
 <div id="contacts" class="col-12">
 <% @contacts.each do |contact| %>
-  <%= link_to contact_path(contact), class: "row odd-even" do %>
+  <%= link_to contact_path(contact), class: "row p-2 odd" do %>
   <div class="small-1 medium-1 column text-center">
-    <%= image_tag "star-filled.svg", class: "icon medium warning-filter" if contact.starred %>
+    <%= content_tag :div, '', class: "icon sm icon-star-filled filter-orange" if contact.starred %>
   </div>
   <div class="small-11 medium-5 column">
     <%= contact.name %>

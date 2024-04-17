@@ -2,7 +2,9 @@
 //-----------------
 .button, .button.disabled, .button[disabled] {
   color: #fff;
-  background-color: var(--button-color);
+  background-color: var(--color-600);
+  &:hover { background-color: var(--color-700); }
+  &:active { background-color: var(--color-800); }
   display: inline-block;
   vertical-align: middle;
   padding: 0.75em;
@@ -13,9 +15,10 @@
   line-height: 1;
   text-align: center;
   cursor: pointer;
-  &.notice { background-color: var(--notice-color); }
-  &.alert { background-color: var(--alert-color); }
-  &.secondary { background-color: var(--secondary-color); }
+  &.notice { background-color: var(--color-notice); }
+  &.warning { color: #fff; background-color: var(--color-warning); }
+  &.alert { color: #fff; background-color: var(--color-alert); }
+  &.secondary { background-color: var(--color-secondary); }
   &.small { font-size: 0.75rem; }
   &.tiny { font-size: 0.75rem; padding: 0.5em;}
   &.expanded {
@@ -30,29 +33,5 @@
 .button.disabled, .button[disabled] {
   cursor: not-allowed;
   opacity: 0.5;
-}
-
-span.button {
-  margin-bottom: 0;
-}
-
-#add-back-arrow {
-   .back-arrow {
-     float: left;
-     padding-left: 10px;
-     margin-top: 10px;
-     font-size: 1.8em;
-     cursor: pointer;
-     &:after { content: '\02794'; }
-     transform: rotate(180deg);
-   }
- }
- .row-caption #add-back-arrow {
-   margin-top: 0;
-   .back-arrow {
-     color: #fff;
-     font-size: 1.4rem;
-     margin-top: 2px;
-  }
 }
 

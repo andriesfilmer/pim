@@ -1,36 +1,27 @@
-<div class="row secondary-menu">
+<div class="row bg-color-700 mb-6">
   <div class="columns small-10 medium-10">
-    <%= image_tag "article.svg", class: "icon large" unless @post.id %>
-    <%= link_to (image_tag "article.svg", class: "icon large"), post_path(@post) if @post.id %>
-    <span class="divider"></span>
-    <%= link_to edit_post_path(@post), title: "Edit post" do %>
-      <%= image_tag "edit.svg", class: "icon large" %>
-    <% end if action_name == "show" %>
-    <%= content_tag :span, '', class: "divider" if action_name == "show" %>
+    <%= content_tag "icon icon-articl md pr-2" unless @post.id %>
+    <%= link_to (content_tag :div, '', class: "icon icon-article md pr-2 border-right-dashed"),
+      post_path(@post) if @post.id %>
 
-    <%= link_to post_path(@post), title: "Show post" do %>
-      <%= image_tag "visibility.svg", class: "icon large" %>
-    <% end if action_name == "edit" %>
-    <%= content_tag :span, '', class: "divider" if action_name == "edit" %>
+    <%= link_to (content_tag :div, '', class: "icon icon-edit md p-2 border-right-dashed"),
+      edit_post_path(@post), title: "Edit post" if action_name == "show" %>
 
-    <%= image_tag "cloud-upload.svg", id: "cloud-upload", data: { action: "click->post#submitForm" },
-       title: "Save post", class:"icon large cursor-pointer" if action_name != "show" %>
-    <%= content_tag :span, '', class: "divider" if action_name != "show" && @post.id %>
+    <%= link_to (content_tag :div, '', class: "icon icon-visibility md p-2 border-right-dashed"),
+      post_path(@post), title: "Show post" if action_name == "edit" %>
 
-    <%= image_tag "photo-add.svg", class: "icon large", data: { modal_open: "addPicture" } if @post.id && action_name == "edit" %>
-    <%= content_tag :span, '', class: "divider" if @post.id && action_name == "edit" %>
+    <%= content_tag :div, '', class: "icon icon-cloud-upload md p-2 border-right-dashed", id: "cloud-upload",
+      data: { action: "click->post#submitForm" }, title: "Save post" if action_name != "show" %>
 
-    <%= link_to post_versions_path(org_id: @post.id), title: "Versions of this post" do %>
-      <img src="/assets/restore-page.svg" class="icon large">
-    <% end if @post.id %>
-    <%= content_tag :span, '', class: "divider" if @post.id %>
+    <%= content_tag :div, '', class: "icon icon-photo-add md p-2 border-right-dashed",
+      data: { modal_open: "addPicture" } if @post.id && action_name == "edit" %>
+
+    <%= link_to (content_tag :div, '', class: "icon icon-restore md p-2"),
+      post_versions_path(org_id: @post.id), title: "Versions of this post" if @post.id %>
 
   </div>
   <div class="columns small-2 medium-2 text-right">
-    <%= content_tag :span, '', class: "divider" if @post.id %>
-    <%= link_to post_path(@post), data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this post?'},
-      title: "Delete item!" do %>
-      <%= image_tag "delete.svg", class: "icon large" %>
-    <% end if @post.id %>
+    <%= link_to (content_tag :div, '', class: "icon icon-delete md p-2"), post_path(@post),
+      data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this post?'} if @post.id %>
   </div>
 </div>

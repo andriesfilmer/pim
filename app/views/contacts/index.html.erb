@@ -1,21 +1,12 @@
-<div class="row secondary-menu">
+<div class="row bg-color-700 mb-6">
   <div class="small-10 medium-10 columns">
-    <%= link_to (image_tag "group.svg", class: "icon large"), contacts_path %>
-    <span class="divider"></span>
-    <%= link_to contacts_path(starred: true)  do %>
-      <%= image_tag "star.svg", class: "icon large" %>
-    <% end %>
-    <span class="divider"></span>
-    <%= link_to contacts_path(birthdate: true) do %>
-      <%= image_tag "cake.svg", class: "icon large" %>
-    <% end %>
-    <span class="divider"></span>
-    <img src="/assets/search.svg" data-controller="contact" data-action="click->contact#showSearch" class="icon large">
+    <%= link_to (content_tag :div, '', class: "icon icon-group md pr-2 border-right-dashed"), contacts_path %>
+    <%= link_to (content_tag :div, '', class: "icon icon-star md p-2 border-right-dashed"), contacts_path(starrred: true) %>
+    <%= link_to (content_tag :div, '', class: "icon icon-cake md p-2 border-right-dashed"), contacts_path(birthdate: true) %>
+    <div class="icon icon-search md" data-controller="contact" data-action="click->contact#showSearch"></div>
   </div>
-  <div class="small-2 medium-2 columns text-right">
-    <%= link_to new_contact_path, data: { turbo_frame: dom_id(Contact.new) } do %>
-      <%= image_tag "person-add.svg", class: "icon large" %>
-    <% end %>
+  <div class="small-2 medium-2 columns pt-2 text-right">
+    <%= link_to (content_tag :div, '', class: "icon icon-person-add md"), new_contact_path, data: { turbo_frame: dom_id(Contact.new) } %>
   </div>
 </div>
 

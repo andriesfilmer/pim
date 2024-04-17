@@ -6,71 +6,68 @@
     <h2><%= @contact.name %></h2>
   </div>
   <div class="small-12 medium-6 columns">
-    <%= content_tag :label do %>
-      <%= image_tag "cake.svg", class: "icon small" %>
-      <%= get_birthday_age(@contact) %>
-    <% end if @contact.birthdate %>
+    <%= content_tag :div, get_birthday_age(@contact), class: "icon icon-cake sm" if @contact.birthdate %>
   </div>
 </div>
 
 
 <div class="row">
-  <div class="medium-6 columns">
+  <div class="medium-6">
     <div class="medium-6 columns">
-      <%= label_tag :phones, nil, class:"label-th" unless @contact.phones.include?("[]") %>
+      <%= label_tag :phones, nil, class:"text-lg p-1 bg-color-100" unless @contact.phones.include?("[]") %>
       <% JSON.parse(@contact.phones).each do | phone | %>
-      <div class="row">
+      <div class="row pb-2">
         <div class="medium-10 columns">
+          <div class="icon icon-call float-right"></div>
           <%= label_tag phone["type"] %>
-          <%= image_tag "call.svg", class: "icon medium float-right" %>
           <%= phone["value"] %>
         </div>
       </div>
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :emails, nil, class:"label-th" unless @contact.emails.include?("[]") %>
+      <%= label_tag :emails, nil, class:"text-lg p-1 bg-color-100" unless @contact.emails.include?("[]") %>
       <% JSON.parse(@contact.emails).each do | email | %>
       <div class="row">
         <div class="medium-10 columns">
+          <div class="icon icon-mail float-right"></div>
           <%= label_tag email["type"] %>
-          <%= image_tag "mail.svg", class: "icon medium float-right" %>
           <%= email["value"] %>
         </div>
       </div>
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :addresses, nil, class:"label-th" unless @contact.addresses.include?("[]") %>
+      <%= label_tag :addresses, nil, class:"text-lg p-1 bg-color-100" unless @contact.addresses.include?("[]") %>
       <% JSON.parse(@contact.addresses).each do | address | %>
       <div class="row">
         <div class="medium-10 columns">
+          <div class="icon icon-mail float-right"></div>
           <%= label_tag address["type"] %>
-          <%= image_tag "location-on.svg", class: "icon medium float-right" %>
           <%= address["value"] %>
         </div>
       </div>
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :companies, nil, class:"label-th" unless @contact.companies.include?("[]") %>
+      <%= label_tag :companies, nil, class:"text-lg p-1 bg-color-100" unless @contact.companies.include?("[]") %>
       <% JSON.parse(@contact.companies).each do | company | %>
       <div class="row">
         <div class="medium-10 columns">
+          <div class="icon icon-apartement float-right"></div>
           <%= label_tag company["type"] %>
-          <%= image_tag "apartment.svg", class: "icon medium float-right" %>
           <%= company["value"] %>
         </div>
       </div>
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :websites, nil, class:"label-th" unless @contact.websites.include?("[]") %>
+      <%= label_tag :websites, nil, class:"text-lg p-1 bg-color-100" unless @contact.websites.include?("[]") %>
       <% JSON.parse(@contact.websites).each do | website | %>
       <div class="row">
         <div class="medium-10 columns">
+          <div class="icon icon-link float-right"></div>
           <%= label_tag website["type"] %>
-          <%= image_tag "link.svg", class: "icon medium float-right" %>
           <%= website["value"] %>
         </div>
       </div>
@@ -78,7 +75,7 @@
     </div>
   </div>
   <div class="medium-6 columns">
-    <%= label_tag :notes, nil, class:"label-th" unless @contact.notes.blank? %>
+    <%= label_tag :notes, nil, class:"text-lg p-1 bg-color-100" unless @contact.notes.blank? %>
     <%= content_tag :pre, @contact.notes, id: "notes", class: "display-none" %>
     <div id="markdown"></div>
   </div>
@@ -92,7 +89,7 @@
 </div>
 
 <div class="row">
-  <div class="columns"><label class="label-th"></label></div>
+  <div class="columns"><label class="text-lg p-2"></label></div>
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @contact.created_at, format: :default %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @contact.updated_at, format: :default %></div>
 </div>

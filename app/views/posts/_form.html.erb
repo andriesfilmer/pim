@@ -3,20 +3,16 @@
 
   <div class="row">
     <div class="columns">
-      <%= form.label :title, class: "label-th" %>
-    </div>
-    <div class="columns">
-      <%= form.text_field :title, placeholder: "New post title" %>
+      <%= form.text_field :title, placeholder: "Note title" %>
     </div>
   </div>
 
   <!-- notes -->
   <div class="row">
     <div class="columns">
-      <%= form.label :notes, class: "label-th display-inline" %>
-      <img src="/assets/preview.svg" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip
-        title="Click for preview" class="cursor-pointer icon medium">
-      <img src="/assets/edit.svg" id="edit_bt" data-action="click->post#hideMarkdown" class="icon medium cursor-pointer display-none">
+      <div class="icon icon-preview align-bottom" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip title="Click for preview"></div>
+      <div class="icon icon-edit align-bottom display-none" id="edit_bt" data-action="click->post#hideMarkdown" data-tooltip title="Click to edit"></div>
+      <%= form.label :notes, class: "text-lg display-inline" %>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '30' %>
       <div id="markdown"></div>
     </div>

@@ -1,10 +1,9 @@
 <div class="row">
   <div class="columns medium-6" id="add-back-arrow">
-    <img src="/assets/restore.svg" class="icon">
-    <%= content_tag :span, '', class: "divider" if @post.id %>
+    <div class="icon icon-arrow-back md pt-2 cursor-pointer"></div>
   </div>
   <div class="columns medium-6 text-right" id="add-back-arrow">
-   <p><%= button_to "Restore version #{@post.id}", postrestore_path,
-     params: { version_id: @post.id} , class: "button" if @post.id %></p>
+    <p><%= button_to "Restore version #{@post.id}", postrestore_path,
+      params: { version_id: @post.id} , class: "button warning" if @post.id %></p>
   </div>
 </div>

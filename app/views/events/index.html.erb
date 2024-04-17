@@ -1,17 +1,12 @@
-<div class="row secondary-menu">
-  <div class="small-10 medium-10 columns" data-controller="event">
-    <img src="/assets/calendar-month.svg" title="Year grid" data-action="click->event#showMonthView" class="icon large">
-    <span class="divider"></span>
-    <img src="/assets/calendar-view-week.svg" title="Week grid" data-action="click->event#showWeekView" class="icon large">
-    <span class="divider"></span>
-    <img src="/assets/calendar-list-month.svg" title="List month" data-action="click->event#showListMonth" class="icon large">
-    <span class="divider"></span>
-    <img src="/assets/search.svg" data-action="click->event#showSearch" class="icon large">
+<div class="row bg-color-700 mb-6 data-controller="event">
+  <div class="small-10 medium-10 columns">
+    <div class="icon icon-calendar-month md pr-2 border-right-dashed" title="Year grid" data-action="click->event#showMonthView"></div>
+    <div class="icon icon-calendar-view-week md p-2 border-right-dashed" title="Week grid" data-action="click->event#showWeekView"></div>
+    <div class="icon icon-calendar-list-month md p-2 border-right-dashed" title="List month" data-action="click->event#showListMonth"></div>
+    <div class="icon icon-search md p-2" data-action="click->event#showSearch"></div>
   </div>
-  <div class="small-2 medium-2 columns text-right">
-    <%= link_to new_event_path do %>
-      <%= image_tag "calendar-add.svg", class: "icon large" %>
-    <% end %>
+  <div class="small-2 medium-2 columns p-2 text-right">
+    <%= link_to (content_tag :div, '', class: "icon icon-calendar-add md"), new_event_path %>
   </div>
 </div>
 
@@ -24,7 +19,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row pt-4">
   <div class="columns" id="calendar"></div>
 </div>
 

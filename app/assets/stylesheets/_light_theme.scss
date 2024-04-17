@@ -1,37 +1,75 @@
 
-// Light theme
-$body-color:      #ffffff;
-$text-color:      #121212;
-$text-color-diap: #fff;
-
-$primary-color:   #6fa688;
-$secondary-color: #bed7c9;
-$accent-color:    #a6c9b5;
-
-$navbar-color:    #7c4c66;
-$button-color:    #a66f8d;
-$icon-filter:     invert(100%) brightness(10%) contrast(100%);
-$grey-accent:     #d1d0d0;
-
-$notice-color:    #30b8cb;
-$success-color:   #85db85;
-$warning-color:   #fac054;
-$alert-color:     #e34b4b;
-
 .light-theme {
-  --body-color: #{$body-color};
-  --text-color: #{$text-color};
-  --text-color-diap: #{$text-color-diap};
-  --primary-color: #{$primary-color};
-  --secondary-color: #{$secondary-color};
-  --accent-color: #{$accent-color};
-  --navbar-color: #{$navbar-color};
-  --button-color: #{$button-color};
-  --icon-filter: #{$icon-filter};
-  --grey-accent: #{$grey-accent};
-  --notice-color: #{$notice-color};
-  --success-color: #{$success-color};
-  --warning-color: #{$warning-color};
-  --alert-color: #{$alert-color};
-}
 
+  // https://uicolors.app/create
+  --color-50:  #f2f7fb;
+  --color-100: #e7f0f8;
+  --color-200: #d3e2f2;
+  --color-300: #b9cfe8;
+  --color-400: #9cb6dd;
+  --color-500: #839dd1;
+  --color-600: #6a7fc1;
+  --color-700: #6374ae;
+  --color-800: #4a5989;
+  --color-900: #414e6e;
+  --color-950: #262c40;
+
+  --color-primary: var(--color-500);
+  --color-secondary: var(--color-700);
+  --color-body: #ffffff;
+  --color-body-diap: #000000;
+  --color-text: #121212;
+  --color-text-diap: #ffffff;
+
+  --color-notice  : var(--color-800);
+  --bg-notice  : var(--color-200);
+
+  --color-success: hsl(140, 90%, 25%);
+  --bg-success : hsl(140, 100%, 80%);
+
+  --color-warning: hsl(40, 100%, 40%);
+  --bg-warning : hsl(40, 100%, 80%);
+
+  --color-alert   : hsl(0, 100%, 40%);
+  --bg-alert: hsl(0, 100%, 80%);
+
+  --filter-white:  invert(100%) sepia(0%) saturate(7500%) hue-rotate(343deg) brightness(103%) contrast(103%);
+  --filter-orange: invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
+  --filter-red:    invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
+
+  // Helper classes for colors
+  //--------------------------
+  .text-color       { color: var(--color-text) }
+  .text-color-diap  { color: var(--color-text-diap) }
+  .text-light       { color: var(--color-text) }
+  .text-dark        { color: var(--color-text-diap) }
+
+  .color-50         { color: var(--color-50) }
+  .color-100        { color: var(--color-100) }
+  .color-200        { color: var(--color-200) }
+  .color-300        { color: var(--color-300) }
+  .color-400        { color: var(--color-400) }
+  .color-500        { color: var(--color-500) }
+  .color-600        { color: var(--color-600) }
+  .color-700        { color: var(--color-700) }
+  .color-800        { color: var(--color-800) }
+  .color-900        { color: var(--color-900) }
+  .color-950        { color: var(--color-950) }
+
+  .bg-color-50      { background-color: var(--color-50) }
+  .bg-color-100     { background-color: var(--color-100) }
+  .bg-color-200     { background-color: var(--color-200) }
+  .bg-color-300     { background-color: var(--color-300) }
+  .bg-color-400     { background-color: var(--color-400) }
+  .bg-color-500     { background-color: var(--color-500) }
+  .bg-color-600     { background-color: var(--color-600) }
+  .bg-color-700     { background-color: var(--color-700) }
+  .bg-color-800     { background-color: var(--color-800) }
+  .bg-color-900     { background-color: var(--color-900) }
+  .bg-color-950     { background-color: var(--color-950) }
+
+  .notice           { color: var(--color-notice); background-color: var(--bg-notice) }
+  .success          { color: var(--color-success); background-color: var(--bg-success) }
+  .warning          { color: var(--color-warning); background-color: var(--bg-warning) }
+  .alert            { color: var(--color-alert); background-color: var(--bg-alert) }
+}
