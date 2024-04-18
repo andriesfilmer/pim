@@ -6,7 +6,7 @@
     <h2><%= @contact.name %></h2>
   </div>
   <div class="small-12 medium-6 columns">
-    <%= content_tag :div, get_birthday_age(@contact), class: "icon filter cake sm" if @contact.birthdate %>
+    <%= content_tag :div, get_birthday_age(@contact), class: "icon filter cake sm pr-3" if @contact.birthdate %>
   </div>
 </div>
 
@@ -14,9 +14,9 @@
 <div class="row">
   <div class="medium-6">
     <div class="medium-6 columns">
-      <%= label_tag :phones, nil, class:"text-lg p-1 color-bg-100" unless @contact.phones.include?("[]") %>
+      <%= label_tag :phones, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.phones.include?("[]") %>
       <% JSON.parse(@contact.phones).each do | phone | %>
-      <div class="row pb-2">
+      <div class="row my-2">
         <div class="medium-10 columns">
           <div class="icon filter call float-right"></div>
           <%= label_tag phone["type"] %>
@@ -26,9 +26,9 @@
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :emails, nil, class:"text-lg p-1 color-bg-100" unless @contact.emails.include?("[]") %>
+      <%= label_tag :emails, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.emails.include?("[]") %>
       <% JSON.parse(@contact.emails).each do | email | %>
-      <div class="row">
+      <div class="row my-2">
         <div class="medium-10 columns">
           <div class="icon filter mail float-right"></div>
           <%= label_tag email["type"] %>
@@ -38,9 +38,9 @@
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :addresses, nil, class:"text-lg p-1 color-bg-100" unless @contact.addresses.include?("[]") %>
+      <%= label_tag :addresses, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.addresses.include?("[]") %>
       <% JSON.parse(@contact.addresses).each do | address | %>
-      <div class="row">
+      <div class="row my-2">
         <div class="medium-10 columns">
           <div class="icon filter mail float-right"></div>
           <%= label_tag address["type"] %>
@@ -50,9 +50,9 @@
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :companies, nil, class:"text-lg p-1 color-bg-100" unless @contact.companies.include?("[]") %>
+      <%= label_tag :companies, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.companies.include?("[]") %>
       <% JSON.parse(@contact.companies).each do | company | %>
-      <div class="row">
+      <div class="row my-2">
         <div class="medium-10 columns">
           <div class="icon filter apartement float-right"></div>
           <%= label_tag company["type"] %>
@@ -62,9 +62,9 @@
       <% end %>
     </div>
     <div class="medium-6 columns">
-      <%= label_tag :websites, nil, class:"text-lg p-1 color-bg-100" unless @contact.websites.include?("[]") %>
+      <%= label_tag :websites, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.websites.include?("[]") %>
       <% JSON.parse(@contact.websites).each do | website | %>
-      <div class="row">
+      <div class="row my-2">
         <div class="medium-10 columns">
           <div class="icon filter link float-right"></div>
           <%= label_tag website["type"] %>
@@ -75,7 +75,7 @@
     </div>
   </div>
   <div class="medium-6 columns">
-    <%= label_tag :notes, nil, class:"text-lg p-1 color-bg-100" unless @contact.notes.blank? %>
+    <%= label_tag :notes, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.notes.blank? %>
     <%= content_tag :pre, @contact.notes, id: "notes", class: "display-none" %>
     <div id="markdown"></div>
   </div>

@@ -8,6 +8,7 @@
     background-size: contain;
     background-repeat: no-repeat;
     padding: 1rem;
+    margin-right: 0.25rem;
     &.sm    { padding: 0.7rem; }
     &.md    { padding: 1.2rem; }
     &.lg    { padding: 1.4rem; }
@@ -16,12 +17,13 @@
     &.xl3   { padding: 2rem; }
     &.xl4   { padding: 3rem; }
 
-    &.filter-diap   { filter: var(--filter-diap) }
+    &.filter-diap    { filter: var(--filter-diap) }
+    &.filter         {  filter: var(--filter); }
     &.filter-red     { filter: var(--filter-red) }
     &.filter-orange  { filter: var(--filter-orange) }
-    &.filter {  filter: var(--filter); }
 
-    &.label { position: relative; top: 10px; margin-top: -1em;}
+    &.label { position: relative; top: 12px; margin-top: -1em;}
+    &.share { position: relative; top: 6px;  margin-top: -1em;}
 
     &.account-circle         { background-image: url("/assets/account-circle.svg") }
     &.add                    { background-image: url("/assets/add.svg") }
@@ -50,6 +52,7 @@
     &.logout                 { background-image: url("/assets/logout.svg") }
     &.mail                   { background-image: url("/assets/mail.svg") }
     &.more-time              { background-image: url("/assets/more-time.svg") }
+    &.note-add               { background-image: url("/assets/note-add.svg") }
     &.person                 { background-image: url("/assets/person.svg") }
     &.person-add             { background-image: url("/assets/person-add.svg") }
     &.photo-add              { background-image: url("/assets/photo-add.svg") }

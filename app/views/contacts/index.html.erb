@@ -3,7 +3,7 @@
     <%= link_to (content_tag :div, '', class: "icon filter group md p-2 border-right-dashed"), contacts_path %>
     <%= link_to (content_tag :div, '', class: "icon filter star md p-2 border-right-dashed"), contacts_path(starrred: true) %>
     <%= link_to (content_tag :div, '', class: "icon filter cake md p-2 border-right-dashed"), contacts_path(birthdate: true) %>
-    <div class="icon filter search md" data-controller="contact" data-action="click->contact#showSearch"></div>
+    <div class="icon filter search cursor-pointer md" data-controller="contact" data-action="click->contact#showSearch"></div>
   </div>
   <div class="small-2 medium-2 columns pt-2 text-right">
     <%= link_to (content_tag :div, '', class: "icon filter person-add md"), new_contact_path, data: { turbo_frame: dom_id(Contact.new) } %>

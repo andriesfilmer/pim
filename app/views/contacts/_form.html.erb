@@ -12,24 +12,24 @@
   <!-- Phones -->
   <div class="row">
     <div class="small-11 medium-11 columns pt-4">
-      <%= form.label :phones, class: "label-th" %>
+      <%= form.label :phones, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1">
-      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="phone"></div>
+    <div class="small-1 medium-1 text-center">
+      <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="phone"></div>
     </div>
   </div>
   <div class="row">
-    <div class="columns" id="phones">
+    <div class="col-12" id="phones">
       <% JSON.parse(@contact.phones).each_with_index do | phone,index | %>
       <div class="row">
-        <div class="small-5 medium-5">
+        <div class="small-12 medium-5 columns">
           <%= select_tag "contact_phone_type", options_for_select(["Mobile","Work","Home","Other"], phone['type']), data: { tojson: '' } %>
         </div>
-        <div class="small-6 medium-6 columns">
+        <div class="small-10 medium-6 columns">
           <%= form.text_field "phone_value", value: phone['value'], data: {tojson: '' } %>
         </div>
-        <div class="columns small-1 medium-1">
-          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_phone"></div>
+        <div class="small-1 medium-1 columns text-center">
+          <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_phone"></div>
         </div>
       </div>
       <% end %>
@@ -39,24 +39,24 @@
   <!-- Emails -->
   <div class="row">
     <div class="small-11 medium-11 columns pt-4">
-      <%= form.label :emails, class: "label-th" %>
+      <%= form.label :emails, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1">
-      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="email"></div>
+    <div class="small-1 medium-1 text-center">
+      <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="email"></div>
     </div>
   </div>
   <div class="row">
-    <div class="columns" id="emails">
+    <div class="col-12" id="emails">
       <% JSON.parse(@contact.emails).each_with_index do | email,index | %>
       <div class="row">
-        <div class="small-5 medium-5">
+        <div class="small-12 medium-5 columns">
           <%= form.text_field "email_type", value: email['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
-        <div class="small-6 medium-6 columns">
+        <div class="small-11 medium-6 columns">
           <%= form.text_field "email_value", value: email['value'], data: { tojson: '' } %>
         </div>
-        <div class="columns small-1 medium-1">
-          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_email"></div>
+        <div class="columns small-1 medium-1 text-center">
+          <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_email"></div>
         </div>
       </div>
       <% end %>
@@ -66,24 +66,24 @@
   <!-- Addresses -->
   <div class="row">
     <div class="small-11 medium-11 columns pt-4">
-      <%= form.label :addresses, class: "label-th" %>
+      <%= form.label :addresses, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1">
-      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="address"></div>
+    <div class="small-1 medium-1 text-center">
+      <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="address"></div>
     </div>
   </div>
   <div class="row">
-    <div class="columns" id="addresses">
+    <div class="col-12" id="addresses">
       <% JSON.parse(@contact.addresses).each_with_index do | address,index | %>
       <div class="row">
-        <div class="small-5 medium-5">
+        <div class="small-12 medium-5 columns">
           <%= form.text_field "address_type", value: address['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
-        <div class="small-6 medium-6 columns">
+        <div class="small-11 medium-6 columns">
           <%= form.text_field "address_value", value: address['value'], data: { tojson: '' } %>
         </div>
-        <div class="columns small-1 medium-1">
-          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_address"></div>
+        <div class="small-1 medium-1 columns text-center">
+          <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_address"></div>
         </div>
       </div>
       <% end %>
@@ -93,24 +93,24 @@
   <!-- Companies -->
   <div class="row">
     <div class="small-11 medium-11 columns pt-4">
-      <%= form.label :companies, class: "label-th" %>
+      <%= form.label :companies, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1">
-      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="company"></div>
+    <div class="small-1 medium-1 columns text-center">
+      <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="company"></div>
     </div>
   </div>
   <div class="row">
-    <div class="columns" id="companies">
+    <div class="col-12" id="companies">
       <% JSON.parse(@contact.companies).each_with_index do | company,index | %>
       <div class="row">
-        <div class="small-5 medium-5">
+        <div class="small-12 medium-5 columns">
           <%= form.text_field "company_type", value: company['type'], placeholder: 'Function', data: { tojson: '' } %>
         </div>
-        <div class="small-6 medium-6 columns">
+        <div class="small-11 medium-6 columns">
           <%= form.text_field "company_value", value: company['value'], data: { tojson: '' } %>
         </div>
-        <div class="columns small-1 medium-1">
-          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_company"></div>
+        <div class="small-1 medium-1 columns text-center">
+          <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_company"></div>
         </div>
       </div>
       <% end %>
@@ -120,24 +120,24 @@
   <!-- Websites -->
   <div class="row">
     <div class="small-11 medium-11 columns pt-4">
-      <%= form.label :websites, class: "label-th" %>
+      <%= form.label :websites, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1">
-      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="website"></div>
+    <div class="small-1 medium-1 columns text-center">
+      <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="website"></div>
     </div>
   </div>
   <div class="row">
-    <div class="columns" id="websites">
+    <div class="col-12" id="websites">
       <% JSON.parse(@contact.websites).each_with_index do | website,index | %>
       <div class="row">
-        <div class="small-5 medium-5">
+        <div class="small-12 medium-5 columns">
           <%= form.text_field "website_type", value: website['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
-        <div class="small-6 medium-6 columns">
+        <div class="small-11 medium-6 columns">
           <%= form.text_field "website_value", value: website['value'], data: { tojson: '' } %>
         </div>
-        <div class="columns small-1 medium-1">
-          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_website"></div>
+        <div class="small-1 medium-1 columns text-center">
+          <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_website"></div>
         </div>
       </div>
       <% end %>
@@ -158,8 +158,8 @@
   <div class="row">
     <div class="columns">
       <%= form.label :notes, class: "display-inline" %>
-      <div class="icon preview align-bottom" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip title="Click for preview"></div>
-      <div class="icon edit align-bottom display-none" id="edit_bt" data-action="click->contact#hideMarkdown" data-tooltip title="Click to edit"></div>
+      <div class="icon filter preview align-bottom" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip title="Click for preview"></div>
+      <div class="icon filter edit align-bottom display-none" id="edit_bt" data-action="click->contact#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '20' %>
       <div id="markdown"></div>
     </div>
@@ -168,7 +168,7 @@
   <!-- tags -->
   <div class="row">
     <div class="columns">
-      <%= form.label :tags, class: "label-th display-inline" %>
+      <%= form.label :tags, class: "text-lg display-inline" %>
       <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
       <div id="tagsContainer"></div>
     </div>

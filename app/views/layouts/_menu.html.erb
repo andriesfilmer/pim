@@ -3,42 +3,42 @@
   <div class="small-2 medium-2 columns">
     <a href="/">
       <%= content_tag :div, class: "icon account-circle filter-diap" do %>
-        <span class="show-for-large pl-1">My page</span>
+        <span class="show-for-large">My page</span>
       <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/events">
       <%= content_tag :div, class: "icon calendar-month filter-diap" do %>
-        <span class="show-for-large pl-1">Calendar</span>
+        <span class="show-for-large">Calendar</span>
       <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/contacts">
       <%= content_tag :div, class: "icon group filter-diap" do %>
-        <span class="show-for-large pl-1">Contacts</span>
+        <span class="show-for-large">Contacts</span>
       <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/posts">
       <%= content_tag :div, class: "icon article filter-diap" do %>
-      <span class="show-for-large pl-1">Notes</span>
+      <span class="show-for-large">Notes</span>
       <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <a href="/passkeys">
       <%= content_tag :div, class: "icon lock filter-diap" do %>
-        <span class="show-for-large pl-1">Keys</span>
+        <span class="show-for-large">Keys</span>
       <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
     <%= link_to destroy_user_session_path, data: { turbo_method: :delete, turbo: false },
       class: "icon logout filter-diap text-lg text-light" do %>
-      <span class="show-for-large pl-1"> Sign out</span>
+      <span class="show-for-large"> Sign out</span>
     <% end %>
   </div>
 </div>

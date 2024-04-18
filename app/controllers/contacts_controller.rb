@@ -21,6 +21,7 @@ class ContactsController < ApplicationController
 
   def create
     @contact = Contact.new(contact_params)
+    @contact.user_id = current_user.id
 
     respond_to do |format|
       if @contact.save
@@ -41,7 +42,8 @@ class ContactsController < ApplicationController
   def update
     respond_to do |format|
       if @contact.update(contact_params)
-        format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
+        #format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
+        format.html { redirect_to contact_url(@contact), flash: { success: "Contact was successfully updated" }}
         format.json { render :show, status: :ok, location: @contact }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -71,7 +73,7 @@ class ContactsController < ApplicationController
     if params.dig(:search).present?
       search = "%#{params[:search]}%"
       @contacts = Contact.where("name LIKE ? OR notes LIKE ? OR tags LIKE ?", search, search, search)
-                         .order(updated_at: :desc)
+                         .where(user_id: current_user.id).order(updated_at: :desc)
       cookies[:search] = params[:search]
     else
       @contacts = []
@@ -97,7 +99,7 @@ class ContactsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_contact
-    @contact = Contact.where(id: params[:id]).take
+    @contact = Contact.where(id: params[:id]).where(user_id: current_user.id).take
   end
 
   def contact_params

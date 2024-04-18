@@ -8,7 +8,7 @@
         <h2><%= @passkey.title %></h2>
       </div>
       <div class="columns">
-        <%= label_tag :username, nil, class: "label-th" %>
+        <%= label_tag :username, nil, class: "text-lg" %>
       </div>
       <div class="columns small-10 medium-11">
         <%= content_tag :div, @passkey.username, id: "username" %>
@@ -17,7 +17,7 @@
         <div data-action="click->passkey#copyUsername" class="button tiny">Copy</div>
       </div>
       <div class="columns">
-        <%= label_tag :password, nil, class: "label-th display-inline" %>
+        <%= label_tag :password, nil, class: "text-lg display-inline" %>
         <%= content_tag :div, '', class: "icon visibility label filter", id: "passwordToggle",
           data: { "action": "click->passkey#togglePassword" } %>
       </div>
@@ -29,7 +29,7 @@
         <div data-action="click->passkey#copyPassword" class="button tiny">Copy</div>
       </div>
       <div class="columns">
-        <%= label_tag :url, nil, class: "label-th" %>
+        <%= label_tag :url, nil, class: "text-lg" %>
         <%= link_to @passkey.url, @passkey.url, target: "_blank" %>
       </div>
     </div>
@@ -43,7 +43,7 @@
 
 <%= content_tag :div, class: "row", data: { controller: "passkey" } do %>
   <div class="columns">
-    <%= label_tag :notes, nil, class:"label-th display-inline" %>
+    <%= label_tag :notes, nil, class:"text-lg display-inline" %>
     <%= content_tag :div, '', class: "icon filter visibility label", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
     <div id="markdown" class="callout hide-notes disabled"
@@ -59,7 +59,7 @@
 </div>
 
 <div class="row">
-  <div class="columns"><label class="label-th"></label></div>
+  <div class="columns"><label class="text-lg"></label></div>
   <div class="columns small-6 medium-6 meta-data">Created: <%= l @passkey.created_at, format: :default %></div>
   <div class="columns small-6 medium-6 meta-data">Updated: <%= l @passkey.updated_at, format: :default %></div>
 </div>

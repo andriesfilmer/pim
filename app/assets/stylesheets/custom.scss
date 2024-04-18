@@ -1,15 +1,5 @@
 /* Base classes i.o. custom classes for site */
 
-body {
-  color: var(--color-text);
-  background-color: var(--color-body);
-}
-
-a {
-  color: var(--text-color);
-  &:hover { color: var(--color-300) };
-}
-
 #start {
   background-image: url(/static/images/bg-pim.jpg);
   background-position: 0 0;

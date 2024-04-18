@@ -1,12 +1,28 @@
 // Helper classes for colors
 //--------------------------
-.color-text       { color: var(--color-text) }
-.color-text-diap  { color: var(--color-text-diap) }
-.color-bg-diap    { color: var(--color-bg-diap) }
- //.body            { color: var(--color-text); background-color: var(--color-body); }
- //.a               { color: var(--color-text); &:hover { color: var(--color-300) }; }
 
-//.color-50         { color: var(--color-50) }
+.color-text       {
+  color: var(--text-color);
+  a {
+   color: var(--color-text);
+   &:hover { color: var(--color-800) };
+   &:focus { color: var(--color-700) };
+   &:active { color: var(--color-600) };
+  }
+}
+.color-text-diap  {
+  color: var(--color-text-diap);
+  a {
+    color: var(--color-50);
+    &:hover  { color: var(--color-100) }
+    &:focus  { color: var(--color-200) }
+    &:active { color: var(--color-300) }
+  }
+}
+.color-bg-diap    { color: var(--color-bg-diap) }
+.color-bg-diap    { color: var(--color-bg-diap) }
+
+.color-50         { color: var(--color-50) }
 .color-100        { color: var(--color-100) }
 .color-200        { color: var(--color-200) }
 .color-300        { color: var(--color-300) }
@@ -49,14 +65,14 @@
 .display-inline { display: inline-flex; }
 .display-inline-block { display: inline-block; }
 .display-none { display: none; }
-.even:not(:first-child):nth-child(even){ background-color: var(--color-100); } // Or use 'odd'
 .float-left { float: left !important; }
 .float-right { float: right; }
 .hidden { display: none }
 .invisible { visibility: hidden; }
 .meta-data { font-size: 90%; color: #999; }
-.odd, .even { &:hover { background-color: var(--color-200) }}
 .odd:nth-child(odd){ background-color: var(--color-100); } // or use 'even' to skip first child
+.even:not(:first-child):nth-child(even){ background-color: var(--color-100); } // Or use 'odd'
+.odd, .even { &:hover { background-color: var(--color-200) !important }}
 .overflow-hidden { overflow: hidden; }
 .pointer-events-none { pointer-events: none; }
 .radius { border-radius: 5px; }

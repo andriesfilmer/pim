@@ -3,17 +3,19 @@
 html, body {
   height: 100%;
   scroll-behavior: smooth;
+  color: var(--color-text);
+  background-color: var(--color-body);
 }
 
-html {
-  box-sizing: border-box;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
+//html {
+//  box-sizing: border-box;
+//}
+//
+//*,
+//*::before,
+//*::after {
+//  box-sizing: inherit;
+//}
 
 body {
   margin: 0;
@@ -82,13 +84,13 @@ h6 {
 
 a {
   line-height: inherit;
-  color: #1779ba;
+  color: var(--color-text);
   text-decoration: none;
   cursor: pointer;
 }
 
 a:hover, a:focus {
-  color: #1468a0;
+  color: var(--color-text);
 }
 
 a img {
@@ -121,7 +123,7 @@ blockquote {
 
 blockquote {
   line-height: 1.6;
-  color: #8a8a8a;
+  color: var(--color-200);
 }
 
 fieldset {
@@ -129,14 +131,6 @@ fieldset {
   border: solid 1px var(--color-300);
   padding: 1em;
   border-radius: 5px;
-}
-
-.subheader {
-  margin-top: 0.2rem;
-  margin-bottom: 0.5rem;
-  font-weight: normal;
-  line-height: 1.4;
-  color: #8a8a8a;
 }
 
 ul.no-bullet, ol.no-bullet {
