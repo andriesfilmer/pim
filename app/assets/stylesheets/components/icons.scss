@@ -21,7 +21,7 @@
     &.filter-orange  { filter: var(--filter-orange) }
     &.filter {  filter: var(--filter); }
 
-    &.label { position: relative; top: 10px; }
+    &.label { position: relative; top: 10px; margin-top: -1em;}
 
     &.account-circle         { background-image: url("/assets/account-circle.svg") }
     &.add                    { background-image: url("/assets/add.svg") }

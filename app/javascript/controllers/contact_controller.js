@@ -153,7 +153,7 @@ export default class extends Controller {
     inputValue.id = "contact_" + addRow + "_value"
     inputValue.setAttribute("data-tojson","")
     inputValue.placeholder = getPlaceholderValue(addRow)
-    iconTrash.className = "icon icon-delete"
+    iconTrash.className = "icon delete"
     iconTrash.setAttribute("data-action","click->contact#removeTypeValue")
     iconTrash.setAttribute("data-value","contact_" + addRow)
 

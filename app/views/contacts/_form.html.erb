@@ -15,7 +15,7 @@
       <%= form.label :phones, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <div class="icon icon-add" data-action="click->contact#addTypeValue"  data-value="phone"></div>
+      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="phone"></div>
     </div>
   </div>
   <div class="row">
@@ -29,7 +29,7 @@
           <%= form.text_field "phone_value", value: phone['value'], data: {tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <div class="icon icon-delete" data-action="click->contact#removeTypeValue" data-value="contact_phone"></div>
+          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_phone"></div>
         </div>
       </div>
       <% end %>
@@ -42,7 +42,7 @@
       <%= form.label :emails, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <div class="icon icon-add" data-action="click->contact#addTypeValue"  data-value="email"></div>
+      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="email"></div>
     </div>
   </div>
   <div class="row">
@@ -56,7 +56,7 @@
           <%= form.text_field "email_value", value: email['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <div class="icon icon-delete" data-action="click->contact#removeTypeValue" data-value="contact_email"></div>
+          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_email"></div>
         </div>
       </div>
       <% end %>
@@ -69,7 +69,7 @@
       <%= form.label :addresses, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <div class="icon icon-add" data-action="click->contact#addTypeValue"  data-value="address"></div>
+      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="address"></div>
     </div>
   </div>
   <div class="row">
@@ -83,7 +83,7 @@
           <%= form.text_field "address_value", value: address['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <div class="icon icon-delete" data-action="click->contact#removeTypeValue" data-value="contact_address"></div>
+          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_address"></div>
         </div>
       </div>
       <% end %>
@@ -96,7 +96,7 @@
       <%= form.label :companies, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <div class="icon icon-add" data-action="click->contact#addTypeValue"  data-value="company"></div>
+      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="company"></div>
     </div>
   </div>
   <div class="row">
@@ -110,7 +110,7 @@
           <%= form.text_field "company_value", value: company['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <div class="icon icon-delete" data-action="click->contact#removeTypeValue" data-value="contact_company"></div>
+          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_company"></div>
         </div>
       </div>
       <% end %>
@@ -123,7 +123,7 @@
       <%= form.label :websites, class: "label-th" %>
     </div>
     <div class="small-1 medium-1">
-      <div class="icon icon-add" data-action="click->contact#addTypeValue"  data-value="website"></div>
+      <div class="icon add" data-action="click->contact#addTypeValue"  data-value="website"></div>
     </div>
   </div>
   <div class="row">
@@ -137,7 +137,7 @@
           <%= form.text_field "website_value", value: website['value'], data: { tojson: '' } %>
         </div>
         <div class="columns small-1 medium-1">
-          <div class="icon icon-delete" data-action="click->contact#removeTypeValue" data-value="contact_website"></div>
+          <div class="icon delete" data-action="click->contact#removeTypeValue" data-value="contact_website"></div>
         </div>
       </div>
       <% end %>
@@ -158,8 +158,8 @@
   <div class="row">
     <div class="columns">
       <%= form.label :notes, class: "display-inline" %>
-      <div class="icon icon-preview align-bottom" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip title="Click for preview"></div>
-      <div class="icon icon-edit align-bottom display-none" id="edit_bt" data-action="click->contact#hideMarkdown" data-tooltip title="Click to edit"></div>
+      <div class="icon preview align-bottom" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip title="Click for preview"></div>
+      <div class="icon edit align-bottom display-none" id="edit_bt" data-action="click->contact#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '20' %>
       <div id="markdown"></div>
     </div>

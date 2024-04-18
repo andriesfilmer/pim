@@ -43,8 +43,8 @@
   <div class="row">
     <div class="columns">
       <%= form.label :notes, class: "display-inline" %>
-      <div class="icon icon-preview align-bottom" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip title="Click for preview"></div>
-      <div class="icon icon-edit align-bottom display-none" id="edit_bt" data-action="click->event#hideMarkdown" data-tooltip title="Click to edit"></div>
+      <div class="icon preview align-bottom" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip title="Click for preview"></div>
+      <div class="icon edit align-bottom display-none" id="edit_bt" data-action="click->event#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '10' %>
       <div id="markdown"></div>
     </div>

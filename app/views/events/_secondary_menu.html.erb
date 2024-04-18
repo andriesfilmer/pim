@@ -1,23 +1,23 @@
 <div class="row secondary mb-6 mb-6">
   <div class="columns small-9 medium-9">
-    <%= content_tag :div, '', class: "icon icon-event-note md pr-2 border-right-dashed" unless @event.id %>
+    <%= content_tag :div, '', class: "icon filter event-note md pr-2 border-right-dashed" unless @event.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon icon-event-note md pr-2 border-right-dashed"), event_path(@event) if @event.id %>
+    <%= link_to (content_tag :div, '', class: "icon filter event-note md pr-2 border-right-dashed"), event_path(@event) if @event.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon icon-edit md p-2 border-right-dashed"), edit_event_path(@event), title: "Edit event" if action_name == "show"%>
+    <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"), edit_event_path(@event), title: "Edit event" if action_name == "show"%>
 
-    <%= content_tag :div, '', class: "icon icon-cloud-upload md p-2 border-right-dashed", id: "cloud-upload",
+    <%= content_tag :div, '', class: "icon filter cloud-upload md p-2 border-right-dashed", id: "cloud-upload",
       data: { action: "click->event#submitForm" },  title: "Save event" if action_name != "show" %>
 
-    <%= link_to (content_tag :div, '', class: "icon icon-restore md p-2 border-right-dashed"),
+    <%= link_to (content_tag :div, '', class: "icon filter restore md p-2 border-right-dashed"),
       event_versions_path(org_id: @event.id), title: "Versions of this event" if @event.id %>
 
-    <%= content_tag :div, '', class: "icon icon-more-time", data: { action: "click->event#showTimezones" },
+    <%= content_tag :div, '', class: "icon filter more-time", data: { action: "click->event#showTimezones" },
        title: "Toggle timezones" if action_name != "show" %>
 
   </div>
   <div class="columns small-3 medium-3 text-right">
-    <%= link_to (content_tag :div, '', class: "icon icon-delete md pt-2"), event_path(@event),
+    <%= link_to (content_tag :div, '', class: "icon filter delete md pt-2"), event_path(@event),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this event?'} if @event.id %>
   </div>
 </div>

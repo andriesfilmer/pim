@@ -5,7 +5,7 @@
     <%= passkey.title %>
   </div>
   <div class="small-6 medium-2 columns">
-    <%= image_tag "share.svg", title: "Share passkey", class:"icon small" unless passkey.user_id == current_user.id %>
+    <%= content_tag :span, '', class: "icon filter share sm", title: "Share passkey" unless passkey.user_id == current_user.id %>
     <%= content_tag :span, User.find(passkey.user_id).email unless passkey.user_id == current_user.id %>
   </div>
   <div class="medium-1 columns hide-for-small-only whitespace-nowrap overflow-hidden">
