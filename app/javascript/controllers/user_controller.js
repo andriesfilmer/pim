@@ -14,12 +14,14 @@ export default class extends Controller {
   }
 
   setTheme() {
+    document.body.className = '';
     if (document.getElementById("theme_light").checked) {
-      document.body.classList.remove('dark-theme');
       document.body.classList.add('light-theme');
       localStorage.setItem('theme', 'light-theme');
+    } else if (document.getElementById("theme_red").checked) {
+      document.body.classList.add('red-theme');
+      localStorage.setItem('theme', 'red-theme');
     } else {
-      document.body.classList.remove('light-theme');
       document.body.classList.add('dark-theme');
       localStorage.setItem('theme', 'dark-theme');
     }

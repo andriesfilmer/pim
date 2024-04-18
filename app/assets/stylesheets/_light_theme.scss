@@ -33,13 +33,13 @@
   --color-notice:    hsl(var(--deg) var(--sat) 30%);
   --bg-notice:       hsl(var(--deg) var(--sat) 70%);
 
-  --color-success:   hsl(140 46% 25%);
-  --bg-success:      hsl(140deg 46% 70%);;
+  --color-success:   hsl(140deg 46% 25%);
+  --bg-success:      hsl(140deg 46% 70%);
 
-  --color-warning:   hsl(40, 100%, 40%);
-  --bg-warning:      hsl(40, 100%, 80%);
+  --color-warning:   hsl(40deg 100% 40%);
+  --bg-warning:      hsl(40deg 100% 80%);
 
-  --color-alert:     hsl(0, 100%, 40%);
+  --color-alert:     hsl(0deg 100% 40%);
   --bg-alert:        hsl(0deg 50% 43%);
 
   //--filter:          invert(0%) sepia(94%) saturate(0%) hue-rotate(179deg) brightness(108%) contrast(106%);

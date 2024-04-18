@@ -34,12 +34,12 @@
   --bg-notice  : var(--color-800);
 
   --color-success : hsl(140 46% 25%);
-  --bg-success: hsl(140deg 46% 70%);;
+  --bg-success: hsl(140deg 46% 70%);
 
-  --color-warning: hsl(40, 100%, 40%);
-  --bg-warning : hsl(40, 0%, 80%);
+  --color-warning: hsl(40deg 100%, 40%);
+  --bg-warning : hsl(40deg 0% 80%);
 
-  --color-alert   : hsl(0, 100%, 40%);
+  --color-alert   : hsl(0deg 100% 40%);
   --bg-alert: hsl(0deg 50% 43%);
 
   --filter:        invert(45%) sepia(8%) saturate(364%) hue-rotate(201deg) brightness(96%) contrast(85%);
