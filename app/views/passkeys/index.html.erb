@@ -1,6 +1,6 @@
-<div class="row bg-color-700 mb-6">
+<div class="row secondary mb-6">
   <div class="small-10 medium-10 columns">
-    <div class="icon icon-lock md pr-2 border-right-dashed"></div>
+    <div class="icon icon-lock md p-2 border-right-dashed"></div>
     <%= link_to (content_tag :div, '', class: "icon icon-share md p-2 border-right-dashed"),
        passkey_shares_path, title: "Show passkey shares", date: { tooltip: ''} %>
      <div class="icon icon-search md p-2" data-controller="passkey" data-action="click->passkey#showSearch"></div>
@@ -20,7 +20,7 @@
   </div>
 </div>
 
-<div class="row hide-for-small-only bg-color-300 p-2">
+<div class="row hide-for-small-only color-bg-300 p-2">
   <div class="medium-7 columns">Title</div>
   <div class="medium-2 columns">Shared by</div>
   <div class="medium-1 columns">Last read</div>

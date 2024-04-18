@@ -1,75 +1,50 @@
 
 .light-theme {
 
-  // https://uicolors.app/create
-  --color-50:  #f2f7fb;
-  --color-100: #e7f0f8;
-  --color-200: #d3e2f2;
-  --color-300: #b9cfe8;
-  --color-400: #9cb6dd;
-  --color-500: #839dd1;
-  --color-600: #6a7fc1;
-  --color-700: #6374ae;
-  --color-800: #4a5989;
-  --color-900: #414e6e;
-  --color-950: #262c40;
+  // hsl(hue, saturation, lightness)
+  // Hue is a degree on the color wheel from 0 to 360. 0 is red, 120 is green, and 240 is blue.
+  // Saturation is a percentage value. 0% means a shade of gray, and 100% is the full color.
+  // Lightness is also a percentage. 0% is black, 50% is neither light or dark, 100% is white
+  --deg: 200deg;
+  --sat: 14%;
 
-  --color-primary: var(--color-500);
-  --color-secondary: var(--color-700);
-  --color-body: #ffffff;
-  --color-body-diap: #000000;
-  --color-text: #121212;
-  --color-text-diap: #ffffff;
+  --color-50:  hsl(var(--deg) var(--sat) 70%);
+  --color-100: hsl(var(--deg) var(--sat) 65%);
+  --color-200: hsl(var(--deg) var(--sat) 60%);
+  --color-300: hsl(var(--deg) var(--sat) 55%);
+  --color-400: hsl(var(--deg) var(--sat) 50%);
+  --color-500: hsl(var(--deg) var(--sat) 45%);
+  --color-600: hsl(var(--deg) var(--sat) 40%);
+  --color-700: hsl(var(--deg) var(--sat) 35%);
+  --color-800: hsl(var(--deg) var(--sat) 30%);
+  --color-900: hsl(var(--deg) var(--sat) 25%);
+  --color-950: hsl(var(--deg) var(--sat) 20%);
 
-  --color-notice  : var(--color-800);
-  --bg-notice  : var(--color-200);
+  --color-body:      hsl(var(--deg) var(--sat) 100%);
+  --color-text:      hsl(var(--deg) var(--sat) 5%);
+  --color-text-diap: hsl(var(--deg) var(--sat) 95%);
 
-  --color-success: hsl(140, 90%, 25%);
-  --bg-success : hsl(140, 100%, 80%);
+  --color-primary:   hsl(var(--deg) var(--sat) 70%);
+  --bg-primary:      hsl(var(--deg) var(--sat) 30%);
 
-  --color-warning: hsl(40, 100%, 40%);
-  --bg-warning : hsl(40, 100%, 80%);
+  --color-secondary: hsl(var(--deg) var(--sat) 30%);
+  --bg-secondary:    hsl(var(--deg) var(--sat) 70%);
 
-  --color-alert   : hsl(0, 100%, 40%);
-  --bg-alert: hsl(0, 100%, 80%);
+  --color-notice:    hsl(var(--deg) var(--sat) 30%);
+  --bg-notice:       hsl(var(--deg) var(--sat) 60%);
 
-  --filter-white:  invert(100%) sepia(0%) saturate(7500%) hue-rotate(343deg) brightness(103%) contrast(103%);
-  --filter-orange: invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
-  --filter-red:    invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
+  --color-success:   hsl(140 46% 25%);
+  --bg-success:      hsl(140deg 46% 70%);;
 
-  // Helper classes for colors
-  //--------------------------
-  .text-color       { color: var(--color-text) }
-  .text-color-diap  { color: var(--color-text-diap) }
-  .text-light       { color: var(--color-text) }
-  .text-dark        { color: var(--color-text-diap) }
+  --color-warning:   hsl(40, 100%, 40%);
+  --bg-warning:      hsl(40, 100%, 80%);
 
-  .color-50         { color: var(--color-50) }
-  .color-100        { color: var(--color-100) }
-  .color-200        { color: var(--color-200) }
-  .color-300        { color: var(--color-300) }
-  .color-400        { color: var(--color-400) }
-  .color-500        { color: var(--color-500) }
-  .color-600        { color: var(--color-600) }
-  .color-700        { color: var(--color-700) }
-  .color-800        { color: var(--color-800) }
-  .color-900        { color: var(--color-900) }
-  .color-950        { color: var(--color-950) }
+  --color-alert:     hsl(0, 100%, 40%);
+  --bg-alert:        hsl(0deg 50% 43%);
 
-  .bg-color-50      { background-color: var(--color-50) }
-  .bg-color-100     { background-color: var(--color-100) }
-  .bg-color-200     { background-color: var(--color-200) }
-  .bg-color-300     { background-color: var(--color-300) }
-  .bg-color-400     { background-color: var(--color-400) }
-  .bg-color-500     { background-color: var(--color-500) }
-  .bg-color-600     { background-color: var(--color-600) }
-  .bg-color-700     { background-color: var(--color-700) }
-  .bg-color-800     { background-color: var(--color-800) }
-  .bg-color-900     { background-color: var(--color-900) }
-  .bg-color-950     { background-color: var(--color-950) }
+  --filter:          invert(0%) sepia(94%) saturate(0%) hue-rotate(179deg) brightness(108%) contrast(106%);
+  --filter-diap:     invert(100%) sepia(0%) saturate(7500%) hue-rotate(343deg) brightness(103%) contrast(103%);
+  --filter-orange:   invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
+  --filter-red:      invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
 
-  .notice           { color: var(--color-notice); background-color: var(--bg-notice) }
-  .success          { color: var(--color-success); background-color: var(--bg-success) }
-  .warning          { color: var(--color-warning); background-color: var(--bg-warning) }
-  .alert            { color: var(--color-alert); background-color: var(--bg-alert) }
 }

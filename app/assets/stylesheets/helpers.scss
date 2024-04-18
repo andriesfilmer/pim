@@ -1,6 +1,44 @@
+// Helper classes for colors
+//--------------------------
+.color-text       { color: var(--color-text) }
+.color-text-diap  { color: var(--color-text-diap) }
+.color-bg-diap    { color: var(--color-bg-diap) }
+ //.body            { color: var(--color-text); background-color: var(--color-body); }
+ //.a               { color: var(--color-text); &:hover { color: var(--color-300) }; }
+
+//.color-50         { color: var(--color-50) }
+.color-100        { color: var(--color-100) }
+.color-200        { color: var(--color-200) }
+.color-300        { color: var(--color-300) }
+.color-400        { color: var(--color-400) }
+.color-500        { color: var(--color-500) }
+.color-600        { color: var(--color-600) }
+.color-700        { color: var(--color-700) }
+.color-800        { color: var(--color-800) }
+.color-900        { color: var(--color-900) }
+.color-950        { color: var(--color-950) }
+
+.color-bg-50      { background-color: var(--color-50) }
+.color-bg-100     { background-color: var(--color-100) }
+.color-bg-200     { background-color: var(--color-200) }
+.color-bg-300     { background-color: var(--color-300) }
+.color-bg-400     { background-color: var(--color-400) }
+.color-bg-500     { background-color: var(--color-500) }
+.color-bg-600     { background-color: var(--color-600) }
+.color-bg-700     { background-color: var(--color-700) }
+.color-bg-800     { background-color: var(--color-800) }
+.color-bg-900     { background-color: var(--color-900) }
+.color-bg-950     { background-color: var(--color-950) }
+
+.primary          { color: var(--color-primary); background-color: var(--bg-primary) }
+.secondary        { color: var(--color-secondary); background-color: var(--bg-secondary) }
+.notice           { color: var(--color-notice); background-color: var(--bg-notice) }
+.success          { color: var(--color-success); background-color: var(--bg-success) }
+.warning          { color: var(--color-warning); background-color: var(--bg-warning) }
+.alert            { color: var(--color-alert); background-color: var(--bg-alert) }
+
 // Helper classes
 //----------------
-
 .border-bottom-dashed { border-bottom-style: dashed; border-bottom-width: 1px; border-color: var(--color-500); }
 .border-right-dashed { border-right-style: dashed; border-right-width: 1px; border-color: var(--color-500); }
 .clear { clear: both; }
@@ -35,3 +73,21 @@
 .visible { visibility: visible; }
 .white-space-pre-wrap { white-space: pre-wrap; }
 .whitespace-nowrap { white-space: nowrap; }
+
+
+.close-button {
+  font-size: 2em;
+  margin-top: -0.5rem;
+  padding-right: 0px; // for iphone devices
+  float: right;
+  border: 0;
+  cursor: pointer;
+  background-color: transparent;
+  &:hover { color: #888; }
+}
+
+
+.save-form-alert {
+  color: red;
+}
+

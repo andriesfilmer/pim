@@ -1,6 +1,6 @@
-<div class="row bg-color-700 mb-6">
+<div class="row secondary mb-6">
   <div class="columns small-10 medium-10">
-    <%= content_tag "icon icon-articl md pr-2" unless @post.id %>
+    <%= content_tag "icon icon-articl md p-2" unless @post.id %>
     <%= link_to (content_tag :div, '', class: "icon icon-article md pr-2 border-right-dashed"),
       post_path(@post) if @post.id %>
 

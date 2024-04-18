@@ -5,9 +5,9 @@
 
 <% else %>
 
-<div class="row bg-color-700 mb-6">
+<div class="row secondary mb-6">
   <div class="columns small-10 medium-10">
-    <%= content_tag :div, '', class: "icon icon-key md pr-2" unless @passkey.id %>
+    <%= content_tag :div, '', class: "icon icon-key md p-2" unless @passkey.id %>
     <%= link_to (content_tag :div, '', class: "icon icon-key md pr-2 border-right-dashed"),
       passkey_path(@passkey) if @passkey.id %>
 

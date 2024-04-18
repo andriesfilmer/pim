@@ -18,7 +18,7 @@
       </div>
       <div class="columns">
         <%= label_tag :password, nil, class: "label-th display-inline" %>
-        <%= image_tag "visibility.svg", id: "passwordToggle", class: "icon medium",
+        <%= content_tag :div, '', class: "icon icon-visibility label filter", id: "passwordToggle",
           data: { "action": "click->passkey#togglePassword" } %>
       </div>
       <div class="columns small-10 medium-11">
@@ -35,17 +35,16 @@
     </div>
   </div>
   <div class="columns medium-6">
-    <%= content_tag :div, id: "passkey_shares" do %>
+    <div id="passkey_shares">
      <%= render "passkey_shares", resource: @passkey_shares unless @passkey_readonly || @passkey_shares && @passkey_shares.none?%>
-    <% end  %>
+    </div>
   </div>
 </div>
 
 <%= content_tag :div, class: "row", data: { controller: "passkey" } do %>
   <div class="columns">
     <%= label_tag :notes, nil, class:"label-th display-inline" %>
-    <%= image_tag "visibility.svg", id: "notesToggle", class: "icon medium",
-      data: { "action": "click->passkey#toggleNotes" } %>
+    <%= content_tag :div, '', class: "icon icon-visibility", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
     <div id="markdown" class="callout hide-notes disabled"
       data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Click to show notes</div>

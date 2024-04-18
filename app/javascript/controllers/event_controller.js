@@ -59,6 +59,7 @@ function showTimezoneAlert() {
     $("#tz").removeClass("display-none")
     // Show warning border
     $(".tz-warning").parent()
+      .css("color", "var(--color-warning)")
       .css("background-color", "var(--bg-warning)")
       .css("padding", "1em 0")
       .css("border-radius", "1rem")

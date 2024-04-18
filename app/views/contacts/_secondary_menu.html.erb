@@ -1,6 +1,6 @@
-<div class="row bg-color-700 mb-6">
+<div class="row secondary mb-6">
   <div class="columns small-10 medium-10">
-    <%= content_tag :div, '', class: "icon icon-person md pr-2 border-right-dashed" unless @contact.id %>
+    <%= content_tag :div, '', class: "icon icon-person md p-2 border-right-dashed" unless @contact.id %>
     <%= link_to (content_tag :div, '', class: "icon icon-person md p-2 border-right-dashed"), contact_path(@contact) if @contact.id %>
 
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>

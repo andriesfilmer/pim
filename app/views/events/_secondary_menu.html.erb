@@ -1,4 +1,4 @@
-<div class="row bg-color-700 mb-6">
+<div class="row secondary mb-6 mb-6">
   <div class="columns small-9 medium-9">
     <%= content_tag :div, '', class: "icon icon-event-note md pr-2 border-right-dashed" unless @event.id %>
 
@@ -17,7 +17,7 @@
 
   </div>
   <div class="columns small-3 medium-3 text-right">
-    <%= link_to (content_tag :div, '', class: "icon icon-delete md p-2"), event_path(@event),
+    <%= link_to (content_tag :div, '', class: "icon icon-delete md pt-2"), event_path(@event),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this event?'} if @event.id %>
   </div>
 </div>

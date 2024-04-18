@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="columns">
-   <p class="bg-color-300 strong p-2">Current shares</p>
+  <div class="col-12">
+   <p class="color-bg-300 text-base py-2 pl-4">Current shares</p>
   </div>
   <% @passkey_shares.each do | share | %>
     <%= content_tag :div, share.email , class: "columns small-10 medium-10" %>
     <%= content_tag :div, class: "columns small-2 medium-2" do %>
-      <%= link_to (content_tag :div, '', class: "icon icon-delete"),
+      <%= link_to (content_tag :div, '', class: "icon icon-delete filter"),
         passkey_share_path(id: share.id, passkey_id: share.passkey_id), data: { "turbo-method": :delete } %>
     <% end %>
   <% end %>
