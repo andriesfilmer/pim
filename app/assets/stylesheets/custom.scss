@@ -1,0 +1,38 @@
+/* Base classes i.o. custom classes for site */
+
+body {
+  color: var(--color-text);
+  background-color: var(--color-body);
+}
+
+a {
+  color: var(--text-color);
+  &:hover { color: var(--color-300) };
+}
+
+#start {
+  background-image: url(/static/images/bg-pim.jpg);
+  background-position: 0 0;
+  background-repeat: repeat-x;
+  animation: animatedBackground 30s linear infinite;
+}
+@keyframes animatedBackground {
+  from { background-position: 0 0; }
+  to { background-position: 100% 0; }
+}
+
+div.start p {
+    font-size: 1.5rem;
+    color: #fff;
+    opacity: .8;
+    border-radius: 5px;
+    padding: 5px;
+    width: 80%;
+}
+
+//div.row:has(> .tz-warning:not(> .display-none)) {
+//div.row:has(> .tz-warning) {
+//  padding: 1em 0;
+//  margin-bottom: 1em;
+//}
+
