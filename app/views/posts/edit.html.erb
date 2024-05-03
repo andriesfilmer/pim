@@ -3,38 +3,32 @@
   <%= render "form", post: @post %>
 </div>
 
-<div class="modal" id="addPicture">
+<div class="modal" id="addFile">
   <%= form_with model: @post, id: "postForm" do |form| %>
-    <div class="modal-content">
+  <div class="modal-content">
+    <span class="close-button" data-modal-close="addFile">&#215;</span>
 
     <div class="row">
-      <div class="columns">
-        <span class="close-button" data-modal-close="addPicture">&#215;</span>
-      </div>
-    </div>
-
-    <div class="row row-th">
-      <div class="columns">Upload picture</div>
+      <div class="columns text-lg mb-4">Upload new file</div>
     </div>
     <div class="row">
-      <div class="columns">
-        <br>
-        <%= form.file_field :picture %>
+      <div class="columns mb-5">
+        <%= form.file_field :file %>
         <%= form.submit "Upload", class: "button" %>
       </div>
     </div>
 
-    <div class="row row-th">
-      <div class="columns">Select picture</div>
+    <div class="row">
+      <%= content_tag :div, "Select file", class:"columns text-lg p-1 my-2 color-bg-100" if @files.length > 0 %>
     </div>
     <% @files.each do |file| %>
     <div class="row odd-even">
       <div class="medium-10 columns"><%= file %></div>
       <div class="medium-1 columns">
-        <img src="/assets/visibility.svg" class="icon large">
+        <div class="icon visibility"></div>
       </div>
       <div class="medium-1 columns">
-        <img src="/assets/photo-add.svg" class="icon large">
+        <div class="icon photo-add"></div>
       </div>
     </div>
   <% end %>

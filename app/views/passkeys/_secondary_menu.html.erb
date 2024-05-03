@@ -17,13 +17,13 @@
     <%= link_to (content_tag :div, '', class: "icon filter visibility md p-2 border-right-dashed"),
       passkey_path(@passkey), title: "Show passkey" if action_name == "edit" %>
 
-    <%= content_tag :div, '', class: "icon filter cloud-upload md p-2", id: "cloud-upload",
+    <%= content_tag :div, '', class: "icon filter cloud-upload md p-2 cursor-pointer", id: "cloud-upload",
       data: { action: "click->passkey#submitForm" }, title: "Save passkey" if action_name != "show" %>
 
     <%= link_to (content_tag :div, '', class: "icon filter restore md p-2 border-right-dashed"),
       passkey_versions_path(org_id: @passkey.id), title: "Versions of this passkey" if @passkey.id %>
 
-    <%= content_tag :div, '', class: "icon filter share md p-2", id: "share", title: "Share passkey",
+    <%= content_tag :div, '', class: "icon filter share md p-2 cursor-pointer", id: "share", title: "Share passkey",
       data: { controller: "passkey", action: "click->passkey#openShareDialog" } if @passkey.id %>
 
   </div>

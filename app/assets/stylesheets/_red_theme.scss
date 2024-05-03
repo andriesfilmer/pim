@@ -1,0 +1,51 @@
+
+.red-theme {
+
+  // hsl(hue, saturation, lightness)
+  // Hue is a degree on the color wheel from 0 to 360. 0 is red, 120 is green, and 240 is blue.
+  // Saturation is a percentage value. 0% means a shade of gray, and 100% is the full color.
+  // Lightness is also a percentage. 0% is black, 50% is neither light or dark, 100% is white
+  --deg: 10deg;
+  --sat: 60%;
+
+  --color-50:  hsl(var(--deg) var(--sat) 95%);
+  --color-100: hsl(var(--deg) var(--sat) 90%);
+  --color-200: hsl(var(--deg) var(--sat) 80%);
+  --color-300: hsl(var(--deg) var(--sat) 70%);
+  --color-400: hsl(var(--deg) var(--sat) 60%);
+  --color-500: hsl(var(--deg) var(--sat) 50%);
+  --color-600: hsl(var(--deg) var(--sat) 40%);
+  --color-700: hsl(var(--deg) var(--sat) 30%);
+  --color-800: hsl(var(--deg) var(--sat) 20%);
+  --color-900: hsl(var(--deg) var(--sat) 10%);
+  --color-950: hsl(var(--deg) var(--sat) 5%);
+
+  --color-body:      hsl(var(--deg) var(--sat) 100%);
+  --color-text:      hsl(var(--deg) var(--sat) 5%);
+  --color-text-diap: hsl(var(--deg) var(--sat) 95%);
+
+  --color-primary:   hsl(var(--deg) var(--sat) 70%);
+  --bg-primary:      hsl(var(--deg) var(--sat) 30%);
+
+  --color-secondary: hsl(var(--deg) var(--sat) 30%);
+  --bg-secondary:    hsl(var(--deg) var(--sat) 70%);
+
+  --color-notice:    hsl(var(--deg) var(--sat) 30%);
+  --bg-notice:       hsl(var(--deg) var(--sat) 70%);
+
+  --color-success:   hsl(140deg 46% 25%);
+  --bg-success:      hsl(140deg 46% 70%);
+
+  --color-warning:   hsl(40deg 100% 40%);
+  --bg-warning:      hsl(40deg 100% 80%);
+
+  --color-alert:     hsl(0deg 10% 220%);
+  --bg-alert:        hsl(0deg 80% 50%);
+
+  //--filter:          invert(0%) sepia(94%) saturate(0%) hue-rotate(179deg) brightness(108%) contrast(106%);
+  --filter:          invert(42%) sepia(6%) saturate(1299%) hue-rotate(155deg) brightness(90%) contrast(83%);
+  --filter-diap:     invert(100%) sepia(0%) saturate(7500%) hue-rotate(343deg) brightness(103%) contrast(103%);
+  --filter-orange:   invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
+  --filter-red:      invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
+
+}

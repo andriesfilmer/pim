@@ -1,6 +1,7 @@
 // post_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
+import { gfmHeadingId, getHeadingList } from "marked-gfm-heading-id";
 import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, markdownToc } from 'components';
 
 let submitted = false
@@ -34,12 +35,15 @@ export default class extends Controller {
       let content = document.getElementById("notes").innerHTML;
       let toc = markdownToc(content);
 
+      // Only to get id's in the headers for jumping to form toc anchors.
+      marked.use(gfmHeadingId());
+
       if (toc) {
         document.getElementById("toc").innerHTML = marked.parse(toc, { mangle: false, headerIds: false})
       } else {
         document.getElementById("tocFieldset").remove();
       }
-      $("#markdown").html(marked.parse(content, { mangle: false, headerIds: true }))
+      $("#markdown").html(marked.parse(content, { mangle: false, headerIds: false }))
     }
 
 

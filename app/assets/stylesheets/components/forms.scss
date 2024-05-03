@@ -99,3 +99,12 @@ input[data-passkey-target] {
   border: none;
   margin: 0;
 }
+
+input::file-selector-button {
+  font-size: 1rem;
+  color: #eee;
+  background-color: var(--color-400);
+  padding: 0.6rem;
+  border: 0px;
+  border-radius: 5px;
+}

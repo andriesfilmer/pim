@@ -8,6 +8,7 @@ class PostsController < ApplicationController
 
   def show
     @post.update_column(:last_read,DateTime.now)
+    get_files
   end
 
   def new
@@ -15,9 +16,7 @@ class PostsController < ApplicationController
   end
 
   def edit
-    path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
-    FileUtils.mkdir_p(path) unless Dir.exists?(path)
-    @files = Dir.children(path)
+    get_files
   end
 
   def create
@@ -40,10 +39,20 @@ class PostsController < ApplicationController
   end
 
   def update
+
+    uploaded_file = params[:post][:file]
+    if uploaded_file.present?
+      path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
+      FileUtils.mkdir_p(path) unless Dir.exists?(path)
+      File.open(Rails.root.join('public', 'uploads','posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
+        file.write(uploaded_file.read)
+       end
+    end
+
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." }
-        format.json { render :show, status: :ok, location: @post }
+        format.html { redirect_to edit_post_url(@post), notice: "Upload was successfully." } if uploaded_file
+        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." } unless uploaded_file
       else
         format.turbo_stream {
            render turbo_stream: turbo_stream.replace("postForm", partial: "posts/form", locals: { resource: @post })
@@ -53,15 +62,6 @@ class PostsController < ApplicationController
 
     # Create a copy for versions management.
     add_version(@post)
-
-    uploaded_file = params[:post][:picture]
-    if uploaded_file.present?
-      path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
-      FileUtils.mkdir_p(path) unless Dir.exists?(path)
-      File.open(Rails.root.join('public', 'uploads','posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
-        file.write(uploaded_file.read)
-       end
-    end
 
   end
 
@@ -95,7 +95,7 @@ class PostsController < ApplicationController
 
   def add_version(post)
     # Create a copy for versions management.
-    @post_version = PostVersion.new(post_params.except("id","created_at","updated_at","picture"))
+    @post_version = PostVersion.new(post_params.except("id","created_at","updated_at","file"))
     @post_version.org_id = post.id
     @post_version.user_id = post.user_id
     @post_version.save
@@ -106,9 +106,15 @@ class PostsController < ApplicationController
     @post = Post.where(user_id: current_user.id).where(id: params[:id]).take
   end
 
+  def get_files
+    path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
+    FileUtils.mkdir_p(path) unless Dir.exists?(path)
+    @files = Dir.children(path)
+  end
+
   # Only allow a list of trusted parameters through.
   def post_params
-    params.require(:post).permit(:title, :notes, :picture, :category, :tags)
+    params.require(:post).permit(:title, :notes, :file, :category, :tags)
   end
 
 end

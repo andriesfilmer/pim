@@ -170,7 +170,7 @@ export function markdownToc(data) {
       depths.push(m[1].length);
 
       let title = m[2];
-      let uri = title.trim().toLowerCase().replace(/[^-0-9a-z]/g, '-');
+      let uri = title.trim().toLowerCase().replace(' ','-').replace(/[^-0-9a-z]/g, '');
       titles.push({title: title, uri: uri});
     }
 

@@ -14,18 +14,15 @@
     <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"),
       edit_contact_path(@contact), title: "Edit contact" if action_name == "show" %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter pencil md p-2 border-right-dashed"),
-      contact_path(@contact), title: "Show contact" if action_name == "edit" %>
-
     <%= content_tag :div, '', id: "cloud-upload", data: { action: "click->contact#submitForm" },
        title: "Save contact", class:"icon filter cloud-upload md p-2 border-right-dashed cursor-pointer" if action_name != "show" %>
 
-     <%= link_to (content_tag :div, '', class: "icon filter restore md p-2 border-right-dashed"),
+     <%= link_to (content_tag :div, '', class: "icon filter restore md p-2"),
        contact_versions_path(org_id: @contact.id), title: "Versions of this contact" if @contact.id %>
 
   </div>
   <div class="columns small-2 medium-2 text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter delete md p-2 border-right-dashed"), contact_path(@contact),
+    <%= link_to (content_tag :div, '', class: "icon filter delete md p-2"), contact_path(@contact),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this contact?'}, title: "Delete item!" if @contact.id %>
   </div>
 </div>
