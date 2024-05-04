@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   post "postrestore", to: "post_versions#restore", as: "postrestore"
   post "posts/search", to: "posts#search"
+  delete "post/image", to: "posts#destroy_image"
   get "post_versions/compare", to: "post_versions#compare"
 
   post "passkeyrestore", to: "passkey_versions#restore", as: "passkeyrestore"

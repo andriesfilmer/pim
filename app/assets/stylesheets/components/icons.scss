@@ -9,6 +9,7 @@
     background-repeat: no-repeat;
     padding: 1rem;
     margin-right: 0.25rem;
+    &.xs    { padding: 0.5rem; }
     &.sm    { padding: 0.7rem; }
     &.md    { padding: 1.2rem; }
     &.lg    { padding: 1.4rem; }

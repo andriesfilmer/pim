@@ -2,7 +2,7 @@
 <% @contacts.each do |contact| %>
   <%= link_to contact_path(contact), class: "row p-2 odd" do %>
   <div class="small-1 medium-1 column text-center">
-    <%= content_tag :div, '', class: "icon sm icon-star-filled filter-orange" if contact.starred %>
+    <%= content_tag :div, '', class: "icon xs star-filled filter-orange" if contact.starred %>
   </div>
   <div class="small-11 medium-5 column">
     <%= contact.name %>
@@ -16,4 +16,4 @@
 
 <%= content_tag :div, class: "row" do %>
   <div class="columns p-2">No contacts yet, create with the + icon.</div>
-<% end unless @contacts.any? %>
+<% end unless @contacts.any? || action_name == "search" %>

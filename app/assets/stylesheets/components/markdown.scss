@@ -22,4 +22,10 @@
   h3 { font-size: 1rem; }
 
   table { width: 100% }
+
+  img[alt=img-100] { width: 100px; }
+  img[alt=img-200] { width: 200px; }
+  img[alt=img-300] { width: 300px; }
+  img[alt=img-400] { width: 400px; }
+  img[alt=img-500] { width: 500px; }
 }

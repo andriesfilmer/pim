@@ -99,6 +99,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_131504) do
     t.index ["org_id"], name: "org_id"
   end
 
+  create_table "passkey_shares", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "passkey_id", null: false
+    t.integer "user_id", null: false
+    t.integer "linked_user_id", null: false
+    t.string "email", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "passkeys", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
     t.integer "user_id", default: 0, null: false
     t.string "title", null: false
@@ -111,15 +120,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_131504) do
     t.datetime "updated_at", precision: nil
     t.datetime "last_read", precision: nil, default: -> { "current_timestamp()" }
     t.index ["user_id"], name: "user_id"
-  end
-
-  create_table "passkeyshares", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "passkey_id", null: false
-    t.integer "user_id", null: false
-    t.integer "linked_user_id", null: false
-    t.string "email", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "passkeyversions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
@@ -155,7 +155,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_30_131504) do
     t.integer "org_id", null: false
     t.integer "user_id", null: false
     t.string "title", limit: 100, null: false
-    t.string "description", limit: 1024
     t.text "content"
     t.string "category", limit: 20
     t.string "tags", limit: 1024, default: "[]"

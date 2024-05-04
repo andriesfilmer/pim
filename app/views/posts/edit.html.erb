@@ -6,32 +6,36 @@
 <div class="modal" id="addFile">
   <%= form_with model: @post, id: "postForm" do |form| %>
   <div class="modal-content">
-    <span class="close-button" data-modal-close="addFile">&#215;</span>
 
-    <div class="row">
-      <div class="columns text-lg mb-4">Upload new file</div>
+    <div class="row color-bg-100 mb-4">
+      <div class="columns text-lg py-2">
+        <span class="close-button pt-2" data-modal-close="addFile">&#215;</span>
+        Upload new file
+      </div>
     </div>
-    <div class="row">
-      <div class="columns mb-5">
+    <div class="row my-4">
+      <div class="columns">
         <%= form.file_field :file %>
         <%= form.submit "Upload", class: "button" %>
       </div>
     </div>
 
-    <div class="row">
-      <%= content_tag :div, "Select file", class:"columns text-lg p-1 my-2 color-bg-100" if @files.length > 0 %>
-    </div>
-    <% @files.each do |file| %>
-    <div class="row odd-even">
-      <div class="medium-10 columns"><%= file %></div>
-      <div class="medium-1 columns">
-        <div class="icon visibility"></div>
+    <%= content_tag :div, class:"row color-bg-100 my-4" do %>
+      <%= content_tag :div, "Select file", class:"columns medium-8 text-lg p-1 my-2" %>
+      <div class="columns medium-4 text-xs">
+        <%= select_tag "image_size", options_for_select(
+          {"Image size 100" => "img-100",
+           "Image size 200" => "img-200",
+           "Image size 300" => "img-300",
+           "Image size 400" => "img-400",
+           "Image size 500" => "img-500" }, "img-400"),
+          style: "margin: 5px; font-size: small" %>
       </div>
-      <div class="medium-1 columns">
-        <div class="icon photo-add"></div>
-      </div>
+    <% end if @files.length > 0  %>
+
+    <div id="images">
+      <%= render "images" %>
     </div>
-  <% end %>
 
   </div>
   <% end %>

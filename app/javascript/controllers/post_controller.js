@@ -2,7 +2,7 @@
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
 import { gfmHeadingId, getHeadingList } from "marked-gfm-heading-id";
-import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, markdownToc } from 'components';
+import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, copyContent, markdownToc } from 'components';
 
 let submitted = false
 let userinput = false
@@ -79,6 +79,14 @@ export default class extends Controller {
 
   search() {
     document.getElementById("search-form").requestSubmit()
+  }
+
+  copyImageUrl(img) {
+    let imgSize = document.getElementById("image_size").value;
+    let imgId = img.srcElement.id;
+    let imgTag = '![' + imgSize + '](' + document.getElementById(imgId).title + ')'
+    copyContent(imgTag)
+    $("#addFile").removeClass("show");
   }
 
   showMarkdown() {

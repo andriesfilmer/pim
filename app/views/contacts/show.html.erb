@@ -12,8 +12,8 @@
 
 
 <div class="row">
-  <div class="medium-6">
-    <div class="medium-6 columns">
+  <div class="medium-6 columns">
+    <div class="medium-6">
       <%= label_tag :phones, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.phones.include?("[]") %>
       <% JSON.parse(@contact.phones).each do | phone | %>
       <div class="row my-2">
@@ -25,7 +25,7 @@
       </div>
       <% end %>
     </div>
-    <div class="medium-6 columns">
+    <div class="medium-6">
       <%= label_tag :emails, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.emails.include?("[]") %>
       <% JSON.parse(@contact.emails).each do | email | %>
       <div class="row my-2">
@@ -37,7 +37,7 @@
       </div>
       <% end %>
     </div>
-    <div class="medium-6 columns">
+    <div class="medium-6">
       <%= label_tag :addresses, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.addresses.include?("[]") %>
       <% JSON.parse(@contact.addresses).each do | address | %>
       <div class="row my-2">
@@ -49,7 +49,7 @@
       </div>
       <% end %>
     </div>
-    <div class="medium-6 columns">
+    <div class="medium-6">
       <%= label_tag :companies, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.companies.include?("[]") %>
       <% JSON.parse(@contact.companies).each do | company | %>
       <div class="row my-2">
@@ -61,7 +61,7 @@
       </div>
       <% end %>
     </div>
-    <div class="medium-6 columns">
+    <div class="medium-6">
       <%= label_tag :websites, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.websites.include?("[]") %>
       <% JSON.parse(@contact.websites).each do | website | %>
       <div class="row my-2">

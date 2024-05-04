@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
 
-  before_action :set_post, only: %i[ show edit update destroy ]
+  before_action :set_post, only: %i[ show edit update destroy destroy_image]
 
   def index
     @posts = Post.where(user_id: current_user.id).order("last_read desc").limit 10
@@ -51,8 +51,13 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to edit_post_url(@post), notice: "Upload was successfully." } if uploaded_file
-        format.html { redirect_to post_url(@post), notice: "Post was successfully updated." } unless uploaded_file
+        format.turbo_stream {
+          get_files
+          render turbo_stream: turbo_stream.update("images", partial: "posts/images", locals: { resource: @post })
+        } if uploaded_file
+        format.html {
+          redirect_to post_url(@post), notice: "Post was successfully updated."
+        } unless uploaded_file
       else
         format.turbo_stream {
            render turbo_stream: turbo_stream.replace("postForm", partial: "posts/form", locals: { resource: @post })
@@ -70,6 +75,17 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def destroy_image
+    img = "#{Rails.root}/public/uploads/posts/#{@post.id}/#{params[:file]}"
+    File.delete(img) if File.exist?(img)
+    get_files
+    respond_to do |format|
+      format.turbo_stream {
+         render turbo_stream: turbo_stream.update("images", partial: "posts/images", locals: { resource: @post })
+      }
     end
   end
 

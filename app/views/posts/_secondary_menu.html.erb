@@ -1,7 +1,7 @@
 <div class="row mb-6">
   <div class="columns small-10 medium-10">
     <%= content_tag "icon filter articl md p-2" unless @post.id %>
-    <%= link_to (content_tag :div, '', class: "icon filter article md pr-2 border-right-dashed"),
+    <%= link_to (content_tag :div, '', class: "icon filter article md p-2 border-right-dashed"),
       post_path(@post) if @post.id %>
 
     <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"),
@@ -13,13 +13,12 @@
     <%= content_tag :div, '', class: "icon filter cloud-upload md p-2 cursor-pointer border-right-dashed", id: "cloud-upload",
       data: { action: "click->post#submitForm" }, title: "Save post" if action_name != "show" %>
 
-    <%= content_tag :div, '', class: "icon filter photo-add md p-2 cursor-pointer border-right-dashed",
+    <%= content_tag :div, @files.length, class: "icon filter photo-add md p-2 cursor-pointer border-right-dashed",
       data: { modal_open: "addFile" } if @post.id && action_name == "edit" %>
 
     <%= link_to (content_tag :div, '', class: "icon filter restore md p-2"),
       post_versions_path(org_id: @post.id), title: "Versions of this post" if @post.id %>
 
-    <%= content_tag :div, "Files: #{@files.length}", class: "text-lg" if @files.length > 0 %>
   </div>
   <div class="columns small-2 medium-2 text-right">
     <%= link_to (content_tag :div, '', class: "icon filter delete md p-2"), post_path(@post),
