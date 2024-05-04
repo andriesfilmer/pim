@@ -20,7 +20,7 @@
 
 /* Modal Content/Box */
 .modal-content {
-    background-color: #fefefe;
+    background-color: var(--color-body);
     margin: 3em auto; /* 10% from the top and centered */
     padding: 1em;
     border: 1px solid #888;

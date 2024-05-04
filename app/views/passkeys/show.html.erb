@@ -10,25 +10,25 @@
       <div class="columns">
         <%= label_tag :username, nil, class: "text-lg" %>
       </div>
-      <div class="columns small-10 medium-11">
+      <div class="columns small-10 medium-11 mb-6">
         <%= content_tag :div, @passkey.username, id: "username" %>
       </div>
       <div class="columns small-2 medium-1">
         <div data-action="click->passkey#copyUsername" class="button tiny">Copy</div>
       </div>
-      <div class="columns">
+      <div class="columns <%= "icon xs star-filled filter-orange" if @passkey.twofa %>">
         <%= label_tag :password, nil, class: "text-lg display-inline" %>
         <%= content_tag :div, '', class: "icon visibility label filter", id: "passwordToggle",
           data: { "action": "click->passkey#togglePassword" } %>
       </div>
-      <div class="columns small-10 medium-11">
+      <div class="columns small-10 medium-11 mb-6">
         <%= password_field_tag 'password', @passkey.password,
           data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
       </div>
       <div class="columns small-2 medium-1">
         <div data-action="click->passkey#copyPassword" class="button tiny">Copy</div>
       </div>
-      <div class="columns">
+      <div class="columns mb-6">
         <%= label_tag :url, nil, class: "text-lg" %>
         <%= link_to @passkey.url, @passkey.url, target: "_blank" %>
       </div>

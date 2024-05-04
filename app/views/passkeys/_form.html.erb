@@ -14,13 +14,20 @@
     <div class="columns">
       <%= form.text_field :username, placeholder: "Enter username" %>
     </div>
-    <div class="columns small-8 medium-10">
+    <div class="columns small-6 medium-9">
       <%= form.label :password %>
       <%= form.text_field :password, placeholder: "Enter password" %>
     </div>
-    <div class="columns small-4 medium-2">
+    <div class="columns small-4 medium-2 px-4">
       <label>New password</label>
       <span class="button tiny" data-action="click->passkey#newPassword">Generate</span>
+    </div>
+    <div class="columns small-2 medium-1">
+      <%= form.label :twofa, id: "show2fa", class: @passkey.twofa? ? "icon xs star-filled filter-orange pb-2" : '' %>
+      <%= form.label :twofa, class: "switch" do %>
+        <%= form.check_box :twofa, data: { action: "click->passkey#set2fa" }, class: "switch" %>
+        <span class="slider round"></span>
+      <% end %>
     </div>
     <div class="columns">
       <%= form.label :url %>

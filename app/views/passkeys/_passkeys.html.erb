@@ -1,7 +1,10 @@
 <div id="passkeys" class="col-12">
 <% @passkeys.each do |passkey| %>
   <%= link_to passkey_path(passkey), class: "row even p-2" do %>
-  <div class="small-6 medium-7 columns">
+  <div class="small-1 medium-1 columns">
+    <%= content_tag :div, '', class: "icon xs star-filled filter-orange" if passkey.twofa %>
+  </div>
+  <div class="small-5 medium-6 columns">
     <%= passkey.title %>
   </div>
   <div class="small-6 medium-2 columns">

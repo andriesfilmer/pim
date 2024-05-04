@@ -1,16 +1,15 @@
 <% @files.each do |file| %>
-<div class="row odd-even">
+<div class="row even my-4">
   <div class="medium-6 columns pt-8">
     <%= file %>
   </div>
   <div class="medium-2 columns">
     <%= image_tag "/uploads/posts/#{@post.id}/#{file}" %>
   </div>
-  <div class="medium-2 columns pt-8">
+  <div class="medium-4 columns pt-8">
     <%= content_tag :div, "Copy link", id: "#{file}", title: "/uploads/posts/#{@post.id}/#{file}",
      data: { controller: "post", "action": "click->post#copyImageUrl" }, class: "button tiny" %>
-  </div>
-  <div class="medium-2 columns pt-8">
+
     <%= link_to '', post_image_path(id: @post.id, file: file),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this image?'},
       class: "icon delete float-right" %>

@@ -87,6 +87,14 @@ export default class extends Controller {
     }
   }
 
+  set2fa() {
+    if (document.getElementById("passkey_twofa").checked) {
+      document.getElementById("show2fa").classList.add("icon")
+    } else {
+      document.getElementById("show2fa").classList.remove("icon")
+    }
+  }
+
   toggleNotes() {
     $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
 

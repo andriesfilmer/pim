@@ -126,7 +126,7 @@ class PasskeysController < ApplicationController
   end
 
   def passkey_params
-    params.require(:passkey).permit(:title, :username, :password, :url, :notes, :tags)
+    params.require(:passkey).permit(:title, :username, :password, :twofa, :url, :notes, :tags)
   end
 
 end

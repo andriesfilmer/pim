@@ -51,6 +51,9 @@ Migration info from old pim to new pim.
     #ALTER TABLE postversions drop PRIMARY KEY;
     ALTER TABLE postversions change id id INT PRIMARY KEY AUTO_INCREMENT;
 
+    ALTER TABLE passkeys ADD COLUMN twofa boolean DEFAULT false after password
+    ALTER TABLE passkeyversions ADD COLUMN twofa boolean DEFAULT false after password;
+
 ### xversions -> x_versions
 
 find app/ | grep -i versions
