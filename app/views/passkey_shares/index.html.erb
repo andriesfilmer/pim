@@ -9,7 +9,7 @@
   <div class="columns medium-2 color-bg-300 p-2 hide-for-small-only">Created</div>
   <div class="columns medium-2 color-bg-300 p-2 hide-for-small-only">Updated</div>
 </div>
-<div id="passkey_shares" class="col-12">
+<div id="passkey_shares" class="col-12" data-turbo-prefetch="false">
 <% @passkey_shares.each do | share | %>
   <%= link_to passkey_path(share.passkey_id), class: "row odd p-2" do %>
      <%= content_tag :div, share.passkey.title , class: "columns medium-4" %>

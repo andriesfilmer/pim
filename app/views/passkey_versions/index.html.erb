@@ -9,8 +9,8 @@
     <div class="medium-8 columns">Created</div>
     <div class="medium-4 columns text-right">Select version</div>
   </div>
+  <div id="versions" class="row odd-even" data-turbo-prefetch="false">
   <% @passkey_versions.each do |passkey_version| %>
-  <div id="versions" class="row odd-even">
     <div class="small-8 medium-8 columns">
       <%= link_to (l passkey_version.created_at, format: :long), passkey_version_path(passkey_version) %>
     </div>
@@ -20,8 +20,8 @@
         data: { action: "click->passkey#versions" }, class: "checkBoxClass" %>
       <%= content_tag :span, passkey_version.id %>
     </div>
-  </div>
   <% end %>
+  </div>
 
   <div class="row">
     <div class="medium-10 columns"></div>

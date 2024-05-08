@@ -1,4 +1,4 @@
-<div id="posts">
+<div id="posts" data-turbo-prefetch="false">
 <% @posts.each do |post| %>
   <%= link_to post_path(post), class: "row p-2 even" do %>
   <div class="medium-6 columns">

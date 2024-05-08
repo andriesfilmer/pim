@@ -1,6 +1,6 @@
 class PasskeysController < ApplicationController
 
-  before_action :set_passkey, only: %i[ edit update destroy ]
+  before_action :set_passkey, only: %i[ edit update ]
 
   def index
     @passkeys = Passkey.left_joins(:passkey_shares)
@@ -9,24 +9,22 @@ class PasskeysController < ApplicationController
   end
 
   def show
-    # Activerecord way.
-    #@passkey = Passkey.left_joins(:passkey_shares).where(user_id: current_user.id).where(id: params[:id])
-    #  .or(PasskeyShare.where(linked_user_id: current_user.id).merge(PasskeyShare.where(passkey_id: params[:id]))).take
-    # Semi raw sql
-    @passkey = Passkey.left_joins(:passkey_shares).where("(passkeys.user_id = #{current_user.id} AND passkeys.id = ?)
-      OR (passkey_shares.passkey_id = ? AND passkey_shares.linked_user_id = #{current_user.id})", params[:id], params[:id]).take
+    @passkey = Passkey.left_joins(:passkey_shares).select('passkeys.*,passkey_shares.user_id AS shared_by_user_id')
+     .where("(passkeys.user_id = #{current_user.id} AND passkeys.id = ?) OR (passkey_shares.passkey_id = ? AND passkey_shares.linked_user_id = #{current_user.id})",
+     params[:id], params[:id]).take
 
     redirect_to passkeys_url, alert: "Key not found." and return if @passkey.blank?
+
     # Don't show edit, update and share items in show if it's a shared key
     @passkey.user_id == current_user.id ? @passkey_readonly = false : @passkey_readonly = true
 
     @passkey.update_column(:last_read,DateTime.now)
 
+    # Needed for form @passkey_share to add new shares.
+    @passkey_share = PasskeyShare.new(passkey_id: @passkey.id) if @passkey.id
+
     unless @passkey_readonly
       @passkey_shares = PasskeyShare.where(passkey_id: @passkey.id).where(user_id: current_user.id)
-
-      # Needed for form @passkey_share to add new shares.
-      @passkey_share = PasskeyShare.new(passkey_id: @passkey.id)
     end
   end
 
@@ -77,13 +75,18 @@ class PasskeysController < ApplicationController
   end
 
   def destroy
-    passkey = Passkey.where(id: params[:id]).where(user_id: current_user.id).take
+    if params[:shared_by_user_id].present?
+      passkey = PasskeyShare.where(passkey_id: params[:id]).where(linked_user_id: current_user.id).take
+    else
+      passkey = Passkey.where(id: params[:id]).where(user_id: current_user.id).take
+    end
+
     respond_to do |format|
       if passkey
         passkey.destroy
-        format.html { redirect_to passkeys_url, notice: "Key was successfully destroyed." }
+        format.html { redirect_to passkeys_path, notice: "Key was successfully destroyed." }
       else
-        format.html { redirect_to passkeys_url, alert: "Key not found." }
+        format.html { redirect_to passkeys_path, alert: "Key not found." }
       end
     end
   end

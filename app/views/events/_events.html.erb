@@ -1,4 +1,4 @@
-<div id="events" class="col-12">
+<div id="events" class="col-12" data-turbo-prefetch="false">
 <% @events.each do |event| %>
   <%= link_to event_path(event), class: "row odd p-2 #{event.category}" do %>
   <div class="small-12 medium-8 columns">

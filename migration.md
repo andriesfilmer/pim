@@ -26,11 +26,11 @@ Migration info from old pim to new pim.
 
     update events set created = updated where created = '0000-00-00 00:00:00';
     update events set updated = created where updated = '0000-00-00 00:00:00';
-    UPDATE events SET created_at=REPLACE(created_at,'00 00:00:00','01 00:00:00') WHERE created_at like '%-00 00:00:00';
+    UPDATE events SET created=REPLACE(created,'00 00:00:00','01 00:00:00') WHERE created like '%-00 00:00:00';
     alter table events add tags varchar(255) default null after className;
     alter table eventversions add tags varchar(255) default null after className;
 
-    update contacts set created_at = updated_at where created_at = '0000-00-00 00:00:00';
+    update contacts set created = updated where created = '0000-00-00 00:00:00';
     alter table contacts add tags varchar(255) default null after notes;
     alter table contactversions add tags varchar(255) default null after notes;
 
@@ -44,14 +44,10 @@ Migration info from old pim to new pim.
     # breaking changes with old pim version
     alter table posts change type category varchar(20);
     alter table postversions change type category varchar(20);
-    # Alternative does not work :(
-    alter table posts add category varchar(255) after type;
-    update posts set category=type;
 
-    #ALTER TABLE postversions drop PRIMARY KEY;
     ALTER TABLE postversions change id id INT PRIMARY KEY AUTO_INCREMENT;
 
-    ALTER TABLE passkeys ADD COLUMN twofa boolean DEFAULT false after password
+    ALTER TABLE passkeys ADD COLUMN twofa boolean DEFAULT false after password;
     ALTER TABLE passkeyversions ADD COLUMN twofa boolean DEFAULT false after password;
 
 ### xversions -> x_versions
