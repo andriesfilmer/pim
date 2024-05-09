@@ -32,7 +32,7 @@ export default class extends Controller {
 
     if (document.getElementById("notes")) {
 
-      let content = document.getElementById("notes").innerHTML;
+      let content = document.getElementById("notes").value;
       let toc = markdownToc(content);
 
       // Only to get id's in the headers for jumping to form toc anchors.
@@ -84,7 +84,7 @@ export default class extends Controller {
   copyImageUrl(img) {
     let imgSize = document.getElementById("image_size").value;
     let imgId = img.srcElement.id;
-    let imgTag = '![' + imgSize + '](' + document.getElementById(imgId).title + ')'
+    let imgTag = '![' + imgSize + '](<' + document.getElementById(imgId).title + '>)'
     copyContent(imgTag)
     $("#addFile").removeClass("show");
   }

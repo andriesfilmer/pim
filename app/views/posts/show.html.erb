@@ -10,7 +10,7 @@
 
 <div class="row">
   <div class="columns">
-    <%= content_tag :pre, @post.notes, id: "notes", class: "display-none" %>
+    <%= text_area_tag :notes, @post.notes, class: "display-none" %>
     <fieldset id="tocFieldset">
       <legend>Content</legend>
       <div id="toc"></div>
