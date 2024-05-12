@@ -17,19 +17,78 @@
       <div id="markdown"></div>
     </div>
   </div>
+
   <div class="row">
-    <div class="columns">
-      <%= form.select :category, options_for_select([ "article", "hobby", "note", "todo", "other"], @post.category) %>
+    <div class="medium-6 columns">
+    <fieldset>
+      <legenda class="strong">Category</legenda>
+      <div class="row p-4">
+        <div class="column small-6 medium-6">Post</div>
+        <div class="column small-6 medium-6 post">
+        <%= form.label :category_post, class: "switch" do %>
+          <%= form.radio_button :category, "post", class: "switch" %>
+          <span class="slider round post"></span>
+        <% end %>
+        </div>
+      </div>
+      <div class="row p-4">
+        <div class="column small-6 medium-6">Hobby</div>
+        <div class="column small-6 medium-6 hobby">
+        <%= form.label :category_hobby, class: "switch" do %>
+          <%= form.radio_button :category, "hobby", class: "switch" %>
+          <span class="slider round hobby"></span>
+        <% end %>
+        </div>
+      </div>
+      <div class="row p-4">
+        <div class="column small-6 medium-6">Memo</div>
+        <div class="column small-6 medium-6 memo">
+        <%= form.label :category_memo, class: "switch" do %>
+          <%= form.radio_button :category, "memo", class: "switch" %>
+          <span class="slider round memo"></span>
+        <% end %>
+        </div>
+      </div>
+      <div class="row p-4">
+        <div class="column small-6 medium-6">Task</div>
+        <div class="column small-6 medium-6 task">
+        <%= form.label :category_task, class: "switch" do %>
+          <%= form.radio_button :category, "task", class: "switch" %>
+          <span class="slider round task"></span>
+        <% end %>
+        </div>
+      </div>
+      <div class="row p-4">
+        <div class="column small-6 medium-6">Business</div>
+        <div class="column small-6 medium-6 business">
+        <%= form.label :category_business, class: "switch" do %>
+          <%= form.radio_button :category, "business", class: "switch" %>
+          <span class="slider round business"></span>
+        <% end %>
+        </div>
+      </div>
+      <div class="row p-4">
+        <div class="column small-6 medium-6">Holiday</div>
+        <div class="column small-6 medium-6 holiday">
+        <%= form.label :category_holiday, class: "switch" do %>
+          <%= form.radio_button :category, "holiday", class: "switch" %>
+          <span class="slider round holiday"></span>
+        <% end %>
+        </div>
+      </div>
+    </fieldset>
+    </div>
+
+    <div class="columns medium-6">
+    <fieldset>
+      <p><legenda class="strong">Tags</legenda></p>
+      <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
+      <div id="tagsContainer"></div>
+    </fieldset>
     </div>
   </div>
 
-  <!-- tags -->
-  <div class="row">
-    <div class="columns">
-      <%= form.label :tags, class: "text-lg display-inline" %>
-      <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
-      <div id="tagsContainer"></div>
-    </div>
-  </div>
 <% end %>
+
+<%= render "base/resource_footer", resource: @post %>
 

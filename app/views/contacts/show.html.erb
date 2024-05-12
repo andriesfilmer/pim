@@ -88,11 +88,8 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="columns"><label class="text-lg p-2"></label></div>
-  <div class="columns small-6 medium-6 meta-data">Created: <%= l @contact.created_at, format: :default %></div>
-  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @contact.updated_at, format: :default %></div>
-</div>
 <%= form_with model: @contact, id: "contactForm" do |form| %>
   <%= form.hidden_field :starred %>
 <% end %>
+
+<%= render "base/resource_footer", resource: @contact %>

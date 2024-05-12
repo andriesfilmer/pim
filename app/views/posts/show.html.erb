@@ -26,10 +26,6 @@
 
   </div>
 </div>
-
-<div class="row">
-  <div class="columns"><label class="label-th"></label></div>
-  <div class="columns small-6 medium-6 meta-data">Created: <%= l @post.created_at, format: :default %></div>
-  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @post.updated_at, format: :default %></div>
-</div>
 <% end %>
+
+<%= render "base/resource_footer", resource: @post %>

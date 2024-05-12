@@ -11,6 +11,8 @@
 .fc-timeGridWeek-button {
   display: none !important;
 }
+
+/*
 .fc {
   .fc-button-primary {
     background-color: var(--color-100);
@@ -27,6 +29,10 @@
 .fc-h-event {
   background: var(--color-notice);
   border: none;
+}
+*/
+.fc {
+  .fc-list-event-dot, .fc-daygrid-event-dot { border: none; }
 }
 
 @media screen and (max-width: 639px) {

@@ -14,7 +14,7 @@
         <%= content_tag :div, @passkey.username, id: "username" %>
       </div>
       <div class="columns small-2 medium-1">
-        <div data-action="click->passkey#copyUsername" class="button tiny">Copy</div>
+        <div data-action="click->passkey#copyUsername" data-passkey-target="copiedUsername" class="icon copy"></div>
       </div>
       <div class="columns <%= "icon xs star-filled filter-orange" if @passkey.twofa %>">
         <%= label_tag :password, nil, class: "text-lg display-inline" %>
@@ -26,7 +26,7 @@
           data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
       </div>
       <div class="columns small-2 medium-1">
-        <div data-action="click->passkey#copyPassword" class="button tiny">Copy</div>
+        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword" class="icon copy border"></div>
       </div>
       <div class="columns mb-6">
         <%= label_tag :url, nil, class: "text-lg" %>
@@ -58,10 +58,5 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="columns"><label class="text-lg"></label></div>
-  <div class="columns small-6 medium-6 meta-data">Created: <%= l @passkey.created_at, format: :default %></div>
-  <div class="columns small-6 medium-6 meta-data">Updated: <%= l @passkey.updated_at, format: :default %></div>
-</div>
-
 <%= render "/passkeys/shareDialog", resource: @passkey if @passkey_shares %>
+<%= render "base/resource_footer", resource: @passkey %>

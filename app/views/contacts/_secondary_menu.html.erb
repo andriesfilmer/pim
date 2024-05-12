@@ -1,7 +1,8 @@
 <div class="row mb-6">
   <div class="columns small-10 medium-10">
     <%= content_tag :div, '', class: "icon filter person md p-2 border-right-dashed cursor-pointer" unless @contact.id %>
-    <%= link_to (content_tag :div, '', class: "icon filter person md p-2 border-right-dashed"), contact_path(@contact) if @contact.id %>
+    <%= link_to (content_tag :div, '', class: "icon filter person md p-2 border-right-dashed"),
+      contact_path(@contact), title: "Back to contact without saving" if @contact.id %>
 
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>
       <%= content_tag :div, '', class: "icon filter star#{"-filled" if @contact.starred?} md

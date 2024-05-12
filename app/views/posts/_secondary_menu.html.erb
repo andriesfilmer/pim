@@ -2,13 +2,10 @@
   <div class="columns small-10 medium-10">
     <%= content_tag "icon filter articl md p-2" unless @post.id %>
     <%= link_to (content_tag :div, '', class: "icon filter article md p-2 border-right-dashed"),
-      post_path(@post) if @post.id %>
+      post_path(@post), title: "Back to post, without saving" if @post.id %>
 
     <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"),
       edit_post_path(@post), title: "Edit post" if action_name == "show" %>
-
-    <%= link_to (content_tag :div, '', class: "icon filter visibility md p-2 border-right-dashed"),
-      post_path(@post), title: "Show post" if action_name == "edit" %>
 
     <%= content_tag :div, '', class: "icon filter cloud-upload md p-2 cursor-pointer border-right-dashed", id: "cloud-upload",
       data: { action: "click->post#submitForm" }, title: "Save post" if action_name != "show" %>

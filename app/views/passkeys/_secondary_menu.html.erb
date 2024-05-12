@@ -13,7 +13,7 @@
   <div class="columns small-10 medium-10">
     <%= content_tag :div, '', class: "icon filter key md p-2" unless @passkey.id %>
     <%= link_to (content_tag :div, '', class: "icon filter key md pr-2 border-right-dashed"),
-      passkey_path(@passkey) if @passkey.id %>
+      passkey_path(@passkey), title: "Back to passkey without saving" if @passkey.id %>
 
     <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"),
       edit_passkey_path(@passkey), title: "Edit passkey" if action_name == "show" %>

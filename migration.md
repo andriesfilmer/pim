@@ -26,7 +26,7 @@ Migration info from old pim to new pim.
 
     update events set created = updated where created = '0000-00-00 00:00:00';
     update events set updated = created where updated = '0000-00-00 00:00:00';
-    UPDATE events SET created=REPLACE(created,'00 00:00:00','01 00:00:00') WHERE created like '%-00 00:00:00';
+    update events SET created=REPLACE(created,'00 00:00:00','01 00:00:00') WHERE created like '%-00 00:00:00';
     alter table events add tags varchar(255) default null after className;
     alter table eventversions add tags varchar(255) default null after className;
 
@@ -39,11 +39,9 @@ Migration info from old pim to new pim.
     alter table postversions drop column description;
     update posts set public = '1' where public = 'true';
     update posts set public = '0' where public = 'false' or public is null or public = '';
+    update posts set type='post' where type='article';
+    update posts set type='task' where type='todo';
     alter table posts change public public tinyint(1);
-
-    # breaking changes with old pim version
-    alter table posts change type category varchar(20);
-    alter table postversions change type category varchar(20);
 
     ALTER TABLE postversions change id id INT PRIMARY KEY AUTO_INCREMENT;
 
@@ -78,6 +76,12 @@ find app -type f | xargs perl -pi -e 's/passkeyversion/passkey_version/g'
 
 ### Todo after old pim offline
 
+    # breaking changes with old pim version
+    #alter table posts change type category varchar(20);
+    #alter table postversions change type category varchar(20);
+    # remove -> self.inheritance_column = 'zoink'
+    # remove -> alias_attribute :category, :type
+
     alter table events change column description notes;
     alter table posts change type category varchar(255);
     alter table posts change tags tags varchar(255);
@@ -91,3 +95,4 @@ find app -type f | xargs perl -pi -e 's/passkeyversion/passkey_version/g'
 
 **REMOVE** alias_attribute(s) from models;
 **REMOVE** self.table_name(s) from models;
+

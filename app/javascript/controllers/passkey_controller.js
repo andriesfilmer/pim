@@ -8,7 +8,7 @@ let userinput = false
 
 export default class extends Controller {
 
-  static targets = [ "passwordToggle", "notesToggle" ]
+  static targets = [ "passwordToggle", "notesToggle", "copiedPassword", "copiedUsername" ]
 
   connect() {
 
@@ -65,16 +65,31 @@ export default class extends Controller {
     document.getElementById("search-form").requestSubmit()
   }
 
+  // copyUsername with stimulus targets instead of document.querySelector, see copyPassword.
   copyUsername() {
     copyContent(document.getElementById('username').innerHTML)
+    this.copiedUsernameTarget.textContent = "Copied"
+    this.copiedUsernameTarget.classList.remove("icon")
+    setTimeout(() => {
+      this.copiedUsernameTarget.textContent = ""
+      this.copiedUsernameTarget.classList.add("icon")
+    }, 2000); // 2-second delay
+  }
+
+  // copyPassword with document.querySelector instead of sttmulus target, see copyUsername.
+  copyPassword() {
+    copyContent(document.getElementById('password').value)
+    let element = document.querySelector('[data-passkey-target="copiedPassword"]');
+    element.innerHTML = "Copied"
+    element.classList.remove("icon")
+    setTimeout(() => {
+      element.innerHTML = ""
+      element.classList.add("icon")
+    }, 2000);
   }
 
   newPassword() {
     document.getElementById("passkey_password").value = genPassword()
-  }
-
-  copyPassword() {
-    copyContent(document.getElementById('password').value)
   }
 
   togglePassword() {

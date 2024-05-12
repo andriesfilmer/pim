@@ -2,7 +2,8 @@
   <div class="columns small-9 medium-9">
     <%= content_tag :div, '', class: "icon filter event-note md p-2 cursor-pointer border-right-dashed" unless @event.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter event-note md p-2 border-right-dashed"), event_path(@event) if @event.id %>
+    <%= link_to (content_tag :div, '', class: "icon filter event-note md p-2 border-right-dashed"),
+      event_path(@event), title: "Back to event without saving" if @event.id %>
 
     <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"), edit_event_path(@event), title: "Edit event" if action_name == "show"%>
 
