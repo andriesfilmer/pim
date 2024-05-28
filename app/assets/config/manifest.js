@@ -12,9 +12,16 @@
 //= link application.css
 
 // Javascript
-//
-// loading snippets dir
+//= link application.js
+//= link components.js
 //= link snippets.js
+//= link controllers/application.js
+//= link controllers/contact_controller.js
+//= link controllers/event_controller.js
+//= link controllers/index.js
+//= link controllers/passkey_controller.js
+//= link controllers/post_controller.js
+//= link controllers/user_controller.js
 //
-//= link_tree ../../javascript .js
-//= link_tree ../../../vendor/javascript .js
+// link_tree ../../controllers .js
+// link_tree ../../vendor/javascript .js

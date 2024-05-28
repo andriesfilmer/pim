@@ -124,7 +124,7 @@ class PostsController < ApplicationController
 
   def get_files
     path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
-    FileUtils.mkdir_p(path) unless Dir.exists?(path)
+    FileUtils.mkdir_p(path) unless Dir.exist?(path)
     @files = Dir.children(path)
   end
 

@@ -5,7 +5,7 @@ Migration info from old pim to new pim.
 
     mysql pim < db/passkey.sql
 
-    LOAD DATA LOCAL INFILE '/home/andries/Nextcloud/Private/Backup/Keepass/keepass.csv'
+    LOAD DATA LOCAL INFILE '/home/andries/keepass.csv'
     INTO TABLE passkeys
     FIELDS TERMINATED BY ','
     ENCLOSED BY '"'
@@ -37,6 +37,7 @@ Migration info from old pim to new pim.
     alter table posts drop column mongo_id;
     alter table posts drop column description;
     alter table postversions drop column description;
+    alter table posts change type type varchar(20);
     update posts set public = '1' where public = 'true';
     update posts set public = '0' where public = 'false' or public is null or public = '';
     update posts set type='post' where type='article';
@@ -47,6 +48,7 @@ Migration info from old pim to new pim.
 
     ALTER TABLE passkeys ADD COLUMN twofa boolean DEFAULT false after password;
     ALTER TABLE passkeyversions ADD COLUMN twofa boolean DEFAULT false after password;
+    #UPDATE passkeys SET created_at = NOW(), updated_at = NOW();
 
 ### xversions -> x_versions
 

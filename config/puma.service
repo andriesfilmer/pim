@@ -1,0 +1,19 @@
+[Unit]                                                                                                                                                                               
+Description=Puma HTTP Server                  
+After=network.target                          
+#Requires=puma.socket
+
+[Service]                                     
+Type=simple
+User=puma                                     
+Group=www-data                                
+
+WorkingDirectory=/var/www/pim-rails/
+
+ExecStart=/usr/local/bin/puma -C /var/www/pim-rails/config/puma.rb
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

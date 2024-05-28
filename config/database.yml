@@ -5,10 +5,8 @@ production:
   pool: 5
   username: <%= Rails.application.credentials[Rails.env.to_sym][:database][:username] %>
   password: <%= Rails.application.credentials[Rails.env.to_sym][:database][:password] %>
-  #host: mariadb.filmer.net
-  #socket: /tmp/mysql.sock
-  host: localhost
-  socket: /var/run/mysqld/mysqld.sock
+  host: mariadb.filmer.net
+  socket: /tmp/mysql.sock
 
 development:
   adapter: mysql2
