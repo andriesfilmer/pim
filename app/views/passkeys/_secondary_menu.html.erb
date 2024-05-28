@@ -3,7 +3,7 @@
   <div class="columns small-10 medium-10 text-xl">
     Shared by <%= User.find(@passkey.user_id).email %>
   <%= link_to "Delete", passkey_path(id: @passkey.id, shared_by_user_id: @passkey.shared_by_user_id),
-    class: "button alert tiny float-right", data: {turbo_method: :delete , turbo_confirm: 'Are you sure to delete this passkey?' } %>
+    class: "button alert small float-right", data: {turbo_method: :delete , turbo_confirm: 'Are you sure to delete this passkey?' } %>
   </div>
 </div>
 
