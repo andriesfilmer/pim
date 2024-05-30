@@ -1,12 +1,12 @@
-[Unit]                                                                                                                                                                               
-Description=Puma HTTP Server                  
-After=network.target                          
+[Unit]
+Description=Puma HTTP Server
+After=network.target
 #Requires=puma.socket
 
-[Service]                                     
+[Service]
 Type=simple
-User=puma                                     
-Group=www-data                                
+User=puma
+Group=www-data
 
 WorkingDirectory=/var/www/pim-rails/
 

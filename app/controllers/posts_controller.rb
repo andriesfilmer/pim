@@ -3,7 +3,7 @@ class PostsController < ApplicationController
   before_action :set_post, only: %i[ show edit update destroy destroy_image]
 
   def index
-    @posts = Post.where(user_id: current_user.id).order("last_read desc").limit 10
+    @posts = Post.where(user_id: current_user.id).order("last_read desc").limit 500
   end
 
   def show
