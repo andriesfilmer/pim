@@ -6,40 +6,32 @@
     <%= link_to "Edit profile", edit_user_registration_path, class: "button small" %>
   </div>
 </div>
-<div class="row">
-  <div class="columns">
+<div class="row p-4" data-controller="user">
+  <div class="columns medium-6">
     <%= content_tag :span, @user.name %>
     <span class="home meta-data">Personal Information Manager</span>
   </div>
-</div>
-
-<div class="row">
-  <fieldset class="col-12">
-    <legenda class="strong">Theme settings</legenda>
-    <div class="row p-4" data-controller="user">
-      <div class="columns medium-3 p-4">
-        <label>Light grey mode</label>
-        <%= label_tag "theme_light", class: "switch" do %>
-          <%= radio_button_tag "theme", "light", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
-          <span class="slider round"></span>
-        <% end %>
-      </div>
-      <div class="columns medium-3 p-4">
-        <label>Dark mode</label>
-        <%= label_tag "theme_dark", class: "switch" do %>
-          <%= radio_button_tag "theme", "dark", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
-          <span class="slider round"></span>
-        <% end %>
-      </div>
-      <div class="columns medium-3 p-4">
-        <label>Red mode</label>
-        <%= label_tag "theme_red", class: "switch" do %>
-          <%= radio_button_tag "theme", "red", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
-          <span class="slider round"></span>
-        <% end %>
-      </div>
-    </div>
-  </fieldset>
+  <div class="columns small-4 medium-2 p-4">
+    <label>Light mode</label>
+    <%= label_tag "theme_light", class: "switch" do %>
+      <%= radio_button_tag "theme", "light", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
+      <span class="slider round"></span>
+    <% end %>
+  </div>
+  <div class="columns small-4  medium-2 p-4">
+    <label>Dark mode</label>
+    <%= label_tag "theme_dark", class: "switch" do %>
+      <%= radio_button_tag "theme", "dark", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
+      <span class="slider round"></span>
+    <% end %>
+  </div>
+  <div class="columns small-4 medium-2 p-4">
+    <label>Red mode</label>
+    <%= label_tag "theme_red", class: "switch" do %>
+      <%= radio_button_tag "theme", "red", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
+      <span class="slider round"></span>
+    <% end %>
+  </div>
 </div>
 
 <div class="row">

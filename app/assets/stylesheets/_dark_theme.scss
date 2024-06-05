@@ -21,7 +21,7 @@
   --color-50:  hsl(var(--deg) var(--sat) 20%);
 
   --color-body: hsl(var(--deg) var(--sat) 20%);
-  --color-text: hsl(var(--deg) var(--sat) 65%);
+  --color-text: hsl(var(--deg) var(--sat) 75%);
   --color-text-diap: hsl(var(--deg) var(--sat) 5%);
 
   --color-primary: hsl(var(--deg) var(--sat) 30%);
@@ -42,9 +42,17 @@
   --color-alert   : hsl(0deg 100% 40%);
   --bg-alert: hsl(0deg 50% 35%);
 
-  --filter:        invert(45%) sepia(8%) saturate(364%) hue-rotate(201deg) brightness(96%) contrast(85%);
+  --filter:        invert(55%) sepia(8%) saturate(364%) hue-rotate(201deg) brightness(96%) contrast(85%);
   --filter-diap:   invert(0%) sepia(94%) saturate(0%) hue-rotate(179deg) brightness(108%) contrast(106%);
   --filter-orange: invert(57%) sepia(51%) saturate(1594%) hue-rotate(8deg) brightness(88%) contrast(101%);
   --filter-red:    invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
 
+  // Fullcalendar dark-mode
+  --fc-neutral-bg-color: var(--color-bg-200);
+  --fc-border-color: var(--color-200);
+  --fc-page-bg-color: var(--color-body);
+  --fc-list-event-hover-bg-color: var(--color-200);
+  --fc-button-text-color: var(--color-text);
+  --fc-button-bg-color: var(--color-body);
+  --fc-event-bg-color: var(--color-notice);
 }
