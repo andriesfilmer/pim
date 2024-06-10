@@ -9,6 +9,16 @@ production:
   socket: /tmp/mysql.sock
 
 development:
+  adapter: mysql2
+  encoding: utf8mb4
+  database: pim
+  pool: 5
+  username: <%= Rails.application.credentials[Rails.env.to_sym][:database][:username] %>
+  password: <%= Rails.application.credentials[Rails.env.to_sym][:database][:password] %>
+  host: localhost
+  socket: /var/run/mysqld/mysqld.sock
+
+development_:
   adapter: sqlite3
   database: db/pim.db
   pool: 5

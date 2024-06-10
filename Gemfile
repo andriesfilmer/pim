@@ -4,8 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 #ruby "3.2.3"
 ruby "3.0.2"
 
-#gem "mysql2"
-#gem "sqlite3"
+gem "mysql2"
 gem "sqlite3", "~> 1.7"
 gem "rails", "7.1.3"
 gem "sprockets-rails"

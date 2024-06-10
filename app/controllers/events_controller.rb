@@ -90,7 +90,7 @@ class EventsController < ApplicationController
     if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
       @events = Event.where("title LIKE ? OR description LIKE ? OR tags LIKE ?", search, search, search)
-                     .order(updated_at: :desc).where(user_id: current_user.id)
+                     .order(start: :desc).where(user_id: current_user.id)
       cookies[:search] = params[:search]
     else
       @events = []

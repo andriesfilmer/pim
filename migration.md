@@ -27,6 +27,7 @@ Migration info from old pim to new pim.
     update events set created = updated where created = '0000-00-00 00:00:00';
     update events set updated = created where updated = '0000-00-00 00:00:00';
     update events SET created=REPLACE(created,'00 00:00:00','01 00:00:00') WHERE created like '%-00 00:00:00';
+    update events SET updated=REPLACE(updated,'00 00:00:00','01 00:00:00') WHERE updated like '%-00 00:00:00';
     alter table events add tags varchar(255) default null after className;
     alter table eventversions add tags varchar(255) default null after className;
 

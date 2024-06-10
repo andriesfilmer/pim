@@ -98,8 +98,7 @@ class PasskeysController < ApplicationController
          "(passkeys.user_id = #{current_user.id} AND (title LIKE ? OR notes LIKE ? OR tags LIKE ?))
        OR
          (passkey_shares.linked_user_id = #{current_user.id} AND (title LIKE ? OR notes LIKE ? OR tags LIKE ?))",
-         search, search, search, search, search, search)
-
+         search, search, search, search, search, search).order("updated_at desc")
       cookies[:search] = params[:search]
     else
       @passkeys = []
