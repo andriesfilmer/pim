@@ -10,7 +10,7 @@
   <!-- notes -->
   <div class="row">
     <div class="columns">
-      <div class="icon preview filter align-bottom" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip title="Click for preview"></div>
+      <div class="icon markdown filter align-bottom" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip title="Click for markdown preview"></div>
       <div class="icon edit filter align-bottom display-none" id="edit_bt" data-action="click->post#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.label :notes, class: "text-lg display-inline" %>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '30' %>

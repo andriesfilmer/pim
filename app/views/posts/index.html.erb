@@ -4,7 +4,7 @@
     <div class="icon filter search md p-2 cursor-pointer" data-controller="post" data-action="click->post#showSearch"></div>
   </div>
   <div class="small-2 medium-2 columns text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter note-add md p-2"),
+    <%= link_to (content_tag :div, '', class: "icon filter add md p-2"),
       new_post_path, data: { turbo_frame: dom_id(Post.new) } %>
   </div>
 </div>

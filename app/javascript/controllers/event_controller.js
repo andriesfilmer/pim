@@ -102,8 +102,7 @@ export default class extends Controller {
         },
         eventClick: function(arg) {
           console.dir(arg);
-          console.log("######## arg.event.id: " + arg.event.id);
-          location.href = "/events/" + arg.event.id;
+          Turbo.visit("/events/" + arg.event.id);
         }
       });
       calendar.render();

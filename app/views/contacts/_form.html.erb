@@ -157,8 +157,8 @@
   <!-- notes -->
   <div class="row">
     <div class="columns">
-      <%= form.label :notes, class: "display-inline" %>
-      <div class="icon filter preview align-bottom" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip title="Click for preview"></div>
+      <%= form.label :notes, class: "display-inline text-lg" %>
+      <div class="icon filter markdown align-bottom" id="preview_bt" data-action="click->contact#showMarkdown" data-tooltip title="Click to see markdown format"></div>
       <div class="icon filter edit align-bottom display-none" id="edit_bt" data-action="click->contact#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '20' %>
       <div id="markdown"></div>

@@ -43,12 +43,11 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-end
 
-group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-  #gem "webdrivers"
+  # dump sql -> mysql -> sqlite
+  # rake db:data:dump   ->   Dump contents of Rails database to db/data.yml
+  # rake db:data:load   ->   Load contents of db/data.yml into the database
+
+  gem 'yaml_db'
 end
 

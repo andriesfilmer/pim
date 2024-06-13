@@ -1,24 +1,24 @@
 <div class="row mb-6">
   <div class="columns small-10 medium-10">
-    <%= content_tag "icon filter articl md p-2" unless @post.id %>
-    <%= link_to (content_tag :div, '', class: "icon filter article md p-2 border-right-dashed"),
+    <%= content_tag "icon filter articl p-2" unless @post.id %>
+    <%= link_to (content_tag :div, '', class: "icon filter article p-2 border-right-dashed"),
       post_path(@post), title: "Back to post, without saving" if @post.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter edit md p-2 border-right-dashed"),
+    <%= link_to (content_tag :div, '', class: "icon filter edit p-2 border-right-dashed"),
       edit_post_path(@post), title: "Edit post" if action_name == "show" %>
 
-    <%= content_tag :div, '', class: "icon filter cloud-upload md p-2 cursor-pointer border-right-dashed", id: "cloud-upload",
+    <%= content_tag :div, '', class: "icon filter cloud-upload p-2 cursor-pointer border-right-dashed", id: "cloud-upload",
       data: { action: "click->post#submitForm" }, title: "Save post" if action_name != "show" %>
 
-    <%= content_tag :div, @files.length, class: "icon filter photo-add md p-2 cursor-pointer border-right-dashed",
+    <%= content_tag :div, @files.length, class: "icon filter image-add p-2 cursor-pointer border-right-dashed",
       data: { modal_open: "addFile" } if @post.id && action_name == "edit" %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter restore md p-2"),
+    <%= link_to (content_tag :div, '', class: "icon filter restore p-2"),
       post_versions_path(org_id: @post.id), title: "Versions of this post" if @post.id %>
 
   </div>
   <div class="columns small-2 medium-2 text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter delete md p-2"), post_path(@post),
+    <%= link_to (content_tag :div, '', class: "icon filter delete p-2"), post_path(@post),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this post?'} if @post.id %>
   </div>
 </div>

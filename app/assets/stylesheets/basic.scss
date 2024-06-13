@@ -86,6 +86,9 @@ a {
   line-height: inherit;
   color: var(--color-text);
   cursor: pointer;
+  &.even { text-decoration: none; }
+  &.odd { text-decoration: none; }
+  &.button { text-decoration: none; }
 }
 
 a:hover, a:focus {

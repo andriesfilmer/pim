@@ -1,3 +1,5 @@
+// https://fonts.google.com/icons
+// Weigth 200, Grade 0, Optical size 24, color #000000
 
 .icon {
   display: inline-flex;
@@ -23,9 +25,6 @@
     &.filter-red     { filter: var(--filter-red) }
     &.filter-orange  { filter: var(--filter-orange) }
 
-    &.label { position: relative; top: 12px; margin-top: -1em;}
-    &.share { position: relative; top: 6px;  margin-top: -1em;}
-
     &.account-circle         { background-image: url("/assets/account-circle.svg") }
     &.add                    { background-image: url("/assets/add.svg") }
     &.apartment              { background-image: url("/assets/apartment.svg") }
@@ -34,7 +33,6 @@
     &.cake                   { background-image: url("/assets/cake.svg") }
     &.event-note             { background-image: url("/assets/event-note.svg") }
     &.copy                   { background-image: url("/assets/copy.svg") }
-    &.calendar-add           { background-image: url("/assets/calendar-add.svg") }
     &.calendar-list          { background-image: url("/assets/calendar-list.svg") }
     &.calendar-list-month    { background-image: url("/assets/calendar-list-month.svg") }
     &.calendar-month         { background-image: url("/assets/calendar-month.svg") }
@@ -45,27 +43,31 @@
     &.difference             { background-image: url("/assets/difference.svg") }
     &.edit                   { background-image: url("/assets/edit.svg") }
     &.group                  { background-image: url("/assets/group.svg") }
-    &.group                  { background-image: url("/assets/group.svg") }
     &.key                    { background-image: url("/assets/key.svg") }
     &.link                   { background-image: url("/assets/link.svg") }
+    &.list                   { background-image: url("/assets/list.svg") }
     &.location-on            { background-image: url("/assets/location-on.svg") }
     &.lock                   { background-image: url("/assets/lock.svg") }
-    &.lock-add               { background-image: url("/assets/lock-add.svg") }
     &.logout                 { background-image: url("/assets/logout.svg") }
     &.mail                   { background-image: url("/assets/mail.svg") }
+    &.markdown               { background-image: url("/assets/markdown.svg") }
     &.more-time              { background-image: url("/assets/more-time.svg") }
-    &.note-add               { background-image: url("/assets/note-add.svg") }
     &.person                 { background-image: url("/assets/person.svg") }
-    &.person-add             { background-image: url("/assets/person-add.svg") }
-    &.photo-add              { background-image: url("/assets/photo-add.svg") }
+    &.image-library          { background-image: url("/assets/image-library.svg") }
+    &.image-add              { background-image: url("/assets/image-add.svg") }
+    &.image                  { background-image: url("/assets/image.svg") }
     &.preview                { background-image: url("/assets/preview.svg") }
     &.restore                { background-image: url("/assets/restore.svg") }
     &.search                 { background-image: url("/assets/search.svg") }
     &.share                  { background-image: url("/assets/share.svg") }
-    &.star                   { background-image: url("/assets/star.svg") }
     &.star                   { background-image: url("/assets/star.svg") }
     &.star-filled            { background-image: url("/assets/star-filled.svg") }
     &.visibility             { background-image: url("/assets/visibility.svg") }
 
   }
 }
+
+//span.label { position: relative; top: 12px; margin-top: -1em;}
+//
+// In list view icons take to much space.
+span.share { position: relative; top: 6px;  margin-top: -1em;}

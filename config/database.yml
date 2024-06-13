@@ -8,7 +8,7 @@ production:
   host: mariadb.filmer.net
   socket: /tmp/mysql.sock
 
-development:
+development_:
   adapter: mysql2
   encoding: utf8mb4
   database: pim
@@ -18,7 +18,7 @@ development:
   host: localhost
   socket: /var/run/mysqld/mysqld.sock
 
-development_:
+development:
   adapter: sqlite3
   database: db/pim.db
   pool: 5

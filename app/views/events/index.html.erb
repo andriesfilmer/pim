@@ -2,11 +2,11 @@
   <div class="small-10 medium-10 columns">
     <div class="icon filter calendar-month md p-2 cursor-pointer border-right-dashed" title="Year grid" data-action="click->event#showMonthView"></div>
     <div class="icon filter calendar-view-week md p-2 cursor-pointer border-right-dashed" title="Week grid" data-action="click->event#showWeekView"></div>
-    <div class="icon filter calendar-list-month md p-2 cursor-pointer border-right-dashed" title="List month" data-action="click->event#showListMonth"></div>
+    <div class="icon filter list md p-2 cursor-pointer border-right-dashed" title="List month" data-action="click->event#showListMonth"></div>
     <div class="icon filter search md p-2 cursor-pointer" data-action="click->event#showSearch"></div>
   </div>
   <div class="small-2 medium-2 columns p-2 text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter calendar-add md"), new_event_path %>
+    <%= link_to (content_tag :div, '', class: "icon filter add md"), new_event_path %>
   </div>
 </div>
 

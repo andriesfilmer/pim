@@ -1,12 +1,12 @@
 <div class="row mb-6">
   <div class="small-10 medium-10 columns">
-    <div class="icon filter lock md p-2 cursor-pointer border-right-dashed"></div>
-    <%= link_to (content_tag :div, '', class: "icon filter share md p-2 border-right-dashed"),
+    <div class="icon filter lock p-2 cursor-pointer border-right-dashed"></div>
+    <%= link_to (content_tag :div, '', class: "icon filter share p-2 border-right-dashed"),
        passkey_shares_path, title: "Show passkey shares", date: { tooltip: ''} %>
-     <div class="icon filter search md p-2 cursor-pointer" data-controller="passkey" data-action="click->passkey#showSearch"></div>
+    <div class="icon filter search p-2 cursor-pointer" data-controller="passkey" data-action="click->passkey#showSearch"></div>
   </div>
   <div class="small-2 medium-2 columns text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter lock-add md p-2"),
+    <%= link_to (content_tag :div, '', class: "icon filter add p-2"),
       new_passkey_path, data: { turbo_frame: dom_id(Passkey.new) } %>
   </div>
 </div>

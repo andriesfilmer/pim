@@ -8,7 +8,7 @@
   <div class="modal-content">
 
     <div class="row color-bg-100 mb-4">
-      <div class="columns text-lg py-2">
+      <div class="columns py-2">
         <span class="close-button pt-2" data-modal-close="addFile">&#215;</span>
         Upload new file
       </div>
@@ -21,7 +21,7 @@
     </div>
 
     <%= content_tag :div, class:"row color-bg-100 my-4" do %>
-      <%= content_tag :div, "Select file", class:"columns small-6 medium-8 text-lg p-1 my-2" %>
+      <%= content_tag :div, "Select copy size", class:"columns small-6 medium-8 text-lg p-1 my-2" %>
       <div class="columns small-6 medium-4 text-xs">
         <%= select_tag "image_size", options_for_select(
           {"Image size 100" => "img-100",

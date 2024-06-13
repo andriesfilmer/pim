@@ -31,7 +31,6 @@ document.addEventListener('turbo:submit-end', (event) => {
 
 function loadFunction() {
 
-  console.log("######## localStorage.getItem('theme'): " + localStorage.getItem('theme'));
   // Set light-theme as default if theme not set.
   if (localStorage.getItem('theme') === null) {
     document.body.classList.add('light-theme');
