@@ -1,4 +1,13 @@
-/* Base classes i.o. custom classes for site */
+// Custom classes
+
+#wrapper {
+  min-height: 100%;
+}
+
+#footer {
+  margin-top: -36px; // Height of footer.
+  background-color: var(--bg-secondary)
+}
 
 #start {
   background-image: url(/static/images/bg-pim.jpg);
@@ -25,3 +34,9 @@ div.start p {
 //  margin-bottom: 1em;
 //}
 
+a {
+  &.even { text-decoration: none; }
+  &.odd { text-decoration: none; }
+  &.button { text-decoration: none; }
+}
+#contacts a { text-decoration: none; }

@@ -10,15 +10,21 @@
 <%= javascript_include_tag '/static/fullcalendar-6.1.10.min.js' %>
 <%= javascript_importmap_tags %>
 <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "development" if Rails.env == 'development' %>
 <%= yield(:head) %>
 </head>
 
 <body id="theme">
 
-<%= render "layouts/menu" %>
-<%= render "layouts/flash" %>
+  <div id="wrapper">
+  <%= render "layouts/menu" %>
+  <%= render "layouts/flash" %>
+  <%= yield %>
+</div>
 
-<%= yield %>
+<div id="footer" class="text-center p-2 color-100 text-sm">
+  Personal information manager | Created by <a href="https://andries.filmer.nl" class="color-100 text-sm">Andries Filmer</a>.
+</div>
 
 <%= render "layouts/dialog" %>
 

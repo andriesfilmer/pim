@@ -31,6 +31,7 @@
     &.article                { background-image: url("/assets/article.svg") }
     &.arrow-back             { background-image: url("/assets/arrow-back.svg") }
     &.cake                   { background-image: url("/assets/cake.svg") }
+    &.cake-filled            { background-image: url("/assets/cake-filled.svg") }
     &.event-note             { background-image: url("/assets/event-note.svg") }
     &.copy                   { background-image: url("/assets/copy.svg") }
     &.calendar-list          { background-image: url("/assets/calendar-list.svg") }
@@ -43,6 +44,8 @@
     &.difference             { background-image: url("/assets/difference.svg") }
     &.edit                   { background-image: url("/assets/edit.svg") }
     &.group                  { background-image: url("/assets/group.svg") }
+    &.home                   { background-image: url("/assets/home.svg") }
+    &.home-work              { background-image: url("/assets/home-work.svg") }
     &.key                    { background-image: url("/assets/key.svg") }
     &.link                   { background-image: url("/assets/link.svg") }
     &.list                   { background-image: url("/assets/list.svg") }
@@ -64,10 +67,16 @@
     &.star-filled            { background-image: url("/assets/star-filled.svg") }
     &.visibility             { background-image: url("/assets/visibility.svg") }
 
+    // In list views icons take to much space. Extra helper.
+    &.icon-top-pos {
+       position: relative;
+       top: -8px;
+       display: flex;
+       margin: -10px 0;
+     }
+    //span.label { position: relative; top: 12px; margin-top: -1em;}
   }
 }
 
-//span.label { position: relative; top: 12px; margin-top: -1em;}
-//
-// In list view icons take to much space.
-span.share { position: relative; top: 6px;  margin-top: -1em;}
+
+

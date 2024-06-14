@@ -3,14 +3,12 @@
 .dialog {
   border: solid 0px;
   border-radius: 5px;
-  padding: 0;
   cursor: pointer;
   color: var(--text-color);
   background-color: var(--color-body);
   &::backdrop {
     background-color: var(--color-300);
-    opacity: 0.55;
-    filter: blur(100px);
+    opacity: 0.75;
   }
   .close {
     font-size: 2em;

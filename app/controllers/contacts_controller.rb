@@ -5,7 +5,8 @@ class ContactsController < ApplicationController
   def index
     @contacts = Contact.where(user_id: current_user.id).order("last_read desc").limit 500
     @contacts = @contacts.where(starred: true) if params[:starred]
-    @contacts = @contacts.where("birthdate IS NOT NULL").reorder("month(birthdate), day(birthdate)") if params[:birthdate]
+    # @contacts = @contacts.where("birthdate IS NOT NULL").reorder("month(birthdate), day(birthdate)") if params[:birthdate] # Mysql
+    @contacts = @contacts.where("birthdate IS NOT NULL").reorder(Arel.sql("strftime('%m', birthdate), strftime('%d', birthdate)")) if params[:birthdate] # Sqlite
   end
 
   def show
@@ -44,7 +45,6 @@ class ContactsController < ApplicationController
       if @contact.update(contact_params)
         #format.html { redirect_to contact_url(@contact), notice: "Contact was successfully updated." }
         format.html { redirect_to contact_url(@contact), flash: { success: "Contact was successfully updated" }}
-        format.json { render :show, status: :ok, location: @contact }
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.turbo_stream {

@@ -8,8 +8,7 @@
       <%= content_tag :div, '', class: "icon filter star#{"-filled" if @contact.starred?}
       p-2 #{'filter-orange' if @contact.starred?} border-right-dashed  cursor-pointer",
         data: { controller: "contact", action: "click->contact#setStarred" } %>
-      <%= hidden_field_tag :redirect , action_name %>
-      <%= form.hidden_field :starred, { onchange: "this.form.requestSubmit()" } %>
+      <%= form.hidden_field :starred %>
     <% end if @contact.id %>
 
     <%= link_to (content_tag :div, '', class: "icon filter edit p-2 border-right-dashed"),

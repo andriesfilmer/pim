@@ -6,11 +6,13 @@
 <div id="contacts" class="row">
 <% @contacts.each do |contact| %>
   <%= link_to contact_path(contact), class: "small-6 medium-3 large-2 callout text-center" do %>
-    <%= contact.name %><br>
+    <%= content_tag :div, contact.name, class: "text-base" %>
+    <div class="meta-data">
     <% JSON.parse(contact.phones).each do | phone | %>
         <%= label_tag phone["type"] %>
         <%= phone["value"] %>
-    <% end %>
+      <% end %>
+    </div>
   <% end %>
 <% end %>
 </div>

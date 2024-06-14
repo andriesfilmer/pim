@@ -1,15 +1,15 @@
 <div id="passkeys" class="col-12" data-turbo-prefetch="false">
 <% @passkeys.each do |passkey| %>
-  <%= link_to passkey_path(passkey), class: "row even p-2" do %>
+  <%= link_to passkey_path(passkey), class: "row odd p-2" do %>
   <div class="small-1 medium-1 columns">
-    <%= content_tag :div, '', class: "icon xs star-filled filter-orange" if passkey.twofa %>
+    <%= content_tag :div, '', class: "icon star-filled filter-orange icon-top-pos" if passkey.twofa %>
   </div>
-  <div class="small-5 medium-6 columns">
+  <div class="small-10 medium-6 columns">
     <%= passkey.title %>
   </div>
-  <div class="small-6 medium-2 columns">
-    <%= content_tag :span, '', class: "icon filter share sm", title: "Share passkey" unless passkey.user_id == current_user.id %>
-    <%= content_tag :span, User.find(passkey.user_id).email unless passkey.user_id == current_user.id %>
+  <div class="small-1 medium-2 columns">
+    <%= content_tag :span, '', class: "icon filter share sm icon-top-pos", title: "Share passkey" unless passkey.user_id == current_user.id %>
+    <%= content_tag :span, User.find(passkey.user_id).email, class: "hide-for-small-only" unless passkey.user_id == current_user.id %>
   </div>
   <div class="medium-1 columns hide-for-small-only whitespace-nowrap overflow-hidden">
     <%= content_tag :label, (passkey.user_id == current_user.id ? (l passkey.last_read, format: "%Y-%m-%d") : "Read only"), class: "button tiny display-inline" %>

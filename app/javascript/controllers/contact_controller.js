@@ -122,10 +122,10 @@ export default class extends Controller {
 
   // Set starred on icon click
   setStarred() {
-    if (document.getElementById('contact_starred').value == 'true') {
-      document.getElementById('contact_starred').value = 'false'
+    if (document.getElementById('contact_starred').value == '1') {
+      document.getElementById('contact_starred').value = '0'
     } else {
-      document.getElementById('contact_starred').value = 'true'
+      document.getElementById('contact_starred').value = '1'
     }
     document.getElementById("starredForm").requestSubmit();
   }

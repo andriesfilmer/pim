@@ -11,10 +11,10 @@
 
   <!-- Phones -->
   <div class="row">
-    <div class="small-11 medium-11 columns pt-4">
+    <div class="small-10 medium-11 columns pt-4">
       <%= form.label :phones, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1 text-center">
+    <div class="small-2 medium-1 text-center">
       <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="phone"></div>
     </div>
   </div>
@@ -28,7 +28,7 @@
         <div class="small-10 medium-6 columns">
           <%= form.text_field "phone_value", value: phone['value'], data: {tojson: '' } %>
         </div>
-        <div class="small-1 medium-1 columns text-center">
+        <div class="small-2 medium-1 columns text-center">
           <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_phone"></div>
         </div>
       </div>
@@ -38,10 +38,10 @@
 
   <!-- Emails -->
   <div class="row">
-    <div class="small-11 medium-11 columns pt-4">
+    <div class="small-10 medium-11 columns pt-4">
       <%= form.label :emails, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1 text-center">
+    <div class="small-2 medium-1 text-center">
       <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="email"></div>
     </div>
   </div>
@@ -52,10 +52,10 @@
         <div class="small-12 medium-5 columns">
           <%= form.text_field "email_type", value: email['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
-        <div class="small-11 medium-6 columns">
+        <div class="small-10 medium-6 columns">
           <%= form.text_field "email_value", value: email['value'], data: { tojson: '' } %>
         </div>
-        <div class="columns small-1 medium-1 text-center">
+        <div class="columns small-2 medium-1 text-center">
           <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_email"></div>
         </div>
       </div>
@@ -65,10 +65,10 @@
 
   <!-- Addresses -->
   <div class="row">
-    <div class="small-11 medium-11 columns pt-4">
+    <div class="small-10 medium-11 columns pt-4">
       <%= form.label :addresses, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1 text-center">
+    <div class="small-2 medium-1 text-center">
       <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="address"></div>
     </div>
   </div>
@@ -79,10 +79,10 @@
         <div class="small-12 medium-5 columns">
           <%= form.text_field "address_type", value: address['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
-        <div class="small-11 medium-6 columns">
+        <div class="small-10 medium-6 columns">
           <%= form.text_field "address_value", value: address['value'], data: { tojson: '' } %>
         </div>
-        <div class="small-1 medium-1 columns text-center">
+        <div class="small-2 medium-1 columns text-center">
           <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_address"></div>
         </div>
       </div>
@@ -92,10 +92,10 @@
 
   <!-- Companies -->
   <div class="row">
-    <div class="small-11 medium-11 columns pt-4">
+    <div class="small-10 medium-11 columns pt-4">
       <%= form.label :companies, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1 columns text-center">
+    <div class="small-2 medium-1 columns text-center">
       <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="company"></div>
     </div>
   </div>
@@ -106,10 +106,10 @@
         <div class="small-12 medium-5 columns">
           <%= form.text_field "company_type", value: company['type'], placeholder: 'Function', data: { tojson: '' } %>
         </div>
-        <div class="small-11 medium-6 columns">
+        <div class="small-10 medium-6 columns">
           <%= form.text_field "company_value", value: company['value'], data: { tojson: '' } %>
         </div>
-        <div class="small-1 medium-1 columns text-center">
+        <div class="small-2 medium-1 columns text-center">
           <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_company"></div>
         </div>
       </div>
@@ -119,10 +119,10 @@
 
   <!-- Websites -->
   <div class="row">
-    <div class="small-11 medium-11 columns pt-4">
+    <div class="small-10 medium-11 columns pt-4">
       <%= form.label :websites, class: "text-lg" %>
     </div>
-    <div class="small-1 medium-1 columns text-center">
+    <div class="small-2 medium-1 columns text-center">
       <div class="icon filter add" data-action="click->contact#addTypeValue"  data-value="website"></div>
     </div>
   </div>
@@ -133,10 +133,10 @@
         <div class="small-12 medium-5 columns">
           <%= form.text_field "website_type", value: website['type'], placeholder: 'Label', data: { tojson: '' } %>
         </div>
-        <div class="small-11 medium-6 columns">
+        <div class="small-10 medium-6 columns">
           <%= form.text_field "website_value", value: website['value'], data: { tojson: '' } %>
         </div>
-        <div class="small-1 medium-1 columns text-center">
+        <div class="small-2 medium-1 columns text-center">
           <div class="icon filter delete" data-action="click->contact#removeTypeValue" data-value="contact_website"></div>
         </div>
       </div>
