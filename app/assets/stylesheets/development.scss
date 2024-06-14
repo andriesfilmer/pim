@@ -1,0 +1,13 @@
+body {
+  background:url(/images/dev.png)
+}
+
+/*
+Set border on images if no alt text is present. More info:
+https://dev.to/inhuofficial/using-css-to-prevent-html-errors-ep-1-alt-attributes-11o8 */
+img:not([alt]), img[alt=""]
+{
+  outline: 4px dashed red;
+  outline-offset: 4px;
+}
+
