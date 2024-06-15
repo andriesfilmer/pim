@@ -73,12 +73,18 @@ function showTimezoneAlert() {
 export default class extends Controller {
 
   initialize() {
+
     console.log("######## init event controller");
+
+    // After new or update we get a 'date' parameter to use as initialDate (dayGridMonth).
+    let params = new URLSearchParams(window.location.search);
+    let start = params.get('date')
 
     if (document.getElementById("calendar")) {
       let calendarEl = document.getElementById('calendar');
       let calendar = new FullCalendar.Calendar(calendarEl, {
         events: '/events.json',
+        initialDate: start,
         initialView: 'dayGridMonth',
         navLinks: true, // can click day/week names to navigate views
         editable: true,

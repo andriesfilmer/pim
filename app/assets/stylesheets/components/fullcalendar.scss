@@ -13,25 +13,25 @@
   display: none !important;
 }
 
-// Font-size weeknummers smaller;
-.fc .fc-daygrid-week-number { font-size: smaller }
-
-// Nav calendar arrow buttons / header
 .fc {
-  .fc-button-primary {
-    border: none;
-  }
+
+  // Nav calendar  header
   .fc-toolbar-title { font-size: 1.5em }
-}
 
-// Do not show dot before event. Specialy on small screens.
-.fc {
+  // Nav calendar buttons
+  .fc-button-primary { border: none; }
+  .fc-button-primary:focus, .fc-button:focus { box-shadow: none; }
+
+  // Font-size weeknummers smaller;
+  .fc-daygrid-week-number { font-size: smaller }
+
+  // Do not show dot before event. Specialy on small screens.
   .fc-list-event-dot, .fc-daygrid-event-dot { display: none; }
-}
 
-// Do not show weeknumbers on small screens.
-@media screen and (max-width: 639px) {
-  .fc-daygrid-week-number {
-    display: none;
+  // Do not show weeknumbers on small screens.
+  @media screen and (max-width: 639px) {
+    .fc-daygrid-week-number {
+      display: none;
+    }
   }
 }

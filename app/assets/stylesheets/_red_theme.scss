@@ -48,12 +48,16 @@
   --filter-orange:   invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
   --filter-red:      invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
 
-  --fc-neutral-bg-color: var(--color-200);
   --fc-border-color: var(--color-100);
-  --fc-page-bg-color: var(--color-body);
-  --fc-list-event-hover-bg-color: var(--color-200);
-  --fc-button-text-color: var(--color-text);
+  --fc-button-active-bg-color: var(--color-200);
+  --fc-button-active-border-color: var(--color-200);
   --fc-button-bg-color: var(--color-body);
+  --fc-button-hover-bg-color: var(--color-200);
+  --fc-button-hover-border-color: var(--color-200);
+  --fc-button-text-color: var(--color-text);
   --fc-event-bg-color: var(--color-notice);
-
+  --fc-event-border-color: none;
+  --fc-list-event-hover-bg-color: var(--color-200);
+  --fc-neutral-bg-color: var(--color-200);
+  --fc-page-bg-color: var(--color-body);
 }

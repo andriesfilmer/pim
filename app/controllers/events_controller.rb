@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   def index
     if params[:start] && params[:end]
       # Needs session id to implement.
-      @events = Event.where("user_id=?", current_user.id).where("start > ?", params[:start]).where("end < ?", params[:end]).limit 500
+      @events = Event.where("user_id=?", current_user.id).where("start < ?", params[:end]).where("end > ?", params[:start]).limit 500
     else
       @events = Event.where(user_id: current_user.id).order("id desc").limit 500
     end
@@ -39,7 +39,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       if @event.save
-        format.html { redirect_to @event, notice: "Event was successfully created." }
+        format.html { redirect_to events_path(date: @event.start.strftime("%Y-%m-%d")), notice: "Event was successfully created." }
       else
         format.turbo_stream {
            render turbo_stream: turbo_stream.replace("eventForm", partial: "events/form", locals: { resource: @event })
@@ -62,7 +62,7 @@ class EventsController < ApplicationController
     respond_to do |format|
       if @event.update(event_params)
         flash.now[:notice] = "Event was successfully updated."
-        format.html { redirect_to events_path, notice: "Event was successfully updated." }
+        format.html { redirect_to events_path(date: @event.start.strftime("%Y-%m-%d")), notice: "Event was successfully updated." }
       else
         format.turbo_stream {
            render turbo_stream: turbo_stream.replace("eventForm", partial: "events/form", locals: { resource: @event })
