@@ -41,9 +41,8 @@
   <div class="row">
     <div class="columns">
       <%= form.label :notes, class: "display-inline text-lg" %>
-      <img src="/assets/markdown.svg" id="preview_bt" data-action="click->passkey#showMarkdown" data-tooltip
-        title="Click for preview" class="cursor-pointer icon medium">
-      <img src="/assets/edit.svg" id="edit_bt" data-action="click->passkey#hideMarkdown" class="icon medium cursor-pointer display-none">
+      <div id="preview_bt" data-action="click->passkey#showMarkdown" data-tooltip title="Click for preview" class="icon markdown align-bottom cursor-pointer"></div>
+      <div id="edit_bt"    data-action="click->passkey#hideMarkdown" data-tooltip title="Click to edit"     class="icon edit align-bottom cursor-pointer display-none"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for Notes', rows: '20' %>
       <div id="markdown"></div>
     </div>

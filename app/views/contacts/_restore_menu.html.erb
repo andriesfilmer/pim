@@ -1,7 +1,9 @@
 <div class="row">
-  <div class="columns medium-6" id="add-back-arrow cursor-pointer"></div>
-  <div class="columns medium-6 text-right" id="add-back-arrow">
+  <div class="columns medium-6" id="add-back-arrow">
+    <h1 class="icon arrow-back cursor-pointer"></h1>
+  </div>
+  <div class="columns medium-6 text-right">
     <p><%= button_to "Restore version #{@contact.id}", contactrestore_path,
-      params: { version_id: @contact.id} , class: "button" if @contact.id %></p>
+      params: { version_id: @contact.id} , class: "button warning" if @contact.id %></p>
   </div>
 </div>

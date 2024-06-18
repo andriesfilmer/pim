@@ -15,10 +15,9 @@
       <%= link_to (l event_version.created_at, format: :long), event_version_path(event_version) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
-      <img src="assets/difference.svg" class="icon large">
       <%= check_box_tag "version_ids[]", event_version.id, false, id: event_version.id,
         data: { action: "click->event#versions" }, class: "checkBoxClass" %>
-      <%= content_tag :span, event_version.id %>
+      <%= content_tag :span, event_version.id, class: "icon difference large align-bottom" %>
     </div>
   </div>
   <% end %>

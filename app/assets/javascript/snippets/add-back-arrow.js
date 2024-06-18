@@ -5,10 +5,6 @@ if (elArrow != null ) {
   span.className = "back-arrow show-for-small-only";
   elArrow.prepend(span);
   elArrow.addEventListener("click", () => {
-    if ( document.referrer == '') {
-      return window.location.assign('/');
-    } else {
-      return window.history.back();
-    }
+    return window.history.back();
   });
 }

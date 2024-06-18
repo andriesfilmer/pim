@@ -10,7 +10,7 @@
     <div class="columns small-4 medium-2 tz-warning">Timezone</div>
     <div class="columns small-8 medium-10">
       <%= form.select(:tz, ActiveSupport::TimeZone.all.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{tz.name}", tz.tzinfo.name]},
-          { selected: @event.tz, prompt: '' }, { data: { action: 'event#changeTz' }}) %>
+          { selected: @event.tz, prompt: '' }) %>
     </div>
   </div>
 

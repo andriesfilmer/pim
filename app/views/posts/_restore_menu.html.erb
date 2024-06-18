@@ -1,8 +1,8 @@
 <div class="row">
   <div class="columns medium-6" id="add-back-arrow">
-    <div class="icon arrow-back pt-2 cursor-pointer"></div>
+    <h1 class="icon arrow-back cursor-pointer"></h1>
   </div>
-  <div class="columns medium-6 text-right" id="add-back-arrow">
+  <div class="columns medium-6 text-right">
     <p><%= button_to "Restore version #{@post.id}", postrestore_path,
       params: { version_id: @post.id} , class: "button warning" if @post.id %></p>
   </div>

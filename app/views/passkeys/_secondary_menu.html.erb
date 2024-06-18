@@ -1,14 +1,4 @@
-<% if @passkey.try(:org_id).present? || @passkey_readonly == true %>
-<div class="row p-3">
-  <div class="columns small-10 medium-10 text-xl">
-    Shared by <%= User.find(@passkey.user_id).email %>
-  <%= link_to "Delete", passkey_path(id: @passkey.id, shared_by_user_id: @passkey.shared_by_user_id),
-    class: "button alert small float-right", data: {turbo_method: :delete , turbo_confirm: 'Are you sure to delete this passkey?' } %>
-  </div>
-</div>
-
-<% else %>
-
+<% unless @passkey.try(:org_id).present? || @passkey_readonly == true %>
 <div class="row mb-6">
   <div class="columns small-10 medium-10">
     <%= content_tag :div, '', class: "icon filter key p-2" unless @passkey.id %>

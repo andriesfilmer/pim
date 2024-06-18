@@ -62,7 +62,6 @@ select {
   appearance: none;
   border: 1px solid var(--color-300);
   border-radius: 5px;
-  background-color: var(--color-300);
   font-family: inherit;
   font-size: 1rem;
   font-weight: normal;
@@ -72,7 +71,7 @@ select {
   background-position: right -1rem center;
   background-repeat: no-repeat;
   background-size: 12px 12px;
-  background-color: var(--body-color);
+  background-color: var(--color-body);
   padding-right: 1.5rem;
   transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
   &:focus, &:active {

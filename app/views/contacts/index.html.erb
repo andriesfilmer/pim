@@ -19,6 +19,10 @@
   </div>
 </div>
 
+<div class="row p-2 color-bg-300">
+  <div class="medium-6 columns">Contacts</div>
+  <div class="medium-6 columns hide-for-small-only ">Company</div>
+</div>
 <%= render "contacts" unless params[:birthdate] || params[:starred] %>
 <%= render "starred" if params[:starred] %>
 <%= render "birthdates" if params[:birthdate] %>

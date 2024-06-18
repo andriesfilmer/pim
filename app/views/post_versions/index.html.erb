@@ -15,10 +15,9 @@
       <%= link_to (l post_version.created_at, format: :long), post_version_path(post_version) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
-      <div class="icon difference p-2"></div>
       <%= check_box_tag "version_ids[]", post_version.id, false, id: post_version.id,
         data: { action: "click->post#versions" }, class: "checkBoxClass" %>
-      <%= content_tag :span, post_version.id %>
+      <%= content_tag :span, post_version.id, class: "icon difference large align-bottom" %>
     </div>
   <% end %>
   </div>

@@ -15,10 +15,9 @@
       <%= link_to (l contact_version.created_at, format: :long), contact_version_path(contact_version) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
-      <img src="assets/difference.svg" class="icon large">
       <%= check_box_tag "version_ids[]", contact_version.id, false, id: contact_version.id,
         data: { action: "click->contact#versions" }, class: "checkBoxClass" %>
-      <%= content_tag :span, contact_version.id %>
+      <%= content_tag :span, contact_version.id, class: "icon difference large align-bottom" %>
     </div>
   </div>
   <% end %>

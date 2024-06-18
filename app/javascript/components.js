@@ -35,10 +35,9 @@ export function tooltip() {
 }
 
 export function saveFormAlert() {
-  $(":input").on( "keyup", function() { //triggers change in all input fields including text type
-    $("#cloud-upload").attr("src","/assets/cloud-upload-filled.svg")
+    $("#cloud-upload").addClass("cloud-upload-filled")
+    $("#cloud-upload").removeClass("cloud-upload")
     $("#cloud-upload").addClass("filter-red")
-  });
 }
 
 export function showTags(model) {

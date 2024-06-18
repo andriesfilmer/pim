@@ -16,7 +16,6 @@ class PostVersionsController < ApplicationController
     @post_version = PostVersion.find(params[:version_id])
     @post = Post.find(@post_version.org_id)
     @post.id = @post_version.org_id
-    puts "######## @post_version.inspect #{@post_version.inspect}"
     @post.update(@post_version.attributes.except("org_id","id"))
     redirect_to post_path(@post), notice: "Post restored"
   end

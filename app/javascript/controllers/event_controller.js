@@ -213,17 +213,10 @@ export default class extends Controller {
       document.getElementById("event_end_time").value = formattedTime;
     }
 
-    saveFormAlert()
-    return userinput = true
   }
 
   showTimezones() {
     document.getElementById("tz").classList.toggle("display-none");
-  }
-
-  changeTz() {
-    saveFormAlert()
-    return userinput = true
   }
 
   toggleAllDay() {
@@ -238,8 +231,6 @@ export default class extends Controller {
       $('#event_end_time').removeClass('display-none')
       $('#event_end_time').val("09:00")
     }
-    saveFormAlert()
-    return userinput = true
   }
 
   showMarkdown() {

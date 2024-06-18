@@ -15,10 +15,9 @@
       <%= link_to (l passkey_version.created_at, format: :long), passkey_version_path(passkey_version) %>
     </div>
     <div class="small-4 medium-4 columns text-right">
-      <img src="assets/difference.svg" class="icon large">
       <%= check_box_tag "version_ids[]", passkey_version.id, false, id: passkey_version.id,
         data: { action: "click->passkey#versions" }, class: "checkBoxClass" %>
-      <%= content_tag :span, passkey_version.id %>
+      <%= content_tag :span, passkey_version.id, class: "icon difference large align-bottom" %>
     </div>
   <% end %>
   </div>

@@ -1,6 +1,6 @@
 <div id="contacts" class="col-12" data-turbo-prefetch="false">
 <% @contacts.each do |contact| %>
-  <%= link_to contact_path(contact), class: "row p-2 odd" do %>
+  <%= link_to contact_path(contact), class: "row p-2 even" do %>
   <div class="small-1 medium-1 column">
     <%= content_tag :div, '', class: "icon star-filled filter-orange icon-top-pos" if contact.starred == 1 %>
   </div>

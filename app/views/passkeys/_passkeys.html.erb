@@ -1,6 +1,6 @@
 <div id="passkeys" class="col-12" data-turbo-prefetch="false">
 <% @passkeys.each do |passkey| %>
-  <%= link_to passkey_path(passkey), class: "row odd p-2" do %>
+  <%= link_to passkey_path(passkey), class: "row even p-2" do %>
   <div class="small-1 medium-1 columns">
     <%= content_tag :div, '', class: "icon star-filled filter-orange icon-top-pos" if passkey.twofa %>
   </div>

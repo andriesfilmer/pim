@@ -15,13 +15,19 @@
   line-height: 1;
   text-align: center;
   cursor: pointer;
-  &.notice { background-color: var(--bg-notice); }
-  &.warning { color: #fff; background-color: var(--bg-warning); }
-  &.alert { color: #fff; background-color: var(--bg-alert); }
+  &.notice {
+    color: #fff;
+    background-color: var(--bg-notice);
+  }
+  &.warning {
+    color: #fff;
+    background-color: var(--color-warning); }
+  &.alert {
+    color: #fff;
+     background-color: var(--color-alert); }
   &.secondary {
-    color: var(--color-secondary);
-    background-color: var(--bg-secondary);
-    &:hover { background-color: var(--color-700); }
+    color: #fff;
+    background-color: var(--color-secondary);
   }
   &.small { font-size: 0.85rem; padding: 0.4em}
   &.tiny { font-size: 0.75rem; padding: 0.3em;}
