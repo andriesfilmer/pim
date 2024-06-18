@@ -206,7 +206,7 @@ export default class extends Controller {
       document.getElementById("event_end_date").value = formattedDate;
     }
 
-    if (start_time >= end_time) {
+    if ( start_date >= end_date && start_time > end_time) {
       let [hours, minutes] = start_time.split(':').map(Number);
       hours = (hours + 1) % 24;
       let formattedTime = (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;

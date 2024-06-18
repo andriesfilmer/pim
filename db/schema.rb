@@ -165,13 +165,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_30_131504) do
     t.index ["org_id"], name: "idx_postversions_org_id"
   end
 
-  create_table "user", force: :cascade do |t|
-    t.string "email", limit: 255
-    t.string "name", limit: 100
-    t.string "password", limit: 20
-    t.integer "active", default: 1
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "name", limit: 255
     t.string "email", limit: 255, default: "", null: false

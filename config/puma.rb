@@ -18,5 +18,5 @@ pidfile "#{app_dir}/tmp/puma.pid"
 state_path "#{app_dir}/tmp/puma.state"
 
 # Logging
-stdout_redirect "#{app_dir}/log/puma.stdout.log", "#{app_dir}/log/puma.stderr.log", true
+#stdout_redirect "#{app_dir}/log/puma.stdout.log", "#{app_dir}/log/puma.stderr.log", true
 

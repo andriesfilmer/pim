@@ -16,7 +16,9 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = Event.new(start: params[:start], end: params[:end])
+    event_start = params[:start].to_date
+    event_end   = params[:end].to_date + 1. day
+    @event = Event.new(start: event_start, end: event_end)
   end
 
   def show

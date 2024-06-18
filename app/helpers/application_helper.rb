@@ -6,4 +6,7 @@ module ApplicationHelper
     Diffy::Diff.new(second, first, :include_plus_and_minus_in_html => true).to_s(:html_simple).html_safe
   end
 
+  def truthy? value
+    ActiveRecord::Type::Boolean.new.cast value
+  end
 end
