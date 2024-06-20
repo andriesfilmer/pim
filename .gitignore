@@ -32,6 +32,7 @@ tags
 !/tmp/storage/.keep
 
 db/pim*
+db/data.yml
 
 /public/assets
 /public/uploads
