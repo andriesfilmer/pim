@@ -19,6 +19,7 @@
   </div>
   <div class="columns small-2 medium-2 text-right">
     <%= link_to (content_tag :div, '', class: "icon delete p-2"), post_path(@post),
-      data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this post?'} if @post.id %>
+      data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this post?'},
+      title: "Delete note" if @post.id %>
   </div>
 </div>

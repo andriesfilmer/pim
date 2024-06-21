@@ -1,22 +1,20 @@
-<div class="row secondary">
+<div class="row">
   <div class="columns p-2">
     <h4>Current key shares</h4>
   </div>
 </div>
 <div class="row">
-  <div class="columns medium-4 color-bg-300 p-2 hide-for-small-only">Key title</div>
-  <div class="columns medium-4 color-bg-300 p-2 hide-for-small-only">Shared with emailaddress</div>
-  <div class="columns medium-2 color-bg-300 p-2 hide-for-small-only">Created</div>
-  <div class="columns medium-2 color-bg-300 p-2 hide-for-small-only">Updated</div>
+  <div class="columns medium-4 color-bg-300 py-2 hide-for-small-only">Key title</div>
+  <div class="columns medium-4 color-bg-300 py-2 hide-for-small-only">Shared with emailaddress</div>
+  <div class="columns medium-2 color-bg-300 py-2 hide-for-small-only">Created</div>
+  <div class="columns medium-2 color-bg-300 py-2 hide-for-small-only">Updated</div>
 </div>
-<div id="passkey_shares" class="col-12" data-turbo-prefetch="false">
 <% @passkey_shares.each do | share | %>
-  <%= link_to passkey_path(share.passkey_id), class: "row odd p-2" do %>
+  <%= link_to passkey_path(share.passkey_id), class: "row odd py-2" do %>
      <%= content_tag :div, share.passkey.title , class: "columns medium-4" %>
      <%= content_tag :div, share.email , class: "columns medium-4" %>
      <%= content_tag :div, (l share.created_at) , class: "columns medium-2 hide-for-small-only" %>
      <%= content_tag :div, (l share.updated_at), class: "columns medium-2 hide-for-small-only" %>
   <% end %>
 <% end %>
-</div>
 

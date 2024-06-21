@@ -5,6 +5,7 @@ class User < ApplicationRecord
     :validatable, :confirmable, :lockable, :trackable
 
   validates :name, presence: true
+  validates :password, format: { with: PASSWORD_FORMAT, message: :invalid_password }, unless: Proc.new { |a| a.password.blank? }
 
   has_many :contacts, dependent: :destroy
   has_many :contact_versions, dependent: :destroy

@@ -1,12 +1,12 @@
 <div class="row mb-6">
   <div class="small-10 medium-10 columns">
-    <%= link_to (content_tag :div, '', class: "icon group p-2 border-right-dashed"), contacts_path %>
-    <%= link_to (content_tag :div, '', class: "icon star p-2 border-right-dashed"), contacts_path(starred: true) %>
-    <%= link_to (content_tag :div, '', class: "icon cake p-2 border-right-dashed"), contacts_path(birthdate: true) %>
-    <div class="icon search cursor-pointer md" data-controller="contact" data-action="click->contact#showSearch"></div>
+    <%= link_to (content_tag :div, '', class: "icon group p-2 border-right-dashed"), contacts_path, title: "Back to contact without saving" %>
+    <%= link_to (content_tag :div, '', class: "icon star p-2 border-right-dashed"), contacts_path(starred: true), title: "View starred contacts" %>
+    <%= link_to (content_tag :div, '', class: "icon cake p-2 border-right-dashed"), contacts_path(birthdate: true), title: "View birthdates" %>
+    <div class="icon search cursor-pointer md" data-controller="contact" data-action="click->contact#showSearch" title="Search contacts"></div>
   </div>
   <div class="small-2 medium-2 columns pt-2 text-right">
-    <%= link_to (content_tag :div, '', class: "icon add"), new_contact_path, data: { turbo_frame: dom_id(Contact.new) } %>
+    <%= link_to (content_tag :div, '', class: "icon add"), new_contact_path, data: { turbo_frame: dom_id(Contact.new) }, title: "Add contact" %>
   </div>
 </div>
 

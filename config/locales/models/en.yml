@@ -16,3 +16,13 @@ en:
           attributes:
             linked_user_id:
               blank: " not found with this emailaddress"
+        user:
+          attributes:
+            identity:
+              invalid: "may only be used with numbers and/or letters"
+              taken: ", there is already a person with identity %{value}"
+            username:
+              invalid_chars: "contains invalid characters ($%*!+& or spaces)"
+              taken: ", there is already a person with username %{value}"
+            password:
+              invalid_password: "must be at least 10 characters, contain a number, special character and a capital letter"

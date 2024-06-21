@@ -7,7 +7,8 @@
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>
       <%= content_tag :div, '', class: "icon star#{"-filled" if @contact.starred?}
       p-2 #{'filter-orange' if @contact.starred?} border-right-dashed  cursor-pointer",
-        data: { controller: "contact", action: "click->contact#setStarred" } %>
+      data: { controller: "contact", action: "click->contact#setStarred" },
+      title: "Set or unset starred" %>
       <%= form.hidden_field :starred %>
     <% end if @contact.id %>
 
@@ -23,6 +24,6 @@
   </div>
   <div class="columns small-2 medium-2 text-right">
     <%= link_to (content_tag :div, '', class: "icon delete p-2"), contact_path(@contact),
-      data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this contact?'}, title: "Delete item!" if @contact.id %>
+      data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this contact?'}, title: "Delete contact" if @contact.id %>
   </div>
 </div>

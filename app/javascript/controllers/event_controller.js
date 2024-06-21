@@ -83,6 +83,7 @@ export default class extends Controller {
     if (document.getElementById("calendar")) {
       let calendarEl = document.getElementById('calendar');
       let calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'nlLocale',
         events: '/events.json',
         initialDate: start,
         initialView: 'dayGridMonth',
