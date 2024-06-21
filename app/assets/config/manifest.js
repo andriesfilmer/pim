@@ -10,7 +10,6 @@
 
 // Stylesheets
 //= link application.css
-//= link development.css
 
 // Javascript
 //= link application.js

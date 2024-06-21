@@ -1,10 +1,10 @@
 <div class="row mb-6">
   <div class="small-10 medium-10 columns">
-    <div class="icon filter article p-2 cursor-pointer border-right-dashed"></div>
-    <div class="icon filter search p-2 cursor-pointer" data-controller="post" data-action="click->post#showSearch"></div>
+    <div class="icon article p-2 cursor-pointer border-right-dashed"></div>
+    <div class="icon search p-2 cursor-pointer" data-controller="post" data-action="click->post#showSearch"></div>
   </div>
   <div class="small-2 medium-2 columns text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter add p-2"),
+    <%= link_to (content_tag :div, '', class: "icon add p-2"),
       new_post_path, data: { turbo_frame: dom_id(Post.new) } %>
   </div>
 </div>

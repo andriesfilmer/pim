@@ -2,13 +2,13 @@
 <% @passkeys.each do |passkey| %>
   <%= link_to passkey_path(passkey), class: "row even p-2" do %>
   <div class="small-1 medium-1 columns">
-    <%= content_tag :div, '', class: "icon star-filled filter-orange icon-top-pos" if passkey.twofa %>
+    <%= content_tag :div, '', class: "icon star-filled filter-orange icon-top-pos" if passkey.twofa == 1 %>
   </div>
   <div class="small-10 medium-6 columns">
     <%= passkey.title %>
   </div>
   <div class="small-1 medium-2 columns">
-    <%= content_tag :span, '', class: "icon filter share sm icon-top-pos", title: "Share passkey" unless passkey.user_id == current_user.id %>
+    <%= content_tag :span, '', class: "icon share sm icon-top-pos", title: "Share passkey" unless passkey.user_id == current_user.id %>
     <%= content_tag :span, User.find(passkey.user_id).email, class: "hide-for-small-only" unless passkey.user_id == current_user.id %>
   </div>
   <div class="medium-1 columns hide-for-small-only whitespace-nowrap overflow-hidden">

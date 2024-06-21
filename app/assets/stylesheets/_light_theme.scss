@@ -36,15 +36,14 @@
   --color-success:   hsl(140deg 46% 25%);
   --bg-success:      hsl(140deg 46% 70%);
 
-  --color-warning:   hsl(38deg 100% 45%);
-  --bg-warning:      hsl(38deg 100% 80%);
+  --color-warning:   hsl(40deg 100% 45%);
+  --bg-warning:      hsl(40deg 100% 80%);
 
   --color-alert:     hsl(0deg 100% 20%);
   --bg-alert:        hsl(0deg 50% 60%);
 
-  //--filter:          invert(0%) sepia(94%) saturate(0%) hue-rotate(179deg) brightness(108%) contrast(106%);
-  --filter:          invert(42%) sepia(6%) saturate(1299%) hue-rotate(155deg) brightness(90%) contrast(83%);
-  --filter-diap:     invert(100%) sepia(0%) saturate(7500%) hue-rotate(343deg) brightness(103%) contrast(103%);
+  --filter:          invert(0%);
+  --filter-diap:     invert(1);
   --filter-orange:   invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
   --filter-red:      invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
 
@@ -55,9 +54,10 @@
   --fc-button-hover-bg-color: var(--color-200);
   --fc-button-hover-border-color: var(--color-200);
   --fc-button-text-color: var(--color-text);
-  --fc-event-bg-color: var(--color-notice);
+  --fc-event-bg-color: var(--color-500);
   --fc-event-border-color: none;
   --fc-list-event-hover-bg-color: var(--color-200);
   --fc-neutral-bg-color: var(--color-200);
   --fc-page-bg-color: var(--color-body);
+  --fc-today-bg-color: var(--bg-notice);
 }

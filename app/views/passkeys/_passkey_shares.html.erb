@@ -5,7 +5,7 @@
   <% @passkey_shares.each do | share | %>
     <%= content_tag :div, share.email , class: "columns small-10 medium-10" %>
     <%= content_tag :div, class: "columns small-2 medium-2" do %>
-      <%= link_to (content_tag :div, '', class: "icon filter delete filter"),
+      <%= link_to (content_tag :div, '', class: "icon delete filter"),
         passkey_share_path(id: share.id, passkey_id: share.passkey_id), data: { "turbo-method": :delete } %>
     <% end %>
   <% end %>

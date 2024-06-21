@@ -43,7 +43,7 @@
   <div class="row">
     <div class="columns">
       <%= form.label :notes, class: "display-inline text-lg" %>
-      <div class="icon filter markdown align-bottom" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip title="Click to see markdown format"></div>
+      <div class="icon markdown align-bottom" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip title="Click to see markdown format"></div>
       <div class="icon edit align-bottom display-none" id="edit_bt" data-action="click->event#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '10' %>
       <div id="markdown"></div>
@@ -53,7 +53,7 @@
   <div class="row">
     <div class="medium-6 columns">
     <fieldset>
-      <legenda class="strong">Category</legenda>
+      <legend class="strong">Category</legend>
       <div class="row p-4">
         <div class="column small-6 medium-6">Appointment</div>
         <div class="column small-6 medium-6 appointment">
@@ -103,7 +103,7 @@
     </div>
     <div class="columns medium-6">
     <fieldset>
-      <p><legenda class="strong">Tags</legenda></p>
+      <legend class="strong">Tags</legend>
       <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
       <div id="tagsContainer"></div>
     </fieldset>

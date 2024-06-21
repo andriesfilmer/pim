@@ -1,24 +1,24 @@
 <div class="row mb-6">
   <div class="columns small-9 medium-9">
-    <%= content_tag :div, '', class: "icon filter event-note p-2 cursor-pointer border-right-dashed" unless @event.id %>
+    <%= content_tag :div, '', class: "icon event-note p-2 cursor-pointer border-right-dashed" unless @event.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter event-note p-2 border-right-dashed"),
+    <%= link_to (content_tag :div, '', class: "icon event-note p-2 border-right-dashed"),
       event_path(@event), title: "Back to event without saving" if @event.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter edit p-2 border-right-dashed"), edit_event_path(@event), title: "Edit event" if action_name == "show"%>
+    <%= link_to (content_tag :div, '', class: "icon edit p-2 border-right-dashed"), edit_event_path(@event), title: "Edit event" if action_name == "show"%>
 
-    <%= content_tag :div, '', class: "icon filter cloud-upload p-2 cursor-pointer border-right-dashed", id: "cloud-upload",
+    <%= content_tag :div, '', class: "icon cloud-upload p-2 cursor-pointer border-right-dashed", id: "cloud-upload",
       data: { action: "click->event#submitForm" },  title: "Save event" if action_name != "show" %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter restore p-2 border-right-dashed"),
+    <%= link_to (content_tag :div, '', class: "icon restore p-2 border-right-dashed"),
       event_versions_path(org_id: @event.id), title: "Versions of this event" if @event.id %>
 
-    <%= content_tag :div, '', class: "icon filter more-time cursor-pointer p-2", data: { action: "click->event#showTimezones" },
+    <%= content_tag :div, '', class: "icon more-time cursor-pointer p-2", data: { action: "click->event#showTimezones" },
        title: "Toggle timezones" if action_name != "show" %>
 
   </div>
   <div class="columns small-3 medium-3 text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter delete pt-2"), event_path(@event),
+    <%= link_to (content_tag :div, '', class: "icon delete pt-2"), event_path(@event),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this event?'} if @event.id %>
   </div>
 </div>

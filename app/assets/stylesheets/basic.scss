@@ -84,7 +84,6 @@ h6 {
 
 a {
   line-height: inherit;
-  color: var(--color-text);
   cursor: pointer;
 }
 
@@ -126,9 +125,7 @@ blockquote {
 }
 
 fieldset {
-  margin: 1em;
   border: solid 1px var(--color-200);
-  padding: 1em;
   border-radius: 5px;
 }
 

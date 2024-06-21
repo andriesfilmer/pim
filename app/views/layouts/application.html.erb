@@ -11,7 +11,6 @@
 <%= javascript_include_tag '/static/fullcalendar-6.1.10.min.js' %>
 <%= javascript_importmap_tags %>
 <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-<%= stylesheet_link_tag "development" if Rails.env == 'development' %>
 <%= yield(:head) %>
 </head>
 

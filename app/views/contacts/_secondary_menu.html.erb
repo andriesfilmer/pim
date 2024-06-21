@@ -1,28 +1,28 @@
 <div class="row mb-6">
   <div class="columns small-10 medium-10">
-    <%= content_tag :div, '', class: "icon filter person p-2 border-right-dashed cursor-pointer" unless @contact.id %>
-    <%= link_to (content_tag :div, '', class: "icon filter person p-2 border-right-dashed"),
+    <%= content_tag :div, '', class: "icon person p-2 border-right-dashed cursor-pointer" unless @contact.id %>
+    <%= link_to (content_tag :div, '', class: "icon person p-2 border-right-dashed"),
       contact_path(@contact), title: "Back to contact without saving" if @contact.id %>
 
     <%= form_with model: @contact, id: "starredForm", class: "display-inline" do |form| %>
-      <%= content_tag :div, '', class: "icon filter star#{"-filled" if @contact.starred?}
+      <%= content_tag :div, '', class: "icon star#{"-filled" if @contact.starred?}
       p-2 #{'filter-orange' if @contact.starred?} border-right-dashed  cursor-pointer",
         data: { controller: "contact", action: "click->contact#setStarred" } %>
       <%= form.hidden_field :starred %>
     <% end if @contact.id %>
 
-    <%= link_to (content_tag :div, '', class: "icon filter edit p-2 border-right-dashed"),
+    <%= link_to (content_tag :div, '', class: "icon edit p-2 border-right-dashed"),
       edit_contact_path(@contact), title: "Edit contact" if action_name == "show" %>
 
     <%= content_tag :div, '', id: "cloud-upload", data: { action: "click->contact#submitForm" },
-       title: "Save contact", class:"icon filter cloud-upload p-2 border-right-dashed cursor-pointer" if action_name != "show" %>
+       title: "Save contact", class:"icon cloud-upload p-2 border-right-dashed cursor-pointer" if action_name != "show" %>
 
-     <%= link_to (content_tag :div, '', class: "icon filter restore p-2"),
+     <%= link_to (content_tag :div, '', class: "icon restore p-2"),
        contact_versions_path(org_id: @contact.id), title: "Versions of this contact" if @contact.id %>
 
   </div>
   <div class="columns small-2 medium-2 text-right">
-    <%= link_to (content_tag :div, '', class: "icon filter delete p-2"), contact_path(@contact),
+    <%= link_to (content_tag :div, '', class: "icon delete p-2"), contact_path(@contact),
       data: {turbo_method: :delete, turbo_confirm: 'Are you sure to delete this contact?'}, title: "Delete item!" if @contact.id %>
   </div>
 </div>

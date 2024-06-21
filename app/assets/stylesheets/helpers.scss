@@ -1,6 +1,10 @@
 // Helper classes for colors
 //--------------------------
 
+a {
+  color: var(--color-text);
+}
+
 .color-text       {
   color: var(--text-color);
   a {
@@ -13,7 +17,7 @@
 .color-text-diap  {
   color: var(--color-text-diap);
   a {
-    color: var(--color-50);
+    color: var(--color-text-diap);
     &:hover  { color: var(--color-100) }
     &:focus  { color: var(--color-200) }
     &:active { color: var(--color-300) }
@@ -21,6 +25,11 @@
 }
 .color-bg-diap    { color: var(--color-bg-diap) }
 .color-bg-diap    { color: var(--color-bg-diap) }
+
+.icon.filter-diap:before   { filter: var(--filter-diap) }
+.icon.filter-red:before    { filter: var(--filter-red) }
+.icon.filter-orange:before { filter: var(--filter-orange) }
+
 
 .color-50         { color: var(--color-50) }
 .color-100        { color: var(--color-100) }
@@ -85,6 +94,7 @@
 .text-right { text-align: right; }
 .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .underlined { text-decoration: underline; }
+.not-underlined { text-decoration: none; }
 .user-select-none, img, button, .button, .pagination { user-select: none; } // Don't let user select elements
 .visible { visibility: visible; }
 .white-space-pre-wrap { white-space: pre-wrap; }

@@ -10,7 +10,7 @@
 
 <div class="row">
   <fieldset class="col-12">
-    <legenda class="strong">Name and password</legenda>
+    <legend class="strong">Name and password</legend>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name),
         data: { turbo: false }, html: { method: :put }) do |f| %>
 
@@ -50,9 +50,9 @@
   </fieldset>
 </div>
 
-<div class="row">
+<div class="row mt-4">
   <fieldset class="col-12">
-    <legenda class="strong">Delete my account</legenda>
+    <legend class="strong">Delete my account</legend>
     <div class="row p-4">
       <div class="columns">
         <%= button_to "Delete", registration_path(resource_name), data: { confirm: "Are you sure?",

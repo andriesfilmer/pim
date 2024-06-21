@@ -1,43 +1,33 @@
 <nav class="color-bg-500 pt-2 text-xl color-text-diap">
 <div class="row">
   <div class="small-2 medium-2 columns">
-    <a href="/?a">
-      <%= content_tag :div, class: "icon account-circle filter-diap" do %>
+    <a href="/?a" class="icon account-circle filter-diap not-underlined">
         <span class="show-for-large">My page</span>
-      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
-    <a href="/events">
-      <%= content_tag :div, class: "icon calendar-month filter-diap" do %>
+    <a href="/events" class="icon calendar-month filter-diap not-underlined">
         <span class="show-for-large">Calendar</span>
-      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
-    <a href="/contacts">
-      <%= content_tag :div, class: "icon group filter-diap" do %>
+    <a href="/contacts" class="icon group filter-diap not-underlined">
         <span class="show-for-large">Contacts</span>
-      <% end %>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
-    <a href="/posts">
-      <%= content_tag :div, class: "icon article filter-diap" do %>
-      <span class="show-for-large">Notes</span>
-      <% end %>
+    <a href="/posts" class="icon article filter-diap not-underlined">
+      <div class="show-for-large">Notes</div>
     </a>
   </div>
   <div class="small-2 medium-2 columns">
-    <a href="/passkeys">
-      <%= content_tag :div, class: "icon lock filter-diap" do %>
+    <a href="/passkeys" class="icon lock filter-diap not-underlined">
         <span class="show-for-large">Keys</span>
-      <% end %>
     </a>
   </div>
   <%= content_tag :div, class: "small-2 medium-2 columns" do %>
     <%= link_to destroy_user_session_path, data: { turbo_method: :delete, turbo: false },
-      class: "icon logout filter-diap text-lg text-light" do %>
+      class: "icon logout filter-diap not-underlined" do %>
       <span class="show-for-large"> Sign out</span>
     <% end %>
   <% end if current_user %>

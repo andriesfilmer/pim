@@ -2,6 +2,7 @@
 // Weigth 200, Grade 0, Optical size 24, color #000000
 
 .icon {
+  &:not(.filter-diap):before { filter: var(--filter); }
   display: inline-flex;
   &:before {
     content: ' ';
@@ -21,11 +22,6 @@
     &.xl4   { padding-right: 3rem; }
 
     &.button { padding-top: 5px; }
-
-    &.filter-diap    { filter: var(--filter-diap) }
-    &.filter         { filter: var(--filter); }
-    &.filter-red     { filter: var(--filter-red) }
-    &.filter-orange  { filter: var(--filter-orange) }
 
     &.account-circle         { background-image: url("/assets/account-circle.svg") }
     &.add                    { background-image: url("/assets/add.svg") }

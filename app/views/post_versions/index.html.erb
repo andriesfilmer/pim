@@ -5,31 +5,28 @@
     </div>
   </div>
 
-  <div class="row color-bg-300 p-2 hide-for-small-only">
-    <div class="medium-8 columns">Created</div>
-    <div class="medium-4 columns text-right">Select version</div>
+  <div class="row color-bg-300 py-2">
+    <div class="medium-10 columns hide-for-small-only">Created</div>
+    <div class="medium-2 columns">Select two versions</div>
   </div>
-  <div id="versions" class="row odd-even" data-turbo-prefetch="false">
   <% @post_versions.each do |post_version| %>
-    <div class="small-8 medium-8 columns">
+  <div class="row even pt-2">
+    <div class="small-8 medium-10 columns">
       <%= link_to (l post_version.created_at, format: :long), post_version_path(post_version) %>
     </div>
-    <div class="small-4 medium-4 columns text-right">
+    <div class="small-4 medium-2 columns">
       <%= check_box_tag "version_ids[]", post_version.id, false, id: post_version.id,
         data: { action: "click->post#versions" }, class: "checkBoxClass" %>
       <%= content_tag :span, post_version.id, class: "icon difference large align-bottom" %>
     </div>
-  <% end %>
   </div>
+  <% end %>
 
   <div class="row">
     <div class="medium-10 columns"></div>
-    <div class="medium-2 columns text-right">
-      &nbsp;
-
-      <%= button_to "Compare versions", post_versions_compare_path, id: "compare_btn", class: "button disabled", disabled: true,
-        params: { ids: "" }, data: { turbo: false }, method: :get %>
-
+    <div class="medium-2 columns pt-2">
+      <%= button_to "Compare versions", post_versions_compare_path, id: "compare_btn",
+        class: "button disabled", disabled: true, params: { ids: "" }, data: { turbo: false }, method: :get %>
     </div>
   </div>
 

@@ -6,7 +6,7 @@
     <h2><%= @contact.name %></h2>
   </div>
   <div class="small-12 medium-6 columns">
-    <%= content_tag :div, get_birthday_age(@contact), class: "icon filter cake sm pr-3" if @contact.birthdate %>
+    <%= content_tag :div, get_birthday_age(@contact), class: "icon cake sm pr-3" if @contact.birthdate %>
   </div>
 </div>
 
@@ -18,7 +18,7 @@
       <% JSON.parse(@contact.phones).each do | phone | %>
       <div class="row my-2">
         <div class="medium-10 columns">
-          <div class="icon filter call float-right"></div>
+          <div class="icon call float-right"></div>
           <%= label_tag phone["type"] %>
           <%= phone["value"] %>
         </div>
@@ -30,7 +30,7 @@
       <% JSON.parse(@contact.emails).each do | email | %>
       <div class="row my-2">
         <div class="medium-10 columns">
-          <div class="icon filter mail float-right"></div>
+          <div class="icon mail float-right"></div>
           <%= label_tag email["type"] %>
           <%= email["value"] %>
         </div>
@@ -42,7 +42,7 @@
       <% JSON.parse(@contact.addresses).each do | address | %>
       <div class="row my-2">
         <div class="medium-10 columns">
-          <div class="icon filter home-work float-right"></div>
+          <div class="icon home-work float-right"></div>
           <%= label_tag address["type"] %>
           <%= address["value"] %>
         </div>
@@ -54,7 +54,7 @@
       <% JSON.parse(@contact.companies).each do | company | %>
       <div class="row my-2">
         <div class="medium-10 columns">
-          <div class="icon filter apartement float-right"></div>
+          <div class="icon apartement float-right"></div>
           <%= label_tag company["type"] %>
           <%= company["value"] %>
         </div>
@@ -66,7 +66,7 @@
       <% JSON.parse(@contact.websites).each do | website | %>
       <div class="row my-2">
         <div class="medium-10 columns">
-          <div class="icon filter link float-right"></div>
+          <div class="icon link float-right"></div>
           <%= label_tag website["type"] %>
           <%= website["value"] %>
         </div>

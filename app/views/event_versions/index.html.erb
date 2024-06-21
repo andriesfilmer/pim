@@ -5,16 +5,16 @@
     </div>
   </div>
 
-  <div class="row hide-for-small-only color-bg-300 p-2">
-    <div class="medium-8 columns">Created</div>
-    <div class="medium-4 columns text-right">Select version</div>
+  <div class="row color-bg-300 p-2">
+    <div class="medium-10 columns hide-for-small-only">Created</div>
+    <div class="medium-2 columns">Select two versions</div>
   </div>
   <% @event_versions.each do |event_version| %>
-  <div id="versions" class="row odd-even">
-    <div class="small-8 medium-8 columns">
+  <div class="row even pt-2">
+    <div class="small-8 medium-10 columns">
       <%= link_to (l event_version.created_at, format: :long), event_version_path(event_version) %>
     </div>
-    <div class="small-4 medium-4 columns text-right">
+    <div class="small-4 medium-2 columns">
       <%= check_box_tag "version_ids[]", event_version.id, false, id: event_version.id,
         data: { action: "click->event#versions" }, class: "checkBoxClass" %>
       <%= content_tag :span, event_version.id, class: "icon difference large align-bottom" %>
@@ -24,12 +24,9 @@
 
   <div class="row">
     <div class="medium-10 columns"></div>
-    <div class="medium-2 columns text-right">
-      &nbsp;
-
-      <%= button_to "Compare versions", event_versions_compare_path, id: "compare_btn", class: "button disabled", disabled: true,
-        params: { ids: "" }, data: { turbo: false }, method: :get %>
-
+    <div class="medium-2 columns pt-2">
+      <%= button_to "Compare versions", event_versions_compare_path, id: "compare_btn",
+        class: "button disabled", disabled: true, params: { ids: "" }, data: { turbo: false }, method: :get %>
     </div>
   </div>
 

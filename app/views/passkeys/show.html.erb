@@ -16,7 +16,7 @@
       <div class="columns small-2 medium-1">
         <div data-action="click->passkey#copyUsername" data-passkey-target="copiedUsername" class="icon copy"></div>
       </div>
-      <div class="columns <%= "icon xs star-filled filter-orange" if @passkey.twofa %>">
+      <div class="columns <%= "icon xs star-filled filter-orange" if @passkey.twofa == 1 %>">
         <%= label_tag :password, nil, class: "text-lg display-inline" %>
         <%= content_tag :div, '', class: "icon visibility label filter", id: "passwordToggle",
           data: { "action": "click->passkey#togglePassword" } %>
@@ -26,7 +26,7 @@
           data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
       </div>
       <div class="columns small-2 medium-1">
-        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword" class="icon copy border"></div>
+        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword" class="icon copy"></div>
       </div>
       <div class="columns mb-6">
         <%= label_tag :url, nil, class: "text-lg" %>
@@ -44,7 +44,7 @@
 <%= content_tag :div, class: "row", data: { controller: "passkey" } do %>
   <div class="columns">
     <%= label_tag :notes, nil, class:"text-lg display-inline" %>
-    <%= content_tag :div, '', class: "icon filter visibility label", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
+    <%= content_tag :div, '', class: "icon visibility label", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
     <div id="markdown" class="callout hide-notes disabled"
       data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Click to show notes</div>
