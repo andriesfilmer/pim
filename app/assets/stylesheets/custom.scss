@@ -11,10 +11,10 @@
 }
 
 #start {
-  background-image: url(/static/images/bg-pim.jpg);
+  background-image: url(/images/bg-pim.png);
   background-position: 0 0;
   background-repeat: repeat-x;
-  animation: animatedBackground 30s linear infinite;
+  animation: animatedBackground 100s linear infinite;
 }
 @keyframes animatedBackground {
   from { background-position: 0 0; }

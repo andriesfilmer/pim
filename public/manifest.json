@@ -1,0 +1,43 @@
+{
+  "short_name": "PIM",
+  "name": "Personal information manager",
+  "start_url": "/",
+  "id": "/",
+  "icons": [
+    {
+      "src":"/images//android-chrome-192x192.png",
+      "sizes":"192x192",
+      "type":"image/png"
+    },
+    {"src":"/images/android-chrome-512x512.png",
+      "sizes":"512x512",
+      "type":"image/png"
+    }
+  ],
+  "screenshots": [
+    {
+     "src": "images/screenshot1.png",
+      "sizes": "1192x718",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Wonder Widgets"
+    },
+    {
+     "src": "images/screenshot2.png",
+      "sizes": "389x726",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Wonder Widgets"
+    },
+    {
+     "src": "images/screenshot3.png",
+      "sizes": "389x726",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Wonder Widgets"
+    }
+  ],
+  "background_color": "#dbcff5",
+  "theme_color": "#5e2ecf",
+  "display": "standalone"
+}

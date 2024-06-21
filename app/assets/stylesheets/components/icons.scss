@@ -11,17 +11,19 @@
     background-repeat: no-repeat;
     padding: 1rem;
     margin-right: 0.25rem;
-    &.xs    { padding: 0.5rem; }
-    &.sm    { padding: 0.7rem; }
-    &.md    { padding: 1.2rem; }
-    &.lg    { padding: 1.4rem; }
-    &.xl    { padding: 1.6rem; }
-    &.xl2   { padding: 1.8rem; }
-    &.xl3   { padding: 2rem; }
-    &.xl4   { padding: 3rem; }
+    &.xs    { padding-right: 0.5rem; }
+    &.sm    { padding-right: 0.7rem; }
+    &.md    { padding-right: 1.2rem; }
+    &.lg    { padding-right: 1.4rem; }
+    &.xl    { padding-right: 1.6rem; }
+    &.xl2   { padding-right: 1.8rem; }
+    &.xl3   { padding-right: 2rem; }
+    &.xl4   { padding-right: 3rem; }
+
+    &.button { padding-top: 5px; }
 
     &.filter-diap    { filter: var(--filter-diap) }
-    &.filter         {  filter: var(--filter); }
+    &.filter         { filter: var(--filter); }
     &.filter-red     { filter: var(--filter-red) }
     &.filter-orange  { filter: var(--filter-orange) }
 
@@ -47,6 +49,7 @@
     &.group                  { background-image: url("/assets/group.svg") }
     &.home                   { background-image: url("/assets/home.svg") }
     &.home-work              { background-image: url("/assets/home-work.svg") }
+    &.install-mobile         { background-image: url("/assets/install-mobile.svg") }
     &.key                    { background-image: url("/assets/key.svg") }
     &.link                   { background-image: url("/assets/link.svg") }
     &.list                   { background-image: url("/assets/list.svg") }

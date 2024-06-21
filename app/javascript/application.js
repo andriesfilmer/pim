@@ -55,3 +55,61 @@ function loadFunction() {
   }
 
 };
+
+// Begin Service Worker code
+// -------------------------
+// 1 Register the service worker to manage caching and offline functionality (/service-worker.js)
+// 2 Handle the beforeinstallprompt event to prompt the user to install the PWA.
+// 3 Create UI elements to trigger the install prompt.
+//
+// This setup ensures that your PWA will prompt users for installation when the conditions are met.
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js').then(registration => {
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+    }).catch(error => {
+      console.log('ServiceWorker registration failed: ', error);
+    });
+  });
+}
+
+//  Prompt for Installation
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevent the mini-infobar from appearing on mobile
+  e.preventDefault();
+  // Stash the event so it can be triggered later.
+  deferredPrompt = e;
+
+  // Update UI notify the user they can install the PWA
+  if (document.getElementById("installButton")) {
+    showInstallButton();
+  }
+});
+
+function showInstallButton() {
+  // Show the install button
+  const installButton = document.getElementById('installButton');
+  installButton.classList.remove('display-none');
+
+  installButton.addEventListener('click', (e) => {
+    // Hide the app provided install button
+    installButton.classList.add('display-none');
+    // Show the install prompt
+    deferredPrompt.prompt();
+    // Wait for the user to respond to the prompt
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the A2HS prompt');
+      } else {
+        console.log('User dismissed the A2HS prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+}
+
+// End Service Worker code
+// -----------------------
