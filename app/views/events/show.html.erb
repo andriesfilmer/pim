@@ -13,11 +13,11 @@
   <div class="columns tz-warning display-none">Created or edited in different timezone!</div>
   <div class="columns display-inline">
     <%= content_tag :label, @event.tz, class: "button small tz-show display-none mr-2" %>
-    <%= content_tag :label, l(@event.start, format: :mediumnotime), class: "button small mr-2" if @event.allDay  %>
-    <%= content_tag :label, l(@event.start, format: :medium), class: "button small mr-2" unless @event.allDay %>
-    <%= content_tag :label, l(@event.end, format: :mediumnotime), class: "button small mr-2" if @event.allDay %>
-    <%= content_tag :label, l(@event.end, format: :medium), class: "button small mr-2" unless @event.allDay %>
-    <%= content_tag :label, "Allday", class: "button small" if @event.allDay %>
+    <%= content_tag :label, l(@event.start, format: :mediumnotime), class: "button small mr-2" if @event.allDay  == 1 %>
+    <%= content_tag :label, l(@event.start, format: :medium), class: "button small mr-2" unless @event.allDay == 1 %>
+    <%= content_tag :label, l(@event.end, format: :mediumnotime), class: "button small mr-2" if @event.allDay == 1 %>
+    <%= content_tag :label, l(@event.end, format: :medium), class: "button small mr-2" unless @event.allDay == 1 %>
+    <%= content_tag :label, "Allday", class: "button small" if @event.allDay == 1 %>
   </div>
   <div class="columns tz-warning display-none pt-3">Browser timezone</div>
   <div class="columns tz-warning display-none">

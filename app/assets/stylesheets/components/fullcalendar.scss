@@ -28,10 +28,30 @@
   // Do not show dot before event. Specialy on small screens.
   .fc-list-event-dot, .fc-daygrid-event-dot { display: none; }
 
+  // Event items in calendar
+  .fc-daygrid-event {
+    .fc-event-title { font-weight: normal; }
+    .fc-event-time { font-weight: 700; }
+    padding-left: 2px;
+    color: var(--color-text-diap);
+  }
+
   // Do not show weeknumbers on small screens.
   @media screen and (max-width: 639px) {
     .fc-daygrid-week-number {
       display: none;
     }
   }
+
+  a {
+    &.appointment { background: var(--appointment); }
+    &.post { background: var(--post); }
+    &.hobby { background: var(--hobby); }
+    &.memo { background: var(--memo); }
+    &.task { background: var(--task); }
+    &.business { background: var(--business); }
+    &.holiday { background: var(--holiday); }
+    &.other { background: var(--other); }
+  }
+
 }
