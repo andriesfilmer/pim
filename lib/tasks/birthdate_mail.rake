@@ -1,5 +1,8 @@
 # lib/tasks/birthdate_mail.rake
 
+# Create a crontab that runs each 5 minutes. For example:
+# 5 * * * * /bin/bash -l -c 'cd /var/www/pim-rails && rails birthdate:mail'
+#
 # Example usage: rails birthdate:mail
 
 namespace :birthdate do

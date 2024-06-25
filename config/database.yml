@@ -1,26 +1,34 @@
 production:
-  adapter: mysql2
-  encoding: utf8mb4
-  database: pim
+  adapter: sqlite3
+  database: db/pim.db
   pool: 5
-  username: <%= Rails.application.credentials[Rails.env.to_sym][:database][:username] %>
-  password: <%= Rails.application.credentials[Rails.env.to_sym][:database][:password] %>
-  host: mariadb.filmer.net
-  socket: /tmp/mysql.sock
-
-development_:
-  adapter: mysql2
-  encoding: utf8mb4
-  database: pim
-  pool: 5
-  username: <%= Rails.application.credentials[Rails.env.to_sym][:database][:username] %>
-  password: <%= Rails.application.credentials[Rails.env.to_sym][:database][:password] %>
-  host: localhost
-  socket: /var/run/mysqld/mysqld.sock
+  timeout: 5000
 
 development:
   adapter: sqlite3
   database: db/pim.db
   pool: 5
   timeout: 5000
+
+# If you like to use Mysql/MariaDb
+#
+#production:
+#  adapter: mysql2
+#  encoding: utf8mb4
+#  database: pim
+#  pool: 5
+#  username: <%= Rails.application.credentials[Rails.env.to_sym][:database][:username] %>
+#  password: <%= Rails.application.credentials[Rails.env.to_sym][:database][:password] %>
+#  host: mariadb.filmer.net
+#  socket: /tmp/mysql.sock
+#
+#development:
+#  adapter: mysql2
+#  encoding: utf8mb4
+#  database: pim
+#  pool: 5
+#  username: <%= Rails.application.credentials[Rails.env.to_sym][:database][:username] %>
+#  password: <%= Rails.application.credentials[Rails.env.to_sym][:database][:password] %>
+#  host: localhost
+#  socket: /var/run/mysqld/mysqld.sock
 

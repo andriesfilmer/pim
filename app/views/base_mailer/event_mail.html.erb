@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3><%= @event.title %></h3>
+    <div><%= @event.start.to_s[0,16] %> - <%= @event.end.to_s[0,16] %></div>
+    <div>Timezone: <%= @event.tz %></div>
+    <hr>
+    <pre><%= @event.notes %></pre>
+  </body>
+</html>
+
