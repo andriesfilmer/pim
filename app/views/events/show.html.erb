@@ -36,7 +36,7 @@
 
 <div class="row">
   <div class="columns">
-    <%= content_tag :div, '', id: "tagsContainer" %>
+    <%= content_tag :div, '', id: "tagsContainer" if @event.tags.present? %>
     <%= form.hidden_field :tags %>
   </div>
 </div>
