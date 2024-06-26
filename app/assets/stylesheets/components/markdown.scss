@@ -1,7 +1,10 @@
 // Markdown model
 //---------------
 #markdown {
-  border-collapse: collapse;
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
   thead, tfoot {
     border: 1px solid #f1f1f1;
     background-color: var(--color-300);
@@ -17,10 +20,10 @@
   }
 
   // Show markdown hearder smaller
-  h2 { font-size: 1.25rem; }
-  h3 { font-size: 1rem; }
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.375rem; }
+  h3 { font-size: 1.25rem; }
 
-  table { width: 100% }
 
   img[alt=img-100] { width: 100px; }
   img[alt=img-200] { width: 200px; }

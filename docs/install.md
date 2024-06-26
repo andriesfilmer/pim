@@ -26,5 +26,5 @@ If you choose Mysql/MaariaDb as backend database. Comment en Uncomment some line
 Because I don't know how to do this with ActiveRecord interface. If possible?
 
 * app/controllers/contacts_controller.rb -> line 9
-* lib/tasks/birthdate_mail.rake -> line 12,13
+* lib/tasks/birthdate_mail.rake -> line 11,12
 * lib/tasks/event_mail.rake -> line 14,15

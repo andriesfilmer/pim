@@ -1,17 +1,6 @@
 // Switch-paddle
 //-----------------
 
-:root {
---appointment: lightblue;
---post: lightblue;
---hobby: indigo;
---memo: orange;
---task: red;
---business: green;
---holiday: lightgreen;
---other: yellow;
-}
-
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -88,40 +77,40 @@ input:checked + .slider:before {
 }
 
 // Category colors
-div.appointment, a:not(.fc-event).appointment {
+.appointment, a:not(.fc-event).appointment {
   border-right: 8px var(--appointment) solid;
   padding-right: 0px;
 }
-div.post, a:not(.fc-event).post {
+.post, a:not(.fc-event).post {
   border-right: 8px var(--post) solid;
   padding-right: 0px;
 }
 
-div.memo, a:not(.fc-event).memo {
+.memo, a:not(.fc-event).memo {
   border-right: 8px var(--memo) solid;
   padding-right: 0px;
 }
-div.task, a:not(.fc-event).task {
+.task, a:not(.fc-event).task {
   border-right: 8px var(--task) solid;
   padding-right: 0px;
 }
-div.holiday, a:not(.fc-event).holiday {
+.holiday, a:not(.fc-event).holiday {
   border-right: 8px var(--holiday) solid;
   padding-right: 0px;
 }
-div.hobby, a:not(.fc-event).hobby {
+.hobby, a:not(.fc-event).hobby {
   border-right: 8px var(--hobby) solid;
   padding-right: 0px;
 }
-div.business, a:not(.fc-event).business {
+.business, a:not(.fc-event).business {
   border-right: 8px var(--business) solid;
   padding-right: 0px;
 }
-div.other, a:not(.fc-event).other {
+.other, a:not(.fc-event).other {
   border-right: 8px var(--other) solid;
   padding-right: 0px;
 }
-div.import, a:not(.fc-event).import {
+.import, a:not(.fc-event).import {
   border-right: 8px var(--import) solid;
   padding-right: 0px;
 }

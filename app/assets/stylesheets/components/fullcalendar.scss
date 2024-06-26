@@ -43,7 +43,7 @@
     }
   }
 
-  a {
+  a:not(.odd) {
     &.appointment { background: var(--appointment); }
     &.post { background: var(--post); }
     &.hobby { background: var(--hobby); }

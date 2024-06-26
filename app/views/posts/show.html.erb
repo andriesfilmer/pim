@@ -3,7 +3,7 @@
 
 <%= form_with model: @post do |form| %>
 <div class="row">
-  <div class="columns">
+  <div class="columns <%= @post.category %>">
     <h2><%= @post.title %></h2>
   </div>
 </div>
