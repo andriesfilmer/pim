@@ -3,10 +3,10 @@
 
 <div class="row">
   <div class="small-12 medium-6 columns">
-    <h2><%= @contact.name %></h2>
+    <h2 class="<%= "icon star-filled filter-orange" if @contact.starred == 1 %>"> <%= @contact.name %></h2>
   </div>
   <div class="small-12 medium-6 columns">
-    <%= content_tag :div, get_birthday_age(@contact), class: "icon cake sm pr-3" if @contact.birthdate %>
+    <%= content_tag :span, get_birthday_age(@contact), class: "icon cake-filled filter-orange mt--2" if @contact.birthdate %>
   </div>
 </div>
 
