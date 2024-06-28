@@ -11,21 +11,6 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.1].define(version: 2024_03_30_131504) do
-  create_table "bookmarks", force: :cascade do |t|
-    t.string "mongo_id", limit: 100
-    t.integer "user_id", default: 0, null: false
-    t.string "title", limit: 100, null: false
-    t.string "url", limit: 255
-    t.text "content"
-    t.string "category", limit: 1024
-    t.string "tags", limit: 255
-    t.integer "times_read", default: 0
-    t.datetime "last_read", precision: nil
-    t.datetime "created", precision: nil
-    t.datetime "updated", precision: nil
-    t.index ["user_id"], name: "idx_bookmarks_user_id"
-  end
-
   create_table "contacts", force: :cascade do |t|
     t.string "mongo_id", limit: 100
     t.integer "user_id", default: 0, null: false

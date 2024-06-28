@@ -9,7 +9,7 @@ class BaseMailer < ApplicationMailer
   def event_mail
     to = params[:to]
     @event = params[:event]
-    mail(to: to, subject: "Event #{@event.title} | #{@event.start.to_s[0,16]}-#{@event.end.to_s[0,16]}")
+    mail(to: to, subject: "Event #{@event.title} | #{@event.start.to_s[0,16]}")
   end
 
 end

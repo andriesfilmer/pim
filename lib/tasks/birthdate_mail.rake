@@ -11,9 +11,9 @@ namespace :birthdate do
     #persons = Contact.where("DATE_FORMAT(birthdate,'%m-%d') = DATE_FORMAT(NOW() + INTERVAL 1 DAY, '%m-%d')") # mysql
     contacts = Contact.where("STRFTIME('%m-%d', birthdate) = STRFTIME('%m-%d', 'now', '+1 day')") # sqlite
     contacts.each do | contact |
-      email = User.select(:email).find contact.user_id
-      #puts "Birthdate #{contact.name} on #{contact.birthdate}, age: #{contact.age(contact.birthdate)}"
-      BaseMailer.with(to: email, contact: contact).birthdate_mail.deliver
+      user = User.select(:email).find contact.user_id
+      #puts "Birthdate #{contact.name} on #{contact.birthdate}, age: #{contact.age(contact.birthdate)}, to: #{user.email}"
+      BaseMailer.with(to: user.email, contact: contact).birthdate_mail.deliver
     end
   end
 end

@@ -1,12 +1,12 @@
 production:
   adapter: sqlite3
-  database: db/pim.db
+  database: db/pim.sqlite3
   pool: 5
   timeout: 5000
+  options: "-cmd 'PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA journal_size_limit=6144000;'"
 
 development:
   adapter: sqlite3
-  database: db/pim.db
+  database: db/development.sqlite3
   pool: 5
   timeout: 5000
-

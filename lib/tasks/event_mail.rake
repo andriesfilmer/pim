@@ -14,10 +14,10 @@ namespace :event do
     #events = Event.where("start >= NOW() + INTERVAL 1 DAY AND start <= NOW() + INTERVAL 1 DAY + INTERVAL 1 HOUR");  # mysql
     events = Event.where("start >= STRFTIME('%Y-%m-%d %H:%M', 'now', '+1 day') AND start <= STRFTIME('%Y-%m-%d %H:%M', 'now', '+1 day', '+1 hour')") # sqlite
     events.each do | event |
-      email = User.select(:email).find event.user_id
+      user = User.select(:email).find event.user_id
       Time.zone = event.tz
-      puts "#{event.title} - #{event.start} - #{event.end}"
-      BaseMailer.with(to: email, event: event).event_mail.deliver
+      #puts "#{event.title} - #{event.start} - #{event.end}, to: #{user.email}"
+      BaseMailer.with(to: user.email, event: event).event_mail.deliver
     end
   end
 end
