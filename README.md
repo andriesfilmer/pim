@@ -10,4 +10,6 @@
 
 Take a look on <https://pim.filmer.nl>
 
+## Install
 
+[docs](docs/install.md)

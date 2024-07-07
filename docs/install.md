@@ -29,7 +29,7 @@ More info about encryption: <https://guides.rubyonrails.org/active_record_encryp
 
 This app use Sqlite as default.
 
-You can set a crontab to backup sqlite with the crontab `lib/sqlite_vacuum_copy.sh` 
+You can set a crontab to backup sqlite with the crontab `lib/sqlite_vacuum_copy.sh`
 
 Change the file `/config/database.yml` to your preferences.
 
