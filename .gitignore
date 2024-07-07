@@ -31,7 +31,8 @@ tags
 !/tmp/storage/
 !/tmp/storage/.keep
 
-db/pim*
+db/pim.*
+db/development.*
 db/data.yml
 
 /public/assets
