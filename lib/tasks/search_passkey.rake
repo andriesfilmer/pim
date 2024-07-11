@@ -3,7 +3,7 @@
 # Search title from model Passkey and show encrypted data
 # for fields: username, password, notes.
 #
-# Usages: rake search:passkeys["search_term"]
+# Usages: rails search:passkeys["search_term"]
 
 namespace :search do
   desc "Search passkeys by title"

@@ -30,8 +30,8 @@
 
   // Event items in calendar
   .fc-daygrid-event {
+    border: 0;
     .fc-event-title { font-weight: normal; }
-    .fc-event-time { font-weight: 700; }
     padding-left: 2px;
     color: var(--color-text-diap);
   }

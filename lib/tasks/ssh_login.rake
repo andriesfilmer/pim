@@ -5,7 +5,7 @@
 # It needs two arguments 1: pasword user, 2: password root.
 # for fields: username and password to login via ssh-server.pl
 #
-# Usages: rake ssh:login["servername"]
+# Usages: rails ssh:login["servername"]
 #
 # Debug, log sql in console
 #ActiveRecord::Base.logger = Logger.new(STDOUT)
