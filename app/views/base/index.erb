@@ -9,8 +9,8 @@
 </div>
 <div class="row p-4" data-controller="user">
   <div class="columns medium-6">
-    <%= content_tag :span, @user.name %>
-    <span class="home meta-data">Personal Information Manager</span>
+    <div class="home meta-data">Personal Information Manager</div>
+    <%= content_tag :div, @user.name %>
   </div>
   <div class="columns small-4 medium-2 p-4">
     <label>Light mode</label>

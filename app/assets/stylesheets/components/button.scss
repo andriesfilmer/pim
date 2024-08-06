@@ -21,10 +21,12 @@
   }
   &.warning {
     color: #fff;
-    background-color: var(--color-warning); }
+    background-color: var(--color-warning);
+  }
   &.alert {
     color: #fff;
-     background-color: var(--color-alert); }
+    background-color: var(--color-alert);
+  }
   &.secondary {
     color: #fff;
     background-color: var(--color-secondary);

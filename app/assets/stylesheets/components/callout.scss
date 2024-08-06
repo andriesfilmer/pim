@@ -1,16 +1,16 @@
 // Callout component
 //------------------
 .callout {
-    position: relative;
-    margin: 0.5rem;
-    padding: 0.5rem;
-    border: 1px solid var(--color-200);
-    border-radius: 5px;
-    color: var(--text-color);
-    &.notice    { background-color: var(--bg-notice) }
-    &.success   { background-color: var(--bg-success) }
-    &.warning   { background-color: var(--bg-warning) }
-    &.alert     { background-color: var(--bg-alert) }
+  position: relative;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-200);
+  border-radius: 5px;
+  color: var(--text-color);
+  &.notice    { background-color: var(--bg-notice) }
+  &.success   { background-color: var(--bg-success) }
+  &.warning   { background-color: var(--bg-warning) }
+  &.alert     { background-color: var(--bg-alert) }
 }
 
 
