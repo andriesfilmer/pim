@@ -3,7 +3,7 @@ class Passkey < ApplicationRecord
   # https://guides.rubyonrails.org/active_record_encryption.html
   encrypts :username #, previous: { deterministic: true }
   encrypts :password
-  encrypts :notes, deterministic: true, downcase: true #, previous: { deterministic: false }
+  encrypts :notes, deterministic: true #, previous: { deterministic: false }
 
   has_many :passkey_shares, dependent: :destroy
 

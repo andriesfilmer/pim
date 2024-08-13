@@ -77,7 +77,7 @@
   <div class="medium-6 columns">
     <%= label_tag :notes, nil, class:"text-lg p-1 my-2 color-bg-100" unless @contact.notes.blank? %>
     <%= content_tag :pre, @contact.notes, id: "notes", class: "display-none" %>
-    <div id="markdown"></div>
+    <div data-controller="contact" id="markdown"></div>
   </div>
 </div>
 
