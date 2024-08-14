@@ -46,8 +46,7 @@
     <%= label_tag :notes, nil, class:"text-lg display-inline" %>
     <%= content_tag :div, '', class: "icon visibility label", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
     <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
-    <div id="markdown" class="callout hide-notes disabled"
-      data-passkey-target="notesToggle" data-action="click->passkey#toggleNotes">Click to show notes</div>
+    <div id="markdown" class="callout hide-notes disabled" data-passkey-target="notesToggle">Click to show notes</div>
   </div>
 <% end if @passkey.notes.present? %>
 

@@ -95,9 +95,9 @@ class PasskeysController < ApplicationController
     if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
       @passkeys = Passkey.left_joins(:passkey_shares).where(
-         "(passkeys.user_id = #{current_user.id} AND (title LIKE ? OR notes LIKE ? OR tags LIKE ?))
+         "(passkeys.user_id = #{current_user.id} AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))
        OR
-         (passkey_shares.linked_user_id = #{current_user.id} AND (title LIKE ? OR notes LIKE ? OR tags LIKE ?))",
+         (passkey_shares.linked_user_id = #{current_user.id} AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))",
          search, search, search, search, search, search).order("updated_at desc")
       cookies[:search] = params[:search]
     else
