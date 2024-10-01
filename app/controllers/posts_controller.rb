@@ -94,7 +94,7 @@ class PostsController < ApplicationController
       search = "%#{params[:search]}%"
       @posts = Post.where("title LIKE ? OR content LIKE ? OR tags LIKE ?", search, search, search)
                    .order(updated_at: :desc).where(user_id: current_user.id)
-      cookies[:search] = params[:search]
+      cookies[:search] = { value: params[:search], expires: 1.hour }
     else
       @posts = []
     end
