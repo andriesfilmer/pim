@@ -42,9 +42,9 @@ class PostsController < ApplicationController
 
     uploaded_file = params[:post][:file]
     if uploaded_file.present?
-      path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
+      path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
       FileUtils.mkdir_p(path) unless Dir.exists?(path)
-      File.open(Rails.root.join('public', 'uploads','posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
+      File.open(Rails.root.join('public', 'uploads', current_user.id.to_s, 'posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
         file.write(uploaded_file.read)
        end
     end
@@ -79,7 +79,7 @@ class PostsController < ApplicationController
   end
 
   def destroy_image
-    img = "#{Rails.root}/public/uploads/posts/#{@post.id}/#{params[:file]}"
+    img = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}/#{params[:file]}"
     File.delete(img) if File.exist?(img)
     get_files
     respond_to do |format|
@@ -123,7 +123,7 @@ class PostsController < ApplicationController
   end
 
   def get_files
-    path = "#{Rails.root}/public/uploads/posts/#{@post.id}"
+    path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
     FileUtils.mkdir_p(path) unless Dir.exist?(path)
     @files = Dir.children(path)
   end

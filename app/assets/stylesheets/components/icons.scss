@@ -40,6 +40,7 @@
     &.cloud-upload           { background-image: url("/assets/cloud-upload.svg") }
     &.cloud-upload-filled    { background-image: url("/assets/cloud-upload-filled.svg") }
     &.delete                 { background-image: url("/assets/delete.svg") }
+    &.draft                  { background-image: url("/assets/draft.svg") }
     &.difference             { background-image: url("/assets/difference.svg") }
     &.edit                   { background-image: url("/assets/edit.svg") }
     &.group                  { background-image: url("/assets/group.svg") }
@@ -60,12 +61,14 @@
     &.image-add              { background-image: url("/assets/image-add.svg") }
     &.image                  { background-image: url("/assets/image.svg") }
     &.preview                { background-image: url("/assets/preview.svg") }
+    &.pdf                    { background-image: url("/assets/pdf.svg") }
     &.restore                { background-image: url("/assets/restore.svg") }
     &.search                 { background-image: url("/assets/search.svg") }
     &.share                  { background-image: url("/assets/share.svg") }
     &.star                   { background-image: url("/assets/star.svg") }
     &.star-filled            { background-image: url("/assets/star-filled.svg") }
     &.visibility             { background-image: url("/assets/visibility.svg") }
+    &.unknown-document       { background-image: url("/assets/unknown-document.svg") }
 
     // In list views icons take to much space. Extra helper.
     &.icon-top-pos {

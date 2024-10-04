@@ -1,37 +1,41 @@
 // post_controller.js
 import { Controller } from "@hotwired/stimulus";
-import { marked } from 'marked';
-import { gfmHeadingId, getHeadingList } from "marked-gfm-heading-id";
-import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, copyContent, markdownToc } from 'components';
+import { marked } from "marked";
+import { gfmHeadingId } from "marked-gfm-heading-id";
+import {
+  tooltip,
+  saveFormAlert,
+  showTags,
+  compareVersions,
+  modalComponent,
+  copyContent,
+  markdownToc,
+} from "components";
 
-let submitted = false
-let userinput = false
+let submitted = false;
+let userinput = false;
 
 export default class extends Controller {
-
   connect() {
-
-    console.log("######## connect post controller")
+    console.log("######## connect post controller");
     //
     // Set cache control of current page to `no-cache`
-    Turbo.cache.exemptPageFromCache()
+    Turbo.cache.exemptPageFromCache();
 
     // Show tooltips for this controller
-    tooltip()
+    tooltip();
 
-    modalComponent()
+    modalComponent();
 
     // Show tagsContainer
     if (document.getElementById("post_tags")) {
-      showTags("post_tags")
+      showTags("post_tags");
     }
     if (document.getElementById("post_version_tags")) {
-      showTags("post_version_tags")
+      showTags("post_version_tags");
     }
 
-
     if (document.getElementById("notes")) {
-
       let content = document.getElementById("notes").value;
       let toc = markdownToc(content);
 
@@ -39,18 +43,22 @@ export default class extends Controller {
       marked.use(gfmHeadingId());
 
       if (toc) {
-        document.getElementById("toc").innerHTML = marked.parse(toc, { mangle: false, headerIds: false})
+        document.getElementById("toc").innerHTML = marked.parse(toc, {
+          mangle: false,
+          headerIds: false,
+        });
       } else {
         document.getElementById("tocFieldset").remove();
       }
-      $("#markdown").html(marked.parse(content, { mangle: false, headerIds: false }))
+      $("#markdown").html(
+        marked.parse(content, { mangle: false, headerIds: false }),
+      );
     }
 
-
     // Show a warning if form data is changed.
-    $(document).on('input', '.userinputs', function() {
-      saveFormAlert()
-      return userinput = true;
+    $(document).on("input", ".userinputs", function () {
+      saveFormAlert();
+      return (userinput = true);
     });
 
     // If turbo off
@@ -58,18 +66,22 @@ export default class extends Controller {
       if (userinput && !submitted) {
         return false;
       }
-    }
+    };
     // If turbo on
-    addEventListener("turbo:before-visit", (event) => {
-      if (userinput && !submitted) {
-        let oke = confirm("Changes that you made may not be saved!")
-        if (oke) {
-        } else {
-          event.preventDefault()
+    addEventListener(
+      "turbo:before-visit",
+      (event) => {
+        if (userinput && !submitted) {
+          let oke = confirm("Changes that you made may not be saved!");
+          if (oke) {
+          } else {
+            event.preventDefault();
+          }
+          return (userinput = false);
         }
-        return userinput = false
-      }
-    }, { once: true })
+      },
+      { once: true },
+    );
   }
 
   showSearch() {
@@ -78,19 +90,29 @@ export default class extends Controller {
   }
 
   search() {
-    document.getElementById("search-form").requestSubmit()
+    document.getElementById("search-form").requestSubmit();
   }
 
   copyImageUrl(img) {
     let imgSize = document.getElementById("image_size").value;
     let imgId = img.srcElement.id;
-    let imgTag = '![' + imgSize + '](<' + document.getElementById(imgId).title + '>)'
+    let imgTitle = document.getElementById(imgId).title;
+    let imgTag;
+    if ( imgTitle.slice(imgTitle.lastIndexOf('.')) === '.jpg' ) {
+      // Show image
+      imgTag = '![' + imgSize + '](<' + imgTitle + '>)'
+    } else {
+      // Show link
+      imgTag = "[" + imgTitle + "](<" + imgTitle + ">)";
+    }
     copyContent(imgTag)
     $("#addFile").removeClass("show");
   }
 
   showMarkdown() {
-    $("#markdown").html(marked.parse($("#post_notes").val(),{ mangle: false, headerIds: false}));
+    $("#markdown").html(
+      marked.parse($("#post_notes").val(), { mangle: false, headerIds: false }),
+    );
     $("#markdown").removeClass("display-none");
     $("#edit_bt").removeClass("display-none");
     $("#preview_bt").addClass("display-none");
@@ -104,12 +126,12 @@ export default class extends Controller {
     $("#post_notes").removeClass("display-none");
   }
 
-  submitForm(event) {
+  submitForm() {
     document.getElementById("postForm").requestSubmit();
-    return userinput = false
+    return (userinput = false);
   }
 
   versions() {
-    compareVersions()
+    compareVersions();
   }
 }
