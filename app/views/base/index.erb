@@ -27,9 +27,9 @@
     <% end %>
   </div>
   <div class="columns small-4 medium-2 p-4">
-    <label>Red mode</label>
-    <%= label_tag "theme_red", class: "switch" do %>
-      <%= radio_button_tag "theme", "red", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
+    <label>Set system mode</label>
+    <%= label_tag "theme_sys", class: "switch" do %>
+      <%= radio_button_tag "theme", "sys", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
       <span class="slider round"></span>
     <% end %>
   </div>
