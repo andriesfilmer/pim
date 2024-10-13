@@ -5,7 +5,7 @@
   </head>
   <body>
     <h3><%= @contact.name %></h3>
-    Birthday <%= @contact.birthdate %>, age: <%= @contact.age(@contact.birthdate) %>
+    Birthday <%= @contact.birthdate %>, tomorrow <%= @contact.age(@contact.birthdate + 1.year) %> years.
   </body>
 </html>
 
