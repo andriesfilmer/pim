@@ -4,8 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby "3.2.3"
 
 gem "mysql2"
-gem "sqlite3", "~> 1.7"
-gem "rails", "7.1.3"
+gem "sqlite3"
+gem "rails", "~> 7.2.1"
 gem "sprockets-rails"
 gem "terser" # a fork based on uglifier
 gem "puma", "~> 6.0"
