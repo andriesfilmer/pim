@@ -4,7 +4,7 @@ class BaseMailer < ApplicationMailer
   def birthdate_mail
     to = params[:to]
     @contact = params[:contact]
-    mail(to: to, subject: "Anniversary #{@contact.name} (#{@contact.age(@contact.birthdate + 1.year)}) tomorrow")
+    mail(to: to, subject: "Anniversary #{@contact.name} (#{@contact.age(@contact.birthdate - 1.year)}) tomorrow")
   end
 
   def event_mail
