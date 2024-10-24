@@ -43,7 +43,7 @@ class PostsController < ApplicationController
     uploaded_file = params[:post][:file]
     if uploaded_file.present?
       path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
-      FileUtils.mkdir_p(path) unless Dir.exists?(path)
+      FileUtils.mkdir_p(path) unless Dir.exist?(path)
       File.open(Rails.root.join('public', 'uploads', current_user.id.to_s, 'posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
         file.write(uploaded_file.read)
        end
