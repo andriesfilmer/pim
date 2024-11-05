@@ -16,21 +16,21 @@
   ],
   "screenshots": [
     {
-     "src": "images/screenshot1.png",
+     "src": "/images/screenshot1.png",
       "sizes": "1192x718",
       "type": "image/png",
       "form_factor": "wide",
       "label": "Wonder Widgets"
     },
     {
-     "src": "images/screenshot2.png",
+     "src": "/images/screenshot2.png",
       "sizes": "389x726",
       "type": "image/png",
       "form_factor": "narrow",
       "label": "Wonder Widgets"
     },
     {
-     "src": "images/screenshot3.png",
+     "src": "/images/screenshot3.png",
       "sizes": "389x726",
       "type": "image/png",
       "form_factor": "narrow",
