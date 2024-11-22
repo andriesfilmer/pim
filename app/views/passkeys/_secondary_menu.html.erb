@@ -1,5 +1,5 @@
 <% unless @passkey.try(:org_id).present? || @passkey_readonly == true %>
-<div class="row mb-6">
+<div class="row mb-6 hide-for-print">
   <div class="columns small-10 medium-10">
     <%= content_tag :div, '', class: "icon key p-2" unless @passkey.id %>
     <%= link_to (content_tag :div, '', class: "icon key pr-2 border-right-dashed"),

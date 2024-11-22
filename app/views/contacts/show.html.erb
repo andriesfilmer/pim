@@ -81,7 +81,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row hide-for-print">
   <div class="columns">
     <%= content_tag :div, '', id: "tagsContainer" if @contact.tags.present? %>
     <%= hidden_field_tag "contact_tags", @contact.tags %>

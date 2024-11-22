@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row hide-for-print">
   <div class="columns">
     <%= content_tag :div, '', id: "tagsContainer" if @event.tags.present? %>
     <%= form.hidden_field :tags %>

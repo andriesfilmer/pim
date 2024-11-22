@@ -59,7 +59,7 @@ namespace :ssh do
       exit
     end
 
-    puts "#{record.title} #{record.username} #{record.password}"
+    puts "#{record.title.split[0]} #{record.username} #{record.password}"
   end
 
   def print_decrypted_user_password(id)

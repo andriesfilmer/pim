@@ -51,7 +51,7 @@
 <% end if @passkey.notes.present? %>
 
 <div class="row">
-  <div class="columns">
+  <div class="columns hide-for-print">
     <%= content_tag :div, '', id: "tagsContainer" if @passkey.tags.present? %>
     <%= hidden_field_tag "passkey_tags", @passkey.tags %>
   </div>
