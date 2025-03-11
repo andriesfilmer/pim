@@ -23,7 +23,7 @@
       <span class="button tiny" data-action="click->passkey#newPassword">Generate</span>
     </div>
     <div class="columns small-2 medium-1">
-      <%= form.label :twofa, id: "show2fa", class: @passkey.twofa? ? "icon xs star-filled filter-orange pb-2" : '' %>
+      <%= form.label :twofa, id: "show2fa", class: @passkey.twofa? ? "icon xs star-filled filter-orange pb-2" : 'xs star-filled filter-orange pb-2icon pb-2' %>
       <%= form.label :twofa, class: "switch" do %>
         <%= form.check_box :twofa, data: { action: "click->passkey#set2fa" }, class: "switch" %>
         <span class="slider round"></span>

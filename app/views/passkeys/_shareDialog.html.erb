@@ -6,10 +6,10 @@
     </div>
   </div>
   <div id="dialog_flash">
-    <%= render "layouts/dialog_flash" %>
+    <%= render "layouts/dialog_flash" if @passkey_shares %>
   </div>
   <div id="passkey_sharesForm">
-    <%= render "passkeys/passkey_shares" %>
+    <%= render "passkeys/passkey_shares" if @passkey_shares %>
   </div>
   <div class="row">
     <div class="columns">
@@ -20,7 +20,7 @@
         <%= form.email_field :email, placeholder: "Add other emailaddress to share with" %>
 
         <p><%= form.submit "Save", class: "button" %></p>
-      <% end %>
+      <% end if @passkey_shares %>
     </div>
   </div>
 </dialog>

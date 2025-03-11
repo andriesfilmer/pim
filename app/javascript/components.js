@@ -133,14 +133,20 @@ export function copyContent(content) {
 }
 
 export  function genPassword() {
-  var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  var passwordLength = 12;
-  var password = "";
-  for (var i = 0; i <= passwordLength; i++) {
-    var randomNumber = Math.floor(Math.random() * chars.length);
-    password += chars.substring(randomNumber, randomNumber +1);
+  const alpha = 'abcdefghijklmnopqrstuvwxyz';
+  const calpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const num = '1234567890';
+  const specials = '!@#$%^&*_';
+  const options = [alpha, alpha, alpha, alpha, alpha, calpha, calpha, calpha, num, num, num, specials];
+  let opt, choose;
+  let pass = "";
+  for ( let i = 0; i < 12; i++ ) {
+    opt = Math.floor(Math.random() * options.length);
+    choose = Math.floor(Math.random() * (options[opt].length));
+    pass = pass + options[opt][choose];
+    options.splice(opt, 1);
   }
-  return password;
+  return pass
 }
 
 export function markdownToc(data) {
