@@ -94,7 +94,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.filmer.net",
+    address: "smtp.filmer.nl",
     enable_starttls_auto: true
   }
 
