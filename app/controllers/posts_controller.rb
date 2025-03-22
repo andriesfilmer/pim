@@ -1,13 +1,12 @@
 class PostsController < ApplicationController
-
-  before_action :set_post, only: %i[ show edit update destroy destroy_image]
+  before_action :set_post, only: %i[show edit update destroy destroy_image]
 
   def index
-    @posts = Post.where(user_id: current_user.id).order("last_read desc").limit 500
+    @posts = Post.where(user_id: current_user.id).order('last_read desc').limit 500
   end
 
   def show
-    @post.update_column(:last_read,DateTime.now)
+    @post.update_column(:last_read, DateTime.now)
     get_files
   end
 
@@ -25,55 +24,58 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to post_url(@post), notice: "Post was successfully created." }
+        format.html { redirect_to post_url(@post), notice: 'Post was successfully created.' }
       else
-        format.turbo_stream {
-           render turbo_stream: turbo_stream.replace("postForm", partial: "posts/form", locals: { resource: @post })
-        }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace('postForm', partial: 'posts/form', locals: { resource: @post })
+        end
       end
     end
 
     # Create a copy for versions management.
     add_version(@post)
-
   end
 
   def update
-
     uploaded_file = params[:post][:file]
     if uploaded_file.present?
       path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
       FileUtils.mkdir_p(path) unless Dir.exist?(path)
       File.open(Rails.root.join('public', 'uploads', current_user.id.to_s, 'posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
         file.write(uploaded_file.read)
-       end
+      end
     end
 
     respond_to do |format|
       if @post.update(post_params)
-        format.turbo_stream {
-          get_files
-          render turbo_stream: turbo_stream.update("images", partial: "posts/images", locals: { resource: @post })
-        } if uploaded_file
-        format.html {
-          redirect_to post_url(@post), notice: "Post was successfully updated."
-        } unless uploaded_file
+        if uploaded_file
+          format.turbo_stream do
+            get_files
+            render turbo_stream: turbo_stream.update('images', partial: 'posts/images', locals: { resource: @post })
+          end
+        end
+        unless uploaded_file
+          format.html do
+            redirect_to post_url(@post), notice: 'Post was successfully updated.'
+          end
+        end
       else
-        format.turbo_stream {
-           render turbo_stream: turbo_stream.replace("postForm", partial: "posts/form", locals: { resource: @post })
-        }
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace('postForm', partial: 'posts/form', locals: { resource: @post })
+        end
       end
     end
 
     # Create a copy for versions management.
     add_version(@post)
-
   end
 
   def destroy
     @post.destroy
+    dir = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}/"
+    Dir.delete(dir)
     respond_to do |format|
-      format.html { redirect_to posts_url, notice: "Post was successfully destroyed." }
+      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -83,16 +85,16 @@ class PostsController < ApplicationController
     File.delete(img) if File.exist?(img)
     get_files
     respond_to do |format|
-      format.turbo_stream {
-         render turbo_stream: turbo_stream.update("images", partial: "posts/images", locals: { resource: @post })
-      }
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update('images', partial: 'posts/images', locals: { resource: @post })
+      end
     end
   end
 
   def search
     if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
-      @posts = Post.where("title LIKE ? OR content LIKE ? OR tags LIKE ?", search, search, search)
+      @posts = Post.where('title LIKE ? OR content LIKE ? OR tags LIKE ?', search, search, search)
                    .order(updated_at: :desc).where(user_id: current_user.id)
       cookies[:search] = { value: params[:search], expires: 1.hour }
     else
@@ -101,7 +103,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.update("posts", partial: "posts", locals: { posts: @posts })
+          turbo_stream.update('posts', partial: 'posts', locals: { posts: @posts })
         ]
       end
     end
@@ -111,7 +113,7 @@ class PostsController < ApplicationController
 
   def add_version(post)
     # Create a copy for versions management.
-    @post_version = PostVersion.new(post_params.except("id","created_at","updated_at","file"))
+    @post_version = PostVersion.new(post_params.except('id', 'created_at', 'updated_at', 'file'))
     @post_version.org_id = post.id
     @post_version.user_id = post.user_id
     @post_version.save
@@ -132,5 +134,4 @@ class PostsController < ApplicationController
   def post_params
     params.require(:post).permit(:title, :notes, :file, :category, :tags)
   end
-
 end
