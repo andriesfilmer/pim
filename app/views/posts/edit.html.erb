@@ -10,7 +10,8 @@
     <div class="row color-bg-100 mb-4">
       <div class="columns py-2">
         <span class="close-button pt-2" data-modal-close="addFile">&#215;</span>
-        Upload new file
+        <strong>Upload new file</strong>
+        <p>After uploading a file you can copy the link and past it anyware into the note with markdown.</p>
       </div>
     </div>
     <div class="row my-4">
@@ -34,7 +35,7 @@
            "Image size 800" => "img-800" }, "img-400"),
           style: "margin: 5px; font-size: small" %>
       </div>
-    <% end if @files.length > 0  %>
+    <% end %>
 
     <div id="images">
       <%= render "images" %>

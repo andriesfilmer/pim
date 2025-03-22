@@ -37,7 +37,7 @@ class PostsController < ApplicationController
   end
 
   def update
-    uploaded_file = params[:post][:file]
+    uploaded_file = params[:post][:file] if params[:post].present?
     if uploaded_file.present?
       path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
       FileUtils.mkdir_p(path) unless Dir.exist?(path)
@@ -73,7 +73,7 @@ class PostsController < ApplicationController
   def destroy
     @post.destroy
     dir = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}/"
-    Dir.delete(dir)
+    FileUtils.rm_rf(dir)
     respond_to do |format|
       format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
@@ -125,7 +125,7 @@ class PostsController < ApplicationController
   end
 
   def get_files
-    path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
+    path = "storage/#{current_user.id}/posts/#{@post.id}"
     FileUtils.mkdir_p(path) unless Dir.exist?(path)
     @files = Dir.children(path)
   end

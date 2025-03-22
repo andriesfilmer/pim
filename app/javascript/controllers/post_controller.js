@@ -101,6 +101,12 @@ export default class extends Controller {
     if ( imgTitle.slice(imgTitle.lastIndexOf('.')) === '.jpg' ) {
       // Show image
       imgTag = '![' + imgSize + '](<' + imgTitle + '>)'
+    } else if ( imgTitle.slice(imgTitle.lastIndexOf('.')) === '.png' ) {
+      // Show image
+      imgTag = '![' + imgSize + '](<' + imgTitle + '>)'
+    } else if ( imgTitle.slice(imgTitle.lastIndexOf('.')) === '.gif' ) {
+      // Show image
+      imgTag = '![' + imgSize + '](<' + imgTitle + '>)'
     } else {
       // Show link
       imgTag = "[" + imgTitle + "](<" + imgTitle + ">)";
