@@ -40,6 +40,10 @@ Because I don't know how to do this with ActiveRecord interface. If possible?
 * lib/tasks/birthdate_mail.rake -> line 11,12
 * lib/tasks/event_mail.rake -> line 14,15
 
+## Symbolic link
+
+    ln -s /mnt/path/to/pim uploads
+    chown puma:www-data uploads
 
 More info about the configuration <https://guides.rubyonrails.org/configuring.html>
 

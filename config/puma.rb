@@ -8,6 +8,7 @@ bind "unix://#{app_dir}/tmp/puma.sock"
 # Specifies the `environment` that Puma will run in.
 environment ENV.fetch("RAILS_ENV") { "production" }
 
+workers 2
 preload_app!
 
 pidfile "#{app_dir}/tmp/puma.pid"
