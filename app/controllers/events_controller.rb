@@ -1,15 +1,17 @@
 # frozen_string_literal: true
+
 class EventsController < ApplicationController
   before_action :set_event, only: %i[show edit update destroy]
 
   def index
-    if params[:start] && params[:end]
-      # Needs session id to implement.
-      @events = Event.where('user_id=?', current_user.id)
-        .where('start < ?', params[:end]).where('end > ?', params[:start]).limit 500
-    else
-      @events = Event.where(user_id: current_user.id).order('id desc').limit 500
-    end
+    @events = if params[:start] && params[:end]
+                # Needs session id to implement.
+                Event.where('user_id=?', current_user.id)
+                     .where('start < ?', params[:end][0..9])
+                     .where('end > ?', params[:start][0..9]).limit 500
+              else
+                Event.where(user_id: current_user.id).order('id desc').limit 500
+              end
     respond_to do |format|
       format.html
       format.json { render json: @events }
@@ -34,8 +36,8 @@ class EventsController < ApplicationController
   end
 
   def create
-    params[:event][:start] = params[:event][:start_date] + ' ' + params[:event][:start_time]
-    params[:event][:end] = params[:event][:end_date] + ' ' + params[:event][:end_time]
+    params[:event][:start] = "#{params[:event][:start_date]}  #{params[:event][:start_time]}"
+    params[:event][:end] = "#{params[:event][:end_date]}  #{params[:event][:end_time]}"
     @event = Event.new(event_params)
     @event.user_id = current_user.id
     Time.zone = params[:event][:tz]
@@ -57,8 +59,8 @@ class EventsController < ApplicationController
   end
 
   def update
-    params[:event][:start] = params[:event][:start_date] + ' ' + params[:event][:start_time]
-    params[:event][:end] = params[:event][:end_date] + ' ' + params[:event][:end_time]
+    params[:event][:start] = "#{params[:event][:start_date]}  #{params[:event][:start_time]}"
+    params[:event][:end] = "#{params[:event][:end_date]}  #{params[:event][:end_time]}"
     Time.zone = params[:event][:tz]
 
     respond_to do |format|
@@ -90,7 +92,7 @@ class EventsController < ApplicationController
   end
 
   def search
-    if params.dig(:search).length > 2
+    if params[:search].length > 2
       search = "%#{params[:search]}%"
       @events = Event.where('title LIKE ? OR description LIKE ? OR tags LIKE ?', search, search, search)
                      .order(start: :desc).where(user_id: current_user.id)
