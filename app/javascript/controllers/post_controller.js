@@ -116,13 +116,18 @@ export default class extends Controller {
   }
 
   showMarkdown() {
-    $("#markdown").html(
-      marked.parse($("#post_notes").val(), { mangle: false, headerIds: false }),
-    );
-    $("#markdown").removeClass("display-none");
-    $("#edit_bt").removeClass("display-none");
-    $("#preview_bt").addClass("display-none");
-    $("#post_notes").addClass("display-none");
+    const notesValue = $("#post_notes").val();
+    if (notesValue !== undefined && notesValue !== null) {
+      $("#markdown").html(
+        marked.parse(notesValue, { mangle: false, headerIds: false }),
+      );
+      $("#markdown").removeClass("display-none");
+      $("#edit_bt").removeClass("display-none");
+      $("#preview_bt").addClass("display-none");
+      $("#post_notes").addClass("display-none");
+    } else {
+      console.error("Could not find #post_notes or value is undefined");
+    }
   }
 
   hideMarkdown() {

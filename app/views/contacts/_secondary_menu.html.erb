@@ -9,7 +9,7 @@
       p-2 #{'filter-orange' if @contact.starred?} border-right-dashed  cursor-pointer",
       data: { controller: "contact", action: "click->contact#setStarred" },
       title: "Set or unset starred" %>
-      <%= form.hidden_field :starred %>
+      <%= form.hidden_field :starred, id: 'contact_starred' %>
     <% end if @contact.id && action_name != "show" %>
 
     <%= link_to (content_tag :div, '', class: "icon edit p-2 border-right-dashed"),

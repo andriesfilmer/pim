@@ -1,4 +1,4 @@
-<%= form_with model: @post, id: "postForm", class: "userinputs" do |form| %>
+<%= form_with model: @post, id: "postForm", class: "userinputs", data: { controller: "post" } do |form| %>
   <%= render "layouts/show_errors", resource: @post %>
 
   <div class="row">
@@ -13,7 +13,7 @@
       <div class="icon markdown align-bottom" id="preview_bt" data-action="click->post#showMarkdown" data-tooltip title="Click for markdown preview"></div>
       <div class="icon edit align-bottom display-none" id="edit_bt" data-action="click->post#hideMarkdown" data-tooltip title="Click to edit"></div>
       <%= form.label :notes, class: "text-lg display-inline" %>
-      <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '30' %>
+      <%= form.text_area :notes, id: 'post_notes', placeholder: 'You can use markdown for notes', rows: '30' %>
       <div id="markdown"></div>
     </div>
   </div>
@@ -82,7 +82,7 @@
     <div class="columns medium-6">
     <fieldset>
       <p><legend class="strong">Tags</legend></p>
-      <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
+      <%= form.text_field :tags, id: 'post_tags', placeholder: 'Comma separeted values' %>
       <div id="tagsContainer"></div>
     </fieldset>
     </div>

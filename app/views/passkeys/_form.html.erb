@@ -16,7 +16,7 @@
     </div>
     <div class="columns small-6 medium-9">
       <%= form.label :password %>
-      <%= form.text_field :password, placeholder: "Enter password" %>
+      <%= form.text_field :password, id: 'passkey_password', placeholder: "Enter password" %>
     </div>
     <div class="columns small-4 medium-2 px-4">
       <label>New password</label>
@@ -25,7 +25,7 @@
     <div class="columns small-2 medium-1">
       <%= form.label :twofa, id: "show2fa", class: @passkey.twofa? ? "icon xs star-filled filter-orange pb-2" : 'xs star-filled filter-orange pb-2icon pb-2' %>
       <%= form.label :twofa, class: "switch" do %>
-        <%= form.check_box :twofa, data: { action: "click->passkey#set2fa" }, class: "switch" %>
+        <%= form.check_box :twofa, id: 'passkey_twofa', data: { action: "click->passkey#set2fa" }, class: "switch" %>
         <span class="slider round"></span>
       <% end %>
     </div>
@@ -43,7 +43,7 @@
       <%= form.label :notes, class: "display-inline text-lg" %>
       <div id="preview_bt" data-action="click->passkey#showMarkdown" data-tooltip title="Click for preview" class="icon markdown align-bottom cursor-pointer"></div>
       <div id="edit_bt"    data-action="click->passkey#hideMarkdown" data-tooltip title="Click to edit"     class="icon edit align-bottom cursor-pointer display-none"></div>
-      <%= form.text_area :notes, placeholder: 'You can use markdown for Notes', rows: '20' %>
+      <%= form.text_area :notes, id: 'passkey_notes', placeholder: 'You can use markdown for Notes', rows: '20' %>
       <div id="markdown"></div>
     </div>
   </div>
@@ -52,7 +52,7 @@
   <div class="row">
     <div class="columns">
       <%= form.label :tags, class: "display-inline" %>
-      <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
+      <%= form.text_field :tags, id: 'passkey_tags', placeholder: 'Comma separeted values' %>
       <div id="tagsContainer"></div>
     </div>
   </div>

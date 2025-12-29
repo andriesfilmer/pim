@@ -10,30 +10,30 @@
     <div class="columns small-4 medium-2 tz-warning">Timezone</div>
     <div class="columns small-8 medium-10">
       <%= form.select(:tz, ActiveSupport::TimeZone.all.collect {|tz| ["(GMT#{ActiveSupport::TimeZone.seconds_to_utc_offset(tz.utc_offset)}) #{tz.name}", tz.tzinfo.name]},
-          { selected: @event.tz, prompt: '' }) %>
+          { selected: @event.tz, prompt: '' }, { id: 'event_tz' }) %>
     </div>
   </div>
 
   <!-- date -->
   <div class="row">
     <div class="columns small-2 medium-2">Start</div>
-    <div class="columns small-5 medium-6"><%= form.date_field :start_date, data: { action: "event#changeDatetime" } %></div>
+    <div class="columns small-5 medium-6"><%= form.date_field :start_date, id: 'event_start_date', data: { action: "event#changeDatetime" } %></div>
     <div class="columns small-5 medium-4">
-      <%= form.time_field :start_time, data: { action: "event#changeDatetime" }, class: ("display-none" if truthy? @event.allDay) %>
+      <%= form.time_field :start_time, id: 'event_start_time', data: { action: "event#changeDatetime" }, class: ("display-none" if truthy? @event.allDay) %>
     </div>
   </div>
   <div class="row">
     <div class="columns small-2 medium-2">End</div>
-    <div class="columns small-5 medium-6"><%= form.date_field :end_date, data: { action: "event#changeDatetime" } %></div>
+    <div class="columns small-5 medium-6"><%= form.date_field :end_date, id: 'event_end_date', data: { action: "event#changeDatetime" } %></div>
     <div class="columns small-5 medium-4">
-      <%= form.time_field :end_time, data: { action: "event#changeDatetime" }, class: ("display-none" if truthy? @event.allDay) %>
+      <%= form.time_field :end_time, id: 'event_end_time', data: { action: "event#changeDatetime" }, class: ("display-none" if truthy? @event.allDay) %>
     </div>
   </div>
   <div class="row pb-4">
     <div class="columns small-2 medium-2">Allday</div>
     <div class="columns small-10 medium-10">
       <%= form.label :allDay, class: "switch" do %>
-        <%= form.check_box :allDay, checked: (truthy? @event.allDay), class: "switch-paddle", data: { action: "click->event#toggleAllDay" } %>
+        <%= form.check_box :allDay, id: 'event_allDay', checked: (truthy? @event.allDay), class: "switch-paddle", data: { action: "click->event#toggleAllDay" } %>
         <span class="slider round"></span>
       <% end %>
     </div>
@@ -45,7 +45,7 @@
       <%= form.label :notes, class: "display-inline text-lg" %>
       <div class="icon markdown align-bottom" id="preview_bt" data-action="click->event#showMarkdown" data-tooltip title="Click to see markdown format"></div>
       <div class="icon edit align-bottom display-none" id="edit_bt" data-action="click->event#hideMarkdown" data-tooltip title="Click to edit"></div>
-      <%= form.text_area :notes, placeholder: 'You can use markdown for notes', rows: '10' %>
+      <%= form.text_area :notes, id: 'event_notes', placeholder: 'You can use markdown for notes', rows: '10' %>
       <div id="markdown"></div>
     </div>
   </div>
@@ -104,7 +104,7 @@
     <div class="columns medium-6">
     <fieldset>
       <legend class="strong">Tags</legend>
-      <%= form.text_field :tags, placeholder: 'Comma separeted values' %>
+      <%= form.text_field :tags, id: 'event_tags', placeholder: 'Comma separeted values' %>
       <div id="tagsContainer"></div>
     </fieldset>
     </div>

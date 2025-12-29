@@ -127,11 +127,16 @@ export default class extends Controller {
   }
 
   showMarkdown() {
-    $("#markdown").html(marked.parse($("#passkey_notes").val(),{ mangle: false, headerIds: false}));
-    $("#markdown").removeClass("display-none");
-    $("#edit_bt").removeClass("display-none");
-    $("#preview_bt").addClass("display-none");
-    $("#passkey_notes").addClass("display-none");
+    const notesValue = $("#passkey_notes").val();
+    if (notesValue !== undefined && notesValue !== null && notesValue !== "") {
+      $("#markdown").html(marked.parse(notesValue, { mangle: false, headerIds: false}));
+      $("#markdown").removeClass("display-none");
+      $("#edit_bt").removeClass("display-none");
+      $("#preview_bt").addClass("display-none");
+      $("#passkey_notes").addClass("display-none");
+    } else {
+      console.error("Could not find #passkey_notes or value is undefined/null/empty");
+    }
   }
 
   hideMarkdown() {

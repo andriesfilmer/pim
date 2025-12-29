@@ -2,7 +2,8 @@
 
 import "@hotwired/turbo-rails";
 import "@hotwired/stimulus";
-import "jquery";
+import $ from "jquery";
+window.$ = window.jQuery = $;
 import "controllers";
 //import "components"
 //
