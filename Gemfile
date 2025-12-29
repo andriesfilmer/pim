@@ -1,19 +1,22 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.3"
+# Rails 8.1.1 application starting in development
+# ruby 3.2.3 (2024-01-18 revision 52bb2ac0a6) [x86_64-linux-gnu]
+# Puma version: 7.1.0
 
-gem "mysql2"
+ruby "3.2.3"
+gem 'puma','~> 7.1.0'
+gem 'rails', '~> 8.1.1'
+
 gem "sqlite3"
-gem "rails", "~> 7.2.1"
-gem "sprockets-rails"
+gem "propshaft"
 gem "terser" # a fork based on uglifier
-gem "puma", "~> 6.0"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder" # Simple DSL for declaring JSON structures
-
+gem "dartsass-rails"
 gem "devise"
 gem "pretty_inspect"
 gem "diffy"
@@ -23,8 +26,6 @@ gem "diffy"
 
 # Reduces boot times through caching; required in config/boot.rb
 #gem "bootsnap", require: false
-
-gem "sassc-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"

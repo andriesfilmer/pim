@@ -33,10 +33,12 @@ tags
 
 db/pim.*
 db/development.*
-db/data.yml
 
 /public/assets
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/credentials.yml.enc
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
