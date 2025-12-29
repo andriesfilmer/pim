@@ -12,73 +12,74 @@
     background-repeat: no-repeat;
     padding: 1rem;
     margin-right: 0.25rem;
-    &.xs    { padding-right: 0.5rem; }
-    &.sm    { padding-right: 0.7rem; }
-    &.md    { padding-right: 1.2rem; }
-    &.lg    { padding-right: 1.4rem; }
-    &.xl    { padding-right: 1.6rem; }
-    &.xl2   { padding-right: 1.8rem; }
-    &.xl3   { padding-right: 2rem; }
-    &.xl4   { padding-right: 3rem; }
-
-    &.button { padding-top: 5px; }
-
-    &.account-circle         { background-image: url("/assets/account-circle.svg") }
-    &.add                    { background-image: url("/assets/add.svg") }
-    &.apartment              { background-image: url("/assets/apartment.svg") }
-    &.article                { background-image: url("/assets/article.svg") }
-    &.arrow-back             { background-image: url("/assets/arrow-back.svg") }
-    &.cake                   { background-image: url("/assets/cake.svg") }
-    &.cake-filled            { background-image: url("/assets/cake-filled.svg") }
-    &.event-note             { background-image: url("/assets/event-note.svg") }
-    &.copy                   { background-image: url("/assets/copy.svg") }
-    &.calendar-list          { background-image: url("/assets/calendar-list.svg") }
-    &.calendar-list-month    { background-image: url("/assets/calendar-list-month.svg") }
-    &.calendar-month         { background-image: url("/assets/calendar-month.svg") }
-    &.calendar-view-week     { background-image: url("/assets/calendar-view-week.svg") }
-    &.call                   { background-image: url("/assets/call.svg") }
-    &.cloud-upload           { background-image: url("/assets/cloud-upload.svg") }
-    &.cloud-upload-filled    { background-image: url("/assets/cloud-upload-filled.svg") }
-    &.delete                 { background-image: url("/assets/delete.svg") }
-    &.draft                  { background-image: url("/assets/draft.svg") }
-    &.difference             { background-image: url("/assets/difference.svg") }
-    &.edit                   { background-image: url("/assets/edit.svg") }
-    &.group                  { background-image: url("/assets/group.svg") }
-    &.home                   { background-image: url("/assets/home.svg") }
-    &.home-work              { background-image: url("/assets/home-work.svg") }
-    &.install-mobile         { background-image: url("/assets/install-mobile.svg") }
-    &.key                    { background-image: url("/assets/key.svg") }
-    &.link                   { background-image: url("/assets/link.svg") }
-    &.list                   { background-image: url("/assets/list.svg") }
-    &.location-on            { background-image: url("/assets/location-on.svg") }
-    &.lock                   { background-image: url("/assets/lock.svg") }
-    &.logout                 { background-image: url("/assets/logout.svg") }
-    &.mail                   { background-image: url("/assets/mail.svg") }
-    &.markdown               { background-image: url("/assets/markdown.svg") }
-    &.more-time              { background-image: url("/assets/more-time.svg") }
-    &.person                 { background-image: url("/assets/person.svg") }
-    &.image-library          { background-image: url("/assets/image-library.svg") }
-    &.image-add              { background-image: url("/assets/image-add.svg") }
-    &.image                  { background-image: url("/assets/image.svg") }
-    &.preview                { background-image: url("/assets/preview.svg") }
-    &.pdf                    { background-image: url("/assets/pdf.svg") }
-    &.restore                { background-image: url("/assets/restore.svg") }
-    &.search                 { background-image: url("/assets/search.svg") }
-    &.share                  { background-image: url("/assets/share.svg") }
-    &.star                   { background-image: url("/assets/star.svg") }
-    &.star-filled            { background-image: url("/assets/star-filled.svg") }
-    &.visibility             { background-image: url("/assets/visibility.svg") }
-    &.unknown-document       { background-image: url("/assets/unknown-document.svg") }
-
-    // In list views icons take to much space. Extra helper.
-    &.icon-top-pos {
-       position: relative;
-       top: -8px;
-       display: flex;
-       margin: -10px 0;
-     }
-    //span.label { position: relative; top: 12px; margin-top: -1em;}
   }
+
+  &.xs:before    { padding-right: 0.5rem; }
+  &.sm:before    { padding-right: 0.7rem; }
+  &.md:before    { padding-right: 1.2rem; }
+  &.lg:before    { padding-right: 1.4rem; }
+  &.xl:before    { padding-right: 1.6rem; }
+  &.xl2:before   { padding-right: 1.8rem; }
+  &.xl3:before   { padding-right: 2rem; }
+  &.xl4:before   { padding-right: 3rem; }
+
+  &.button:before { padding-top: 5px; }
+
+  &.account-circle:before         { background-image: url(account-circle.svg) }
+  &.add:before                    { background-image: url(add.svg) }
+  &.apartment:before              { background-image: url(apartment.svg) }
+  &.article:before                { background-image: url(article.svg) }
+  &.arrow-back:before             { background-image: url(arrow-back.svg) }
+  &.cake:before                   { background-image: url(cake.svg) }
+  &.cake-filled:before            { background-image: url(cake-filled.svg) }
+  &.event-note:before             { background-image: url(event-note.svg) }
+  &.copy:before                   { background-image: url(copy.svg) }
+  &.calendar-list:before          { background-image: url(calendar-list.svg) }
+  &.calendar-list-month:before    { background-image: url(calendar-list-month.svg) }
+  &.calendar-month:before         { background-image: url(calendar-month.svg) }
+  &.calendar-view-week:before     { background-image: url(calendar-view-week.svg) }
+  &.call:before                   { background-image: url(call.svg) }
+  &.cloud-upload:before           { background-image: url(cloud-upload.svg) }
+  &.cloud-upload-filled:before    { background-image: url(cloud-upload-filled.svg) }
+  &.delete:before                 { background-image: url(delete.svg) }
+  &.draft:before                  { background-image: url(draft.svg) }
+  &.difference:before             { background-image: url(difference.svg) }
+  &.edit:before                   { background-image: url(edit.svg) }
+  &.group:before                  { background-image: url(group.svg) }
+  &.home:before                   { background-image: url(home.svg) }
+  &.home-work:before              { background-image: url(home-work.svg) }
+  &.install-mobile:before         { background-image: url(install-mobile.svg) }
+  &.key:before                    { background-image: url(key.svg) }
+  &.link:before                   { background-image: url(link.svg) }
+  &.list:before                   { background-image: url(list.svg) }
+  &.location-on:before            { background-image: url(location-on.svg) }
+  &.lock:before                   { background-image: url(lock.svg) }
+  &.logout:before                 { background-image: url(logout.svg) }
+  &.mail:before                   { background-image: url(mail.svg) }
+  &.markdown:before               { background-image: url(markdown.svg) }
+  &.more-time:before              { background-image: url(more-time.svg) }
+  &.person:before                 { background-image: url(person.svg) }
+  &.image-library:before          { background-image: url(image-library.svg) }
+  &.image-add:before              { background-image: url(image-add.svg) }
+  &.image:before                  { background-image: url(image.svg) }
+  &.preview:before                { background-image: url(preview.svg) }
+  &.pdf:before                    { background-image: url(pdf.svg) }
+  &.restore:before                { background-image: url(restore.svg) }
+  &.search:before                 { background-image: url(search.svg) }
+  &.share:before                  { background-image: url(share.svg) }
+  &.star:before                   { background-image: url(star.svg) }
+  &.star-filled:before            { background-image: url(star-filled.svg) }
+  &.visibility:before             { background-image: url(visibility.svg) }
+  &.unknown-document:before       { background-image: url(unknown-document.svg) }
+
+  // In list views icons take to much space. Extra helper.
+  &.icon-top-pos:before {
+     position: relative;
+     top: -8px;
+     display: flex;
+     margin: -10px 0;
+   }
+  //span.label { position: relative; top: 12px; margin-top: -1em;}
 }
 
 

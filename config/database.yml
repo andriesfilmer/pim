@@ -1,12 +1,28 @@
 production:
-  adapter: sqlite3
-  database: db/pim.sqlite3
-  pool: 5
-  timeout: 5000
-  options: "-cmd 'PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA journal_size_limit=6144000;'"
+  primary:
+    adapter: sqlite3
+    database: db/pim.sqlite3
+    pool: 5
+    timeout: 5000
+    options: "-cmd 'PRAGMA journal_mode=WAL; PRAGMA synchronous=NORMAL; PRAGMA journal_size_limit=6144000;'"
+  queue:
+    adapter: sqlite3
+    database: db/queue.sqlite3
+    migrations_paths: db/queue_migrate
+    schema_dump: queue_schema.rb
+    pool: 5
+    timeout: 5000
 
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
+  primary:
+    adapter: sqlite3
+    database: db/development.sqlite3
+    pool: 5
+    timeout: 5000
+  queue:
+    adapter: sqlite3
+    database: db/development_queue.sqlite3
+    migrations_paths: db/queue_migrate
+    schema_dump: queue_schema.rb
+    pool: 5
+    timeout: 5000

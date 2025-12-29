@@ -32,7 +32,7 @@ tags
 !/tmp/storage/.keep
 
 db/pim.*
-db/development.*
+db/development*
 
 /public/assets
 

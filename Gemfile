@@ -17,6 +17,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder" # Simple DSL for declaring JSON structures
 gem "dartsass-rails"
+gem "solid_queue"
 gem "devise"
 gem "pretty_inspect"
 gem "diffy"

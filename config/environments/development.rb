@@ -65,6 +65,10 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
+  # Use SolidQueue for background jobs
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
+
   config.action_mailer.smtp_settings = { address: 'localhost', port: 1025 }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.default_url_options = { host: 'lvh.nl', port: 3000 }
