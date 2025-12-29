@@ -22,33 +22,32 @@
 
 //}
 
-@import 'light_theme';
-@import 'dark_theme';
-@import 'red_theme';
-@import 'mixin';
-@import 'basic';
-@import 'grid';
-@import 'components/icons';
-@import 'components/forms';
-@import 'components/button';
-@import 'components/callout';
-@import 'components/dialog';
-@import 'components/diff';
-@import 'components/flash';
-@import 'components/forms';
-@import 'components/fullcalendar';
-@import 'components/label';
-@import 'components/markdown';
-@import 'components/model';
-@import 'components/pagination';
-@import 'components/switch';
-@import 'components/tabs';
-@import 'components/tags';
-@import 'components/tooltip';
-@import 'print';
-@import 'tailwind';
-@import 'helpers';
-@import 'custom';
+@use 'light_theme';
+@use 'dark_theme';
+@use 'red_theme';
+@use 'mixin';
+@use 'basic';
+@use 'grid';
+@use 'components/icons';
+@use 'components/forms';
+@use 'components/button';
+@use 'components/callout';
+@use 'components/dialog';
+@use 'components/diff';
+@use 'components/flash';
+@use 'components/fullcalendar';
+@use 'components/label';
+@use 'components/markdown';
+@use 'components/model';
+@use 'components/pagination';
+@use 'components/switch';
+@use 'components/tabs';
+@use 'components/tags';
+@use 'components/tooltip';
+@use 'print';
+@use 'tailwind';
+@use 'helpers';
+@use 'custom';
 
 /* testing */
 turbo-frame {

@@ -1,6 +1,6 @@
 /* Form classes */
 
-@import 'mixin';
+@use '../mixin' as *;
 
 label {
   font-size: 0.875rem;

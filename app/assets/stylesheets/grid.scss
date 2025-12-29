@@ -1,6 +1,6 @@
 /* Grid and column classes */
 
-@import 'mixin';
+@use 'mixin' as *;
 
 // Prefixed by https://autoprefixer.github.io
 .row {

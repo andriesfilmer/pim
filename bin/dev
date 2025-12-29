@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Function to cleanup processes and their children
+cleanup() {
+  echo ""
+  echo "Shutting down..."
+
+  # Kill CSS watcher and its children
+  if [ ! -z "$CSS_PID" ]; then
+    pkill -P $CSS_PID 2>/dev/null  # Kill children first
+    kill $CSS_PID 2>/dev/null      # Then kill parent
+  fi
+
+  # Kill Rails server and its children
+  if [ ! -z "$RAILS_PID" ]; then
+    pkill -P $RAILS_PID 2>/dev/null  # Kill children first
+    kill $RAILS_PID 2>/dev/null      # Then kill parent
+  fi
+
+  exit 0
+}
+
+# Trap to kill both processes when script exits
+trap cleanup INT TERM
+
+# Start CSS watcher in background
+bin/rails dartsass:watch &
+CSS_PID=$!
+
+# Start Rails server in background
+bin/rails server -p 3000 &
+RAILS_PID=$!
+
+echo "Started Rails server (PID: $RAILS_PID) and CSS watcher (PID: $CSS_PID)"
+echo "Press Ctrl+C to stop"
+
+# Wait for both processes
+wait
