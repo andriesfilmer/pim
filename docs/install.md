@@ -40,10 +40,27 @@ Because I don't know how to do this with ActiveRecord interface. If possible?
 * lib/tasks/birthdate_mail.rake -> line 11,12
 * lib/tasks/event_mail.rake -> line 14,15
 
-## Symbolic link
+## Symbolic link uploads
 
     ln -s /mnt/path/to/pim uploads
     chown puma:www-data uploads
 
-More info about the configuration <https://guides.rubyonrails.org/configuring.html>
+## Solid Queue
 
+### Create queue database
+
+    rails db:create:queue
+    rails db:schema:load:queue DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+
+### Check tables exists
+
+    sqlite3 db/queue.sqlite3 ".tables"
+
+### Enable service
+````
+ln -s /var/www/pim-rails/config/solid_queue.service  /etc/systemd/system/solid_queue.service
+systemctl daemon-reload
+systemctl enable solid_queue.service
+systemctl start solid_queue.service
+systemctl status solid_queue.service
+````

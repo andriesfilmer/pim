@@ -33,6 +33,7 @@ tags
 
 db/pim.*
 db/development*
+db/queue*
 
 /public/assets
 
