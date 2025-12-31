@@ -1,0 +1,36 @@
+# Solid Queue Systemd Service
+# https://github.com/rails/solid_queue
+
+[Unit]
+Description=Solid Queue Worker
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/pim-rails
+
+# Start Solid Queue
+ExecStart=/bin/bash -lc 'cd /var/www/pim-rails && RAILS_ENV=production bin/jobs'
+
+User=puma
+Group=puma
+
+# Environment
+Environment=RAILS_ENV=production
+Environment=RAILS_MAX_THREADS=5
+
+# Logging
+StandardOutput=append:/var/www/pim-rails/log/solid_queue.log
+StandardError=append:/var/www/pim-rails/log/solid_queue.log
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Process management
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+[Install]
+WantedBy=multi-user.target
