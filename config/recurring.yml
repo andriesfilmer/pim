@@ -14,8 +14,8 @@ production:
     command: "SolidQueue::Job.clear_finished_in_batches(sleep_between_batches: 0.3)"
     schedule: every hour at minute 12
   birthdate_mail:
-    command: "Rake::Task['birthdate:mail'].invoke"
+    class: BirthdateMailJob
     schedule: at 1am every day
   event_mail:
-    command: "Rake::Task['event:mail'].invoke"
+    class: EventMailJob
     schedule: every hour

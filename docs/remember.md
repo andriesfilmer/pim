@@ -11,3 +11,8 @@
 
     chown -R puma:www-data tmp/cache/assets/
     chown -R puma:www-data public/assets/
+
+## Solid Queue
+
+
+
