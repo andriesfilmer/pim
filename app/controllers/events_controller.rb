@@ -14,7 +14,16 @@ class EventsController < ApplicationController
               end
     respond_to do |format|
       format.html
-      format.json { render json: @events }
+      format.json do
+        events_data = @events.map do |event|
+          event_hash = event.as_json
+          if event.allDay == 1
+            event_hash['end'] = (event.end + 24.hours)
+          end
+          event_hash
+        end
+        render json: events_data
+      end
     end
   end
 
@@ -110,17 +119,8 @@ class EventsController < ApplicationController
   private
 
   def format_event_dates
-    if params[:event][:allDay] == "1"
-      # For all-day events, FullCalendar's end date is exclusive
-      # So we add 1 day to make it inclusive for the user
-      start_date = Date.parse(params[:event][:start_date])
-      end_date = Date.parse(params[:event][:end_date]) + 1.day
-      params[:event][:start] = start_date.to_s
-      params[:event][:end] = end_date.to_s
-    else
-      params[:event][:start] = "#{params[:event][:start_date]}  #{params[:event][:start_time]}"
-      params[:event][:end] = "#{params[:event][:end_date]}  #{params[:event][:end_time]}"
-    end
+    params[:event][:start] = "#{params[:event][:start_date]}  #{params[:event][:start_time]}"
+    params[:event][:end] = "#{params[:event][:end_date]}  #{params[:event][:end_time]}"
   end
 
   def add_version(event)
@@ -134,17 +134,15 @@ class EventsController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_event
+    # Fetch timezone first and set it before loading the full event
+    event_tz = Event.where(user_id: current_user.id).where(id: params[:id]).pluck(:tz).first
+    redirect_to events_path, alert: 'Event does not exists (anymore)' and return if event_tz.blank?
+
+    Time.zone = event_tz
+
     @event = Event.where(user_id: current_user.id).where(id: params[:id]).take
     redirect_to events_path, alert: 'Event does not exists (anymore)' and return if @event.blank?
 
-    # For all-day events, format as YYYY-MM-DD and subtract 1 day from end (reverse the +1 day from save)
-    # Do this for HTML views (edit and show), but not for JSON responses
-    if @event.allDay == 1 && (action_name == 'edit' || (action_name == 'show' && request.format.html?))
-      @event.start = @event.start.strftime("%Y-%m-%d")
-      @event.end = (@event.end.to_date - 1.day).to_s
-    end
-
-    Time.zone = @event.tz
   end
 
   def event_params

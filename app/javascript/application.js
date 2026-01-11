@@ -9,7 +9,7 @@ import "controllers";
 //
 //Turbo.session.drive = false
 
-Turbo.setConfirmMethod((message) => {
+Turbo.config.forms.confirm = async (message) => {
   //console.log(message)
   let dialog = document.getElementById("turbo-confirm");
   dialog.showModal();
@@ -24,7 +24,7 @@ Turbo.setConfirmMethod((message) => {
       { once: true },
     );
   });
-});
+};
 
 document.addEventListener("turbo:load", loadFunction);
 document.addEventListener("turbo:frame-load", loadFunction); // If you're using Turbo Frames

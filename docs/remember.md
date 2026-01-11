@@ -14,5 +14,16 @@
 
 ## Solid Queue
 
+To view failed jobs:
 
+    SolidQueue::FailedExecution.all
+    SolidQueue::FailedExecution.count
 
+If you want to delete them one by one (with more control):
+
+    SolidQueue::FailedExecution.first(100).each(&:destroy)
+
+To run the jobs immediately (synchronously):
+
+    BirthdateMailJob.perform_now
+    EventMailJob.perform_now
