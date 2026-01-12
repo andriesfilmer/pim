@@ -225,7 +225,7 @@ export default class extends Controller {
       $('#event_start_time').addClass('display-none')
       $('#event_start_time').val("00:00")
       $('#event_end_time').addClass('display-none')
-      $('#event_end_time').val("00:00")
+      $('#event_end_time').val("23:59")
     } else {
       $('#event_start_time').removeClass('display-none')
       $('#event_start_time').val("08:00")

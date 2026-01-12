@@ -45,10 +45,10 @@ class EventsController < ApplicationController
   end
 
   def create
+    Time.zone = params[:event][:tz]
     format_event_dates
     @event = Event.new(event_params)
     @event.user_id = current_user.id
-    Time.zone = params[:event][:tz]
 
     respond_to do |format|
       if @event.save
@@ -67,8 +67,8 @@ class EventsController < ApplicationController
   end
 
   def update
-    format_event_dates
     Time.zone = params[:event][:tz]
+    format_event_dates
 
     respond_to do |format|
       if @event.update(event_params)
