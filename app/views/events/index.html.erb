@@ -13,7 +13,7 @@
 <div id="show_search" class="row display-none">
   <div class="columns">
   <%= form_with url: events_search_path, id: "search-form" do |form| %>
-    <%= form.search_field :search, placeholder: 'Search events', value: cookies[:search],
+    <%= form.search_field :search, id: 'search', placeholder: 'Search events', value: cookies[:search],
       data: { controller: "event", action: "focus->event#search input->event#search" } %>
   <% end %>
   </div>

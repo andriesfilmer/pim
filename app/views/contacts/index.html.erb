@@ -13,7 +13,7 @@
 <div id="show_search" class="row display-none">
   <div class="columns">
   <%= form_with url: contacts_search_path, id: "search-form" do |form| %>
-    <%= form.search_field :search, placeholder: 'Search contacts', value: cookies[:search],
+    <%= form.search_field :search, id: 'search', placeholder: 'Search contacts', value: cookies[:search],
       data: { controller: "contact", action: "focus->contact#search input->contact#search" } %>
   <% end %>
   </div>
