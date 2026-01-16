@@ -70,4 +70,8 @@
   --fc-neutral-bg-color: var(--color-200);
   --fc-page-bg-color: var(--color-body);
   --fc-today-bg-color: var(--color-800);
+
+  input[type="search"]::-webkit-search-cancel-button {
+    filter: invert(1);
+  }
 }
