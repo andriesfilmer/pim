@@ -42,6 +42,17 @@ function loadFunction() {
     document.body.classList.add(localStorage.getItem("theme"));
   }
 
+  // Add back arrow functionality
+  const elArrow = document.getElementById("add-back-arrow");
+  if (elArrow != null) {
+    const span = document.createElement("span");
+    span.className = "back-arrow show-for-small-only";
+    elArrow.prepend(span);
+    elArrow.addEventListener("click", () => {
+      window.history.back();
+    });
+  }
+
   // Hide flash messages
   $("#flash, #dialog_flash").on("click",function (event) {
     $(event.target).closest(".flash").hide("slow");
