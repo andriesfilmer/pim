@@ -11,7 +11,7 @@ Rails.application.configure do
     policy.img_src     :self, :data
     policy.object_src  :none
     policy.script_src  :self
-    policy.style_src   :self
+    policy.style_src   :self, :unsafe_inline
     policy.connect_src :self
     policy.frame_src   :none
     policy.base_uri    :self

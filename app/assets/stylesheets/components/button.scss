@@ -47,3 +47,13 @@
   opacity: 0.5;
 }
 
+// Transparent button for nav bar
+button.nav-button {
+  color: #fff;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+

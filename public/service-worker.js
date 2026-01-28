@@ -1,28 +1,51 @@
+const CACHE_NAME = 'pim-cache-v1';
+const OFFLINE_URL = '/offline.html';
+
 self.addEventListener('install', event => {
   console.log('Service Worker installing.');
-  // Perform install steps
   event.waitUntil(
-    caches.open('my-cache').then(cache => {
+    caches.open(CACHE_NAME).then(cache => {
       console.log('Opened cache');
       return cache.addAll([
         '/',
-        // add other assets you want to cache
+        OFFLINE_URL,
       ]);
     })
   );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName !== CACHE_NAME) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
-      }
-    )
-  );
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .catch(() => caches.match(OFFLINE_URL))
+    );
+  } else {
+    event.respondWith(
+      caches.match(event.request)
+        .then(response => {
+          if (response) {
+            return response;
+          }
+          return fetch(event.request);
+        })
+    );
+  }
 });
 
