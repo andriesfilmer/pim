@@ -3,14 +3,14 @@ class PasskeysController < ApplicationController
 
   def index
     @passkeys = Passkey.left_joins(:passkey_shares)
-                       .where("(passkeys.user_id = #{current_user.id}) OR (passkey_shares.linked_user_id = #{current_user.id})")
+                       .where("(passkeys.user_id = ?) OR (passkey_shares.linked_user_id = ?)", current_user.id, current_user.id)
                        .order(last_read: :desc).limit(500)
   end
 
   def show
     @passkey = Passkey.left_joins(:passkey_shares).select('passkeys.*,passkey_shares.user_id AS shared_by_user_id')
-                      .where("(passkeys.user_id = #{current_user.id} AND passkeys.id = ?) OR (passkey_shares.passkey_id = ? AND passkey_shares.linked_user_id = #{current_user.id})",
-                             params[:id], params[:id]).take
+                      .where("(passkeys.user_id = ? AND passkeys.id = ?) OR (passkey_shares.passkey_id = ? AND passkey_shares.linked_user_id = ?)",
+                             current_user.id, params[:id], params[:id], current_user.id).take
 
     redirect_to passkeys_url, alert: 'Key not found.' and return if @passkey.blank?
 
@@ -88,16 +88,25 @@ class PasskeysController < ApplicationController
     end
   end
 
+  def password
+    @passkey = Passkey.where(user_id: current_user.id).where(id: params[:id]).take
+    if @passkey
+      render json: { password: @passkey.password }
+    else
+      render json: { error: 'Not found' }, status: :not_found
+    end
+  end
+
   def search
     if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
       @passkeys = Passkey.left_joins(:passkey_shares).where(
-        "(passkeys.user_id = #{current_user.id} AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))
+        "(passkeys.user_id = ? AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))
        OR
-         (passkey_shares.linked_user_id = #{current_user.id} AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))",
-        search, search, search, search, search, search
+         (passkey_shares.linked_user_id = ? AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))",
+        current_user.id, search, search, search, current_user.id, search, search, search
       ).order('updated_at desc')
-      cookies[:search] = { value: params[:search], expires: 1.hour }
+      cookies[:search] = { value: params[:search], expires: 1.hour, httponly: true, secure: Rails.env.production? }
     else
       @passkeys = []
     end

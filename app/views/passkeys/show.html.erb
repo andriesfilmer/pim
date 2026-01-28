@@ -22,11 +22,11 @@
           data: { "action": "click->passkey#togglePassword" } %>
       </div>
       <div class="columns small-10 medium-11 mb-6">
-        <%= password_field_tag 'password', @passkey.password,
-          data: { "passkey_target": "passwordToggle", "action": "click->passkey#togglePassword" }  %>
+        <%= password_field_tag 'password', nil, placeholder: 'Click copy to load',
+          data: { "passkey_target": "passwordToggle", "passkey_id": @passkey.id, "action": "click->passkey#togglePassword" }  %>
       </div>
       <div class="columns small-2 medium-1">
-        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword" class="icon copy"></div>
+        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword" data-passkey-id="<%= @passkey.id %>" class="icon copy"></div>
       </div>
       <div class="columns mb-6">
         <%= label_tag :url, nil, class: "text-lg" %>

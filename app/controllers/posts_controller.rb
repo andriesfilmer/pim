@@ -41,7 +41,7 @@ class PostsController < ApplicationController
     if uploaded_file.present?
       path = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}"
       FileUtils.mkdir_p(path) unless Dir.exist?(path)
-      File.open(Rails.root.join('public', 'uploads', current_user.id.to_s, 'posts', @post.id.to_s, uploaded_file.original_filename), 'wb') do |file|
+      File.open(Rails.root.join('public', 'uploads', current_user.id.to_s, 'posts', @post.id.to_s, sanitize_filename(uploaded_file.original_filename)), 'wb') do |file|
         file.write(uploaded_file.read)
       end
     end
@@ -81,7 +81,8 @@ class PostsController < ApplicationController
   end
 
   def destroy_image
-    img = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}/#{params[:file]}"
+    filename = sanitize_filename(params[:file])
+    img = "#{Rails.root}/public/uploads/#{current_user.id}/posts/#{@post.id}/#{filename}"
     File.delete(img) if File.exist?(img)
     get_files
     respond_to do |format|
@@ -96,7 +97,7 @@ class PostsController < ApplicationController
       search = "%#{params[:search]}%"
       @posts = Post.where('title LIKE ? OR content LIKE ? OR tags LIKE ?', search, search, search)
                    .order(updated_at: :desc).where(user_id: current_user.id)
-      cookies[:search] = { value: params[:search], expires: 1.hour }
+      cookies[:search] = { value: params[:search], expires: 1.hour, httponly: true, secure: Rails.env.production? }
     else
       @posts = []
     end

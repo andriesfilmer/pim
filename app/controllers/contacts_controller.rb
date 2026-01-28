@@ -4,8 +4,7 @@ class ContactsController < ApplicationController
   def index
     @contacts = Contact.where(user_id: current_user.id).order('last_read desc').limit 500
     @contacts = @contacts.where(starred: true) if params[:starred]
-    # @contacts = @contacts.where("birthdate IS NOT NULL").reorder("month(birthdate), day(birthdate)") if params[:birthdate] # Mysql
-    @contacts = @contacts.where('birthdate IS NOT NULL').reorder(Arel.sql("strftime('%m', birthdate), strftime('%d', birthdate)")) if params[:birthdate] # Sqlite
+    @contacts = @contacts.by_birthdate if params[:birthdate]
   end
 
   def show
@@ -71,7 +70,7 @@ class ContactsController < ApplicationController
       search = "%#{params[:search]}%"
       @contacts = Contact.where('name LIKE ? OR notes LIKE ? OR tags LIKE ?', search, search, search)
                          .where(user_id: current_user.id).order(updated_at: :desc)
-      cookies[:search] = { value: params[:search], expires: 1.hour }
+      cookies[:search] = { value: params[:search], expires: 1.hour, httponly: true, secure: Rails.env.production? }
     else
       @contacts = []
     end

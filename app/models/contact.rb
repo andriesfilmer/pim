@@ -18,6 +18,11 @@ class Contact < ApplicationRecord
 
   validates :name, presence: true
 
+  # Scope to order contacts by upcoming birthday (month, day).
+  # Uses Arel.sql with a hardcoded string - safe as no user input is interpolated.
+  BIRTHDATE_ORDER = Arel.sql("strftime('%m', birthdate), strftime('%d', birthdate)").freeze
+  scope :by_birthdate, -> { where.not(birthdate: nil).reorder(BIRTHDATE_ORDER) }
+
   def age(dob)
     now = Time.now.utc.to_date
     dob = now if dob.nil?

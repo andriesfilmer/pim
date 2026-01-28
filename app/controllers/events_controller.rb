@@ -103,7 +103,7 @@ class EventsController < ApplicationController
       search = "%#{params[:search]}%"
       @events = Event.where('title LIKE ? OR description LIKE ? OR tags LIKE ?', search, search, search)
                      .order(start: :desc).where(user_id: current_user.id)
-      cookies[:search] = { value: params[:search], expires: 1.hour }
+      cookies[:search] = { value: params[:search], expires: 1.hour, httponly: true, secure: Rails.env.production? }
     else
       @events = []
     end

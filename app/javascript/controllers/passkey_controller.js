@@ -1,6 +1,7 @@
 // passkey_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { tooltip, saveFormAlert, showTags, compareVersions, modalComponent, copyContent, genPassword } from 'components';
 
 let submitted = false
@@ -76,10 +77,43 @@ export default class extends Controller {
     }, 2000); // 2-second delay
   }
 
-  // copyPassword with document.querySelector instead of sttmulus target, see copyUsername.
-  copyPassword() {
-    copyContent(document.getElementById('password').value)
-    let element = document.querySelector('[data-passkey-target="copiedPassword"]');
+  // copyPassword - fetches password via AJAX if not already loaded
+  async copyPassword(event) {
+    const passwordField = document.getElementById('password');
+    const element = event.currentTarget;
+    const passkeyId = element.dataset.passkeyId;
+
+    // Fetch password if not already loaded
+    if (!passwordField.value) {
+      element.innerHTML = "Loading..."
+      element.classList.remove("icon")
+      try {
+        const response = await fetch(`/passkeys/${passkeyId}/password`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          passwordField.value = data.password;
+        } else {
+          element.innerHTML = "Error"
+          setTimeout(() => {
+            element.innerHTML = ""
+            element.classList.add("icon")
+          }, 2000);
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to fetch password:', error);
+        element.innerHTML = "Error"
+        setTimeout(() => {
+          element.innerHTML = ""
+          element.classList.add("icon")
+        }, 2000);
+        return;
+      }
+    }
+
+    copyContent(passwordField.value)
     element.innerHTML = "Copied"
     element.classList.remove("icon")
     setTimeout(() => {
@@ -92,13 +126,38 @@ export default class extends Controller {
     document.getElementById("passkey_password").value = genPassword()
   }
 
-  togglePassword() {
-    if (this.passwordToggleTarget.type === "text") {
-      this.passwordToggleTarget.type = "password"
-      this.passwordToggleTarget.classList.remove("color-warning")
+  async togglePassword() {
+    const passwordField = this.passwordToggleTarget;
+    const passkeyId = passwordField.dataset.passkeyId;
+
+    // Fetch password if not already loaded and we're about to show it
+    if (!passwordField.value && passwordField.type === "password" && passkeyId) {
+      passwordField.placeholder = "Loading...";
+      try {
+        const response = await fetch(`/passkeys/${passkeyId}/password`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          passwordField.value = data.password;
+          passwordField.placeholder = "";
+        } else {
+          passwordField.placeholder = "Error loading password";
+          return;
+        }
+      } catch (error) {
+        console.error('Failed to fetch password:', error);
+        passwordField.placeholder = "Error loading password";
+        return;
+      }
+    }
+
+    if (passwordField.type === "text") {
+      passwordField.type = "password"
+      passwordField.classList.remove("color-warning")
     } else {
-      this.passwordToggleTarget.type = "text"
-      this.passwordToggleTarget.classList.add("color-warning")
+      passwordField.type = "text"
+      passwordField.classList.add("color-warning")
     }
   }
 
@@ -111,7 +170,7 @@ export default class extends Controller {
   }
 
   toggleNotes() {
-    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
+    $("#markdown").html(DOMPurify.sanitize(marked.parse($("#notes").text(),{ mangle: false, headerIds: false})))
 
     if (this.notesToggleTarget.classList.toggle("hide-notes")) {
       this.notesToggleTarget.textContent = "Click to show notes"
@@ -129,7 +188,7 @@ export default class extends Controller {
   showMarkdown() {
     const notesValue = $("#passkey_notes").val();
     if (notesValue !== undefined && notesValue !== null && notesValue !== "") {
-      $("#markdown").html(marked.parse(notesValue, { mangle: false, headerIds: false}));
+      $("#markdown").html(DOMPurify.sanitize(marked.parse(notesValue, { mangle: false, headerIds: false})));
       $("#markdown").removeClass("display-none");
       $("#edit_bt").removeClass("display-none");
       $("#preview_bt").addClass("display-none");

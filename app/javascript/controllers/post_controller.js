@@ -1,6 +1,7 @@
 // post_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 import { gfmHeadingId } from "marked-gfm-heading-id";
 import {
   tooltip,
@@ -43,15 +44,15 @@ export default class extends Controller {
       marked.use(gfmHeadingId());
 
       if (toc) {
-        document.getElementById("toc").innerHTML = marked.parse(toc, {
+        document.getElementById("toc").innerHTML = DOMPurify.sanitize(marked.parse(toc, {
           mangle: false,
           headerIds: false,
-        });
+        }));
       } else {
         document.getElementById("tocFieldset").remove();
       }
       $("#markdown").html(
-        marked.parse(content, { mangle: false, headerIds: false }),
+        DOMPurify.sanitize(marked.parse(content, { mangle: false, headerIds: false })),
       );
     }
 
@@ -119,7 +120,7 @@ export default class extends Controller {
     const notesValue = $("#post_notes").val();
     if (notesValue !== undefined && notesValue !== null) {
       $("#markdown").html(
-        marked.parse(notesValue, { mangle: false, headerIds: false }),
+        DOMPurify.sanitize(marked.parse(notesValue, { mangle: false, headerIds: false })),
       );
       $("#markdown").removeClass("display-none");
       $("#edit_bt").removeClass("display-none");

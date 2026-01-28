@@ -1,6 +1,7 @@
 // event_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from "marked";
+import DOMPurify from "dompurify";
 import { tooltip, saveFormAlert, showTags, compareVersions } from "components";
 
 let submitted = false
@@ -137,7 +138,7 @@ export default class extends Controller {
       showTags("event_version_tags")
     }
 
-    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
+    $("#markdown").html(DOMPurify.sanitize(marked.parse($("#notes").text(),{ mangle: false, headerIds: false})))
 
     // Show a warning if form data is changed.
     $(document).on('input', '.userinputs', function() {
@@ -237,7 +238,7 @@ export default class extends Controller {
   showMarkdown() {
     const notesValue = $("#event_notes").val();
     if (notesValue !== undefined && notesValue !== null && notesValue !== "") {
-      $("#markdown").html(marked.parse(notesValue, { mangle: false, headerIds: false}));
+      $("#markdown").html(DOMPurify.sanitize(marked.parse(notesValue, { mangle: false, headerIds: false})));
       $("#markdown").removeClass("display-none");
       $("#edit_bt").removeClass("display-none");
       $("#preview_bt").addClass("display-none");

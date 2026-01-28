@@ -88,7 +88,7 @@ Rails.application.configure do
 
   config.action_mailer.smtp_settings = {
     address: "smtp.filmer.nl",
-    enable_starttls_auto: false
+    enable_starttls_auto: true
   }
 
   config.action_mailer.default_url_options = { host: 'pim.filmer.nl' }

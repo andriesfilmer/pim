@@ -1,6 +1,7 @@
 // contact_controller.js
 import { Controller } from "@hotwired/stimulus";
 import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 import { tooltip, saveFormAlert, showTags, compareVersions } from 'components';
 
 let submitted = false
@@ -79,7 +80,7 @@ export default class extends Controller {
       showTags("contact_version_tags")
     }
 
-    $("#markdown").html(marked.parse($("#notes").text(),{ mangle: false, headerIds: false}))
+    $("#markdown").html(DOMPurify.sanitize(marked.parse($("#notes").text(),{ mangle: false, headerIds: false})))
 
     // On each input change prepare the values  to store in db.
     $(document).on('input', '[data-tojson]', function() {
@@ -171,7 +172,7 @@ export default class extends Controller {
   showMarkdown() {
     const notesValue = $("#contact_notes").val();
     if (notesValue !== undefined && notesValue !== null && notesValue !== "") {
-      $("#markdown").html(marked.parse(notesValue, { mangle: false, headerIds: false}));
+      $("#markdown").html(DOMPurify.sanitize(marked.parse(notesValue, { mangle: false, headerIds: false})));
       $("#markdown").removeClass("display-none");
       $("#edit_bt").removeClass("display-none");
       $("#preview_bt").addClass("display-none");

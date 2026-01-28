@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
   post "passkeyrestore", to: "passkey_versions#restore", as: "passkeyrestore"
   post "passkeys/search", to: "passkeys#search"
+  get "passkeys/:id/password", to: "passkeys#password", as: "passkey_password"
   get "passkey_versions/compare", to: "passkey_versions#compare"
 
   resources :events
