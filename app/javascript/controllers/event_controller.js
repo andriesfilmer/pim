@@ -83,7 +83,7 @@ export default class extends Controller {
 
     if (document.getElementById("calendar")) {
       let calendarEl = document.getElementById('calendar');
-      let calendar = new FullCalendar.Calendar(calendarEl, {
+      this.calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'nlLocale',
         events: '/events.json',
         initialDate: start,
@@ -113,7 +113,10 @@ export default class extends Controller {
           Turbo.visit("/events/" + arg.event.id);
         }
       });
-      calendar.render();
+      this.calendar.render();
+
+      // Add swipe support for touch devices
+      this.setupSwipeNavigation(calendarEl);
     }
 
     if (document.getElementById("event_tz")) {
@@ -164,6 +167,39 @@ export default class extends Controller {
       }
     }, { once: true })
 
+  }
+
+  setupSwipeNavigation(element) {
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let touchEndY = 0;
+
+    const minSwipeDistance = 50; // Minimum distance for a valid swipe
+
+    element.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    element.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      touchEndY = e.changedTouches[0].screenY;
+
+      const deltaX = touchEndX - touchStartX;
+      const deltaY = touchEndY - touchStartY;
+
+      // Only trigger if horizontal swipe is greater than vertical (prevents conflict with scrolling)
+      if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+        if (deltaX < 0) {
+          // Swipe left -> next month
+          this.calendar.next();
+        } else {
+          // Swipe right -> previous month
+          this.calendar.prev();
+        }
+      }
+    }, { passive: true });
   }
 
   showYearView() {

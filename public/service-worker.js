@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pim-cache-v1';
+const CACHE_NAME = 'pim-cache-v2';
 const OFFLINE_URL = '/offline.html';
 
 self.addEventListener('install', event => {
