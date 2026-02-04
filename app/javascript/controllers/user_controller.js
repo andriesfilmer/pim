@@ -2,9 +2,9 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  connect() {
-    console.log("######## user controller connected");
+  static values = { offlineData: Boolean }
 
+  connect() {
     // Set switch in profile to system, light or dark theme.
     if (localStorage.getItem("theme") === "light-theme") {
       document.getElementById("theme_light").checked = true;
@@ -26,6 +26,44 @@ export default class extends Controller {
       localStorage.removeItem("theme-sys");
       localStorage.setItem("theme", "dark-theme");
       document.body.classList.add("dark-theme");
+    }
+  }
+
+  async setOfflineData(event) {
+    const checkbox = event.target;
+    const enabled = checkbox.checked;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+
+    try {
+      const response = await fetch('/offline_data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'X-CSRF-Token': csrfToken
+        },
+        body: `offline_data=${enabled}`
+      });
+
+      if (response.ok) {
+        if (enabled) {
+          if (typeof window.OfflineDB === 'undefined') {
+            await new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = '/offline-db.js?v=2';
+              script.onload = resolve;
+              script.onerror = reject;
+              document.head.appendChild(script);
+            });
+          }
+          window.OfflineDB.syncFromServer();
+        } else {
+          const request = indexedDB.deleteDatabase('pim-offline');
+          request.onsuccess = () => window.location.reload();
+          request.onblocked = () => window.location.reload();
+        }
+      }
+    } catch (error) {
+      checkbox.checked = !enabled;
     }
   }
 }

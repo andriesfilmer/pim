@@ -5,6 +5,11 @@ class PasskeysController < ApplicationController
     @passkeys = Passkey.left_joins(:passkey_shares)
                        .where("(passkeys.user_id = ?) OR (passkey_shares.linked_user_id = ?)", current_user.id, current_user.id)
                        .order(last_read: :desc).limit(500)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @passkeys }
+    end
   end
 
   def show

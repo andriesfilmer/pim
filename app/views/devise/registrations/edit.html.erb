@@ -50,6 +50,24 @@
   </fieldset>
 </div>
 
+<div class="row mt-4" data-controller="user">
+  <fieldset class="col-12">
+    <legend class="strong">Offline data</legend>
+    <div class="row p-4">
+      <div class="columns medium-6">
+        <div>Enable to access your events, contacts, posts and passwords when offline. Data is stored <strong>unencrypted</strong> locally and cleared on logout.</div>
+      </div>
+      <div class="columns medium-6 p-4">
+        <label>Offline data</label>
+        <%= label_tag "offline_data", class: "switch" do %>
+          <%= check_box_tag "offline_data", "true", current_user.offline_data, data: { action: "click->user#setOfflineData" }, class: "switch" %>
+          <span class="slider round"></span>
+        <% end %>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
 <div class="row mt-4">
   <fieldset class="col-12">
     <legend class="strong">Delete my account</legend>

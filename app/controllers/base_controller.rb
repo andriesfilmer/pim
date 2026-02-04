@@ -7,4 +7,9 @@ class BaseController < ApplicationController
       .where(user_id: current_user.id).order(start: :asc)
   end
 
+  def update_offline_data
+    current_user.update(offline_data: params[:offline_data] == 'true')
+    render json: { offline_data: current_user.offline_data }
+  end
+
 end

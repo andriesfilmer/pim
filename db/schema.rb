@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2024_03_30_131504) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_04_143347) do
   create_table "contacts", force: :cascade do |t|
     t.string "addresses", limit: 1024, default: "[]"
     t.date "birthdate"
@@ -164,6 +164,7 @@ ActiveRecord::Schema[8.1].define(version: 2024_03_30_131504) do
     t.string "last_sign_in_ip", limit: 255
     t.datetime "locked_at"
     t.string "name", limit: 255
+    t.boolean "offline_data", default: false
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
     t.string "reset_password_token", limit: 255

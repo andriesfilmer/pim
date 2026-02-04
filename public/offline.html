@@ -19,6 +19,22 @@
       padding: 0.5rem 1rem;
       color: #fff;
     }
+    .nav a {
+      color: #fff;
+      margin-right: 1rem;
+      text-decoration: none;
+    }
+    .nav a:hover {
+      text-decoration: underline;
+    }
+    .offline-badge {
+      background: #e74c3c;
+      color: #fff;
+      padding: 0.2rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      margin-right: 0.5rem;
+    }
     .content {
       flex: 1;
       display: flex;
@@ -64,12 +80,18 @@
   </style>
 </head>
 <body>
-  <nav class="nav">Pim</nav>
+  <nav class="nav">
+    <span class="offline-badge">OFFLINE</span>
+    <a href="/events">Events</a>
+    <a href="/contacts">Contacts</a>
+    <a href="/posts">Posts</a>
+    <a href="/passkeys">Passkeys</a>
+  </nav>
   <div class="content">
     <div class="icon">&#128268;</div>
     <h1>You're offline</h1>
-    <p>Please check your internet connection and try again.</p>
-    <button class="retry-btn" onclick="window.location.reload()">Retry</button>
+    <p>Use the menu above to access your cached data.</p>
+    <button class="retry-btn" onclick="window.location.reload()">Retry Connection</button>
   </div>
   <div class="footer">
     Personal information manager | Created by <a href="https://andries.filmer.nl">Andries Filmer</a>.

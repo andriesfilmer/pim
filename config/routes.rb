@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   get "about", to: "base#about"
   get "welcome", to: "base#welcome"
+  post "offline_data", to: "base#update_offline_data"
 
   get "events/drag", to: "events#drag"
   post "events/search", to: "events#search"

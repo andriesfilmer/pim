@@ -7,6 +7,9 @@
 <%= csrf_meta_tags %>
 <%= csp_meta_tag %>
 <meta name="turbo-prefetch" content="false">
+<% if user_signed_in? %>
+<meta name="offline-data" content="<%= current_user.offline_data %>">
+<% end %>
 
 <%= javascript_include_tag '/static/fullcalendar-6.1.10.min.js' %>
 <%= javascript_importmap_tags %>

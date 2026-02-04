@@ -80,17 +80,7 @@ function loadFunction() {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/service-worker.js")
-      .then((registration) => {
-        console.log(
-          "ServiceWorker registration successful with scope: ",
-          registration.scope,
-        );
-      })
-      .catch((error) => {
-        console.log("ServiceWorker registration failed: ", error);
-      });
+    navigator.serviceWorker.register("/service-worker.js");
   });
 }
 
@@ -110,22 +100,13 @@ window.addEventListener("beforeinstallprompt", (e) => {
 });
 
 function showInstallButton() {
-  // Show the install button
   const installButton = document.getElementById("installButton");
   installButton.classList.remove("display-none");
 
   installButton.addEventListener("click", () => {
-    // Hide the app provided install button
     installButton.classList.add("display-none");
-    // Show the install prompt
     deferredPrompt.prompt();
-    // Wait for the user to respond to the prompt
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === "accepted") {
-        console.log("User accepted the A2HS prompt");
-      } else {
-        console.log("User dismissed the A2HS prompt");
-      }
+    deferredPrompt.userChoice.then(() => {
       deferredPrompt = null;
     });
   });
@@ -133,3 +114,86 @@ function showInstallButton() {
 
 // End Service Worker code
 // -----------------------
+
+// Offline Data Sync
+// -----------------
+// Check if offline data is enabled for the user
+function isOfflineDataEnabled() {
+  const meta = document.querySelector('meta[name="offline-data"]');
+  return meta && meta.content === 'true';
+}
+
+// Load offline-db.js and sync data when online
+async function initOfflineSync() {
+  // Check if user has offline data enabled
+  if (!isOfflineDataEnabled()) {
+    return;
+  }
+
+  // Load the OfflineDB script if not already loaded
+  if (typeof window.OfflineDB === 'undefined') {
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = '/offline-db.js?v=2';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+  }
+
+  // Sync data from server to IndexedDB
+  if (navigator.onLine) {
+    window.OfflineDB.syncFromServer();
+  }
+}
+
+// Run sync on page load
+document.addEventListener('turbo:load', () => {
+  // Only sync if we're on an authenticated page (has nav menu)
+  if (document.querySelector('nav.color-bg-500')) {
+    initOfflineSync();
+  }
+});
+
+// Listen for online event to sync when connection is restored
+window.addEventListener('online', () => {
+  if (document.querySelector('nav.color-bg-500')) {
+    initOfflineSync();
+  }
+});
+
+// Clear IndexedDB on logout
+let logoutInProgress = false;
+document.addEventListener('click', (event) => {
+  if (logoutInProgress) return;
+
+  const button = event.target.closest('button');
+  const form = button?.closest('form');
+  if (form?.action?.includes('/users/sign_out')) {
+    event.preventDefault();
+    event.stopPropagation();
+    logoutInProgress = true;
+
+    indexedDB.deleteDatabase('pim-offline');
+
+    setTimeout(() => {
+      form.requestSubmit(button);
+    }, 150);
+  }
+});
+
+// Helper to sync single item after CRUD operations
+window.syncOfflineItem = async function(action, store, item) {
+  if (typeof window.OfflineDB === 'undefined') return;
+
+  try {
+    await window.OfflineDB.open();
+    if (action === 'delete') {
+      await window.OfflineDB.delete(store, item.id);
+    } else {
+      await window.OfflineDB.save(store, item);
+    }
+  } catch (e) {
+    // Silent fail
+  }
+};

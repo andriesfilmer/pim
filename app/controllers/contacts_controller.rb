@@ -5,6 +5,11 @@ class ContactsController < ApplicationController
     @contacts = Contact.where(user_id: current_user.id).order('last_read desc').limit 500
     @contacts = @contacts.where(starred: true) if params[:starred]
     @contacts = @contacts.by_birthdate if params[:birthdate]
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @contacts }
+    end
   end
 
   def show
