@@ -57,9 +57,20 @@ export default class extends Controller {
           }
           window.OfflineDB.syncFromServer();
         } else {
-          const request = indexedDB.deleteDatabase('pim-offline');
-          request.onsuccess = () => window.location.reload();
-          request.onblocked = () => window.location.reload();
+          // Close all open connections before deleting the database
+          if (window.OfflineDB?.db) {
+            window.OfflineDB.db.close();
+            window.OfflineDB.db = null;
+          }
+          if (navigator.serviceWorker?.controller) {
+            navigator.serviceWorker.controller.postMessage('close-indexeddb');
+          }
+          setTimeout(() => {
+            const request = indexedDB.deleteDatabase('pim-offline');
+            request.onsuccess = () => window.location.reload();
+            request.onerror = () => window.location.reload();
+            request.onblocked = () => window.location.reload();
+          }, 100);
         }
       }
     } catch (error) {

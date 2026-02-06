@@ -174,11 +174,27 @@ document.addEventListener('click', (event) => {
     event.stopPropagation();
     logoutInProgress = true;
 
-    indexedDB.deleteDatabase('pim-offline');
+    // Close all open connections before deleting the database
+    if (window.OfflineDB?.db) {
+      window.OfflineDB.db.close();
+      window.OfflineDB.db = null;
+    }
 
+    // Tell the service worker to close its connection, then unregister it
+    if (navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage('close-indexeddb');
+    }
+    navigator.serviceWorker?.getRegistrations().then(registrations => {
+      registrations.forEach(r => r.unregister());
+    });
+
+    // Small delay to let the service worker close its connection
     setTimeout(() => {
-      form.requestSubmit(button);
-    }, 150);
+      const request = indexedDB.deleteDatabase('pim-offline');
+      request.onsuccess = () => form.requestSubmit(button);
+      request.onerror = () => form.requestSubmit(button);
+      request.onblocked = () => form.requestSubmit(button);
+    }, 100);
   }
 });
 

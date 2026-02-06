@@ -52,6 +52,16 @@ const OfflineDB = {
   }
 };
 
+// Close IndexedDB connection when asked (needed for deleteDatabase to succeed)
+self.addEventListener('message', (event) => {
+  if (event.data === 'close-indexeddb') {
+    if (OfflineDB.db) {
+      OfflineDB.db.close();
+      OfflineDB.db = null;
+    }
+  }
+});
+
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
