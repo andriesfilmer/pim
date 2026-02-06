@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pim-cache-v4';
+const CACHE_NAME = 'pim-cache-v5';
 const OFFLINE_URL = '/offline.html';
 const DB_NAME = 'pim-offline';
 
@@ -101,8 +101,8 @@ function generateOfflineHTML(title, content) {
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: sans-serif; background: #f5f5f5; color: #333; min-height: 100vh; }
-    .nav { background: #7359a6; padding: 0.5rem 1rem; color: #fff; }
-    .nav a { color: #fff; margin-right: 1rem; text-decoration: none; }
+    .nav { background: #7359a6; padding: 0.5rem; color: #fff; }
+    .nav a { color: #fff; margin-right: 0.5rem; text-decoration: none; }
     .nav a:hover { text-decoration: underline; }
     .content { padding: 1rem; }
     h1 { margin-bottom: 1rem; font-size: 1.5rem; }
