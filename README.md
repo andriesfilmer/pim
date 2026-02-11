@@ -91,6 +91,7 @@ This application includes several security measures:
 * **Session timeout** - Sessions do not expire on idle (remember me is set to 1 year). For shared devices, users should log out manually.
 * **Master key** - Keep `config/master.key` secure and never commit it to version control. Without it, encrypted passkeys cannot be decrypted.
 * **Backups** - When backing up, include both the database AND `config/master.key`.
+* **Offline mode** - When offline mode is enabled the data is unencrypted in IndexedDB!
 
 ## Backups
 

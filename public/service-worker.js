@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pim-cache-v5';
+const CACHE_NAME = 'pim-cache-v6';
 const OFFLINE_URL = '/offline.html';
 const DB_NAME = 'pim-offline';
 
@@ -111,7 +111,7 @@ function generateOfflineHTML(title, content) {
     li a { color: #7359a6; text-decoration: none; }
     li a:hover { text-decoration: underline; }
     pre { background: #fff; padding: 1rem; border: 1px solid #ddd; white-space: pre-wrap; word-wrap: break-word; font-size: 0.875rem; }
-    .offline-badge { background: #e74c3c; color: #fff; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.75rem; margin-left: 0.5rem; }
+    .offline-badge { background: #e74c3c; color: #fff; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.75rem; margin-right: 0.5rem; }
   </style>
 </head>
 <body>
@@ -251,7 +251,8 @@ async function generateShowPage(store, id) {
 self.addEventListener('fetch', event => {
   const route = parseRoute(event.request.url);
 
-  if (event.request.mode === 'navigate') {
+  if (event.request.mode === 'navigate' || event.request.headers.get('Accept')?.includes('text/html')) {
+    // Network-first for all page requests (including Turbo Drive fetches)
     event.respondWith(
       fetch(event.request)
         .catch(async () => {
@@ -272,14 +273,10 @@ self.addEventListener('fetch', event => {
         })
     );
   } else {
+    // Network-first for all other requests (JS, CSS, images, API calls)
     event.respondWith(
-      caches.match(event.request)
-        .then(response => {
-          if (response) {
-            return response;
-          }
-          return fetch(event.request);
-        })
+      fetch(event.request)
+        .catch(() => caches.match(event.request))
     );
   }
 });

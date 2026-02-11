@@ -8,20 +8,35 @@ let submitted = false
 let userinput = false
 
 // Function for each type into a json object to store in one field in db.
-function prepareTypeValues(fieldId) {
+// Uses container divs (e.g. <div id="phones">) and form field names for lookups.
+function prepareTypeValues(type) {
+  let pluralType = getPluralType(type)
+  if (!pluralType) return;
+
+  let container = document.getElementById(pluralType);
+  if (!container) return;
+
   let typeValues = [];
-  let fieldIdArr = fieldId.split('_')
-  let type = fieldIdArr[1]
-  let divs = document.querySelectorAll('[id^="contact_' + type + '_"]');
-  [].forEach.call(divs, function(div) {
-    if ( 'contact_' + type + '_type' == div.id) {
-       typeValues.push('{"type"' + ':"' + div.value + '"');
+  let fields = container.querySelectorAll('[data-tojson]');
+  [].forEach.call(fields, function(field) {
+    if (field.id.endsWith('_type') || field.name?.endsWith('_type]') || field.name?.endsWith('_type')) {
+       typeValues.push('{"type"' + ':"' + field.value + '"');
     } else {
-       typeValues.push('"value"' + ':"' + div.value + '"}');
+       typeValues.push('"value"' + ':"' + field.value + '"}');
     }
   });
 
-  document.getElementById('contact_' + getPluralType(type)).value = '[' + typeValues + ']';
+  let hiddenField = document.querySelector('#contactForm input[name="contact[' + pluralType + ']"]');
+  if (hiddenField) {
+    hiddenField.value = '[' + typeValues + ']';
+  }
+}
+
+// Update all hidden JSON fields from visible type/value inputs.
+function prepareAllTypeValues() {
+  ['phone', 'email', 'address', 'company', 'website'].forEach(function(type) {
+    prepareTypeValues(type);
+  });
 }
 
 function getPluralType(type) {
@@ -83,8 +98,12 @@ export default class extends Controller {
     $("#markdown").html(DOMPurify.sanitize(marked.parse($("#notes").text(),{ mangle: false, headerIds: false})))
 
     // On each input change prepare the values  to store in db.
-    $(document).on('input', '[data-tojson]', function() {
-      prepareTypeValues(event.target.id)
+    $(document).on('input', '[data-tojson]', function(event) {
+      let container = this.closest('#phones, #emails, #addresses, #companies, #websites');
+      if (container) {
+        let typeMap = {phones: 'phone', emails: 'email', addresses: 'address', companies: 'company', websites: 'website'};
+        prepareTypeValues(typeMap[container.id]);
+      }
     })
 
     // Show a warning if form data is changed.
@@ -142,9 +161,9 @@ export default class extends Controller {
     const inputValue = document.createElement("INPUT")
     const iconTrash = document.createElement("div")
     divRow.className = "row"
-    divColumn1.className = "small-5 medium-5"
+    divColumn1.className = "small-5 medium-5 columns"
     divColumn2.className = "small-6 medium-6 columns"
-    divColumn3.className = "small-1 medium-1 columns"
+    divColumn3.className = "small-1 medium-1 columns text-center"
     inputType.value = getValueType(addRow)
     inputType.placeholder = getValueType(addRow)
     inputType.type = "text"
@@ -164,8 +183,10 @@ export default class extends Controller {
   }
 
   removeTypeValue(event) {
+    let dataValue = event.target.getAttribute("data-value")
+    let type = dataValue ? dataValue.split('_')[1] : null;
     event.target.parentNode.parentNode.remove();
-    prepareTypeValues(event.target.getAttribute("data-value"))
+    if (type) prepareTypeValues(type);
     saveFormAlert()
   }
 
@@ -190,6 +211,7 @@ export default class extends Controller {
   }
 
   submitForm(event) {
+    prepareAllTypeValues();
     document.getElementById("contactForm").requestSubmit();
     return userinput = false
   }
