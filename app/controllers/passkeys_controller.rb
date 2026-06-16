@@ -94,7 +94,9 @@ class PasskeysController < ApplicationController
   end
 
   def password
-    @passkey = Passkey.where(user_id: current_user.id).where(id: params[:id]).take
+    @passkey = Passkey.left_joins(:passkey_shares)
+                      .where("(passkeys.user_id = ? AND passkeys.id = ?) OR (passkey_shares.passkey_id = ? AND passkey_shares.linked_user_id = ?)",
+                             current_user.id, params[:id], params[:id], current_user.id).take
     if @passkey
       render json: { password: @passkey.password }
     else
@@ -110,7 +112,7 @@ class PasskeysController < ApplicationController
        OR
          (passkey_shares.linked_user_id = ? AND (title LIKE ? OR url LIKE ? OR tags LIKE ?))",
         current_user.id, search, search, search, current_user.id, search, search, search
-      ).order('updated_at desc')
+      ).distinct.order('updated_at desc')
       cookies[:search] = { value: params[:search], expires: 1.hour, httponly: true, secure: Rails.env.production? }
     else
       @passkeys = []
