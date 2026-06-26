@@ -2,10 +2,11 @@
 
     git clone git@github.com:andriesfilmer/pim-rails.git
     bundle install
-    rails credentials:edit   # Read remarks
-    rails db:encryption:init # Read remarks
-    rails db:schema:load
-    rails s
+    RAILS_ENV=production bundle exec rails credentials:edit   # Read remarks
+    RAILS_ENV=production bundle exec rails db:encryption:init # Read remarks
+    RAILS_ENV=production bundle exec rails db:schema:load
+    RAILS_ENV=production bundle exec bundle exec rails assets:precompile
+    RAILS_ENV=production bundle exec rails s
 
 ## Remarks
 
@@ -64,3 +65,7 @@ systemctl enable solid_queue.service
 systemctl start solid_queue.service
 systemctl status solid_queue.service
 ````
+
+Check the service is working in the rails console:
+
+    e = Event.last; Time.zone = e.tz; BaseMailer.with(to: User.find(e.user_id).email, event: e).event_mail.deliver

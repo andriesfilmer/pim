@@ -8,9 +8,9 @@ Type=simple
 User=puma
 Group=www-data
 
-WorkingDirectory=/var/www/pim-rails/
+WorkingDirectory=/var/www/pim/
 
-ExecStart=/usr/local/bin/puma -C /var/www/pim-rails/config/puma.rb
+ExecStart=/usr/local/bin/puma -C /var/www/pim/config/puma.rb
 
 Restart=always
 

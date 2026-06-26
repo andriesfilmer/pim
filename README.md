@@ -23,7 +23,7 @@ Take a look at <https://pim.filmer.nl>
 
 ## Installation
 
-See [docs/install.md](docs/install.md) for detailed installation instructions.
+See [docs/INSTALL.md](docs/INSTALL.md) for detailed installation instructions.
 
 ### Quick Start
 
@@ -61,7 +61,7 @@ For single-user mode, remove `:registerable` from the User model in `app/models/
 1. Install dependencies and compile assets:
    ```bash
    bundle install
-   bin/rails assets:precompile
+   RAILS_ENV=production bundle exec rails assets:precompile
    ```
 
 2. Setup database:

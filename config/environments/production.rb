@@ -87,11 +87,11 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_mailer.smtp_settings = {
-    address: "smtp.filmer.nl",
+    address: "mail.filmer.nl",
     enable_starttls_auto: true
   }
 
-  config.action_mailer.default_url_options = { host: 'pim.filmer.nl' }
+  config.action_mailer.default_url_options = { host: 'pim2.filmer.nl' }
 
   config.public_file_server.enabled = true
 

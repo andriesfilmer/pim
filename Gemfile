@@ -5,7 +5,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # ruby 3.2.3 (2024-01-18 revision 52bb2ac0a6) [x86_64-linux-gnu]
 # Puma version: 7.1.0
 
-ruby "3.2.3"
+ruby "3.3.8"
 gem 'puma','~> 7.1.0'
 gem 'rails', '~> 8.1.1'
 
@@ -22,6 +22,7 @@ gem "devise"
 gem "pretty_inspect"
 gem "diffy"
 gem "rack-attack"
+gem "image_processing", "~> 1.2"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
