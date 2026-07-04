@@ -27,3 +27,10 @@ To run the jobs immediately (synchronously):
 
     BirthdateMailJob.perform_now
     EventMailJob.perform_now
+
+## Sqlite
+
+When `rails server` starts and give a error: `table_structure': Could not find table 'solid_queue_processes'.
+
+    sqlite3 db/development.sqlite3 "UPDATE ar_internal_metadata SET value='development' WHERE key='environment';"
+
