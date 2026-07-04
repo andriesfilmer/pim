@@ -172,6 +172,12 @@ document.addEventListener('click', (event) => {
   if (form?.action?.includes('/users/sign_out')) {
     event.preventDefault();
     event.stopPropagation();
+
+    // Confirm before signing out to avoid accidental clicks
+    if (!confirm('Are you sure you want to sign out?')) {
+      return;
+    }
+
     logoutInProgress = true;
 
     // Close all open connections before deleting the database
