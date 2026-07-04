@@ -1,7 +1,7 @@
 <%= render "layouts/show_errors", resource: resource %>
 <div class="row">
   <div class="columns">
-    <h2>Edit Profile</h2>
+    <h2>Settings</h2>
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
       <div class="columns callout warning">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
     <% end %>
@@ -65,6 +65,26 @@
         <% end %>
       </div>
     </div>
+  </fieldset>
+</div>
+
+<div class="row mt-4">
+  <fieldset class="col-12">
+    <legend class="strong">Backup data</legend>
+    <%= form_with url: backup_path, method: :get, data: { turbo: false } do %>
+      <div class="row p-4">
+        <div class="columns medium-6">
+          <div>Download a backup of your data as an Excel (.xlsx) file, with one sheet per selected resource. Passwords are exported <strong>unencrypted</strong>.</div>
+        </div>
+        <div class="columns medium-6 p-4">
+          <label><%= check_box_tag "resources[]", "calendar", true %> Calendar</label>
+          <label><%= check_box_tag "resources[]", "contacts", true %> Contacts</label>
+          <label><%= check_box_tag "resources[]", "posts", true %> Posts</label>
+          <label><%= check_box_tag "resources[]", "passwords", true %> Passwords</label>
+          <%= submit_tag "Download XLSX", class: "button" %>
+        </div>
+      </div>
+    <% end %>
   </fieldset>
 </div>
 
