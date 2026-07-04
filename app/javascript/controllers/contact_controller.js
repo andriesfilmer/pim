@@ -91,9 +91,6 @@ export default class extends Controller {
     if (document.getElementById("contact_tags")) {
       showTags("contact_tags")
     }
-    if (document.getElementById("contact_version_tags")) {
-      showTags("contact_version_tags")
-    }
 
     $("#markdown").html(DOMPurify.sanitize(marked.parse($("#notes").text(),{ mangle: false, headerIds: false})))
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pim-cache-v6';
+const CACHE_NAME = 'pim-cache-v7';
 const OFFLINE_URL = '/offline.html';
 const DB_NAME = 'pim-offline';
 

@@ -27,9 +27,6 @@ export default class extends Controller {
     if (document.getElementById("passkey_tags")) {
       showTags("passkey_tags")
     }
-    if (document.getElementById("passkey_version_tags")) {
-      showTags("passkey_version_tags")
-    }
 
 
     // Show a warning if form data is changed.

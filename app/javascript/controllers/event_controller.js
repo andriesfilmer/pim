@@ -137,9 +137,6 @@ export default class extends Controller {
     if (document.getElementById("event_tags")) {
       showTags("event_tags")
     }
-    if (document.getElementById("event_version_tags")) {
-      showTags("event_version_tags")
-    }
 
     $("#markdown").html(DOMPurify.sanitize(marked.parse($("#notes").text(),{ mangle: false, headerIds: false})))
 

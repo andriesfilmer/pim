@@ -75,12 +75,14 @@
       <div class="row p-4">
         <div class="columns medium-6">
           <div>Download a backup of your data as an Excel (.xlsx) file, with one sheet per selected resource. Passwords are exported <strong>unencrypted</strong>.</div>
+          <p class="display-inline">
+          <label class="p-4"><%= check_box_tag "resources[]", "calendar", true, class: "display-block" %> Calendar</label>
+          <label class="p-4"><%= check_box_tag "resources[]", "contacts", true, class: "display-block" %> Contacts</label>
+          <label class="p-4"><%= check_box_tag "resources[]", "posts", true, class: "display-block" %> Posts</label>
+          <label class="p-4"><%= check_box_tag "resources[]", "passwords", true, class: "display-block" %> Passwords</label>
+          </p>
         </div>
         <div class="columns medium-6 p-4">
-          <label><%= check_box_tag "resources[]", "calendar", true %> Calendar</label>
-          <label><%= check_box_tag "resources[]", "contacts", true %> Contacts</label>
-          <label><%= check_box_tag "resources[]", "posts", true %> Posts</label>
-          <label><%= check_box_tag "resources[]", "passwords", true %> Passwords</label>
           <%= submit_tag "Download XLSX", class: "button" %>
         </div>
       </div>

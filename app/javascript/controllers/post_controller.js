@@ -32,9 +32,6 @@ export default class extends Controller {
     if (document.getElementById("post_tags")) {
       showTags("post_tags");
     }
-    if (document.getElementById("post_version_tags")) {
-      showTags("post_version_tags");
-    }
 
     if (document.getElementById("notes")) {
       let content = document.getElementById("notes").value;
