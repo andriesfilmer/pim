@@ -18,7 +18,9 @@ Rails.application.configure do
     policy.form_action :self
   end
 
-  # Generate session nonces for permitted importmap and inline scripts
-  config.content_security_policy_nonce_generator = ->(request) { request.session.id.to_s }
+  # Generate a random per-request nonce for permitted importmap and inline scripts.
+  # Do NOT use request.session.id here: it leaks the session id (a secret) into
+  # every page and makes the nonce predictable, defeating its purpose.
+  config.content_security_policy_nonce_generator = ->(request) { SecureRandom.base64(16) }
   config.content_security_policy_nonce_directives = %w(script-src)
 end

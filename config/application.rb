@@ -14,6 +14,12 @@ module Pim
     # This option is meant to be used during transition periods
     config.active_record.encryption.support_unencrypted_data = true
 
+    # load_defaults is off, so the SameSite default (:lax) is not applied and
+    # the session cookie ships with no SameSite attribute. Set it explicitly:
+    # SameSite=Lax stops the cookie being sent on cross-site POSTs, which
+    # together with protect_from_forgery closes the CSRF hole.
+    config.action_dispatch.cookies_same_site_protection = :lax
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
