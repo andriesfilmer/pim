@@ -31,7 +31,9 @@ document.addEventListener("turbo:frame-load", loadFunction); // If you're using 
 document.addEventListener("turbo:submit-end", (event) => {
   if (!event.detail.success) {
     loadFunction();
+    return;
   }
+  syncOfflineAfterMutation(event);
 });
 
 function loadFunction() {
@@ -141,9 +143,10 @@ async function initOfflineSync() {
     });
   }
 
-  // Sync data from server to IndexedDB
-  if (navigator.onLine) {
-    window.OfflineDB.syncFromServer();
+  // Full sync once per session; per-mutation updates keep it fresh after that.
+  if (navigator.onLine && !sessionStorage.getItem('offlineSynced')) {
+    const ok = await window.OfflineDB.syncFromServer();
+    if (ok) sessionStorage.setItem('offlineSynced', '1');
   }
 }
 
@@ -158,9 +161,40 @@ document.addEventListener('turbo:load', () => {
 // Listen for online event to sync when connection is restored
 window.addEventListener('online', () => {
   if (document.querySelector('nav.color-bg-500')) {
+    sessionStorage.removeItem('offlineSynced'); // force a full refresh on reconnect
     initOfflineSync();
   }
 });
+
+// Incremental offline sync after a create/update/delete/restore, so the
+// offline store stays current without refetching everything on every page load.
+function syncOfflineAfterMutation(event) {
+  if (!isOfflineDataEnabled() || !window.OfflineDB) return;
+
+  const form = event.target;
+  let path;
+  try { path = new URL(form.action).pathname; } catch { return; }
+  const method = (form.querySelector('input[name="_method"]')?.value || form.method || 'get').toLowerCase();
+
+  // /store or /store/:id  (create / update / delete) — ignores /search, /drag
+  const crud = path.match(/^\/(events|contacts|posts|passkeys)(?:\/(\d+))?$/);
+  if (crud) {
+    const store = crud[1];
+    const id = crud[2];
+    if (method === 'delete' && id) {
+      window.syncOfflineItem('delete', store, { id: Number(id) });
+    } else {
+      window.OfflineDB.syncStore(store); // resync store (respects passkey offline flag)
+    }
+    return;
+  }
+
+  // /eventrestore, /contactrestore, /postrestore, /passkeyrestore
+  const restore = path.match(/^\/(event|contact|post|passkey)restore$/);
+  if (restore) {
+    window.OfflineDB.syncStore(`${restore[1]}s`);
+  }
+}
 
 // Clear IndexedDB on logout
 let logoutInProgress = false;

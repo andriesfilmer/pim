@@ -8,7 +8,13 @@ class PasskeysController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @passkeys }
+      # Offline sync only: cache the flagged subset, and only the fields the
+      # offline view renders. Keeps the whole vault (incl. decrypted passwords)
+      # from ever landing in the browser's IndexedDB.
+      format.json do
+        offline = @passkeys.where(passkeys: { offline: true })
+        render json: offline.as_json(only: %i[id title username password url notes twofa tags])
+      end
     end
   end
 
@@ -142,6 +148,6 @@ class PasskeysController < ApplicationController
   end
 
   def passkey_params
-    params.require(:passkey).permit(:title, :username, :password, :twofa, :url, :notes, :tags)
+    params.require(:passkey).permit(:title, :username, :password, :twofa, :url, :notes, :tags, :offline)
   end
 end
