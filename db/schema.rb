@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_05_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_05_130000) do
   create_table "contacts", force: :cascade do |t|
     t.string "addresses", limit: 1024, default: "[]"
     t.date "birthdate"
@@ -101,7 +101,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_05_120000) do
     t.string "password", limit: 255
     t.string "tags", limit: 255
     t.string "title", limit: 255, null: false
-    t.integer "twofa", default: 0
+    t.boolean "twofa", default: false, null: false
     t.datetime "updated_at", precision: nil
     t.string "url", limit: 255
     t.integer "user_id", default: 0, null: false
@@ -116,7 +116,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_05_120000) do
     t.string "password", limit: 255
     t.string "tags", limit: 255
     t.string "title", limit: 255, null: false
-    t.integer "twofa", default: 0
+    t.boolean "twofa", default: false, null: false
     t.datetime "updated_at", precision: nil
     t.string "url", limit: 255
     t.integer "user_id", default: 0, null: false
