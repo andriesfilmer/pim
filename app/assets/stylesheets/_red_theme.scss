@@ -46,6 +46,8 @@
   --filter-diap:     invert(1);
   --filter-orange:   invert(91%) sepia(91%) saturate(6801%) hue-rotate(299deg) brightness(110%) contrast(104%);
   --filter-red:      invert(19%) sepia(81%) saturate(7493%) hue-rotate(359deg) brightness(106%) contrast(121%);
+  --filter-grey:     invert(65%);
+  --filter-green:    invert(76%) sepia(31%) saturate(548%) hue-rotate(74deg) brightness(95%) contrast(87%);
 
   --appointment: var(--color-400);
   --post: var(--color-300);
