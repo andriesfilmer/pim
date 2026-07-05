@@ -136,26 +136,25 @@ const OfflineDB = {
     });
   },
 
-  async syncFromServer() {
+  // Refresh a single store from the server. For passkeys the server returns
+  // only the offline-flagged subset, so saveAll (clear + repopulate) also
+  // removes any that were unflagged or deleted.
+  async syncStore(storeName) {
     try {
-      const [events, contacts, posts, passkeys] = await Promise.all([
-        fetch('/events.json').then(r => r.ok ? r.json() : []),
-        fetch('/contacts.json').then(r => r.ok ? r.json() : []),
-        fetch('/posts.json').then(r => r.ok ? r.json() : []),
-        fetch('/passkeys.json').then(r => r.ok ? r.json() : [])
-      ]);
-
-      await Promise.all([
-        this.saveAll('events', events),
-        this.saveAll('contacts', contacts),
-        this.saveAll('posts', posts),
-        this.saveAll('passkeys', passkeys)
-      ]);
-
+      const res = await fetch(`/${storeName}.json`);
+      if (!res.ok) return false;
+      const items = await res.json();
+      await this.saveAll(storeName, items);
       return true;
     } catch (error) {
       return false;
     }
+  },
+
+  async syncFromServer() {
+    const stores = ['events', 'contacts', 'posts', 'passkeys'];
+    const results = await Promise.all(stores.map(s => this.syncStore(s)));
+    return results.every(Boolean);
   }
 };
 

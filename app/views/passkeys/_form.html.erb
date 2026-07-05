@@ -56,6 +56,20 @@
       <div id="tagsContainer"></div>
     </div>
   </div>
+
+  <!-- available offline -->
+  <div class="row">
+    <div class="columns small-8 medium-10">
+      <%= form.label :offline, "Available offline" %>
+      <p class="text-sm">Store this password (decrypted) in this browser for offline use.</p>
+    </div>
+    <div class="columns small-4 medium-2">
+      <%= form.label :offline, class: "switch" do %>
+        <%= form.check_box :offline, id: 'passkey_offline', class: "switch" %>
+        <span class="slider round"></span>
+      <% end %>
+    </div>
+  </div>
 <% end %>
 
 <%= render "shareDialog", resource: @passkey %>
