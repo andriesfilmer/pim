@@ -2,9 +2,12 @@
 <% @passkeys.each do |passkey| %>
   <%= link_to passkey_path(passkey), class: "row even p-2" do %>
   <div class="small-1 medium-1 columns">
-    <%= content_tag :div, '', class: "icon star-filled filter-orange icon-top-pos" if passkey.twofa == 1 %>
+    <%= content_tag :div, '', class: "icon offline filter-green icon-top-pos" if passkey.offline? %>
   </div>
-  <div class="small-10 medium-6 columns">
+  <div class="small-1 medium-1 columns">
+    <%= content_tag :div, '', class: "icon twofa filter-green icon-top-pos" if passkey.twofa == 1 %>
+  </div>
+  <div class="small-8 medium-5 columns">
     <%= passkey.title %>
   </div>
   <div class="small-1 medium-2 columns">

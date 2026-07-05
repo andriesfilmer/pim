@@ -62,6 +62,7 @@
   &.image-library:before          { background-image: url(image-library.svg) }
   &.image-add:before              { background-image: url(image-add.svg) }
   &.image:before                  { background-image: url(image.svg) }
+  &.offline:before                { background-image: url(offline.svg) }
   &.preview:before                { background-image: url(preview.svg) }
   &.pdf:before                    { background-image: url(pdf.svg) }
   &.restore:before                { background-image: url(restore.svg) }
@@ -70,6 +71,7 @@
   &.share:before                  { background-image: url(share.svg) }
   &.star:before                   { background-image: url(star.svg) }
   &.star-filled:before            { background-image: url(star-filled.svg) }
+  &.twofa:before                  { background-image: url(twofa.svg) }
   &.visibility:before             { background-image: url(visibility.svg) }
   &.unknown-document:before       { background-image: url(unknown-document.svg) }
 

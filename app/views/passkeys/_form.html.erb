@@ -14,7 +14,7 @@
     <div class="columns">
       <%= form.text_field :username, placeholder: "Enter username" %>
     </div>
-    <div class="columns small-6 medium-9">
+    <div class="columns small-4 medium-8">
       <%= form.label :password %>
       <%= form.text_field :password, id: 'passkey_password', placeholder: "Enter password" %>
     </div>
@@ -23,7 +23,14 @@
       <span class="button tiny" data-action="click->passkey#newPassword">Generate</span>
     </div>
     <div class="columns small-2 medium-1">
-      <%= form.label :twofa, id: "show2fa", class: @passkey.twofa? ? "icon xs star-filled filter-orange pb-2" : 'xs star-filled filter-orange pb-2icon pb-2' %>
+      <%= form.label :offline, id: "showOffline", title: "Available in offline mode", class: "cursor-pointer icon xs pb-2 offline #{@passkey.offline? ? 'filter-green' : 'filter-grey'}" %>
+      <%= form.label :offline, class: "switch" do %>
+        <%= form.check_box :offline, id: 'passkey_offline', data: { action: "click->passkey#setOffline" }, class: "switch" %>
+        <span class="slider round"></span>
+      <% end %>
+    </div>
+    <div class="columns small-2 medium-1">
+      <%= form.label :twofa, id: "show2fa", title: "This password has two factor authentication enabled", class: "cursor-pointer icon xs pb-2 twofa #{@passkey.twofa? ? 'filter-green' : 'filter-grey'}" %>
       <%= form.label :twofa, class: "switch" do %>
         <%= form.check_box :twofa, id: 'passkey_twofa', data: { action: "click->passkey#set2fa" }, class: "switch" %>
         <span class="slider round"></span>
@@ -57,19 +64,6 @@
     </div>
   </div>
 
-  <!-- available offline -->
-  <div class="row">
-    <div class="columns small-8 medium-10">
-      <%= form.label :offline, "Available offline" %>
-      <p class="text-sm">Store this password (decrypted) in this browser for offline use.</p>
-    </div>
-    <div class="columns small-4 medium-2">
-      <%= form.label :offline, class: "switch" do %>
-        <%= form.check_box :offline, id: 'passkey_offline', class: "switch" %>
-        <span class="slider round"></span>
-      <% end %>
-    </div>
-  </div>
 <% end %>
 
 <%= render "shareDialog", resource: @passkey %>

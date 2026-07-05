@@ -158,12 +158,18 @@ export default class extends Controller {
     }
   }
 
+  setOffline() {
+    const on = document.getElementById("passkey_offline").checked
+    const el = document.getElementById("showOffline")
+    el.classList.toggle("filter-green", on)
+    el.classList.toggle("filter-grey", !on)
+  }
+
   set2fa() {
-    if (document.getElementById("passkey_twofa").checked) {
-      document.getElementById("show2fa").classList.add("icon")
-    } else {
-      document.getElementById("show2fa").classList.remove("icon")
-    }
+    const on = document.getElementById("passkey_twofa").checked
+    const el = document.getElementById("show2fa")
+    el.classList.toggle("filter-green", on)
+    el.classList.toggle("filter-grey", !on)
   }
 
   toggleNotes() {

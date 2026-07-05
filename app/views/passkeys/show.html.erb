@@ -2,11 +2,11 @@
 <%= render "passkeys/restore_menu" if @passkey.try(:org_id) %>
 
 <div class="row" data-controller="passkey">
+  <div class="columns">
+    <h2><%= @passkey.title %></h2>
+   </div>
   <div class="columns medium-6">
     <div class="row">
-      <div class="columns">
-        <h2><%= @passkey.title %></h2>
-      </div>
       <div class="columns">
         <%= label_tag :username, nil, class: "text-lg" %>
       </div>
@@ -14,19 +14,20 @@
         <%= content_tag :div, @passkey.username, id: "username" %>
       </div>
       <div class="columns small-2 medium-1">
-        <div data-action="click->passkey#copyUsername" data-passkey-target="copiedUsername" class="icon copy"></div>
+        <div data-action="click->passkey#copyUsername" data-passkey-target="copiedUsername" class="icon copy cursor-pointer"></div>
       </div>
-      <div class="columns <%= "icon xs star-filled filter-orange" if @passkey.twofa == 1 %>">
+      <div class="columns">
         <%= label_tag :password, nil, class: "text-lg display-inline" %>
-        <%= content_tag :div, '', class: "icon visibility label filter", id: "passwordToggle",
+        <%= content_tag :div, '', class: "icon visibility label filter cursor-pointer", id: "passwordToggle",
           data: { "action": "click->passkey#togglePassword" } %>
       </div>
       <div class="columns small-10 medium-11 mb-6">
-        <%= password_field_tag 'password', nil, placeholder: 'Click copy to load',
+        <%= password_field_tag 'password', nil, placeholder: 'Click the eye icon to show password or click on copy to clipboard',
           data: { "passkey_target": "passwordToggle", "passkey_id": @passkey.id, "action": "click->passkey#togglePassword" }  %>
       </div>
       <div class="columns small-2 medium-1">
-        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword" data-passkey-id="<%= @passkey.id %>" class="icon copy"></div>
+        <div data-action="click->passkey#copyPassword" data-passkey-target="copiedPassword"
+             data-passkey-id="<%= @passkey.id %>" class="icon copy cursor-pointer"></div>
       </div>
       <div class="columns mb-6">
         <%= label_tag :url, nil, class: "text-lg" %>
@@ -35,20 +36,29 @@
     </div>
   </div>
   <div class="columns medium-6">
+    <%= content_tag :div, class: "row", data: { controller: "passkey" } do %>
+      <div class="columns">
+        <%= label_tag :notes, nil, class:"text-lg display-inline" %>
+        <%= content_tag :div, '', class: "icon visibility label cursor-pointer", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
+        <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
+        <div id="markdown" class="callout hide-notes disabled" data-passkey-target="notesToggle">Click to eye icon to show notes</div>
+      </div>
+    <% end if @passkey.notes.present? %>
+  </div>
+  <div class="columns medium-6">
+    <div class="columns mb-6">
+      <div class="text-lg p-1 my-2 color-bg-100">Offline & 2FA</div>
+    </div>
+    <div class="columns mb-6">
+      <%= content_tag :div, "Available in offline mode", class: "cursor-pointer icon xs pb-2 offline #{@passkey.offline? ? 'filter-green' : 'filter-grey'}" %>
+      <%= content_tag :div, "Two factor authentication", class: "cursor-pointer icon xs pb-2 twofa #{@passkey.twofa? ? 'filter-green' : 'filter-grey'}" %>
+    </div>
     <div id="passkey_shares">
      <%= render "passkey_shares", resource: @passkey_shares unless @passkey_readonly || @passkey_shares && @passkey_shares.none?%>
     </div>
   </div>
 </div>
 
-<%= content_tag :div, class: "row", data: { controller: "passkey" } do %>
-  <div class="columns">
-    <%= label_tag :notes, nil, class:"text-lg display-inline" %>
-    <%= content_tag :div, '', class: "icon visibility label", id: "notesToggle", data: { "action": "click->passkey#toggleNotes" } %>
-    <%= content_tag :pre, @passkey.notes, id: "notes", class: "display-none" %>
-    <div id="markdown" class="callout hide-notes disabled" data-passkey-target="notesToggle">Click to show notes</div>
-  </div>
-<% end if @passkey.notes.present? %>
 
 <div class="row">
   <div class="columns hide-for-print">
