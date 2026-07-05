@@ -136,7 +136,9 @@ class PasskeysController < ApplicationController
 
   def add_version(passkey)
     # Create a copy for versions management.
-    @passkey_version = PasskeyVersion.new(passkey_params.except('id', 'created_at', 'updated_at', 'picture'))
+    # `offline` is a per-device caching flag, not version history — and the
+    # passkeyversions table has no such column, so drop it from the copy.
+    @passkey_version = PasskeyVersion.new(passkey_params.except('id', 'created_at', 'updated_at', 'picture', 'offline'))
     @passkey_version.org_id = passkey.id
     @passkey_version.user_id = passkey.user_id
     @passkey_version.save
