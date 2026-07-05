@@ -47,11 +47,11 @@
   </div>
   <div class="columns medium-6">
     <div class="columns mb-6">
-      <div class="text-lg p-1 my-2 color-bg-100">Offline & 2FA</div>
-    </div>
-    <div class="columns mb-6">
+      <fieldset>
       <%= content_tag :div, "Available in offline mode", class: "cursor-pointer icon xs pb-2 offline #{@passkey.offline? ? 'filter-green' : 'filter-grey'}" %>
-      <%= content_tag :div, "Two factor authentication", class: "cursor-pointer icon xs pb-2 twofa #{@passkey.twofa? ? 'filter-green' : 'filter-grey'}" %>
+      <br>
+      <%= content_tag :div, "Has two factor authentication", class: "cursor-pointer icon xs pb-2 twofa #{@passkey.twofa? ? 'filter-green' : 'filter-grey'}" %>
+      </fieldset>
     </div>
     <div id="passkey_shares">
      <%= render "passkey_shares", resource: @passkey_shares unless @passkey_readonly || @passkey_shares && @passkey_shares.none?%>
