@@ -6,13 +6,17 @@ export default class extends Controller {
 
   connect() {
     // Set switch in profile to system, light or dark theme.
-    if (localStorage.getItem("theme") === "light-theme") {
-      document.getElementById("theme_light").checked = true;
-    } else if (localStorage.getItem("theme") === "dark-theme") {
-      document.getElementById("theme_dark").checked = true;
+    // Theme switches only exist on the home page; this controller is also
+    // used on the registrations edit page (offline data switch).
+    const light = document.getElementById("theme_light");
+    const dark = document.getElementById("theme_dark");
+    if (!light || !dark) return;
+
+    if (localStorage.getItem("theme") === "dark-theme") {
+      dark.checked = true;
     } else {
       // Default light theme.
-      document.getElementById("theme_light").checked = true;
+      light.checked = true;
     }
   }
 

@@ -214,6 +214,9 @@ document.addEventListener('click', (event) => {
 
     logoutInProgress = true;
 
+    // Allow a full sync again after the next login (sessionStorage survives logout)
+    sessionStorage.removeItem('offlineSynced');
+
     // Close all open connections before deleting the database
     if (window.OfflineDB?.db) {
       window.OfflineDB.db.close();
