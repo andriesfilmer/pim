@@ -91,6 +91,18 @@ export default class extends Controller {
     document.getElementById("search-form").requestSubmit();
   }
 
+  sortPosts(event) {
+    const searchPanel = document.getElementById("show_search");
+    const searchInput = document.getElementById("search");
+    if (!searchPanel || searchPanel.classList.contains("display-none")) return;
+    if (!searchInput || searchInput.value.trim().length <= 2) return;
+
+    event.preventDefault();
+    document.getElementById("search_sort").value = event.currentTarget.dataset.column;
+    document.getElementById("search_direction").value = event.currentTarget.dataset.direction;
+    document.getElementById("search-form").requestSubmit();
+  }
+
   copyImageUrl(img) {
     let imgSize = document.getElementById("image_size").value;
     let imgId = img.srcElement.id;

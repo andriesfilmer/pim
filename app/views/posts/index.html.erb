@@ -14,14 +14,13 @@
   <%= form_with url: posts_search_path, id: "search-form" do |form| %>
     <%= form.search_field :search, id: 'search', placeholder: 'Search notes', value: cookies[:search],
       data: { controller: "post", action: "focus->post#search input->post#search" } %>
+    <%= form.hidden_field :sort, id: "search_sort", value: @sort %>
+    <%= form.hidden_field :direction, id: "search_direction", value: @direction %>
   <% end %>
   </div>
 </div>
 
-<div class="row p-2 color-bg-300">
-  <div class="medium-6 columns">Notes</div>
-  <div class="medium-2 columns hide-for-small-only ">Last read</div>
-  <div class="medium-2 columns hide-for-small-only ">Updated</div>
-  <div class="medium-2 columns hide-for-small-only ">Created</div>
+<div id="posts_header" class="row p-2 color-bg-300" data-controller="post">
+  <%= render "header" %>
 </div>
 <%= render "posts" %>

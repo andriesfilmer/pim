@@ -1,0 +1,16 @@
+.sort-link {
+  &.active { font-weight: bold; }
+}
+
+.sort-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  border-left: 0.3rem solid transparent;
+  border-right: 0.3rem solid transparent;
+
+  &.desc { border-top: 0.35rem solid var(--color-text); }
+  &.asc  { border-bottom: 0.35rem solid var(--color-text); }
+}

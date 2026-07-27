@@ -1,8 +1,17 @@
 class PostsController < ApplicationController
   before_action :set_post, only: %i[show edit update destroy destroy_image]
 
+  SORTABLE_COLUMNS = {
+    'notes'     => 'title',
+    'last_read' => 'last_read',
+    'updated'   => 'updated',
+    'created'   => 'created'
+  }.freeze
+
   def index
-    @posts = Post.where(user_id: current_user.id).order('last_read desc').limit 500
+    set_sort
+
+    @posts = Post.where(user_id: current_user.id).order("#{@sort} #{@direction}").limit 500
 
     respond_to do |format|
       format.html
@@ -98,10 +107,12 @@ class PostsController < ApplicationController
   end
 
   def search
+    set_sort
+
     if params.dig(:search).length > 2
       search = "%#{params[:search]}%"
       @posts = Post.where('title LIKE ? OR content LIKE ? OR tags LIKE ?', search, search, search)
-                   .order(updated_at: :desc).where(user_id: current_user.id)
+                   .where(user_id: current_user.id).order("#{@sort} #{@direction}")
       cookies[:search] = { value: params[:search], expires: 1.hour, httponly: true, secure: Rails.env.production? }
     else
       @posts = []
@@ -109,13 +120,19 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.turbo_stream do
         render turbo_stream: [
-          turbo_stream.update('posts', partial: 'posts', locals: { posts: @posts })
+          turbo_stream.update('posts', partial: 'posts', locals: { posts: @posts }),
+          turbo_stream.update('posts_header', partial: 'posts/header')
         ]
       end
     end
   end
 
   private
+
+  def set_sort
+    @sort = SORTABLE_COLUMNS.fetch(params[:sort], 'last_read')
+    @direction = params[:direction] == 'asc' ? 'asc' : 'desc'
+  end
 
   def add_version(post)
     # Create a copy for versions management.
