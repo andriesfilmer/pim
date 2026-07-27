@@ -91,7 +91,7 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
 
-  config.action_mailer.default_url_options = { host: 'pim2.filmer.nl' }
+  config.action_mailer.default_url_options = { host: 'pim.filmer.nl' }
 
   config.public_file_server.enabled = true
 

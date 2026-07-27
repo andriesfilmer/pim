@@ -12,6 +12,11 @@
     chown -R puma:www-data tmp/cache/assets/
     chown -R puma:www-data public/assets/
 
+## Mail check
+
+    RAILS_ENV=production rails c
+    e = Event.where(user_id: 1).last; Time.zone = e.tz; BaseMailer.with(to: User.find(e.user_id).email, event: e).event_mail.deliver
+
 ## Solid Queue
 
 To view failed jobs:
