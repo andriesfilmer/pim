@@ -2,10 +2,10 @@
 <% @passkeys.each do |passkey| %>
   <%= link_to passkey_path(passkey), class: "row even p-2" do %>
   <div class="small-1 medium-1 columns">
-    <%= content_tag :div, '', class: "icon offline filter-green icon-top-pos" if passkey.offline? %>
+    <%= content_tag :div, '', class: "icon offline filter-green icon-top-pos", title: "Available offline" if passkey.offline? %>
   </div>
   <div class="small-1 medium-1 columns">
-    <%= content_tag :div, '', class: "icon twofa filter-green icon-top-pos" if passkey.twofa? %>
+    <%= content_tag :div, '', class: "icon twofa filter-green icon-top-pos", title: "2FA enabled" if passkey.twofa? %>
   </div>
   <div class="small-8 medium-5 columns">
     <%= passkey.title %>

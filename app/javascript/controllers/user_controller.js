@@ -1,10 +1,13 @@
 // user_controller.js
 import { Controller } from "@hotwired/stimulus";
+import { tooltip } from 'components';
 
 export default class extends Controller {
   static values = { offlineData: Boolean }
 
   connect() {
+    tooltip();
+
     // Set switch in profile to system, light or dark theme.
     // Theme switches only exist on the home page; this controller is also
     // used on the registrations edit page (offline data switch).

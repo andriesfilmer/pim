@@ -33,6 +33,13 @@ To run the jobs immediately (synchronously):
     BirthdateMailJob.perform_now
     EventMailJob.perform_now
 
+Trouble shooting
+
+    chown puma:puma /var/www/pim/log/solid_queue.log /var/www/pim/db/queue.sqlite3
+    sudo systemctl restart solid_queue.service
+    systemctl status solid_queue.service
+    journalctl -u solid_queue.service -n 50
+
 ## Sqlite
 
 When `rails server` starts and give a error: `table_structure': Could not find table 'solid_queue_processes'.

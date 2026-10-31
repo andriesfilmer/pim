@@ -4,7 +4,7 @@
     <div id="installButton" class="button filter-diap icon sm install-mobile display-none">Install App</div>
   </div>
   <div class="columns small-4 medium-2 text-right p-4">
-    <%= link_to '', edit_user_registration_path, class: "icon settings" %>
+    <%= link_to '', edit_user_registration_path, class: "icon settings", title: "Default settings, like name, offline data, backup, etc.", "data-tooltip": "" %>
   </div>
 </div>
 <div class="row p-4" data-controller="user">
@@ -14,14 +14,14 @@
   </div>
   <div class="columns small-4 medium-2 p-4">
     <label>Light mode</label>
-    <%= label_tag "theme_light", class: "switch" do %>
+    <%= label_tag "theme_light", class: "switch", title: "Switch to light mode" do %>
       <%= radio_button_tag "theme", "light", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
       <span class="slider round"></span>
     <% end %>
   </div>
   <div class="columns small-4  medium-2 p-4">
     <label>Dark mode</label>
-    <%= label_tag "theme_dark", class: "switch" do %>
+    <%= label_tag "theme_dark", class: "switch", title: "Switch to dark mode" do %>
       <%= radio_button_tag "theme", "dark", nil, data: { action: "click->user#setTheme" }, class: "switch" %>
       <span class="slider round"></span>
     <% end %>
