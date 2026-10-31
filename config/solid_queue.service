@@ -7,10 +7,10 @@ After=network.target
 
 [Service]
 Type=simple
-WorkingDirectory=/var/www/pim-rails
+WorkingDirectory=/var/www/pim
 
 # Start Solid Queue
-ExecStart=/bin/bash -lc 'cd /var/www/pim-rails && RAILS_ENV=production bin/jobs'
+ExecStart=/bin/bash -lc 'cd /var/www/pim && RAILS_ENV=production bin/jobs'
 
 User=puma
 Group=puma
@@ -20,8 +20,8 @@ Environment=RAILS_ENV=production
 Environment=RAILS_MAX_THREADS=5
 
 # Logging
-StandardOutput=append:/var/www/pim-rails/log/solid_queue.log
-StandardError=append:/var/www/pim-rails/log/solid_queue.log
+StandardOutput=append:/var/www/pim/log/solid_queue.log
+StandardError=append:/var/www/pim/log/solid_queue.log
 
 # Restart policy
 Restart=always

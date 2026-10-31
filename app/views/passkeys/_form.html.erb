@@ -23,14 +23,14 @@
       <span class="button tiny" data-action="click->passkey#newPassword">Generate</span>
     </div>
     <div class="columns small-2 medium-1">
-      <%= content_tag :div, '', id: "showOffline", title: "Available in offline mode", class: "cursor-pointer icon xs pb-2 offline #{@passkey.offline? ? 'filter-green' : 'filter-grey'}" %>
+      <%= content_tag :div, '', id: "showOffline", title: "Available in offline mode", "data-tooltip": "", class: "cursor-pointer icon xs pb-2 offline #{@passkey.offline? ? 'filter-green' : 'filter-grey'}" %>
       <%= form.label :offline, class: "switch" do %>
         <%= form.check_box :offline, id: 'passkey_offline', data: { action: "click->passkey#setOffline" }, class: "switch" %>
         <span class="slider round"></span>
       <% end %>
     </div>
     <div class="columns small-2 medium-1">
-      <%= content_tag :div, '', id: "show2fa", title: "Has two factor authentication", class: "cursor-pointer icon xs pb-2 twofa #{@passkey.twofa? ? 'filter-green' : 'filter-grey'}" %>
+      <%= content_tag :div, '', id: "show2fa", title: "Has two factor authentication", "data-tooltip": "", class: "cursor-pointer icon xs pb-2 twofa #{@passkey.twofa? ? 'filter-green' : 'filter-grey'}" %>
       <%= form.label :twofa, class: "switch" do %>
         <%= form.check_box :twofa, id: 'passkey_twofa', data: { action: "click->passkey#set2fa" }, class: "switch" %>
         <span class="slider round"></span>
